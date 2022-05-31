@@ -11,16 +11,16 @@ chrome_drivers/
 config_and_db/*.json
 !config_and_db/config_template.json
 
-# assets/screenshots/*.png
+assets/screenshots/
 # assets/screenshots/*.jpg
 # assets/screenshots/*.jpeg
-# assets/user_files/*.png
+assets/user_files/
 # assets/user_files/*.jpg
 # assets/user_files/*.jpeg
 # assets/user_files/*.pdf
 # assets/user_files/*.mp3
 # assets/user_files/*.wav
-# assets/video_exports/*.mp4
+assets/video_exports/
 
 
 # Byte-compiled / optimized / DLL files
