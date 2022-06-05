@@ -5,21 +5,16 @@ from pprint import pprint
 import sys
 import os
 import threading
-
+from handlers import status_utils
 block_refresh_interval = 1
-
-dt_secs = lambda secs: time.strftime('%H:%M:%S', time.gmtime(secs))
-
-
-
 
 
 def block_logger() -> None:
-    bot_version = get_bot_version_time()
+    bot_version = status_utils.get_bot_version_git()
     while True:
         current_timestamp = time.time()
         current_time = datetime.now().strftime("%H:%M:%S")
-        run_launch, run_error = runtime_since_launch()
+        run_launch, run_error = status_utils.runtime_since_launch()
 
         processing_orders_list = db_handler.get_processing_orders()
         active_orders = db_handler.get_active_orders()
@@ -53,15 +48,14 @@ Active Users List          : {', '.join(active_users_list)}"""
 
         for id, order in enumerate(active_orders, start=1):
             start_timestamp = order.get('start_timestamp')
-            session_duration = dt_secs(current_timestamp - start_timestamp)
-            # datetime.fromtimestamp().time()
+            session_duration = status_utils.dt_secs(current_timestamp - start_timestamp)
             session_template = f"""
 ________________________
 SESSION {id}
 User:             {order.get('first_name')}
 Status:           {order.get('status')}
 Stage:            {order.get('stage')}
-Start Timestamp:  {dt_secs(start_timestamp)}
+Start Timestamp:  {status_utils.dt_secs(start_timestamp)}
 Session Duration: {session_duration}
 Request:          {order.get('request_type')}
 Link:             {order.get('link')}
@@ -71,48 +65,15 @@ Link:             {order.get('link')}
 
         print(print_string)
         
-        line_count = print_string.count('\n') + 1
+        # line_count = print_string.count('\n') + 1
         lines = print_string.split('\n')
-        longest_line = max(lines, key=len)
-
-        # wait for refresh
+        # longest_line = max(lines, key=len)
         time.sleep(block_refresh_interval)
-
-        # # method 1
-        # sys.stdout.write("\033[F"*(line_count))
-        # for _ in range(line_count):
-        #     print(' ' * len(longest_line))
-        # sys.stdout.write("\033[F"*(line_count))
-
-        # method 2
         os.system('clear')
 
 
 
-def runtime_since_launch() -> tuple[str, str]:
-    ct = time.time()
-    run_timestamp = db_handler.get_latest_launch_time()
-    if not run_timestamp:
-        run_timestamp = ct
-        db_handler.log_event('run', 'bot_launch')
-    net_errs = db_handler.get_errors('network_timeout')
 
-    try:
-        last_err_time = net_errs[-1]['timestamp']
-    except:
-        last_err_time = run_timestamp
-
-    runtime_since_launch = ct - run_timestamp
-    runtime_since_error = ct - last_err_time
-    return dt_secs(runtime_since_launch), dt_secs(runtime_since_error)
-
-
-def get_bot_version_time():
-    import glob
-    import os
-    list_of_files = glob.glob(f"{os.getcwd()}/.git") # * means all if need specific format then *.csv
-    latest_file = max(list_of_files, key=os.path.getmtime)
-    return datetime.fromtimestamp(int(os.path.getmtime(latest_file)))
 
 
 def block_logger_thread():

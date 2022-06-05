@@ -82,3 +82,15 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+
+# Django #
+web_version/*.log
+web_version/*.pot
+web_version/*.pyc
+web_version/__pycache__
+web_version/db.sqlite3
+web_version/media
+
+# Backup files # 
+*.bak 

@@ -1,4 +1,8 @@
+import sys
+sys.path.append('..')
+
 from tinydb import TinyDB, Query
+from tinydb.table import Document
 from threading import RLock
 from engines.telegram_bot import bot
 import time
@@ -347,7 +351,7 @@ class TinyDBHandler:
 
 
     @thread_safe
-    def get_today_orders(self, only_count: bool = False):
+    def get_today_orders(self, only_count: bool = False) -> list[Document]:
         today_obj = datetime.datetime.today().today()
         today_ts = today_obj.replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
         
