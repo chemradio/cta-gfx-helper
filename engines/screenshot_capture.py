@@ -1,10 +1,10 @@
-import telegram
 import interlinks
 import time
 import secrets
 import threading
 import base64
 import sys
+import os
 from engines.telegram_bot import bot
 from io import BytesIO
 from PIL import Image
@@ -35,7 +35,6 @@ logger_screenshot.addHandler(logging_screenshot_file_handler)
 # logger_screenshot.addHandler(logging_screenshot_stream_handler)
 
 
-# path_to_chrome_profile = ("/Users/tim/Library/Application Support/Google/Chrome/Profile 1")
 
 dpi_multiplier = 2.0
 node_screenshot_offset = [10, 0]
@@ -66,7 +65,8 @@ def capture_screenshot(url):
     # create chrome options and driver objects
     chrome_options = Options()
     chrome_options.add_argument(f"--force-device-scale-factor={dpi_multiplier}")
-    chrome_options.add_argument("user-data-dir=/Users/tim/Library/Application Support/Google/Chrome/") #leave out the profile
+    
+    chrome_options.add_argument(f"user-data-dir={os.path.expanduser('~')}/Library/Application Support/Google/Chrome/") #leave out the profile
     chrome_options.add_argument("profile-directory=Default") #enter profile here
     chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
     # chrome_options.headless = True
