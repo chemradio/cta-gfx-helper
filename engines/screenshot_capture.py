@@ -37,7 +37,7 @@ logger_screenshot.addHandler(logging_screenshot_file_handler)
 
 # path_to_chrome_profile = ("/Users/tim/Library/Application Support/Google/Chrome/Profile 1")
 
-dpi_multiplier = 1
+dpi_multiplier = 2.0
 node_screenshot_offset = [10, 0]
 
 def capture_screenshot(url):
@@ -66,7 +66,10 @@ def capture_screenshot(url):
     # create chrome options and driver objects
     chrome_options = Options()
     chrome_options.add_argument(f"--force-device-scale-factor={dpi_multiplier}")
-    # chrome_options.add_argument(f"user-data-dir={path_to_chrome_profile}")
+    chrome_options.add_argument("user-data-dir=/Users/tim/Library/Application Support/Google/Chrome/") #leave out the profile
+    chrome_options.add_argument("profile-directory=Default") #enter profile here
+    chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
+    # chrome_options.headless = True
 
 
     driver = webdriver.Chrome(
@@ -294,7 +297,7 @@ def capture_profile_page_screenshot(
             "format": "png",
             "captureBeyondViewport": capture_beyond_viewport,
             "clip": {
-                "width": page_rect["contentSize"]["width"],
+                "width": page_rect["contentSize"]["width"]/2,
                 "height": target_height,
                 "x": 0,
                 "y": 0,

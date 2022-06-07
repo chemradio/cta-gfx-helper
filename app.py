@@ -97,7 +97,7 @@ if __name__ == "__main__":
     clear_assets_folder()
 
     # check for logs folder existence
-    os_script.start_adobe_apps()
+    # os_script.start_adobe_apps()
 
     db_handler.log_event('run', 'bot_launch')
     block_logger_thread()
