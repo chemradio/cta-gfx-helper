@@ -18,3 +18,7 @@ def auth_chrome():
     driver.get('http://google.com')
 
     time.sleep(300)
+
+
+if __name__ == '__main__':
+    auth_chrome()
