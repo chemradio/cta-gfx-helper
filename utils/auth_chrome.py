@@ -1,4 +1,5 @@
 import os
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -16,5 +17,4 @@ def auth_chrome():
     )
     driver.get('http://google.com')
 
-    import time
     time.sleep(300)
