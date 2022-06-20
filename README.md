@@ -2,7 +2,7 @@
 
 ## Description
 
-This bot serves as an human API to Adobe After Effects script to automatically create TV broadcast-ready graphic elements.
+This bot serves as an API to Adobe After Effects script to automatically create TV broadcast-ready graphic elements.
 
 It also includes website screenshoting engine to automatically capture images of the websites for consequent incorporating them in gfx-elements.
 
