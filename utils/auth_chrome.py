@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+import threading
 
 
 def auth_chrome():
@@ -15,9 +16,13 @@ def auth_chrome():
         options=chrome_options,
         service=Service(ChromeDriverManager().install())
     )
-    driver.get('http://google.com')
+    driver.get('http://facebook.com')
 
-    time.sleep(300)
+    while True:
+        try:
+            _ = driver.window_handles
+        except:
+            break
 
 
 if __name__ == '__main__':
