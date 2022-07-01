@@ -1,3 +1,3 @@
-[submodule "ct-gfx-script"]
-	path = ct-gfx-script
-	url = https://github.com/chemradio/ct-gfx-script.git
+[submodule "cta-gfx-script"]
+	path = cta-gfx-script
+	url = https://github.com/chemradio/cta-gfx-script.git
