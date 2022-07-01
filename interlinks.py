@@ -26,7 +26,7 @@ quit_ame_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_ame.scpt")
 quit_chrome_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_chrome.scpt")
 
 # gfx-script submodule
-path_to_cta_gfx_script_folder = os.path.join(BASE_PATH, "ct-gfx-script")
+path_to_cta_gfx_script_folder = os.path.join(BASE_PATH, "cta-gfx-script")
 path_to_uber_parameters = os.path.join(path_to_cta_gfx_script_folder, "parameters.jsx")
 path_to_ae_tg_script = os.path.join(path_to_cta_gfx_script_folder, "Telegram-Automated-Script.jsx")
 
