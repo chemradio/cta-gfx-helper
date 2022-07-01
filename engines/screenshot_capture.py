@@ -281,6 +281,7 @@ def capture_profile_page_screenshot(
     logger_screenshot.debug(f"Capturing PROFILE screenshot")
     time.sleep(5)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    time.sleep(1)
     driver.execute_script("window.scrollTo(0, -document.body.scrollHeight)")
     time.sleep(3)
 
