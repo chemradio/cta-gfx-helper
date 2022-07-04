@@ -1,3 +1,5 @@
+migrate to sql?
+
 quote checker
 
 configurations
@@ -12,16 +14,25 @@ main text handler - обработать ответы от редактора
 purge db orders
 figure out how to store allowed users
 
-update apple script with dynamic paths
-
-
-error types:
-network_timeout
-internal
 
 
 
+; cookies
 
+parse url
+    if scroll
+        extract domain
 
+get_domain - twitter, or hrw
+
+open saved cookies
+
+check if url in cookies
+
+add saved cookies to driver
+
+open url
+
+dump cookies to storage
 
 

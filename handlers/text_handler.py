@@ -169,23 +169,7 @@ def main_handler(update: Update, _: CallbackContext) -> None:
 
     ### CHECK RESULTS ###
     elif current_stage == "check":
-        # if update.message.text == reply_option_correct.text:
-        #     # update last info to db before running screenshots and ae
-        #     update.message.reply_text("Заказ принят. Скоро пришлю тебе файл(ы). Подожди, пожалуйста\n\n",reply_markup=ReplyKeyboardRemove())
-        #     db_handler.set_user_stage(user_id, 'screenshots')
-        #     render_filename = f"{str(update.message.from_user.first_name)}-gfx-{int(time.time())}.mp4"
-        #     db_handler.update_db_parameters(user_id=user_id,parameters={'render_filename':render_filename, 'chat_id':update.message.chat.id})
-        #     query = db_handler.get_active_entry_data(user_id)
-        #     # capture screenshots / if video - start video processor / start sender
-        #     process_screenshot_orders(bot)
-        #     return
 
-        # elif update.message.text == reply_option_incorrect.text:
-        #     update.message.reply_text("Заказ отменен. Можешь оформить новый через /start.", reply_markup=ReplyKeyboardRemove())
-        #     db_handler.update_db_parameters(user_id=user_id, parameters= {"status": "results_incorrect"})
-        #     return
-
-        # else:
         update.message.reply_text(
             "Пожалуйста, коснись нужного варианта.", reply_markup=ReplyKeyboardRemove()
         )

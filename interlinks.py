@@ -1,5 +1,6 @@
 # parse congig.json
 import json
+
 with open('config_and_db/config.json') as cf:
     cfg = json.loads(cf.read())
 
@@ -50,6 +51,16 @@ admin_telegram_ids = cfg['admin_telegram_ids']
 editor_ids = cfg['editor_ids']
 delegate_editor = editor_ids["editor_name"]
 max_audio_file_length = 30
+DPI_MULTIPLIER = 2.0
+COOKIE_FILE = 'config_and_db/cookie_file.json'
+SCREENSHOT_ATTEMPTS = 2
+
+SOCIAL_WEBSITES = {'facebook': 'https://facebook.com', 'twitter': 'https://twitter.com', 'instagram': 'https://instagram.com', 'telegram': 'https://telegram.org'}
+LOGIN_REQUIRED = ('instagram',)
+LOGIN_TO_SOCIAL_WEBSITES = True
+logged_in_to_social_websites = False
+
+
 
 
 help_text = """Ты можешь:
