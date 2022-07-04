@@ -1,5 +1,10 @@
+import multiprocessing
 import interlinks
+import os
+
 # v2
+
+
 class MacHandler:
     def __init__(self) -> None:
         from interlinks import cfg
@@ -7,10 +12,12 @@ class MacHandler:
 
 
     def run_script(self, script_code: str):
-        import os
-        os.system(f'''osascript <<END
+        arg = f'''osascript <<END
         {script_code}\n
-        END''')
+        END'''
+
+        proc = multiprocessing.Process(target=os.system, args=(arg,))
+        proc.start()
 
 
     def launcher(self):
