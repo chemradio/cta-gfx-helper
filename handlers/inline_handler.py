@@ -1,9 +1,6 @@
 import time
 import interlinks
-
-from engines.telegram_bot import bot
-from engines.quote_checker import check_quotes
-
+from engines.telegram_bot.bot_instance import bot
 from engines.utils import calc_readtime
 from database.db import db_handler
 from telegram import (
@@ -34,7 +31,6 @@ from handlers.question_senders import (
     ask_round_corners_enabled,
     ask_send_audio,
 )
-from handlers.quote_editor import check_quote
 
 
 def inline_button_handler(update: Update, context: CallbackContext) -> None:

@@ -1,6 +1,5 @@
-
 from interlinks import stage_texts
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 
 from telegram import (
     ReplyKeyboardRemove,

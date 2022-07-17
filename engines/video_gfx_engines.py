@@ -39,6 +39,7 @@ def render_video_orders():
             db_handler.update_doc_db_parameters(doc_id=order.doc_id, parameters={'stage':'sending', 'start_render_timestamp': time.time()})
             logger_gfx.debug("GFX Renderer accessed SENDER Engine")
             send_ready_orders()
+            time.sleep(10)
         return
 
     for thread in threading.enumerate():

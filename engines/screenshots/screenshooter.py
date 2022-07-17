@@ -178,9 +178,21 @@ class Screenshooter:
                 },
             )
 
-            with open(f"{interlinks.screenshot_folder}/{background_name}", "wb") as file:
-                file.write(base64.urlsafe_b64decode(full_page_screenshot["data"]))
-            return
+
+            im = Image.open(BytesIO(base64.urlsafe_b64decode(full_page_screenshot["data"])))
+
+            # # must multiply by zoom or dpi multiplier
+            # left = location["x"] * self.dpi_multiplier
+            # top = location["y"] * self.dpi_multiplier
+            # right = (location["x"] + size["width"]) * self.dpi_multiplier
+            # bottom = (location["y"] + size["height"]) * self.dpi_multiplier
+
+            # im = im.crop((left, top, right, bottom))
+            im.save(f"{interlinks.screenshot_folder}/{background_name}")
+
+            # with open(f"{interlinks.screenshot_folder}/{background_name}", "wb") as file:
+            #     file.write(base64.urlsafe_b64decode(full_page_screenshot["data"]))
+            # return
         except:
             # make some new exceptions
             pass

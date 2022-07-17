@@ -1,5 +1,5 @@
 from interlinks import stage_texts
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 
 from telegram import (
     ReplyKeyboardRemove,
@@ -8,7 +8,7 @@ from telegram import (
     ParseMode,
 )
 
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from handlers.decorators import log_decorator
 
 @log_decorator

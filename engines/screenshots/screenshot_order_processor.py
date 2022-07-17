@@ -3,7 +3,7 @@ import interlinks
 import time
 import threading
 from database.db import db_handler
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from engines.screenshots.screenshooter import Screenshooter
 from engines.video_gfx_engines import render_video_orders
 from engines.sender_engine import send_ready_orders

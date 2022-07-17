@@ -1,4 +1,4 @@
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 
 from database.db import db_handler
 from telegram import (

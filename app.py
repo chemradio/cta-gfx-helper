@@ -1,36 +1,36 @@
-import os
-import time
-import telegram
+from os_scripts.os_script_handler import os_script
+from database.db import db_handler
 from engines.utils import clear_assets_folder
 from engines.block_logger import block_logger_thread
-from database.db import db_handler
-from engines.telegram_bot_thread import bot_thread
+from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 
 
+import os
 os.system("clear")
 
 
-if __name__ == "__main__":
+def main():
+    # cleanup previous run
     db_handler.start_terminate_all_active_sessions()
     clear_assets_folder()
     
-    # run_adobe : str = input('Do you want to start Adobe Apps? (Y/n): ')
-    # if run_adobe.lower() == 'y':
-    #     print('Starting...')
-    #     os_script.start_adobe_apps()    
+    # run adobe apps
+    run_adobe : str = input('Do you want to start Adobe Apps? (Y/n): ')
+    if run_adobe.lower() == 'y':
+        print('Starting...')
+        os_script.start_adobe_apps()    
 
-    # from utils.auth_chrome import auth_chrome
-    # auth_chrome()
+    # authenticate browser / dump cookies
+    scwd = ScreenshotWebdriver()
+    scwd.login_to_social()
 
-    db_handler.log_event('run', 'bot_launch')
+    # start block logger
     block_logger_thread()
-    
-    while True:
-        try:
-            bot_thread()
-        except telegram.error.Conflict:
-            print('caught CONFLICT')
-            time.sleep(10)
-        except:
-            db_handler.log_error('network_timeout')
-            time.sleep(10)
+
+    # start telegram bot
+    db_handler.log_event('run', 'bot_launch')
+    bot_safe_loop()
+
+
+if __name__ == "__main__":
+    main()

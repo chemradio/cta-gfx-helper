@@ -4,7 +4,7 @@ import re
 import glob
 import interlinks
 from time import strftime, gmtime
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from interlinks import cfg
 from os_scripts.os_script_handler import os_script
 

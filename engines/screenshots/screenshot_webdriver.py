@@ -22,7 +22,7 @@ class ScreenshotWebdriver:
                             # "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) \
                             #     AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
                             }
-        chrome_options.add_experimental_option("mobileEmulation", device_emulation)
+        # chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
         """Don't use four lines below."""
         # chrome_options.add_argument(f"user-data-dir={os.path.expanduser('~')}/Library/Application Support/Google/Chrome/")
@@ -40,26 +40,34 @@ class ScreenshotWebdriver:
         for domain in interlinks.LOGIN_REQUIRED:
             if specific_domain and domain != specific_domain:
                 continue
-                 
+                
+            chrome_options = Options()
+            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            login_driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
+            login_driver.implicitly_wait(5)
+
             website_link = interlinks.SOCIAL_WEBSITES[domain]
-            self.driver.get(website_link)
+            login_driver.get(website_link)
 
             try:
-                self.cookie_manager.add_domain_cookies(domain, self.driver)
+                self.cookie_manager.add_domain_cookies(domain, login_driver)
                 time.sleep(2)
-                self.driver.refresh()
+                login_driver.refresh()
             except:
                 print(f"No cookies avalable for domain: {domain}")
 
-            if self.login_routines.login_checks[domain](self.driver):
+            if self.login_routines.login_checks[domain](login_driver):
                 print(f'Already logged into domain: {domain}')
-                return True
+                domain_cookies = login_driver.get_cookies()
+                self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
+                login_driver.quit()
+                continue
 
             # Give user time to log in to website/social network
             while True:
                 try:
-                    _ = self.driver.window_handles
-                    domain_cookies = self.driver.get_cookies()
+                    _ = login_driver.window_handles
+                    domain_cookies = login_driver.get_cookies()
                     time.sleep(1)
                 except:
                     break
@@ -67,25 +75,6 @@ class ScreenshotWebdriver:
             if domain_cookies:
                 self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
 
-
-    def super_get(self, url: str, link_type: str, dump: bool = True) -> None:
-        # without cookies version
-        self.login_to_social()
-        time.sleep(2)
-        self.driver.get(url)
-        return
-
-        # cookies version
-        """Get url but parse stored cookies"""
-        self.add_stored_cookies(domain=link_type)
-        time.sleep(0)
-        self.driver.get(url)
-        self.add_stored_cookies(domain=link_type)
-        self.driver.refresh()
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(10)
-        if dump:
-            self.dump_domain_cookies(link_type)
-        time.sleep(1)
-        return
+            time.sleep(1)
+            login_driver.quit()
+            time.sleep(2)

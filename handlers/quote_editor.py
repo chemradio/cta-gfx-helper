@@ -1,13 +1,12 @@
 from interlinks import delegate_editor as editor_id
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    ParseMode,
 )
 
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from tinydb.table import Document
 from database.db import db_handler
 

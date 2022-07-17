@@ -7,8 +7,6 @@ from telegram.ext import (
 )
 
 
-
-
 def help_handler(update: Update, _: CallbackContext) -> None:
     help_message_string = (
         interlinks.help_text + interlinks.admin_commands

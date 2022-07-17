@@ -1,3 +1,9 @@
+from telegram.ext import Updater
+import telegram
+import time
+import threading
+from database.db import db_handler
+
 from interlinks import BOT_TOKEN
 from handlers.inline_handler import inline_button_handler
 from handlers.back_command_handler import back_handler
@@ -41,7 +47,7 @@ from telegram.ext import (
 )
 
 
-def bot_thread() -> None:
+def bot_updater_dispatcher() -> Updater:
     updater = Updater(BOT_TOKEN)
     dispatcher = updater.dispatcher
 
@@ -76,4 +82,46 @@ def bot_thread() -> None:
     dispatcher.add_handler(MessageHandler(Filters.text, main_handler))
 
     updater.start_polling()
-    updater.idle()
+    updater.idle()      
+
+
+def bot_safe_loop() -> None:
+    while True:
+        try:
+            bot_updater_dispatcher()
+        except telegram.error.Conflict:
+            print('caught CONFLICT')
+            time.sleep(10)
+        except:
+            print('Network timeout')
+            db_handler.log_error('network_timeout')
+            time.sleep(10)
+
+
+
+def bot_thread_launcher() -> None:
+    def bot_thread():
+        while True:
+            try:
+                print('starting to poll!!!!\n\n\n')
+                # polling_bot(updater)
+                bot_updater_dispatcher()
+                # while True:
+                #     time.sleep(1)
+            except telegram.error.Conflict:
+                print('caught CONFLICT')
+                time.sleep(10)
+            except:
+                print('Network timeout')
+                db_handler.log_error('network_timeout')
+                time.sleep(10)
+
+    for thread in threading.enumerate():
+        if "telegram_bot_thread" in thread.name:
+            return False
+
+    telegram_bot_thread = threading.Thread(
+        target=bot_thread, args=(), name="telegram_bot_thread"
+    )
+    telegram_bot_thread.start()
+    return True

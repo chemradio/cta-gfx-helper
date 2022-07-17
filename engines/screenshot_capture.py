@@ -5,7 +5,7 @@ import threading
 import base64
 import sys
 import os
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from io import BytesIO
 from PIL import Image
 from selenium import webdriver

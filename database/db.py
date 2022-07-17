@@ -4,7 +4,7 @@ sys.path.append('..')
 from tinydb import TinyDB, Query
 from tinydb.table import Document
 from threading import RLock
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 import time
 import interlinks
 import logging

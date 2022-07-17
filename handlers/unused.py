@@ -1,6 +1,6 @@
 from handlers.decorators import log_decorator
 import interlinks
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 
 @log_decorator
 def check_admin_id(user_id):

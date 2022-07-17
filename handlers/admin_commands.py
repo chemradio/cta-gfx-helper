@@ -1,9 +1,8 @@
-import os
 import time
 import datetime
 import interlinks
 import engines.utils
-from engines.telegram_bot import bot
+from engines.telegram_bot.bot_instance import bot
 from database.db import db_handler
 from telegram import (
     ReplyKeyboardRemove,
@@ -13,7 +12,6 @@ from telegram import (
     ParseMode,
 )
 from telegram.ext import CallbackContext
-from handlers.start_handlers import add_start_db_entry, notify_end_previous_sessions
 from os_scripts.os_script_handler import os_script
 
 def only_admin(func):
