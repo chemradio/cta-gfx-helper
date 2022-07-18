@@ -21,12 +21,12 @@ def main():
         print('Starting...')
         os_script.start_adobe_apps()    
 
-    # authenticate browser / dump cookies
-    scwd = ScreenshotWebdriver(only_for_login=True)
-    try:
-        scwd.login_to_social()
-    except:
-        pass
+    # # authenticate browser / dump cookies
+    # scwd = ScreenshotWebdriver(only_for_login=True)
+    # try:
+    #     scwd.login_to_social()
+    # except:
+    #     pass
 
     # start block logger
     block_logger_thread()
