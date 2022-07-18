@@ -3,6 +3,7 @@ from database.db import db_handler
 from engines.utils import clear_assets_folder
 from engines.block_logger import block_logger_thread
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
+from engines.telegram_bot.bot_thread import bot_safe_loop
 
 
 import os
@@ -21,8 +22,11 @@ def main():
         os_script.start_adobe_apps()    
 
     # authenticate browser / dump cookies
-    scwd = ScreenshotWebdriver()
-    scwd.login_to_social()
+    scwd = ScreenshotWebdriver(only_for_login=True)
+    try:
+        scwd.login_to_social()
+    except:
+        pass
 
     # start block logger
     block_logger_thread()

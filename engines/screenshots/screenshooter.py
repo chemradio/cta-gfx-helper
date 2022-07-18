@@ -11,6 +11,8 @@ TWO_LAYER_SITES = ('facebook', 'instagram', 'twitter', 'telegram')
 
 from engines.screenshots.screenshot_routines import ScreenshotRoutines
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
+from engines.screenshots.browser_authorizer import BrowserAuthorizer
+
 
 from database.db import db_handler
 from engines.video_gfx_engines import render_video_orders
@@ -22,6 +24,7 @@ class Screenshooter:
     def __init__(self) -> None:
         self.routines = ScreenshotRoutines()
         self.dpi_multiplier = interlinks.DPI_MULTIPLIER
+        self.browser_authorizer = BrowserAuthorizer()
         # self.scwd = ScreenshotWebdriver()
         # self.driver = self.scwd.driver
 
@@ -47,7 +50,8 @@ class Screenshooter:
 
         # authenticate using cookies if required
         if link_type in interlinks.LOGIN_REQUIRED:
-            self.scwd.login_to_social(link_type)
+            self.browser_authorizer.login_driver_to_domain(driver=self.driver, domain=link_type)
+            
 
         # get post screenshot
         if link_type in TWO_LAYER_SITES:

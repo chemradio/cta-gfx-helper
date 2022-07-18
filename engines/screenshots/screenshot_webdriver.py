@@ -13,8 +13,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 class ScreenshotWebdriver:
-    def __init__(self) -> None:
+    def __init__(self, only_for_login: bool = False) -> None:
+        self.cookie_manager = CookieManager()
+        self.login_routines = LoginRoutines()
         self.dpi_multiplier = interlinks.DPI_MULTIPLIER
+
+        if only_for_login:
+            return
+
         chrome_options = Options()
         # chrome_options.add_argument("--incognito")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -22,7 +28,7 @@ class ScreenshotWebdriver:
                             # "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) \
                             #     AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
                             }
-        # chrome_options.add_experimental_option("mobileEmulation", device_emulation)
+        chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
         """Don't use four lines below."""
         # chrome_options.add_argument(f"user-data-dir={os.path.expanduser('~')}/Library/Application Support/Google/Chrome/")
@@ -32,15 +38,10 @@ class ScreenshotWebdriver:
 
         self.driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
         self.driver.implicitly_wait(5)
-        self.cookie_manager = CookieManager()
-        self.login_routines = LoginRoutines()
 
 
-    def login_to_social(self, specific_domain: str = '') -> bool:
+    def login_to_social(self) -> bool:
         for domain in interlinks.LOGIN_REQUIRED:
-            if specific_domain and domain != specific_domain:
-                continue
-                
             chrome_options = Options()
             chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
             login_driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
@@ -78,3 +79,5 @@ class ScreenshotWebdriver:
             time.sleep(1)
             login_driver.quit()
             time.sleep(2)
+
+
