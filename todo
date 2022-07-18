@@ -1,12 +1,12 @@
+self_dispatcher
+
+
 migrate to sql?
-
 quote checker
-
-configurations
-
 missing log files create first
-
 rewrite logging
+last x lines of std out to block_logger
+
 
 /exit - для редактора - это команда удалит все изменения в цитате и вернется к самому первому шагу
 main text handler - обработать ответы от редактора
