@@ -91,8 +91,13 @@ class ScreenshotRoutines:
             link_to_profile = post.find_element(By.TAG_NAME, "a").get_attribute("href")
 
         elif link_type == "telegram":
-            driver.switch_to.frame(post)
-            link_to_profile = post.find_element(By.TAG_NAME, "a").get_attribute("href")
+            try:
+                effective_path = url.split('//t.me/')[1]
+                link_to_profile = f'https://t.me/s/{effective_path}'
+            except:
+                link_to_profile = f'https://t.me/'
+            # driver.switch_to.frame(post)
+            # link_to_profile = post.find_element(By.TAG_NAME, "a").get_attribute("href")
 
         elif link_type == "scroll":
             link_to_profile = url
