@@ -56,7 +56,11 @@ COOKIE_FILE = 'config_and_db/cookie_file.json'
 SCREENSHOT_ATTEMPTS = 2
 
 SOCIAL_WEBSITES = {'facebook': 'https://facebook.com', 'twitter': 'https://twitter.com', 'instagram': 'https://instagram.com', 'telegram': 'https://telegram.org'}
-LOGIN_REQUIRED = ('instagram','facebook', 'twitter',)
+LOGIN_REQUIRED = (
+    'instagram',
+    # 'facebook',
+    'twitter',
+)
 LOGIN_TO_SOCIAL_WEBSITES = True
 logged_in_to_social_websites = False
 

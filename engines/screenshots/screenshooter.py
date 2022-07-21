@@ -135,6 +135,7 @@ class Screenshooter:
         bottom = (location["y"] + size["height"]) * self.dpi_multiplier
 
         im = im.crop((left, top, right, bottom))
+        im = im.crop((0,0, im.width, min(5000,im.height)))
         im.save(f"{interlinks.screenshot_folder}/{foreground_name}")
         return True
         # except:
@@ -184,6 +185,7 @@ class Screenshooter:
 
 
             im = Image.open(BytesIO(base64.urlsafe_b64decode(full_page_screenshot["data"])))
+            im = im.crop((0,0,im.width, min(7000,im.height)))
 
             # # must multiply by zoom or dpi multiplier
             # left = location["x"] * self.dpi_multiplier
