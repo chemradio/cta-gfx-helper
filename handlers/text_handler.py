@@ -111,6 +111,8 @@ def main_handler(update: Update, _: CallbackContext) -> None:
                 animation_type = "instagram"
             elif "t.co" in update.message.text or "twitter" in update.message.text:
                 animation_type = "twitter"
+            elif '/t.me/' in update.message.text:
+                animation_type = "telegram"
             else:
                 animation_type = "scroll"
         else:
