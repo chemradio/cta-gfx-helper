@@ -19,7 +19,7 @@ def main():
     # run_adobe : str = input('Do you want to start Adobe Apps? (Y/n): ')
     # if run_adobe.lower() == 'y':
     #     print('Starting...')
-    #     os_script.start_adobe_apps()    
+    os_script.start_adobe_apps()    
 
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
