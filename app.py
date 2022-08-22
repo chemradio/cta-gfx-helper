@@ -4,6 +4,7 @@ from engines.utils import clear_assets_folder
 from engines.block_logger import block_logger_thread
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 from engines.telegram_bot.bot_thread import bot_safe_loop
+from engines.video_gfx_html.html_server import create_server
 
 
 import os
@@ -19,7 +20,7 @@ def main():
     # run_adobe : str = input('Do you want to start Adobe Apps? (Y/n): ')
     # if run_adobe.lower() == 'y':
     #     print('Starting...')
-    os_script.start_adobe_apps()    
+    # os_script.start_adobe_apps()    
 
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
@@ -28,8 +29,11 @@ def main():
     # except:
     #     pass
 
-    # start block logger
-    block_logger_thread()
+    # # start block logger
+    # block_logger_thread()
+
+    # create asset server
+    create_server()
 
     # start telegram bot
     db_handler.log_event('run', 'bot_launch')

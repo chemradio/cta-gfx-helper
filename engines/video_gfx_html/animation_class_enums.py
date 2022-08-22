@@ -1,6 +1,4 @@
-from argparse import ZERO_OR_MORE
 from enum import Enum
-import json
 
 class BGAnimation(Enum):
     BG_ONLY = 'bgOnly'
@@ -30,7 +28,7 @@ class AnimationParameters:
         quote_author: str = str(),
         audio_enabled: bool = False,
         audio_path: str = str(),
-        animation_duration: float = 30,
+        animation_duration: float = 30.0,
     ) -> None:
         self.bg_animation = bg_animation.value
         self.bg_path = bg_path

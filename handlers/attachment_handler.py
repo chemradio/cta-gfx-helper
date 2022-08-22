@@ -66,7 +66,7 @@ def attachment_handler(update: Update, context: CallbackContext) -> None:
 
             try:
                 audio_file = AudioSegment.from_file(save_file_name, extension[1:])
-                if audio_file.duration_seconds > 29.9:
+                if audio_file.duration_seconds > 40:
                     audio_length_exceeded(user_id)
                     return
             except:

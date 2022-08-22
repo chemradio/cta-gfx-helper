@@ -1,6 +1,7 @@
 import interlinks
 import time
 import re
+import os
 import threading
 from engines.telegram_bot.bot_instance import bot
 from database.db import db_handler
@@ -17,7 +18,7 @@ logging_sender_file_handler.setFormatter(logging_sender_formatter)
 logging_sender_stream_handler = logging.StreamHandler()
 logging_sender_stream_handler.setFormatter(logging_sender_formatter)
 logger_sender.addHandler(logging_sender_file_handler)
-# logger_sender.addHandler(logging_sender_stream_handler)
+logger_sender.addHandler(logging_sender_stream_handler)
 
 
 
@@ -55,6 +56,64 @@ def ame_log_parser(filename):
         return False
 
 
+def send_single_order(order):
+    order_doc_id = order.doc_id
+    if order['request_type'] == 'only_screenshots':
+        bg_screenshot = open(order["bg_path"], 'rb')
+        logger_sender.debug("Sending bg_screenshot out")
+        bot.send_document(order['chat_id'], bg_screenshot, reply_markup=ReplyKeyboardRemove(), reply_to_message_id=order['results_message_id'], timeout=300)
+        if order['is_two_layer']:
+            fg_screenshot = open(order["fg_path"], 'rb')
+            logger_sender.debug("Sending fg_screenshot out")
+            bot.send_document(order['chat_id'], fg_screenshot, reply_markup=ReplyKeyboardRemove(), reply_to_message_id=order['results_message_id'], timeout=300)
+
+        db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={
+            'stage': 'completed',
+            'status': 'success'
+        })
+
+    elif order['request_type'] == 'video_auto' or 'video_files':
+        pass
+        # render_file_path = f"{interlinks.render_output_path}/{order['render_filename']}"
+        # render_file_name = order['render_filename']
+
+        # amelog_result = ame_log_parser(render_file_name)
+
+        # if amelog_result == 'success':
+        #     with open(render_file_path, 'rb') as binarified_file:
+        #         try:
+        #             logger_sender.debug("Sending video-gfx out")
+        #             bot.send_document(chat_id=order['chat_id'], document=binarified_file, caption="При необходимости подложи озвучку.", reply_to_message_id=order['results_message_id'], allow_sending_without_reply=True, reply_markup=ReplyKeyboardRemove(), timeout=300)
+        #         except:
+        #             logger_sender.exception("Sending video-gfx FAILED")
+        #             db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'send_error'})
+        #     db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'success', 'stage':'completed'})
+
+        # elif amelog_result == 'failed' or amelog_result == 'unknown':
+        #     bot.send_message(chat_id=order['chat_id'], text= 'Произошла ошибка при экспорте видео-файла. Пожалуйста, начни заказ заново.', reply_markup=ReplyKeyboardRemove())
+        #     db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status':'error_fail_render'})
+
+        # elif amelog_result == False:
+        #     pass
+
+
+def send_video_order(order):
+    order_doc_id = order.doc_id
+    render_file_path = f"{interlinks.render_output_path}/{order['render_filename']}"
+    render_file_name = order['render_filename']
+
+    with open(render_file_path, 'rb') as binarified_file:
+        try:
+            logger_sender.debug("Sending video-gfx out")
+            bot.send_document(chat_id=order['chat_id'], document=binarified_file, caption="При необходимости подложи озвучку.", reply_to_message_id=order['results_message_id'], allow_sending_without_reply=True, reply_markup=ReplyKeyboardRemove(), timeout=300)
+            db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'success', 'stage':'completed'})
+            return True
+        except:
+            logger_sender.exception("Sending video-gfx FAILED")
+            db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'send_error'})
+            return False
+
+
 def send_ready_orders():
     logger_sender.debug('THREAD: File Sender Thread Accessed.')
     def sender():
@@ -62,43 +121,7 @@ def send_ready_orders():
         while db_handler.get_unsent_orders():
             time.sleep(1)
             for order in db_handler.get_unsent_orders():
-                order_doc_id = order.doc_id
-                if order['request_type'] == 'only_screenshots':
-                    bg_screenshot = open(order["bg_path"], 'rb')
-                    logger_sender.debug("Sending bg_screenshot out")
-                    bot.send_document(order['chat_id'], bg_screenshot, reply_markup=ReplyKeyboardRemove(), reply_to_message_id=order['results_message_id'], timeout=300)
-                    if order['is_two_layer']:
-                        fg_screenshot = open(order["fg_path"], 'rb')
-                        logger_sender.debug("Sending fg_screenshot out")
-                        bot.send_document(order['chat_id'], fg_screenshot, reply_markup=ReplyKeyboardRemove(), reply_to_message_id=order['results_message_id'], timeout=300)
-
-                    db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={
-                        'stage': 'completed',
-                        'status': 'success'
-                    })
-
-                elif order['request_type'] == 'video_auto' or 'video_files':
-                    render_file_path = f"{interlinks.render_output_path}/{order['render_filename']}"
-                    render_file_name = order['render_filename']
-                    amelog_result = ame_log_parser(render_file_name)
-
-                    if amelog_result == 'success':
-                        with open(render_file_path, 'rb') as binarified_file:
-                            try:
-                                logger_sender.debug("Sending video-gfx out")
-                                bot.send_document(chat_id=order['chat_id'], document=binarified_file, caption="При необходимости подложи озвучку.", reply_to_message_id=order['results_message_id'], allow_sending_without_reply=True, reply_markup=ReplyKeyboardRemove(), timeout=300)
-                            except:
-                                logger_sender.exception("Sending video-gfx FAILED")
-                                db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'send_error'})
-                        db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status': 'success', 'stage':'completed'})
-
-                    elif amelog_result == 'failed' or amelog_result == 'unknown':
-                        bot.send_message(chat_id=order['chat_id'], text= 'Произошла ошибка при экспорте видео-файла. Пожалуйста, начни заказ заново.', reply_markup=ReplyKeyboardRemove())
-                        db_handler.update_doc_db_parameters(doc_id=order_doc_id, parameters={'status':'error_fail_render'})
-
-                    elif amelog_result == False:
-                        pass
-
+                send_single_order(order)
             time.sleep(5)
         return
 

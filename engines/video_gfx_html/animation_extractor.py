@@ -1,5 +1,6 @@
 import os
 import time
+import interlinks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -34,7 +35,7 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
     html_assembly_url = f"http://localhost:{port}/{html_assembly_name}"
     driver.get(f'{html_assembly_url}/main.html')
     time.sleep(2)
-
+    
     timeline_duration = driver.execute_script('return timeline.duration()')
     total_frames = timeline_duration * FPS
 
@@ -42,7 +43,8 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
     [total_frames, 1]]
 
     # create a folder for png-sequence
-    png_path = os.path.join(f'./html/html_assemblies/{html_assembly_name}', 'png_sequence')
+
+    png_path = os.path.join(f'{interlinks.HTML_ASSEMBLIES_FOLDER}/{html_assembly_name}', 'png_sequence')
     os.mkdir(png_path)
 
     for frame in range(int(total_frames)):
