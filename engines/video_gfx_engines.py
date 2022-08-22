@@ -6,7 +6,8 @@ import threading
 import PIL
 # from engines.telegram_bot import bot
 from database.db import db_handler
-from engines.sender_engine import send_ready_orders
+from engines.sender_engine import send_ready_orders, send_video_order
+from engines.video_gfx_html.video_wizard import create_video_gfx
 from os_scripts.os_script_handler import os_script
 
 
@@ -20,7 +21,7 @@ logging_gfx_file_handler.setFormatter(logging_gfx_formatter)
 logging_gfx_stream_handler = logging.StreamHandler()
 logging_gfx_stream_handler.setFormatter(logging_gfx_formatter)
 logger_gfx.addHandler(logging_gfx_file_handler)
-# logger_gfx.addHandler(logging_gfx_stream_handler)
+logger_gfx.addHandler(logging_gfx_stream_handler)
 
 
 
@@ -34,11 +35,13 @@ def render_video_orders():
             time.sleep(1)
             order = db_handler.get_unrendered_orders()[0]
 
-            # capture screenshots and launch ae script
-            create_uber_parameters(query=order)
+            # launch html-based animation creator
+            create_video_gfx(order=order)
+
             db_handler.update_doc_db_parameters(doc_id=order.doc_id, parameters={'stage':'sending', 'start_render_timestamp': time.time()})
             logger_gfx.debug("GFX Renderer accessed SENDER Engine")
-            send_ready_orders()
+            send_video_order(order)
+            
             time.sleep(10)
         return
 

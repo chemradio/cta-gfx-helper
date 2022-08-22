@@ -35,7 +35,7 @@ path_to_ae_tg_script = os.path.join(path_to_cta_gfx_script_folder, "Telegram-Aut
 assets_folder = os.path.join(BASE_PATH, "assets/")
 screenshot_folder = os.path.join(assets_folder + "screenshots/")
 user_files_folder = os.path.join(assets_folder + "user_files/")
-render_output_path = os.path.join(assets_folder + "video_exports/")
+render_output_path = os.path.join(assets_folder + "video_exports")
 recent_orders_interval_hours = 300
 
 # chromedriver
@@ -63,6 +63,17 @@ LOGIN_REQUIRED = (
 )
 LOGIN_TO_SOCIAL_WEBSITES = True
 logged_in_to_social_websites = False
+
+
+
+
+# html-video
+HTML_ASSETS_FOLDER = os.path.join(BASE_PATH, 'engines/video_gfx_html/html')
+HTML_TEMPLATE_FOLDER = os.path.join(HTML_ASSETS_FOLDER, 'html_template')
+HTML_ASSEMBLIES_FOLDER = os.path.join(assets_folder, 'html_assemblies')
+
+# audio start offset
+AUDIO_OFFSET = .3
 
 
 
