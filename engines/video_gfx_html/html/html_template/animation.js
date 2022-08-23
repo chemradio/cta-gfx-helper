@@ -7,6 +7,9 @@ function create_animation(config) {
     // animation
     const SCROLLDURATION = config.animationDuration;
     const ZOOMDURATION_BGONLY = 2;
+    const ONLYBGOVERLAP = 1;
+    const TAIL = 2;
+
     timeline = gsap.timeline({defaults: {duration:1}});
     
     timeline.pause()
@@ -17,7 +20,7 @@ function create_animation(config) {
         .to('.bgZoom', {duration: SCROLLDURATION, scale: .9}, 0)
         // background only
         .to('.bgOnly', {duration: ZOOMDURATION_BGONLY, scale: 1.1,ease:"power4.out"}, 0)
-        .to('.bgOnly', {duration: SCROLLDURATION, y: '-500px'}, ZOOMDURATION_BGONLY)
+        .to('.bgOnly', {duration: SCROLLDURATION-ONLYBGOVERLAP, y: '-500px'}, ZOOMDURATION_BGONLY-ONLYBGOVERLAP)
     
     
         // foil wipe
@@ -36,5 +39,8 @@ function create_animation(config) {
         .from('.quote-box', {"clip-path": "inset(0% 0% 100% 0%)", ease:"power1.out"}, .5)
     
         // quote box wipe off
-        .to('.quote-box', {"clip-path": "inset(100% 0% 0% 0%)", ease:"power1.out"}, "<5");
+        .to('.quote-box', {"clip-path": "inset(100% 0% 0% 0%)", ease:"power1.out"}, SCROLLDURATION-1);
+
+        // tail
+        to('tail-nonexistent', {duration: TAIL}, SCROLLDURATION)
 }
