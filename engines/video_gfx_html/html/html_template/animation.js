@@ -39,8 +39,9 @@ function create_animation(config) {
         .from('.quote-box', {"clip-path": "inset(0% 0% 100% 0%)", ease:"power1.out"}, .5)
     
         // quote box wipe off
-        .to('.quote-box', {"clip-path": "inset(100% 0% 0% 0%)", ease:"power1.out"}, SCROLLDURATION-1);
+        .to('.quote-box', {"clip-path": "inset(100% 0% 0% 0%)", ease:"power1.out"}, SCROLLDURATION-1)
 
         // tail
-        to('tail-nonexistent', {duration: TAIL}, SCROLLDURATION)
+        .to('tail-nonexistent', {duration: TAIL, y:'1100px'}, SCROLLDURATION);
+
 }
