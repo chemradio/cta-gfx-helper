@@ -100,4 +100,8 @@ function buildHTML(config) {
         quoteLayer.append(quoteContainer);
         quoteContainer.append(quoteBox);
     }
+
+    let tailPlaceholder = document.createElement('div');
+    tailPlaceholder.setAttribute('class', 'tail-nonexistent layer');
+    mainContainer.append(tailPlaceholder);
 }

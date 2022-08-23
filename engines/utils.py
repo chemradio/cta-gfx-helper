@@ -3,6 +3,8 @@ import psutil
 import re
 import glob
 import interlinks
+import shutil
+from pathlib import Path
 from time import strftime, gmtime
 from engines.telegram_bot.bot_instance import bot
 from interlinks import cfg
@@ -14,21 +16,47 @@ def check_is_url(string):
     return [x[0] for x in url]
 
 
-def clear_assets_folder(user_files=True, screenshots=True, video_renders=True):
-    if user_files:
-        files = glob.glob(f'{interlinks.user_files_folder}/*')
-        for file in files:
-            os.remove(file)
-    if screenshots:
-        files = glob.glob(f'{interlinks.screenshot_folder}/*')
-        for file in files:
-            os.remove(file)
-    if video_renders:
-        files = glob.glob(f'{interlinks.render_output_path}/*')
-        for file in files:
-            os.remove(file)
+def build_assets_folder() -> None:
+    folders = (interlinks.user_files_folder,
+               interlinks.screenshot_folder,
+               interlinks.render_output_path,
+               interlinks.HTML_ASSEMBLIES_FOLDER)
+    for folder in folders:
+        try:
+            os.mkdir(folder)
+        except:
+            print(f"Failed to create a folder: {folder}")
 
-    return True if user_files or screenshots or video_renders else False
+
+def clear_assets_folder(
+    user_files:bool = True,
+    screenshots: bool = True,
+    video_renders: bool = True,
+    html_asseblies: bool = True
+    ) -> None:
+    if user_files:
+        shutil.rmtree(interlinks.user_files_folder)
+        # files = glob.glob(f'{interlinks.user_files_folder}/*')
+        # for file in files:
+        #     os.remove(file)
+    if screenshots:
+        shutil.rmtree(interlinks.screenshot_folder)
+        # files = glob.glob(f'{interlinks.screenshot_folder}/*')
+        # for file in files:
+        #     os.remove(file)
+    if video_renders:
+        shutil.rmtree(interlinks.render_output_path)
+        # files = glob.glob(f'{interlinks.render_output_path}/*')
+        # for file in files:
+        #     os.remove(file)
+    if html_asseblies:
+        shutil.rmtree(interlinks.HTML_ASSEMBLIES_FOLDER)
+        # files = glob.glob(f'{interlinks.HTML_ASSEMBLIES_FOLDER}/*')
+        # for file in files:
+        #     os.remove(file)
+
+    build_assets_folder()
+
 
 
 def calc_readtime(text, wpm=160):
