@@ -73,6 +73,12 @@ function buildHTML(config) {
 
     // create quote box
     if (config.quoteEnabled) {
+        let quoteTextLength = config.quoteTextText.length;
+        let quoteAuthorLength = config.quoteTextText.length;
+
+        let targetLength = (quoteTextLength > quoteAuthorLength) ? quoteTextLength : quoteAuthorLength;
+        let width;
+
         let quoteLayer = document.createElement('div');
         quoteLayer.setAttribute('class', 'layer');
 
@@ -82,19 +88,20 @@ function buildHTML(config) {
         let quoteBox = document.createElement('div');
         quoteBox.setAttribute('class', 'quote-box');
 
-        let quoteTextText = document.createElement('p');
+        let quoteTextText = document.createElement('div');
         quoteTextText.setAttribute('class', 'quote-text-text');
         quoteTextText.innerHTML = config.quoteTextText;
 
-        let quoteBreak = document.createElement('br');
-
-        let quoteAuthorText = document.createElement('p');
-        quoteAuthorText.setAttribute('class', 'quote-author-text');
-        quoteAuthorText.innerHTML = config.quoteAuthorText;
-
         quoteBox.append(quoteTextText);
-        quoteBox.append(quoteBreak);
-        quoteBox.append(quoteAuthorText);
+
+        if (config.quoteAuthorText) {
+            let quoteBreak = document.createElement('br');
+            let quoteAuthorText = document.createElement('div');
+            quoteAuthorText.setAttribute('class', 'quote-author-text');
+            quoteAuthorText.innerHTML = config.quoteAuthorText;
+            quoteBox.append(quoteBreak);
+            quoteBox.append(quoteAuthorText);
+        }
 
         mainContainer.append(quoteLayer);
         quoteLayer.append(quoteContainer);
