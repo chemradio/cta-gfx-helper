@@ -1,3 +1,4 @@
+
 fetch('./config.json')
     .then(response => response.json())
     .then(json => buildHTML(json));
@@ -73,11 +74,13 @@ function buildHTML(config) {
 
     // create quote box
     if (config.quoteEnabled) {
+        
         let quoteTextLength = config.quoteTextText.length;
         let quoteAuthorLength = config.quoteTextText.length;
 
         let targetLength = (quoteTextLength > quoteAuthorLength) ? quoteTextLength : quoteAuthorLength;
         let width;
+
 
         let quoteLayer = document.createElement('div');
         quoteLayer.setAttribute('class', 'layer');
@@ -88,11 +91,15 @@ function buildHTML(config) {
         let quoteBox = document.createElement('div');
         quoteBox.setAttribute('class', 'quote-box');
 
-        let quoteTextText = document.createElement('div');
-        quoteTextText.setAttribute('class', 'quote-text-text');
-        quoteTextText.innerHTML = config.quoteTextText;
+        const prepText = preprocessString(config.quoteTextText)
+        const lines = splitStringParagraph(prepText);
+        for (let i = 0; i < lines.length; i++) {
+            let quoteTextText = document.createElement('div');
+            quoteTextText.setAttribute('class', 'quote-text-text');
+            quoteTextText.innerHTML = lines[i];
+            quoteBox.append(quoteTextText);
+        }
 
-        quoteBox.append(quoteTextText);
 
         if (config.quoteAuthorText) {
             let quoteBreak = document.createElement('br');
@@ -111,4 +118,87 @@ function buildHTML(config) {
     let tailPlaceholder = document.createElement('div');
     tailPlaceholder.setAttribute('class', 'tail-nonexistent layer');
     mainContainer.append(tailPlaceholder);
+}
+
+
+function splitStringParagraph(longString) {
+    const maxCharsPerLineL0 = 50;
+    const maxCharsPerLineL1 = 65;
+    const maxCharsPerLineL2 = 80;
+    const maxCharsPerLineL3 = 90;
+    const maxCharsPerLineL4 = 100;
+
+
+    const textLength = longString.length;
+    let splitIndex;
+    
+    console.log(Math.floor(textLength/maxCharsPerLineL4));
+    switch (Math.floor(textLength/maxCharsPerLineL4)) {
+        case 0:
+            splitIndex = maxCharsPerLineL0;
+            break;
+        case 1:
+            splitIndex = maxCharsPerLineL1;
+            break;
+        case 2:
+            splitIndex = maxCharsPerLineL2;
+            break;
+        case 3:
+            splitIndex = maxCharsPerLineL3;
+            break;
+        default:
+            splitIndex = maxCharsPerLineL4;
+            break;
+    }
+
+    let procString = longString;
+    let output = '';
+    
+    while (true) {
+        if (procString.length >= splitIndex) {
+            let targetIndex = procString.slice(0, splitIndex).lastIndexOf(' ');
+            let firstString = procString.slice(0,targetIndex);
+            let secondString = procString.slice(targetIndex);
+    
+            while (true) {
+                let lastWhite = firstString.lastIndexOf(' ');
+                if ( (targetIndex - lastWhite) <= 4) {
+                    let chunk = firstString.slice(lastWhite);
+                    firstString = firstString.slice(0, lastWhite);
+                    secondString = chunk + ' ' + secondString;    
+                } else {
+                    break;
+                }
+            }
+
+            output += (firstString + '\n');
+            procString = secondString;
+        } else {
+            output += procString;
+            break
+        }
+    }
+    return output.split('\n');
+}
+
+
+function preprocessString(text) {
+    while (
+        text.indexOf("ё") > -1 ||
+        text.indexOf("Ё") > -1 ||
+        text.indexOf("«") > -1 ||
+        text.indexOf("»") > -1 ||
+        text.indexOf(" - ") > -1
+    ) {
+        text = text.replace('ё', 'е')
+        text = text.replace('Ё', 'Е')
+        text = text.replace('«', '"')
+        text = text.replace('»', '"')
+        text = text.replace(' - ', ' – ')
+    }
+    text = text.replace(/^\s+|\s+$/g, '')
+    while (text.indexOf('  ') > -1) {
+        text = text.replace('  ', ' ')
+    }
+    return text
 }
