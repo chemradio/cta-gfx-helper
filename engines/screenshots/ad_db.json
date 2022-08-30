@@ -1,0 +1,30 @@
+{
+  "www.asiaplustj.info": [
+    "#topbanners",
+    ".newsbox-outer-banner",
+    ".banner-a5",
+    ".banner-b1",
+    ".after-article"
+  ],
+  "8am.af": [".cookie-law-info-again"],
+  "forbes.kz": [".grv-dialog-host", ".ad"],
+  "informburo.kz": [".grv-dialog-host", ".banner-block"],
+  "24.kg": ["iframe"],
+  "kaktus.media": [
+    ".BannerA",
+    ".BannerB",
+    ".BannerB1",
+    ".Dashboard--CompanyArticles",
+    ".Article--block-banner",
+    ".Article--ad",
+    "[class*=anner]"
+  ],
+  "meduza.io": [".Layout-bannerTop", "Layout-skipLink"],
+  "rsf.org": [".tarteaucitronAlertBigBottom"],
+  "www.hrw.org": [
+    "#hrw-cookie-dialog",
+    "#block-donationcalloutheaderbar",
+    "#block-donationcalloutbanner",
+    ".email-sign-up-bar"
+  ]
+}
