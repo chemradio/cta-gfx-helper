@@ -14,7 +14,7 @@ function create_animation(config) {
 
     timeline = gsap.timeline({defaults: {duration:1}});
     
-    // timeline.pause()
+    timeline.pause()
     timeline
         // background scroll
         .to('.bgScroll', {duration: SCROLLDURATION, y: `${-1 * BG_SCROLLAMOUNT}px`}, 0)

@@ -12,6 +12,7 @@ TWO_LAYER_SITES = ('facebook', 'instagram', 'twitter', 'telegram')
 from engines.screenshots.screenshot_routines import ScreenshotRoutines
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 from engines.screenshots.browser_authorizer import BrowserAuthorizer
+from engines.screenshots.ad_blocker import remove_ads
 
 
 from database.db import db_handler
@@ -56,6 +57,7 @@ class Screenshooter:
         # get post screenshot
         if link_type in TWO_LAYER_SITES:
             self.driver.get(clean_url)
+            remove_ads(self.driver)
             post = workflow.post_routine(url, self.driver)
             self.driver.execute_script("window.stop();")
             self._capture_post_screenshot(post, foreground_name)
@@ -65,6 +67,7 @@ class Screenshooter:
 
         # get profile / main screenshot
         self.driver.get(link_to_profile)
+        remove_ads(self.driver)
         workflow.profile_routine(driver=self.driver)
         self._capture_profile_page_screenshot(background_name)
 
