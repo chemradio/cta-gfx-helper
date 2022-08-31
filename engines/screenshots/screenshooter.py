@@ -30,13 +30,15 @@ class Screenshooter:
         # self.driver = self.scwd.driver
 
 
-    def create_driver(self) -> ScreenshotWebdriver:
-        scwd = ScreenshotWebdriver()
+    def create_driver(self, mobile: bool = True) -> ScreenshotWebdriver:
+        scwd = ScreenshotWebdriver(mobile=mobile)
         return scwd
 
 
     def capture_screenshot(self, url):
         link_type, clean_url, domain = self.routines.parse_url(url)
+        mobile = False #if link_type == 'twitter' else True
+            
 
         # generate file names
         background_name = f"01_BG_{secrets.token_hex(8)}.png"
@@ -46,7 +48,7 @@ class Screenshooter:
         workflow = self.routines.create_workflow(link_type)
 
         # create driver
-        self.scwd = self.create_driver()
+        self.scwd = self.create_driver(mobile=mobile)
         self.driver = self.scwd.driver
 
         # authenticate using cookies if required
@@ -57,7 +59,11 @@ class Screenshooter:
         # get post screenshot
         if link_type in TWO_LAYER_SITES:
             self.driver.get(clean_url)
-            remove_ads(self.driver)
+            self.scwd.remove_ads()
+
+            # get temp test screenshot
+            self.driver.save_screenshot('twi.png')
+
             post = workflow.post_routine(url, self.driver)
             self.driver.execute_script("window.stop();")
             self._capture_post_screenshot(post, foreground_name)
@@ -67,7 +73,7 @@ class Screenshooter:
 
         # get profile / main screenshot
         self.driver.get(link_to_profile)
-        remove_ads(self.driver)
+        self.scwd.remove_ads()
         workflow.profile_routine(driver=self.driver)
         self._capture_profile_page_screenshot(background_name)
 
