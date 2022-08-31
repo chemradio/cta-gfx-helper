@@ -167,6 +167,7 @@ class ScreenshotRoutines:
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> WebElement:
+        # time.sleep(5)
         post = driver.find_element(By.TAG_NAME, "article")
         return post
 
@@ -177,6 +178,12 @@ class ScreenshotRoutines:
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> None:
+
+        # action = ActionBuilder(driver)
+        # action.pointer_action.move_to_location(8, 0)
+        # action.perform()
+
+        # time.sleep(5)
         driver.execute_script("document.body.style.zoom = '1.2'")
         time.sleep(2)
         driver.execute_script("""el = document.querySelectorAll('[role="group"]')[0];

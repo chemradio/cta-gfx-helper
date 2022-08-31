@@ -1,4 +1,3 @@
-from typing import Literal
 import interlinks
 import time
 import threading

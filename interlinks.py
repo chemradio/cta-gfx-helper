@@ -59,7 +59,7 @@ SOCIAL_WEBSITES = {'facebook': 'https://facebook.com', 'twitter': 'https://twitt
 LOGIN_REQUIRED = (
     'instagram',
     # 'facebook',
-    'twitter',
+    # 'twitter',
 )
 LOGIN_TO_SOCIAL_WEBSITES = True
 logged_in_to_social_websites = False
