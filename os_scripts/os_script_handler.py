@@ -11,4 +11,5 @@ if current_system == 'Darwin': # Running on Apple Mac
 elif current_system == 'Windows': # Running on Windows
     os_script = WindowsHandler()
 else:
-    raise Exception('Unknown OS. Cannot provide OS Script functionality.')
+    pass
+    # raise Exception('Unknown OS. Cannot provide OS Script functionality.')
