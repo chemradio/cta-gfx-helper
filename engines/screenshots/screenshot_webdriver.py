@@ -32,8 +32,11 @@ class ScreenshotWebdriver:
                             }
         chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
+        if interlinks.USE_REMOTE_DRIVER:
+            self.driver = webdriver.Remote(interlinks.REMOTE_DRIVER_URL, options=chrome_options)
+        else:
+            self.driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
 
-        self.driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
         self.driver.implicitly_wait(5)
 
 

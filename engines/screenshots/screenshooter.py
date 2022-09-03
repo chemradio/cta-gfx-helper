@@ -12,7 +12,7 @@ TWO_LAYER_SITES = ('facebook', 'instagram', 'twitter', 'telegram')
 from engines.screenshots.screenshot_routines import ScreenshotRoutines
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 from engines.screenshots.browser_authorizer import BrowserAuthorizer
-from engines.screenshots.ad_blocker import remove_ads
+from engines.screenshots.ad_blocker import remove_ads_script
 
 
 from database.db import db_handler
