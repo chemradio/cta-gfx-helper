@@ -1,7 +1,7 @@
 import json
 from selenium import webdriver
 
-def remove_ads() -> None:
+def remove_ads_script() -> None:
     with open('./engines/screenshots/ad_remover_browser_script.js', 'r') as script_file:
         script = script_file.read()
 
