@@ -4,7 +4,7 @@ from engines.screenshots.screenshot_order_processor import process_screenshot_or
 from engines.video_gfx_engines import render_video_orders
 from engines.video_gfx_html.html_server import create_server
 from enum import Enum, auto
-
+from database.db import db_handler
 
 class TestRequestType(Enum):
     VIDEO_AUTO = auto()
@@ -173,7 +173,6 @@ BASE_ORDER_TEMPLATE = {
 
 VIDEO_AUTO_TEMPLATE = BASE_ORDER_TEMPLATE.update({
     "request_type": "video_auto",
-    
 })
 
 ONLY_SCREENSHOTS_TEMPLATE = BASE_ORDER_TEMPLATE.update({
@@ -191,54 +190,58 @@ def create_test_orders(request_type: TestRequestType, test_domains: TestDomains,
     elif request_type == TestRequestType.ONLY_SCREENSHOTS:
         template = ONLY_SCREENSHOTS_TEMPLATE
 
-    social_links = list()
-    scroll_links = SCROLL_LINKS
     work_scoll_links = False
-
     quote_enabled = True if quote_enabled == TestQuoteEnabled.ENABLED else False
 
     if test_domains == TestDomains.ALL:
-        social_links = [FB_LINKS, TWI_LINKS, IG_LINKS, TG_LINKS]
+        social_domains = ('facebook', 'twitter', 'instagram', 'telegram')
         work_scoll_links = True
     elif test_domains == TestDomains.FACEBOOK:
-        social_links = [FB_LINKS,]
+        social_domains = ('facebook',)
     elif test_domains == TestDomains.TWITTER:
-        social_links = [TWI_LINKS,]
+        social_domains = ('twitter',)
     elif test_domains == TestDomains.INSTAGRAM:
-        social_links = [IG_LINKS,]
+        social_domains = ('instagram',)
     elif test_domains == TestDomains.TELEGRAM:
-        social_links = [TG_LINKS,]
-    elif test_domains == TestDomains.TELEGRAM:
-        social_links = [TG_LINKS,]
+        social_domains = ('telegram',)
     elif test_domains == TestDomains.SCROLL:
         work_scoll_links = True
-
     
     # parse social links
-    for domain in social_links:
-        for link_kind in domain.values():
-
-            # determine depth
-            if test_depth == TestDepth.SMALL:
-                depth_limit = 1
-            elif test_depth == TestDepth.SMALL:
-                depth_limit = len(domain.values())
+    for domain in social_domains:
+        domain_links = SOCIAL_LINKS[domain]
+        for link_collection in domain_links.values():
+            depth_limit = 1 if test_depth == TestDepth.SMALL else len(domain_links.values())
 
             for idx in range(depth_limit):
                 order = template
-                order['link'] = link_kind[idx]
+                order['link'] = link_collection[idx]
+                order['link_type'] = domain
                 order['quote_enabled'] = quote_enabled
                 order_collection.append(order)
 
     # parse scroll links
+    depth_limit = 1 if test_depth == TestDepth.SMALL else len(SCROLL_LINKS)
+    for idx in range(depth_limit):
+        order = template
+        order['link'] = SCROLL_LINKS[idx]
+        order['link_type'] = 'scroll'
+        order['quote_enabled'] = quote_enabled
+        order_collection.append(order)
 
-
-    
+    for order in order_collection:
+        db_handler.add_db_entry(order)
 
 
 def run_tests():
     create_server()
-    create_test_orders()
+    create_test_orders(
+        request_type=TestRequestType.VIDEO_AUTO,
+        test_domains=TestDomains.ALL,
+        test_depth=TestDepth.SMALL,
+        quote_enabled=TestQuoteEnabled.ENABLED
+    )
+
     process_screenshot_orders()
     render_video_orders()
     return True
