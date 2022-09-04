@@ -78,9 +78,33 @@ AUDIO_OFFSET = .3
 
 # selenium
 USE_REMOTE_DRIVER = True
+# USE_REMOTE_DRIVER = False
+
 REMOTE_DRIVER_HOST = '127.0.0.1'
 REMOTE_DRIVER_PORT = '4444'
 REMOTE_DRIVER_URL = f"http://{REMOTE_DRIVER_HOST}:{REMOTE_DRIVER_PORT}/wd/hub"
+
+SELENIUM_DOCKER_CMD = 'docker run --rm -it -p 4444:4444 -p 5900:5900 -p 7900:7900 --shm-size 3g seleniarm/standalone-chromium:latest'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 help_text = """Ты можешь:
