@@ -55,6 +55,7 @@ class Screenshooter:
             # get post screenshot
             if link_type in TWO_LAYER_SITES:
                 self.driver.get(clean_url)
+                self.driver.save_screenshot('fb-error.png')
                 self.scwd.remove_ads()
 
                 # get temp test screenshot

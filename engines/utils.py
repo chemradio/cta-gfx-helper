@@ -35,22 +35,22 @@ def clear_assets_folder(
     html_asseblies: bool = True
     ) -> None:
     if user_files:
-        shutil.rmtree(interlinks.user_files_folder)
+        shutil.rmtree(interlinks.user_files_folder, ignore_errors=True)
         # files = glob.glob(f'{interlinks.user_files_folder}/*')
         # for file in files:
         #     os.remove(file)
     if screenshots:
-        shutil.rmtree(interlinks.screenshot_folder)
+        shutil.rmtree(interlinks.screenshot_folder, ignore_errors=True)
         # files = glob.glob(f'{interlinks.screenshot_folder}/*')
         # for file in files:
         #     os.remove(file)
     if video_renders:
-        shutil.rmtree(interlinks.render_output_path)
+        shutil.rmtree(interlinks.render_output_path, ignore_errors=True)
         # files = glob.glob(f'{interlinks.render_output_path}/*')
         # for file in files:
         #     os.remove(file)
     if html_asseblies:
-        shutil.rmtree(interlinks.HTML_ASSEMBLIES_FOLDER)
+        shutil.rmtree(interlinks.HTML_ASSEMBLIES_FOLDER, ignore_errors=True)
         # files = glob.glob(f'{interlinks.HTML_ASSEMBLIES_FOLDER}/*')
         # for file in files:
         #     os.remove(file)
