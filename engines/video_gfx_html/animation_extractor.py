@@ -29,7 +29,12 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
     chrome_options.headless = True
     device_emulation = {"deviceMetrics": {"width": 1920, "height": 1080,"pixelRatio": 1,},}
     chrome_options.add_experimental_option("mobileEmulation", device_emulation)
-    driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
+
+    if interlinks.USE_REMOTE_DRIVER:
+        driver = webdriver.Remote(interlinks.REMOTE_DRIVER_URL, options=chrome_options)
+    else:
+        driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
+
     driver.implicitly_wait(5)
 
     html_assembly_url = f"http://localhost:{port}/{html_assembly_name}"
@@ -53,8 +58,3 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
         driver.save_screenshot(f'{png_path}/{frame:04}.png')
 
     return png_path
-
-
-# testing
-if __name__ == "__main__":
-    extract_png_sequence('/Users/tim/code/ae-to-html/html/html_assemblies/gfx_html_20220811_02-21-37_365727')
