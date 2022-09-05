@@ -40,6 +40,7 @@ def process_screenshot_orders(link_list: list[str] = []) -> None:
                     doc_id=order.doc_id,
                     parameters={"status": "error_screenshot_terminated"},
                 )
+                continue
                 return
 
             # update db

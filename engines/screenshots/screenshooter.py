@@ -55,16 +55,23 @@ class Screenshooter:
             # get post screenshot
             if link_type in TWO_LAYER_SITES:
                 self.driver.get(clean_url)
-                self.driver.save_screenshot('fb-error.png')
+                # self.driver.save_screenshot('fb-error.png')
                 self.scwd.remove_ads()
 
                 # get temp test screenshot
                 self.driver.save_screenshot('twi.png')
 
-                post = workflow.post_routine(url, self.driver)
-                self.driver.execute_script("window.stop();")
-                self._capture_post_screenshot(post, foreground_name)
-                link_to_profile = self.routines.extract_profile_url(link_type, url, self.driver, post)
+                try:
+                    post = workflow.post_routine(url, self.driver)
+                    self.driver.execute_script("window.stop();")
+                    self._capture_post_screenshot(post, foreground_name)
+                    link_to_profile = self.routines.extract_profile_url(link_type, url, self.driver, post)
+                except:
+                    print("Social URL is probably for the page, not post:", clean_url)
+                    link_to_profile = clean_url
+                    is_two_layer = False
+                    link_type = 'scroll'
+
             else:
                 link_to_profile = clean_url
 
@@ -86,6 +93,7 @@ class Screenshooter:
                 self.scwd.cookie_manager.dump_domain_cookies(link_type, domain_cookies)
             self.driver.quit()
 
+            
             # generate screenshot dict for return
             return {
                 "is_two_layer": is_two_layer,
@@ -103,8 +111,6 @@ class Screenshooter:
 
 
     def _capture_post_screenshot(self, post, foreground_name):
-        # try:
-        # self.driver.execute_script("window.scrollTo(0, -document.body.scrollHeight)")
         time.sleep(2)
         location = post.location
         size = post.size
@@ -127,10 +133,6 @@ class Screenshooter:
         im = im.crop((0,0, im.width, min(5000,im.height)))
         im.save(f"{interlinks.screenshot_folder}/{foreground_name}")
         return True
-        # except:
-        #     # make exceptions
-        #     print('error!!')
-        #     pass
 
 
     def _capture_profile_page_screenshot(self, background_name):

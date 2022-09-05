@@ -77,7 +77,7 @@ HTML_ASSEMBLIES_FOLDER = os.path.join(assets_folder, 'html_assemblies')
 AUDIO_OFFSET = .3
 
 # selenium
-USE_REMOTE_DRIVER = True
+USE_REMOTE_DRIVER = False
 REMOTE_DRIVER_HOST = '127.0.0.1'
 REMOTE_DRIVER_PORT = '4444'
 REMOTE_DRIVER_URL = f"http://{REMOTE_DRIVER_HOST}:{REMOTE_DRIVER_PORT}/wd/hub"

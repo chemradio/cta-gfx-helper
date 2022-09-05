@@ -5,6 +5,8 @@ from engines.video_gfx_engines import render_video_orders
 from engines.video_gfx_html.html_server import create_server
 from enum import Enum, auto
 from database.db import db_handler
+import random
+import secrets
 
 class TestRequestType(Enum):
     VIDEO_AUTO = auto()
@@ -35,8 +37,8 @@ class TestQuoteEnabled(Enum):
 
 FB_LINKS = {
     'fb_pages': [
-        'https://www.facebook.com/POTUS',
-        'https://www.facebook.com/rferl/',
+        # 'https://www.facebook.com/POTUS',
+        # 'https://www.facebook.com/rferl/',
         'https://www.facebook.com/CurrentTimeAsia',
         'https://www.facebook.com/UltimateGuitar/',
     ],
@@ -156,7 +158,6 @@ BASE_ORDER_TEMPLATE = {
     "results_message_id": 22785,
     "bg_path": "",
     "fg_path": "",
-    "render_filename": f"tester-gfx-{time.time()}",
     "stage": "screenshots",
     "screenshots_ready": False,
     "video_ready": False,
@@ -171,14 +172,12 @@ BASE_ORDER_TEMPLATE = {
     "audio_enabled": False,
 }
 
-VIDEO_AUTO_TEMPLATE = BASE_ORDER_TEMPLATE.update({
-    "request_type": "video_auto",
-})
 
-ONLY_SCREENSHOTS_TEMPLATE = BASE_ORDER_TEMPLATE.update({
-    "request_type": "only_screenshots",
-})
+VIDEO_AUTO_TEMPLATE = BASE_ORDER_TEMPLATE.copy()
+VIDEO_AUTO_TEMPLATE["request_type"] = "video_auto"
 
+ONLY_SCREENSHOTS_TEMPLATE = BASE_ORDER_TEMPLATE.copy() 
+ONLY_SCREENSHOTS_TEMPLATE["request_type"] = "only_screenshots"
 
 
 def create_test_orders(request_type: TestRequestType, test_domains: TestDomains,
@@ -186,9 +185,9 @@ def create_test_orders(request_type: TestRequestType, test_domains: TestDomains,
     order_collection = list()
 
     if request_type == TestRequestType.VIDEO_AUTO:
-        template = VIDEO_AUTO_TEMPLATE
+        template = VIDEO_AUTO_TEMPLATE.copy()
     elif request_type == TestRequestType.ONLY_SCREENSHOTS:
-        template = ONLY_SCREENSHOTS_TEMPLATE
+        template = ONLY_SCREENSHOTS_TEMPLATE.copy()
 
     work_scoll_links = False
     quote_enabled = True if quote_enabled == TestQuoteEnabled.ENABLED else False
@@ -207,6 +206,7 @@ def create_test_orders(request_type: TestRequestType, test_domains: TestDomains,
     elif test_domains == TestDomains.SCROLL:
         work_scoll_links = True
     
+    
     # parse social links
     for domain in social_domains:
         domain_links = SOCIAL_LINKS[domain]
@@ -214,19 +214,23 @@ def create_test_orders(request_type: TestRequestType, test_domains: TestDomains,
             depth_limit = 1 if test_depth == TestDepth.SMALL else len(domain_links.values())
 
             for idx in range(depth_limit):
-                order = template
+                order = template.copy()
                 order['link'] = link_collection[idx]
                 order['link_type'] = domain
                 order['quote_enabled'] = quote_enabled
+                order["render_filename"] = f"tester-gfx-{secrets.token_hex(10)}.mp4"
+
                 order_collection.append(order)
 
     # parse scroll links
     depth_limit = 1 if test_depth == TestDepth.SMALL else len(SCROLL_LINKS)
     for idx in range(depth_limit):
-        order = template
+        order = template.copy()
         order['link'] = SCROLL_LINKS[idx]
         order['link_type'] = 'scroll'
         order['quote_enabled'] = quote_enabled
+        order["render_filename"] = f"tester-gfx-{secrets.token_hex(10)}.mp4"
+
         order_collection.append(order)
 
     for order in order_collection:
