@@ -3,7 +3,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 import os
 import interlinks
-from multiprocessing import Process
+from multiprocessing import Process, freeze_support
 
 def start_httpd(directory: Path = interlinks.HTML_ASSEMBLIES_FOLDER, port: int = 8000):
     # print(f"serving from {directory}...")
