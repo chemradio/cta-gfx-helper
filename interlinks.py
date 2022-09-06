@@ -76,6 +76,8 @@ HTML_ASSEMBLIES_FOLDER = os.path.join(assets_folder, 'html_assemblies')
 # audio start offset
 AUDIO_OFFSET = .3
 
+VIDEO_GFX_TAIL = 2.0
+
 # selenium
 USE_REMOTE_DRIVER = False
 REMOTE_DRIVER_HOST = '127.0.0.1'

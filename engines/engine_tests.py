@@ -241,7 +241,7 @@ def run_tests():
     create_server()
     create_test_orders(
         request_type=TestRequestType.VIDEO_AUTO,
-        test_domains=TestDomains.ALL,
+        test_domains=TestDomains.FACEBOOK,
         test_depth=TestDepth.SMALL,
         quote_enabled=TestQuoteEnabled.ENABLED
     )

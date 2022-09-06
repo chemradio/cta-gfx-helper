@@ -58,8 +58,8 @@ class Screenshooter:
                 # self.driver.save_screenshot('fb-error.png')
                 self.scwd.remove_ads()
 
-                # get temp test screenshot
-                self.driver.save_screenshot('twi.png')
+                # # get temp test screenshot
+                # self.driver.save_screenshot('twi.png')
 
                 try:
                     post = workflow.post_routine(url, self.driver)
