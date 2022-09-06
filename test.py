@@ -1,8 +1,25 @@
-from engines.engine_tests import run_tests
-from database.db import db_handler
-from engines.utils import clear_assets_folder
+from selenium import webdriver
+import time
+from engines.screenshots.cookie_manager import CookieManager
+from engines.screenshots.login_routines import LoginRoutines
+import interlinks
+import json
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-if __name__ == "__main__":
-    clear_assets_folder()
-    db_handler.start_terminate_all_active_sessions()
-    run_tests()
+
+
+chrome_options = Options()
+chrome_options.add_argument("--incognito")
+chrome_options.add_argument("--disable-web-security")
+# chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+# chrome_options.headless = True
+
+driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
+
+driver.implicitly_wait(5)
+driver.get('file:///Users/tim/code/cta-gfx-telegram-bot/assets/html_assemblies/gfx_html_20220905_14-13-36_582160/main.html')
+
+time.sleep(200)
