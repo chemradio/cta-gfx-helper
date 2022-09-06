@@ -11,13 +11,19 @@ os.system("clear")
 
 
 def main():
-    # cleanup previous run
-    db_handler.start_terminate_all_active_sessions()
-    clear_assets_folder()
+    # # cleanup previous run
+    # db_handler.start_terminate_all_active_sessions()
+    # clear_assets_folder()
 
-    # # run tests
+    # create asset server
+    create_server()
+
+    # run tests
     # run_tests() 
 
+    from engines.video_gfx_engines import render_video_orders
+    render_video_orders()
+    
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
     # try:
@@ -26,10 +32,9 @@ def main():
     #     pass
 
     # start block logger
-    block_logger_thread()
+    # block_logger_thread()
 
-    # create asset server
-    # create_server()
+    
 
     # start telegram bot
     db_handler.log_event('run', 'bot_launch')
