@@ -12,8 +12,8 @@ os.system("clear")
 
 def main():
     # # cleanup previous run
-    # db_handler.start_terminate_all_active_sessions()
-    # clear_assets_folder()
+    db_handler.start_terminate_all_active_sessions()
+    clear_assets_folder()
 
     # create asset server
     create_server()
@@ -21,8 +21,8 @@ def main():
     # run tests
     # run_tests() 
 
-    from engines.video_gfx_engines import render_video_orders
-    render_video_orders()
+    # from engines.video_gfx_engines import render_video_orders
+    # render_video_orders()
     
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
@@ -32,7 +32,7 @@ def main():
     #     pass
 
     # start block logger
-    # block_logger_thread()
+    block_logger_thread()
 
     
 
