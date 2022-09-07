@@ -1,3 +1,13 @@
+to docker 
+
+- container 1: bot + db
+- container 2: chrome screenshooter
+- container 3: chrome video-html
+- container 4: file server
+
+
+
+
 self_dispatcher
 
 
