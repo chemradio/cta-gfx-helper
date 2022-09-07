@@ -34,8 +34,6 @@ def main():
     # start block logger
     block_logger_thread()
 
-    
-
     # start telegram bot
     db_handler.log_event('run', 'bot_launch')
     bot_safe_loop()
