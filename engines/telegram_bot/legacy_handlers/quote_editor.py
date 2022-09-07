@@ -1,4 +1,4 @@
-from interlinks import delegate_editor as editor_id
+from interlinks import DELEGATE_EDITOR as editor_id
 from engines.telegram_bot.bot_instance import bot
 
 from telegram import (

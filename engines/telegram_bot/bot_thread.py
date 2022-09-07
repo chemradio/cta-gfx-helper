@@ -5,21 +5,21 @@ import threading
 from database.db import db_handler
 
 from interlinks import BOT_TOKEN
-from handlers.inline_handler import inline_button_handler
-from handlers.back_command_handler import back_handler
-from handlers.exit_handler import exit_handler
-from handlers.register_handler import register_handler
-from handlers.help_handler import help_handler
-from handlers.attachment_handler import attachment_handler
-from handlers.text_handler import main_handler
-from handlers.start_handlers import (
+from engines.telegram_bot.legacy_handlers.inline_handler import inline_button_handler
+from engines.telegram_bot.legacy_handlers.back_command_handler import back_handler
+from engines.telegram_bot.legacy_handlers.exit_handler import exit_handler
+from engines.telegram_bot.legacy_handlers.register_handler import register_handler
+from engines.telegram_bot.legacy_handlers.help_handler import help_handler
+from engines.telegram_bot.legacy_handlers.attachment_handler import attachment_handler
+from engines.telegram_bot.legacy_handlers.text_handler import main_handler
+from engines.telegram_bot.legacy_handlers.start_handlers import (
     start,
     start_only_screenshots,
     start_video_auto_production,
     start_video_files_production,
     start_readtime,
 )
-from handlers.admin_commands import (
+from engines.telegram_bot.legacy_handlers.admin_commands import (
     register_requests_handler,
     registered_users_handler,
     blocked_users_handler,
@@ -27,12 +27,6 @@ from handlers.admin_commands import (
     processing_orders,
     active_orders,
     terminate_sessions,
-    restart_adobe_apps,
-    start_adobe_apps,
-    quit_adobe_apps,
-    check_adobe_running,
-    check_chrome_running,
-    quit_chrome,
     clear_bot_cache,
     cache_size,
     send_announcement,
@@ -67,13 +61,13 @@ def bot_updater_dispatcher() -> Updater:
     dispatcher.add_handler(CommandHandler("terminate_sessions", terminate_sessions))
     dispatcher.add_handler(CommandHandler("processing_orders", processing_orders))
     dispatcher.add_handler(CommandHandler("active_orders", active_orders))
-    dispatcher.add_handler(CommandHandler("restart_adobe_apps", restart_adobe_apps))
-    dispatcher.add_handler(CommandHandler("start_adobe_apps", start_adobe_apps))
-    dispatcher.add_handler(CommandHandler("quit_adobe_apps", quit_adobe_apps))
-    dispatcher.add_handler(CommandHandler("check_adobe_running", check_adobe_running))
+    # dispatcher.add_handler(CommandHandler("restart_adobe_apps", restart_adobe_apps))
+    # dispatcher.add_handler(CommandHandler("start_adobe_apps", start_adobe_apps))
+    # dispatcher.add_handler(CommandHandler("quit_adobe_apps", quit_adobe_apps))
+    # dispatcher.add_handler(CommandHandler("check_adobe_running", check_adobe_running))
     dispatcher.add_handler(CommandHandler("clear_bot_cache", clear_bot_cache))
-    dispatcher.add_handler(CommandHandler("check_chrome_running", check_chrome_running))
-    dispatcher.add_handler(CommandHandler("quit_chrome", quit_chrome))
+    # dispatcher.add_handler(CommandHandler("check_chrome_running", check_chrome_running))
+    # dispatcher.add_handler(CommandHandler("quit_chrome", quit_chrome))
     dispatcher.add_handler(CommandHandler("cache_size", cache_size))
     dispatcher.add_handler(CommandHandler("send_announcement", send_announcement))
 

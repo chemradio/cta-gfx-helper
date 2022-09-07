@@ -12,16 +12,16 @@ from telegram.ext import (
     CallbackContext,
 )
 
-from handlers.error_responses import (
+from engines.telegram_bot.legacy_handlers.error_responses import (
     no_active_session_notification,
 )
 
-from handlers.check_results import (
+from engines.telegram_bot.legacy_handlers.check_results import (
     check_results,
 )
-from handlers.process_order import process_order
+from engines.telegram_bot.legacy_handlers.process_order import process_order
 
-from handlers.question_senders import (
+from engines.telegram_bot.legacy_handlers.question_senders import (
     ask_quote_text,
     ask_audio_enabled,
     ask_quote_author_text,
@@ -41,7 +41,7 @@ def inline_button_handler(update: Update, context: CallbackContext) -> None:
     request_type = db_handler.get_request_type(user_id)
 
     if not current_stage or not request_type:
-        if user_id not in interlinks.admin_telegram_ids:
+        if user_id not in interlinks.ADMIN_TELEGRAM_IDS:
             no_active_session_notification(user_id=user_id)
             return
 

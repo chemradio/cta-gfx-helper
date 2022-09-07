@@ -97,8 +97,8 @@ class Screenshooter:
             # generate screenshot dict for return
             return {
                 "is_two_layer": is_two_layer,
-                "bg_path": interlinks.screenshot_folder + "/" + background_name,
-                "fg_path": interlinks.screenshot_folder + "/" + foreground_name
+                "bg_path": interlinks.SCREENSHOT_FOLDER + "/" + background_name,
+                "fg_path": interlinks.SCREENSHOT_FOLDER + "/" + foreground_name
                 if is_two_layer
                 else None,
                 "link_type": "instagram" if link_type == "telegram" else link_type,
@@ -131,7 +131,7 @@ class Screenshooter:
 
         im = im.crop((left, top, right, bottom))
         im = im.crop((0,0, im.width, min(5000,im.height)))
-        im.save(f"{interlinks.screenshot_folder}/{foreground_name}")
+        im.save(f"{interlinks.SCREENSHOT_FOLDER}/{foreground_name}")
         return True
 
 
@@ -200,7 +200,7 @@ class Screenshooter:
             # bottom = (location["y"] + size["height"]) * self.dpi_multiplier
 
             # im = im.crop((left, top, right, bottom))
-            im.save(f"{interlinks.screenshot_folder}/{background_name}")
+            im.save(f"{interlinks.SCREENSHOT_FOLDER}/{background_name}")
 
             # with open(f"{interlinks.screenshot_folder}/{background_name}", "wb") as file:
             #     file.write(base64.urlsafe_b64decode(full_page_screenshot["data"]))

@@ -10,7 +10,7 @@ from telegram.ext import (
 def help_handler(update: Update, _: CallbackContext) -> None:
     help_message_string = (
         interlinks.help_text + interlinks.admin_commands
-        if update.message.from_user.id in interlinks.admin_telegram_ids
+        if update.message.from_user.id in interlinks.ADMIN_TELEGRAM_IDS
         else interlinks.help_text
     )
     update.message.reply_text(help_message_string)

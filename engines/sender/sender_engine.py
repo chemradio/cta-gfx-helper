@@ -12,12 +12,12 @@ import logging
 logger_sender = logging.getLogger(__name__)
 logger_sender.setLevel(logging.DEBUG)
 logging_sender_formatter = logging.Formatter('%(asctime)s: %(name)s: %(message)s')
-logging_sender_file_handler = logging.FileHandler(f'./logs/{__name__}.log', mode='w+')
-logging_sender_file_handler.setLevel(logging.DEBUG)
-logging_sender_file_handler.setFormatter(logging_sender_formatter)
+# logging_sender_file_handler = logging.FileHandler(f'./logs/{__name__}.log', mode='w+')
+# logging_sender_file_handler.setLevel(logging.DEBUG)
+# logging_sender_file_handler.setFormatter(logging_sender_formatter)
 logging_sender_stream_handler = logging.StreamHandler()
 logging_sender_stream_handler.setFormatter(logging_sender_formatter)
-logger_sender.addHandler(logging_sender_file_handler)
+# logger_sender.addHandler(logging_sender_file_handler)
 logger_sender.addHandler(logging_sender_stream_handler)
 
 
@@ -99,7 +99,7 @@ def send_single_order(order):
 
 def send_video_order(order):
     order_doc_id = order.doc_id
-    render_file_path = f"{interlinks.render_output_path}/{order['render_filename']}"
+    render_file_path = f"{interlinks.RENDER_OUTPUT_PATH}/{order['render_filename']}"
     render_file_name = order['render_filename']
 
     with open(render_file_path, 'rb') as binarified_file:

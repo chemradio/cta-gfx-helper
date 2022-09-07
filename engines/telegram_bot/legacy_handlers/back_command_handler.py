@@ -10,9 +10,9 @@ from telegram.ext import (
 )
 
 
-from handlers.decorators import log_decorator
-from handlers.error_responses import no_active_session_notification
-from handlers.question_senders import (
+from engines.telegram_bot.legacy_handlers.decorators import log_decorator
+from engines.telegram_bot.legacy_handlers.error_responses import no_active_session_notification
+from engines.telegram_bot.legacy_handlers.question_senders import (
     ask_for_link,
     ask_quote_enabled,
     ask_bg_animation_type,

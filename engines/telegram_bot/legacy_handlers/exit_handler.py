@@ -9,7 +9,7 @@ from telegram.ext import (
     CallbackContext,
 )
 
-from handlers.decorators import logger_bot
+from engines.telegram_bot.legacy_handlers.decorators import logger_bot
 
 
 ################################################################

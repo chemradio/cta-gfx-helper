@@ -15,16 +15,16 @@ from telegram.ext import (
 )
 
 
-from handlers.decorators import logger_bot
+from engines.telegram_bot.legacy_handlers.decorators import logger_bot
 
-from handlers.attachment_handler import attachment_handler
-from handlers.error_responses import (
+from engines.telegram_bot.legacy_handlers.attachment_handler import attachment_handler
+from engines.telegram_bot.legacy_handlers.error_responses import (
     no_active_session_notification,
     wrong_link_notification,
     gp_error_notification,
     try_again_error,
 )
-from handlers.question_senders import (
+from engines.telegram_bot.legacy_handlers.question_senders import (
     ask_readtime_speed,
     ask_quote_author_enabled,
     ask_quote_enabled,
@@ -33,7 +33,7 @@ from handlers.question_senders import (
 
 )
 
-from handlers.check_results import check_results
+from engines.telegram_bot.legacy_handlers.check_results import check_results
 
 
 ################################################################

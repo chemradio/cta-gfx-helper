@@ -7,8 +7,8 @@ from telegram import (
     ParseMode,
 )
 
-from handlers.decorators import log_decorator
-from handlers.error_responses import gp_error_notification
+from engines.telegram_bot.legacy_handlers.decorators import log_decorator
+from engines.telegram_bot.legacy_handlers.error_responses import gp_error_notification
 
 
 @log_decorator

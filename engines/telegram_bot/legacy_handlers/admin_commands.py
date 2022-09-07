@@ -12,11 +12,10 @@ from telegram import (
     ParseMode,
 )
 from telegram.ext import CallbackContext
-from os_scripts.os_script_handler import os_script
 
 def only_admin(func):
     def wrapper(*args, **kwargs):
-        if args[0].message.from_user.id in interlinks.admin_telegram_ids:
+        if args[0].message.from_user.id in interlinks.ADMIN_TELEGRAM_IDS:
             return func(*args, **kwargs)
         else:
             return False
@@ -43,14 +42,14 @@ def register_requests_handler(update: Update, _: CallbackContext) -> None:
 
             approve_decline_markup = InlineKeyboardMarkup(keyboard)
             bot.send_message(
-                chat_id=interlinks.admin_telegram_ids[0],
+                chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
                 text=f'Pending request {index}:\n\nFirst Name: {request["first_name"]}\nTelegram ID: {request["telegram_id"]}',
                 reply_markup=approve_decline_markup,
             )
 
     else:
         bot.send_message(
-            chat_id=interlinks.admin_telegram_ids[0],
+            chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
             text=f"No pending register requests",
             reply_markup=ReplyKeyboardRemove(),
         )
@@ -73,13 +72,13 @@ def registered_users_handler(update: Update, _: CallbackContext) -> None:
 
             remove_button_markup = InlineKeyboardMarkup(keyboard)
             bot.send_message(
-                chat_id=interlinks.admin_telegram_ids[0],
+                chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
                 text=f"Registered user {index}:\n\nFirst Name: {user['first_name']}\nTelegram ID: {user['telegram_id']}",
                 reply_markup=remove_button_markup,
             )
     else:
         bot.send_message(
-            chat_id=interlinks.admin_telegram_ids[0],
+            chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
             text=f"No registered users",
             reply_markup=ReplyKeyboardRemove(),
         )
@@ -102,13 +101,13 @@ def blocked_users_handler(update: Update, _: CallbackContext) -> None:
 
             approve_button_markup = InlineKeyboardMarkup(keyboard)
             bot.send_message(
-                chat_id=interlinks.admin_telegram_ids[0],
+                chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
                 text=f"Blocked user {index}:\n\nFirst Name: {user['first_name']}\nTelegram ID: {user['telegram_id']}",
                 reply_markup=approve_button_markup,
             )
     else:
         bot.send_message(
-            chat_id=interlinks.admin_telegram_ids[0],
+            chat_id=interlinks.ADMIN_TELEGRAM_IDS[0],
             text=f"No blocked users",
             reply_markup=ReplyKeyboardRemove(),
         )
@@ -155,7 +154,7 @@ def processing_orders(update: Update, _: CallbackContext) -> None:
             for key, value in order_dict.items():
                 message_string += f"{key}: {value}\n"
             bot.send_message(
-                interlinks.admin_telegram_ids[0],
+                interlinks.ADMIN_TELEGRAM_IDS[0],
                 message_string,
                 parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
@@ -163,7 +162,7 @@ def processing_orders(update: Update, _: CallbackContext) -> None:
             )
 
     else:
-        bot.send_message(interlinks.admin_telegram_ids[0], "No active processing orders")
+        bot.send_message(interlinks.ADMIN_TELEGRAM_IDS[0], "No active processing orders")
     return
 
 
@@ -203,67 +202,13 @@ def active_orders(update: Update, _: CallbackContext) -> None:
 @only_admin
 def terminate_sessions(update: Update, _: CallbackContext) -> None:
     if db_handler.start_terminate_all_active_sessions():
-        bot.send_message(interlinks.admin_telegram_ids[0], "All sessions terminated")
+        bot.send_message(interlinks.ADMIN_TELEGRAM_IDS[0], "All sessions terminated")
     else:
-        bot.send_message(interlinks.admin_telegram_ids[0], "No active sessions")
+        bot.send_message(interlinks.ADMIN_TELEGRAM_IDS[0], "No active sessions")
     return
 
 
-@only_admin
-def restart_adobe_apps(update: Update, _: CallbackContext) -> None:
-    if engines.utils.restart_adobe_apps_util(update.message.from_user.id):
-        return
-    else:
-        check_adobe_running(update, _)
-        return
 
-
-@only_admin
-def start_adobe_apps(update: Update, _: CallbackContext) -> None:
-    update.message.reply_text("Adobe apps START script started")
-    os_script.start_adobe_apps()
-    update.message.reply_text("Adobe apps START script finished")
-    return
-
-
-@only_admin
-def quit_adobe_apps(update: Update, _: CallbackContext) -> None:
-    update.message.reply_text("Adobe apps QUIT script started")
-    os_script.quit_adobe_apps()
-    update.message.reply_text("Adobe apps QUIT script finished")
-    return
-
-
-@only_admin
-def check_adobe_running(update, _) -> None:
-    running_adobe_apps = engines.utils.get_adobe_running()
-
-    update.message.reply_text(
-        f"After effects is {'running' if running_adobe_apps.ae_running else 'not running'}"
-    )
-    update.message.reply_text(
-        f"Media Encoder is {'running' if running_adobe_apps.ame_running else 'not running'}"
-    )
-    update.message.reply_text(
-        "/restart_adobe_apps\n/start_adobe_apps\n/quit_adobe_apps"
-    )
-    return
-
-
-@only_admin
-def check_chrome_running(update, _) -> None:
-    running_chrome = engines.utils.get_chrome_running()
-
-    update.message.reply_text(
-        f"Chrome is {'running' if running_chrome else 'not running'}"
-    )
-    update.message.reply_text("/quit_chrome")
-    return
-
-
-@only_admin
-def quit_chrome(update, _) -> None:
-    engines.utils.quit_chrome(update.message.from_user.id)
 
 
 @only_admin

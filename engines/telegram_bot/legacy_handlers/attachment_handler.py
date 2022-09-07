@@ -13,17 +13,17 @@ from telegram.ext import (
     CallbackContext,
 )
 
-from handlers.error_responses import (
+from engines.telegram_bot.legacy_handlers.error_responses import (
     no_active_session_notification,
     wrong_audio_format,
     audio_length_exceeded,
 )
 
-from handlers.check_results import (
+from engines.telegram_bot.legacy_handlers.check_results import (
     check_results,
 )
 
-from handlers.question_senders import (
+from engines.telegram_bot.legacy_handlers.question_senders import (
     ask_fg_animation_type,
     ask_fg_enabled,
 )
@@ -36,7 +36,7 @@ def attachment_handler(update: Update, context: CallbackContext) -> None:
     user_id = update.message.from_user.id
     user_first_name = update.message.from_user.first_name
     save_file_name_start = (
-        interlinks.user_files_folder + "/" + f"user_{secrets.token_hex(8)}"
+        interlinks.USER_FILES_FOLDER + "/" + f"user_{secrets.token_hex(8)}"
     )
     current_stage = db_handler.get_current_stage(user_id=user_id)
 

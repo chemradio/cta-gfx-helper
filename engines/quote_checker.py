@@ -1,5 +1,5 @@
 from logging import StringTemplateStyle
-from interlinks import delegate_editor as editor
+from interlinks import DELEGATE_EDITOR as editor
 from interlinks import quote_checker as qcm
 import time
 import re

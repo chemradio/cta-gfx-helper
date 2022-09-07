@@ -1,6 +1,6 @@
 from database.db import db_handler
 from engines.utils import clear_assets_folder
-from engines.block_logger import block_logger_thread
+from engines.block_logger.block_logger import block_logger_thread
 from engines.engine_tests import run_tests
 from engines.telegram_bot.bot_thread import bot_safe_loop
 from engines.video_gfx_html.html_server import create_server
@@ -20,9 +20,6 @@ def main():
 
     # run tests
     # run_tests() 
-
-    # from engines.video_gfx_engines import render_video_orders
-    # render_video_orders()
     
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)

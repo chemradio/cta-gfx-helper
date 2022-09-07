@@ -1,39 +1,32 @@
-# parse congig.json
+import os
 import json
-
 with open('config_and_db/config.json') as cf:
     cfg = json.loads(cf.read())
 
+
+# telegram bot
 BOT_TOKEN = cfg['bot_token']
 
+
 # configure paths
-import os
 BASE_PATH = os.getcwd()
-
-# assets
-assets_folder = os.path.join(BASE_PATH, "assets/")
-screenshot_folder = os.path.join(assets_folder + "screenshots/")
-user_files_folder = os.path.join(assets_folder + "user_files/")
-render_output_path = os.path.join(assets_folder + "video_exports")
-recent_orders_interval_hours = 300
-
-# chromedriver
-chrome_drivers = os.path.join(BASE_PATH, "chrome_drivers/")
-
+ASSETS_FOLDER = os.path.join(BASE_PATH, "assets/")
+SCREENSHOT_FOLDER = os.path.join(ASSETS_FOLDER + "screenshots/")
+USER_FILES_FOLDER = os.path.join(ASSETS_FOLDER + "user_files/")
+RENDER_OUTPUT_PATH = os.path.join(ASSETS_FOLDER + "video_exports")
+RECENT_ORDERS_INTERVAL_HOURS = 300
 
 # misc
-rescan_interval = 20
-expiry_intervals_secs = 300
-URL = "https://127.0.0.1:8443/"
-ame_log_file = cfg['ame_log_path']
-admin_telegram_ids = cfg['admin_telegram_ids']
-editor_ids = cfg['editor_ids']
-delegate_editor = editor_ids["editor_name"]
-max_audio_file_length = 30
-DPI_MULTIPLIER = 2.0
-COOKIE_FILE = 'config_and_db/cookie_file.json'
-SCREENSHOT_ATTEMPTS = 2
+RESCAN_INTERVAL = 20
+EXPIRY_INTERVALS_SECS = 300
+ADMIN_TELEGRAM_IDS = cfg['admin_telegram_ids']
+EDITOR_IDS = cfg['editor_ids']
+DELEGATE_EDITOR = EDITOR_IDS["editor_name"]
 
+# screenshots
+DPI_MULTIPLIER = 2.0
+SCREENSHOT_ATTEMPTS = 2
+COOKIE_FILE = 'config_and_db/cookie_file.json'
 SOCIAL_WEBSITES = {'facebook': 'https://facebook.com', 'twitter': 'https://twitter.com', 'instagram': 'https://instagram.com', 'telegram': 'https://telegram.org'}
 LOGIN_REQUIRED = (
     'instagram',
@@ -44,27 +37,22 @@ LOGIN_TO_SOCIAL_WEBSITES = True
 logged_in_to_social_websites = False
 
 
-
-
-
-# html-video
-HTML_ASSETS_FOLDER = os.path.join(BASE_PATH, 'engines/video_gfx_html/html')
-HTML_TEMPLATE_FOLDER = os.path.join(HTML_ASSETS_FOLDER, 'html_template')
-HTML_ASSEMBLIES_FOLDER = os.path.join(assets_folder, 'html_assemblies')
-
-# audio start offset
-AUDIO_OFFSET = .3
-
-VIDEO_GFX_TAIL = 2.0
-
-# selenium
+# selenium remote webdriver
 USE_REMOTE_DRIVER = False
 REMOTE_DRIVER_HOST = '127.0.0.1'
 REMOTE_DRIVER_PORT = '4444'
 REMOTE_DRIVER_URL = f"http://{REMOTE_DRIVER_HOST}:{REMOTE_DRIVER_PORT}/wd/hub"
-
 SELENIUM_DOCKER_CMD = 'docker run -d --rm -it -p 4444:4444 -p 5900:5900 -p 7900:7900 --shm-size 3g --net="host" seleniarm/standalone-chromium:latest'
 
+
+# video-gfx
+MAX_AUDIO_FILE_LENGTH = 30
+AUDIO_OFFSET = .3
+VIDEO_GFX_TAIL = 2.0
+
+HTML_ASSETS_FOLDER = os.path.join(BASE_PATH, 'engines/video_gfx_html/html')
+HTML_TEMPLATE_FOLDER = os.path.join(HTML_ASSETS_FOLDER, 'html_template')
+HTML_ASSEMBLIES_FOLDER = os.path.join(ASSETS_FOLDER, 'html_assemblies')
 
 
 
@@ -160,7 +148,7 @@ stage_texts = {
     },
     "audio": {
         "audio_enabled": "<b><u>АУДИО</u></b>\n\n<b>У тебя есть готовый аудио-файл для подложки на графику?</b>",
-        "send_audio": f"<b><u>АУДИО</u></b>\n\n<b>Пришли мне этот аудио-файл в формате MP3 или WAV.</b>\n\n<i>Аудио должно быть не длиннее {str(max_audio_file_length)} секунд</i>",
+        "send_audio": f"<b><u>АУДИО</u></b>\n\n<b>Пришли мне этот аудио-файл в формате MP3 или WAV.</b>\n\n<i>Аудио должно быть не длиннее {str(MAX_AUDIO_FILE_LENGTH)} секунд</i>",
     },
     # 'video_auto':
     # 'link':

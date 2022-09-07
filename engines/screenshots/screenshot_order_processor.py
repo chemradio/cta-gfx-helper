@@ -4,8 +4,8 @@ import threading
 from database.db import db_handler
 from engines.telegram_bot.bot_instance import bot
 from engines.screenshots.screenshooter import Screenshooter
-from engines.video_gfx_engines import render_video_orders
-from engines.sender_engine import send_ready_orders
+from engines.video_gfx_html.video_gfx_engines import render_video_orders
+from engines.sender.sender_engine import send_ready_orders
 from telegram import ReplyKeyboardRemove
 
 

@@ -9,8 +9,8 @@ from telegram import (
 from telegram.ext import (
     CallbackContext,
 )
-from handlers.decorators import logger_bot
-from handlers.question_senders import (
+from engines.telegram_bot.legacy_handlers.decorators import logger_bot
+from engines.telegram_bot.legacy_handlers.question_senders import (
     ask_for_link,
     ask_bg_animation_type,
     ask_for_readtime_text,
