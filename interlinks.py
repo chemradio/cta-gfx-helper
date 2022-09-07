@@ -10,27 +10,6 @@ BOT_TOKEN = cfg['bot_token']
 import os
 BASE_PATH = os.getcwd()
 
-# apple scripts
-# main script
-apple_script_path = os.path.join(BASE_PATH, "os-scripts/mac/launcher.scpt")
-
-# adobe app util scripts
-apple_adobe_restart_script_path = os.path.join(BASE_PATH, "os-scripts/mac/restart_adobe_apps.scpt")
-apple_adobe_start_script_path = os.path.join(BASE_PATH, "os-scripts/mac/start_adobe_apps.scpt")
-quit_adobe_apps_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_adobe_apps.scpt")
-start_ae_script_path = os.path.join(BASE_PATH, "os-scripts/mac/start_ae.scpt")
-quit_ae_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_ae.scpt")
-start_ame_script_path = os.path.join(BASE_PATH, "os-scripts/mac/start_ame.scpt")
-quit_ame_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_ame.scpt")
-
-# chrome
-quit_chrome_script_path = os.path.join(BASE_PATH, "os-scripts/mac/quit_chrome.scpt")
-
-# gfx-script submodule
-path_to_cta_gfx_script_folder = os.path.join(BASE_PATH, "cta-gfx-script")
-path_to_uber_parameters = os.path.join(path_to_cta_gfx_script_folder, "parameters.jsx")
-path_to_ae_tg_script = os.path.join(path_to_cta_gfx_script_folder, "Telegram-Automated-Script.jsx")
-
 # assets
 assets_folder = os.path.join(BASE_PATH, "assets/")
 screenshot_folder = os.path.join(assets_folder + "screenshots/")
