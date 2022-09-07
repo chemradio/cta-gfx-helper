@@ -9,7 +9,7 @@ from telegram import (
 )
 
 from engines.telegram_bot.bot_instance import bot
-from handlers.decorators import log_decorator
+from engines.telegram_bot.legacy_handlers.decorators import log_decorator
 
 @log_decorator
 def ask_for_link(user_id):

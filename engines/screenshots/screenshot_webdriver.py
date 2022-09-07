@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from engines.screenshots.ad_block.adblock_script_generator import remove_ads_script
 
 
 class ScreenshotWebdriver:
@@ -82,13 +83,7 @@ class ScreenshotWebdriver:
 
 
     def remove_ads(self) -> None:
-        with open('./engines/screenshots/ad_remover_browser_script.js', 'r') as script_file:
-            script = script_file.read()
-
-        with open('./engines/screenshots/ad_db.json', 'r') as f:
-            ad_db = json.load(f)
-
-        adblock_js = script + "\n" + "let adsDatabase = " + str(ad_db) + '\n' + "main()"
+        adblock_js = remove_ads_script()
         try:
             self.driver.execute_script(adblock_js)
         except:

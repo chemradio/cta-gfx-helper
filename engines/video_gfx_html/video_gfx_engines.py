@@ -1,7 +1,7 @@
 import time
 import threading
 from database.db import db_handler
-from engines.sender_engine import send_video_order
+from engines.sender.sender_engine import send_video_order
 from engines.video_gfx_html.video_wizard import create_video_gfx
 
 
@@ -9,12 +9,12 @@ import logging
 logger_gfx = logging.getLogger(__name__)
 logger_gfx.setLevel(logging.DEBUG)
 logging_gfx_formatter = logging.Formatter('%(asctime)s: %(name)s: %(message)s')
-logging_gfx_file_handler = logging.FileHandler(f'./logs/{__name__}.log', mode='w+')
-logging_gfx_file_handler.setLevel(logging.DEBUG)
-logging_gfx_file_handler.setFormatter(logging_gfx_formatter)
+# logging_gfx_file_handler = logging.FileHandler(f'./logs/{__name__}.log', mode='w+')
+# logging_gfx_file_handler.setLevel(logging.DEBUG)
+# logging_gfx_file_handler.setFormatter(logging_gfx_formatter)
 logging_gfx_stream_handler = logging.StreamHandler()
 logging_gfx_stream_handler.setFormatter(logging_gfx_formatter)
-logger_gfx.addHandler(logging_gfx_file_handler)
+# logger_gfx.addHandler(logging_gfx_file_handler)
 logger_gfx.addHandler(logging_gfx_stream_handler)
 
 

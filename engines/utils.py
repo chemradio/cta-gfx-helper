@@ -8,7 +8,6 @@ from pathlib import Path
 from time import strftime, gmtime
 from engines.telegram_bot.bot_instance import bot
 from interlinks import cfg
-from os_scripts.os_script_handler import os_script
 
 def check_is_url(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -17,9 +16,9 @@ def check_is_url(string):
 
 
 def build_assets_folder() -> None:
-    folders = (interlinks.user_files_folder,
-               interlinks.screenshot_folder,
-               interlinks.render_output_path,
+    folders = (interlinks.USER_FILES_FOLDER,
+               interlinks.SCREENSHOT_FOLDER,
+               interlinks.RENDER_OUTPUT_PATH,
                interlinks.HTML_ASSEMBLIES_FOLDER)
     for folder in folders:
         try:
@@ -35,17 +34,17 @@ def clear_assets_folder(
     html_asseblies: bool = True
     ) -> None:
     if user_files:
-        shutil.rmtree(interlinks.user_files_folder, ignore_errors=True)
+        shutil.rmtree(interlinks.USER_FILES_FOLDER, ignore_errors=True)
         # files = glob.glob(f'{interlinks.user_files_folder}/*')
         # for file in files:
         #     os.remove(file)
     if screenshots:
-        shutil.rmtree(interlinks.screenshot_folder, ignore_errors=True)
+        shutil.rmtree(interlinks.SCREENSHOT_FOLDER, ignore_errors=True)
         # files = glob.glob(f'{interlinks.screenshot_folder}/*')
         # for file in files:
         #     os.remove(file)
     if video_renders:
-        shutil.rmtree(interlinks.render_output_path, ignore_errors=True)
+        shutil.rmtree(interlinks.RENDER_OUTPUT_PATH, ignore_errors=True)
         # files = glob.glob(f'{interlinks.render_output_path}/*')
         # for file in files:
         #     os.remove(file)
@@ -68,69 +67,8 @@ def calc_readtime(text, wpm=160):
     return readtime
 
 
-def get_adobe_running():
-    class RunningProcesses:
-        def __init__(self):
-            self.ae_running = False
-            self.ame_running = False
-
-    running_processes = RunningProcesses()
-
-    process_list = []
-    for process in psutil.process_iter():
-        process_list.append(process.name())
-    
-    running_processes.ae_running = True if 'After Effects' in process_list else False
-    running_processes.ame_running = True if f'Adobe Media Encoder {cfg["adobe_version"]}' in process_list else False
-
-    return running_processes
-
-
-def restart_adobe_apps_util(admin_id):
-    running_apps = get_adobe_running()
-
-    if running_apps.ae_running:
-        bot.send_message(chat_id=admin_id, text='Shutting down AfterFX')
-        os_script.quit_ae()
-
-    if running_apps.ame_running:
-        bot.send_message(chat_id=admin_id, text='Shutting down Encoder')
-        os_script.quit_ame()
-
-    bot.send_message(chat_id=admin_id, text='Relaunching AfterFX')
-    os_script.start_ae()
-
-    bot.send_message(chat_id=admin_id, text='Relaunching Encoder')
-    os_script.start_ame()
-
-    running_apps = get_adobe_running()
-    if running_apps.ae_running and running_apps.ame_running:
-        bot.send_message(chat_id=admin_id, text='Adobe Apps successfully relaunched')
-        return True
-    else:
-        bot.send_message(chat_id=admin_id, text='Something in wrong')
-        return False
-
-
-def get_chrome_running():
-    process_list = []
-    for process in psutil.process_iter():
-        process_list.append(process.name())
-        return True if "Google Chrome" in process_list else False
-
-
-def quit_chrome(admin_id):
-    if get_chrome_running():
-        for i in range(5):
-            try:
-                os_script.quit_chrome()
-            except:
-                pass
-    bot.send_message(chat_id=admin_id, text='Chrome Quitted')
-
-
 def get_cache_size():
-    def folder_size(path=interlinks.assets_folder):
+    def folder_size(path=interlinks.ASSETS_FOLDER):
         total = 0
         for entry in os.scandir(path):
             if entry.is_file():

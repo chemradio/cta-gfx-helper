@@ -300,7 +300,7 @@ class TinyDBHandler:
     @thread_safe
     def get_recent_orders(self):
         db_query = Query()
-        interval = time.time() - interlinks.recent_orders_interval_hours * 360
+        interval = time.time() - interlinks.RECENT_ORDERS_INTERVAL_HOURS * 360
         results = self.db_orders.search((db_query.start_timestamp > interval))
         return results
 

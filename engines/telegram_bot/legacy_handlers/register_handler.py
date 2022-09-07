@@ -9,7 +9,7 @@ from telegram.ext import (
 )
 
 
-from handlers.decorators import logger_bot
+from engines.telegram_bot.legacy_handlers.decorators import logger_bot
 
 def register_handler(update: Update, _: CallbackContext) -> None:
     logger_bot.debug(

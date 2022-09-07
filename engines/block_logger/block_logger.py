@@ -5,7 +5,7 @@ from pprint import pprint
 import sys
 import os
 import threading
-from handlers import status_utils
+from engines.telegram_bot.legacy_handlers import status_utils
 block_refresh_interval = 1
 
 

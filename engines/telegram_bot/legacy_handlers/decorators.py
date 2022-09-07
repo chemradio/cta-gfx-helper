@@ -3,12 +3,12 @@ import logging
 logger_bot = logging.getLogger(__name__)
 logger_bot.setLevel(logging.DEBUG)
 logging_bot_formatter = logging.Formatter("%(asctime)s: %(name)s: %(message)s")
-logging_bot_file_handler = logging.FileHandler(f"./logs/{__name__}.log", mode='w+')
-logging_bot_file_handler.setLevel(logging.DEBUG)
-logging_bot_file_handler.setFormatter(logging_bot_formatter)
+# logging_bot_file_handler = logging.FileHandler(f"./logs/{__name__}.log", mode='w+')
+# logging_bot_file_handler.setLevel(logging.DEBUG)
+# logging_bot_file_handler.setFormatter(logging_bot_formatter)
 logging_bot_stream_handler = logging.StreamHandler()
 logging_bot_stream_handler.setFormatter(logging_bot_formatter)
-logger_bot.addHandler(logging_bot_file_handler)
+# logger_bot.addHandler(logging_bot_file_handler)
 # logger_bot.addHandler(logging_bot_stream_handler)
 
 

@@ -25,7 +25,7 @@ def create_video_gfx(order) -> str:
 
     # stitch pngs to mp4
     png_path = f"{html_assembly_path}/png_sequence"
-    ready_video_path = f"{interlinks.render_output_path}/{order['render_filename']}"
+    ready_video_path = f"{interlinks.RENDER_OUTPUT_PATH}/{order['render_filename']}"
     audio_path = animation_parameters.audio_path if animation_parameters.audio_enabled else ''
     stitch_images(png_path, ready_video_path, audio_path)
 

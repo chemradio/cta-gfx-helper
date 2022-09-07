@@ -1,13 +1,5 @@
 {
-    "adobe_version": "2021",
-    "ame_log_path": "/Users/***/Documents/Adobe/Adobe Media Encoder/15.0/AMEEncodingLog.txt",
     "bot_token": "",
     "editor_ids": {"editor_name": 12345},
-    "admin_telegram_ids": [12345],
-    "login_credentials": {
-        "instagram": {
-            "username": "",
-            "password": ""
-        }
-    }
+    "admin_telegram_ids": [12345]
 }
