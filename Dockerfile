@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM --platform=amd64 ubuntu:latest
 
 RUN apt update
 RUN apt upgrade
