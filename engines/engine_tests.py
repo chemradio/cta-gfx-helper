@@ -1,5 +1,4 @@
 import time
-from tkinter import DISABLED
 from engines.screenshots.screenshot_order_processor import process_screenshot_orders
 from engines.video_gfx_html.video_gfx_engines import render_video_orders
 from engines.video_gfx_html.html_server import create_server
