@@ -27,8 +27,9 @@ def process_screenshot_orders(link_list: list[str] = []) -> None:
                 try:
                     screenshot_dict = screenshooter.capture_screenshot(url=order["link"])
                     break
-                except:
+                except Exception as e:
                     print(f"Screenshooting failed. Attempt {attempt}/{interlinks.SCREENSHOT_ATTEMPTS}")
+                    print(e)
                     attempt += 1
             else:
                 bot.send_message(

@@ -19,7 +19,7 @@ def main():
     create_server()
 
     # run tests
-    # run_tests() 
+    run_tests() 
     
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
@@ -29,7 +29,7 @@ def main():
     #     pass
 
     # start block logger
-    block_logger_thread()
+    # block_logger_thread()
 
     # start telegram bot
     db_handler.log_event('run', 'bot_launch')
