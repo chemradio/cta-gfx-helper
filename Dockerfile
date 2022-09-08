@@ -3,8 +3,6 @@ FROM ubuntu:latest
 RUN apt update
 RUN apt upgrade
 
-
-
 # requirements
 RUN apt install ffmpeg
 RUN apt install git
@@ -23,3 +21,10 @@ RUN dpkg -i google-chrome-stable_current_amd64.deb
 # copy requirements.txt
 # install requirements.txt
 
+# git operation
+RUN mkdir app
+RUN cd app
+RUN git clone https://github.com/chemradio/cta-gfx-telegram-bot.git .
+RUN git switch pre-docker
+RUN git pull
+RUN pip install -r requirements.txt
