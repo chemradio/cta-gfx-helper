@@ -6,8 +6,8 @@ from engines.telegram_bot.bot_thread import bot_safe_loop
 from engines.video_gfx_html.html_server import create_server
 
 
-import os
-os.system("clear")
+# import os
+# os.system("clear")
 
 
 def main():
