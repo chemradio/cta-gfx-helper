@@ -9,8 +9,8 @@ logs/*.log
 # assets/video_exports/*
 
 chrome_drivers/
-config_and_db/*.json
-!config_and_db/config_template.json
+# config_and_db/*.json
+# !config_and_db/config_template.json
 
 assets/screenshots/
 assets/user_files/

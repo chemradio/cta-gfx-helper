@@ -33,6 +33,7 @@ class ScreenshotWebdriver:
                             }
         chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
+        chrome_options.add_argument("--no-sandbox")
         if interlinks.USE_REMOTE_DRIVER:
             self.driver = webdriver.Remote(interlinks.REMOTE_DRIVER_URL, options=chrome_options)
         else:
