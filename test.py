@@ -1,25 +1,48 @@
+"""
+A simple selenium test example written by python
+"""
+
+import unittest
 from selenium import webdriver
-import time
-from engines.screenshots.cookie_manager import CookieManager
-from engines.screenshots.login_routines import LoginRoutines
-import interlinks
-import json
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
+class TestTemplate(unittest.TestCase):
+    """Include test cases on a given url"""
 
+    def setUp(self):
+        """Start web driver"""
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument("--window-size=1920,1080")
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.implicitly_wait(10)
 
-chrome_options = Options()
-chrome_options.add_argument("--incognito")
-chrome_options.add_argument("--disable-web-security")
-# chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-# chrome_options.headless = True
+    def tearDown(self):
+        """Stop web driver"""
+        self.driver.quit()
 
-driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
+    def test_case_1(self):
+        """Find and click top-left logo button"""
+        try:
+            self.driver.get('https://www.oursky.com/')
+            el = self.driver.find_element(By.CLASS_NAME, 'header__logo')
+            el.click()
+        except NoSuchElementException as ex:
+            self.fail(ex.msg)
 
-driver.implicitly_wait(5)
-driver.get('file:///Users/tim/code/cta-gfx-telegram-bot/assets/html_assemblies/gfx_html_20220905_14-13-36_582160/main.html')
+    def test_case_2(self):
+        """Find and click top-right Start your project button"""
+        try:
+            self.driver.get('https://www.oursky.com/')
+            el = self.driver.find_element(By.CLASS_NAME, "header__cta")
+            el.click()
+        except NoSuchElementException as ex:
+            self.fail(ex.msg)
 
-time.sleep(200)
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestTemplate)
+    unittest.TextTestRunner(verbosity=2).run(suite)

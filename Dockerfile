@@ -1,33 +1,28 @@
-FROM --platform=linux/amd64 ubuntu:latest
+# FROM --platform=linux/amd64 python:3.9
+FROM python:3.9
 
-RUN apt update
-RUN apt upgrade
-
-# requirements
-RUN apt install -y ffmpeg
-RUN apt install -y git
-RUN apt install -y python3
-RUN apt install -y python3-pip
-
-# install chrome
-RUN apt install -y wget
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt install -y ./google-chrome-stable_current_amd64.deb
-
-# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-
-
-
-# RUN dpkg -i google-chrome-stable_current_amd64.deb
-# RUN apt -f -y install
-# RUN dpkg -i google-chrome-stable_current_amd64.deb
-
-# create a folder
 WORKDIR /usr/src/app
-RUN git clone https://github.com/chemradio/cta-gfx-telegram-bot.git .
-RUN git switch pre-docker
+COPY . .
 RUN pip install -r requirements.txt
 
-COPY config_and_db /usr/src/app/config_and_db/
+RUN apt update
+RUN apt -y upgrade
+RUN apt install -y ffmpeg
 
-RUN python3 app.py
+CMD [ "python3", "app.py" ]
+
+
+
+# # install google chrome
+# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+# RUN apt-get -y update
+# RUN apt-get install -y google-chrome-stable
+
+# # install chromedriver
+# RUN apt-get install -yqq unzip
+# RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+# RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+
+# set display port to avoid crash
+# ENV DISPLAY=:99

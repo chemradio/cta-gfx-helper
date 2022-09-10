@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  chrome:
+    image: "seleniarm/standalone-chromium"
+    hostname: chrome
+    privileged: true
+    shm_size: 2g
+  web:
+    build: .
+    hostname: main
+    # ports:
+    #   - "8000:8000"
+    depends_on: 
+      - chrome
