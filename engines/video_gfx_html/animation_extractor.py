@@ -1,20 +1,17 @@
-import json
 import os
 import time
 import interlinks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-# VIDEO_LENGTH = 5.0
 FPS = 25
 
 
 
 
-def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
+def extract_png_sequence(html_assembly_name: str) -> str:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
 
@@ -46,7 +43,7 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
 
     # html_assembly_path = f'{interlinks.HTML_ASSEMBLIES_FOLDER}/{html_assembly_name}'
     # html_assembly_file_url = f'file://{html_assembly_path}'
-    html_assembly_server_url = f'http://localhost:{port}/{html_assembly_name}'
+    html_assembly_server_url = f'http://{interlinks.ASSET_SERVER_URL}:{interlinks.ASSET_SERVER_PORT}/{html_assembly_name}'
     # html_access = html_assembly_file_url
 
     # driver.get(f'{html_access}/main.html')

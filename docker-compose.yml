@@ -4,11 +4,11 @@ services:
     image: "seleniarm/standalone-chromium"
     hostname: chrome
     privileged: true
-    shm_size: 2g
-  web:
+    shm_size: 4g
+  main:
     build: .
-    hostname: main
-    # ports:
-    #   - "8000:8000"
+    hostname: html_server
+    ports:
+      - "9000:9000"
     depends_on: 
       - chrome
