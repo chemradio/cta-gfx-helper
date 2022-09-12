@@ -124,9 +124,9 @@ function buildHTML(config) {
 function splitStringParagraph(longString) {
     const maxCharsPerLineL0 = 50;
     const maxCharsPerLineL1 = 65;
-    const maxCharsPerLineL2 = 80;
-    const maxCharsPerLineL3 = 90;
-    const maxCharsPerLineL4 = 100;
+    const maxCharsPerLineL2 = 70;
+    const maxCharsPerLineL3 = 80;
+    const maxCharsPerLineL4 = 85;
 
 
     const textLength = longString.length;
