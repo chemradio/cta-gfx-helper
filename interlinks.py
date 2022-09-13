@@ -30,24 +30,30 @@ COOKIE_FILE = 'config_and_db/cookie_file.json'
 SOCIAL_WEBSITES = {'facebook': 'https://facebook.com', 'twitter': 'https://twitter.com', 'instagram': 'https://instagram.com', 'telegram': 'https://telegram.org'}
 LOGIN_REQUIRED = (
     'instagram',
-    # 'facebook',
+    'facebook',
     # 'twitter',
 )
-LOGIN_TO_SOCIAL_WEBSITES = True
-logged_in_to_social_websites = False
 
+LOGIN_TO_SOCIAL_WEBSITES = True
+logged_in_to_social_websites = True
+
+
+# docker
+USE_DOCKER = False
 
 # assets server
-ASSET_SERVER_URL = '0.0.0.0'
 ASSET_SEVER_NAME = 'html_server'
-ASSET_SERVER_PORT = 9000
+ASSET_SERVER_PUBLISH_URL = '0.0.0.0'
+ASSET_SERVER_ACCESS_URL = ASSET_SEVER_NAME if USE_DOCKER else 'localhost'
+ASSET_SERVER_ACCESS_PORT = 9000
 
 # selenium remote webdriver
-USE_REMOTE_DRIVER = True
+USE_REMOTE_DRIVER = USE_DOCKER
 REMOTE_DRIVER_HOST = 'chrome'
 REMOTE_DRIVER_PORT = 4444
 REMOTE_DRIVER_URL = f"http://{REMOTE_DRIVER_HOST}:{REMOTE_DRIVER_PORT}/wd/hub"
 SELENIUM_DOCKER_CMD = 'docker run -d --rm -it -p 4444:4444 -p 5900:5900 -p 7900:7900 --shm-size 3g --net="host" seleniarm/standalone-chromium:latest'
+
 
 # video-gfx
 MAX_AUDIO_FILE_LENGTH = 30

@@ -4,8 +4,8 @@ from pathlib import Path
 from threading import Thread
 import interlinks
 
-SERVER_URL = interlinks.ASSET_SERVER_URL
-SERVER_PORT = interlinks.ASSET_SERVER_PORT
+SERVER_URL = interlinks.ASSET_SERVER_PUBLISH_URL
+SERVER_PORT = interlinks.ASSET_SERVER_ACCESS_PORT
 
 def start_httpd(directory: Path = './assets', url: str=SERVER_URL, port: int = SERVER_PORT):
     handler = partial(SimpleHTTPRequestHandler, directory=directory)

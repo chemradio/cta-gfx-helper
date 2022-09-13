@@ -31,7 +31,14 @@ class Screenshooter:
 
 
     def capture_screenshot(self, url):
-        link_type, clean_url, domain = self.routines.parse_url(url)
+        link_type, clean_url, _domain = self.routines.parse_url(url)
+
+        if link_type in interlinks.LOGIN_REQUIRED and interlinks.logged_in_to_social_websites:
+            logged_in = True
+        else:
+            logged_in = False
+
+
         mobile = False #if link_type == 'twitter' else True
             
 
@@ -62,8 +69,8 @@ class Screenshooter:
                 # self.driver.save_screenshot('twi.png')
 
                 try:
-                    post = workflow.post_routine(url, self.driver)
                     self.driver.execute_script("window.stop();")
+                    post = workflow.post_routine(url, self.driver, logged_in=logged_in)
                     self._capture_post_screenshot(post, foreground_name)
                     link_to_profile = self.routines.extract_profile_url(link_type, url, self.driver, post)
                 except:

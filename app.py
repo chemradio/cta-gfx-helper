@@ -1,7 +1,8 @@
 from database.db import db_handler
 from engines.utils import clear_assets_folder
 from engines.block_logger.block_logger import block_logger_thread
-from engines.engine_tests import run_tests
+# from engines.tests.engine_tests import run_tests
+from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 from engines.telegram_bot.bot_thread import bot_safe_loop
 from engines.video_gfx_html.html_server import start_httpd
 
@@ -20,10 +21,12 @@ def main():
     start_httpd()
     print('passed through starting server')
 
-    # run tests
-    # run_tests() 
+    # import time
+    # time.sleep(20)
 
-    
+    # run tests
+    # run_tests()
+
     # # authenticate browser / dump cookies
     # scwd = ScreenshotWebdriver(only_for_login=True)
     # try:
@@ -31,7 +34,7 @@ def main():
     # except:
     #     pass
 
-    # start block logger
+    # # start block logger
     # block_logger_thread()
 
     # start telegram bot
