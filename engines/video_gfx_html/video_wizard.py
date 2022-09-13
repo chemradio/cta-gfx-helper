@@ -3,7 +3,6 @@ from .create_html_gfx import create_html
 from .animation_extractor import extract_png_sequence
 from .png_stitcher import stitch_images
 from .animation_configurator import create_animation_parameters
-from .html_server import create_server
 
 
 def create_video_gfx(order) -> str:
@@ -11,7 +10,6 @@ def create_video_gfx(order) -> str:
     adds audio file if neccessary and returns path to a ready video"""
 
     # # start the server
-    # asset_server = create_server()
     
     # create animation parameters object
     animation_parameters = create_animation_parameters(order)
