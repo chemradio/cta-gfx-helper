@@ -1,7 +1,8 @@
 version: "3.9"
 services:
   chrome:
-    image: "seleniarm/standalone-chromium"
+    image: "selenium/standalone-chrome"
+    # image: "seleniarm/standalone-chromium"
     hostname: chrome
     privileged: true
     shm_size: 4g
