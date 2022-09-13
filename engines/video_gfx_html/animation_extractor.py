@@ -1,20 +1,17 @@
-import json
 import os
 import time
 import interlinks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-# VIDEO_LENGTH = 5.0
 FPS = 25
 
 
 
 
-def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
+def extract_png_sequence(html_assembly_name: str) -> str:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
 
@@ -28,8 +25,12 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
     chrome_options.add_argument('--allow-file-access-from-files')
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.headless = True
-    chrome_options.add_argument("--incognito")
-    chrome_options.add_argument("--disable-web-security") # disabling CORS-conflicts. removes the need to spin-up a web server
+    chrome_options.add_argument('--window-size=1920,1080')
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("-–disable-gpu")
+    # chrome_options.add_argument("--incognito")
+    # chrome_options.add_argument("--disable-web-security") # disabling CORS-conflicts. removes the need to spin-up a web server
+
     device_emulation = {"deviceMetrics": {"width": 1920, "height": 1080,"pixelRatio": 1,},}
     chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
@@ -46,7 +47,7 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
 
     # html_assembly_path = f'{interlinks.HTML_ASSEMBLIES_FOLDER}/{html_assembly_name}'
     # html_assembly_file_url = f'file://{html_assembly_path}'
-    html_assembly_server_url = f'http://localhost:{port}/{html_assembly_name}'
+    html_assembly_server_url = f'http://{interlinks.ASSET_SERVER_ACCESS_URL}:{interlinks.ASSET_SERVER_ACCESS_PORT}/html_assemblies/{html_assembly_name}'
     # html_access = html_assembly_file_url
 
     # driver.get(f'{html_access}/main.html')
@@ -74,5 +75,7 @@ def extract_png_sequence(html_assembly_name: str, port:int = 8000) -> str:
 
         # result = driver.execute_script(f'timeline.progress({progress_frame})')
         driver.save_screenshot(f'{png_path}/{frame:04}.png')
+
+    driver.quit()
 
     return png_path

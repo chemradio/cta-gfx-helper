@@ -124,6 +124,7 @@ class ScreenshotRoutines:
     @sleeper_decorator
     def facebook_profile_routine(
         self,
+        url: str = None,
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> None:

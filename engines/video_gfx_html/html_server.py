@@ -1,22 +1,23 @@
 from functools import partial
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
-import os
+from threading import Thread
 import interlinks
-from multiprocessing import Process, freeze_support
 
-def start_httpd(directory: Path = interlinks.HTML_ASSEMBLIES_FOLDER, port: int = 8000):
-    # print(f"serving from {directory}...")
+SERVER_URL = interlinks.ASSET_SERVER_PUBLISH_URL
+SERVER_PORT = interlinks.ASSET_SERVER_ACCESS_PORT
+
+def start_httpd(directory: Path = './assets', url: str=SERVER_URL, port: int = SERVER_PORT):
     handler = partial(SimpleHTTPRequestHandler, directory=directory)
-    httpd = HTTPServer(('localhost', port), handler)
-    httpd.serve_forever()
+    httpd = HTTPServer((url, port), handler)
 
+    def serve_forever(httpd):
+        with httpd:  # to make sure httpd.server_close is called
+            httpd.serve_forever()
 
-def create_server() -> Process:
-    server_process = Process(target=start_httpd)
-    server_process.start()
-    # return server_process
+    thread = Thread(target=serve_forever, args=(httpd, ), daemon=True)
+    thread.start()
 
 
 if __name__ == "__main__":
-    create_server()
+    start_httpd()

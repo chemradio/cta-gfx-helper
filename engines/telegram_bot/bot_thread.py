@@ -84,10 +84,11 @@ def bot_safe_loop() -> None:
         try:
             bot_updater_dispatcher()
         except telegram.error.Conflict:
-            print('caught CONFLICT')
+            print('Telegram Conflict')
             time.sleep(10)
-        except:
-            print('Network timeout')
+        except Exception as e:
+            print(e)
+            # print('Network timeout')
             db_handler.log_error('network_timeout')
             time.sleep(10)
 
