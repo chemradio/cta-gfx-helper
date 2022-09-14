@@ -38,7 +38,7 @@ class ScreenshotWebdriver:
         chrome_options.add_argument("-–disable-gpu")
 
         if interlinks.USE_REMOTE_DRIVER:
-            self.driver = webdriver.Remote(interlinks.REMOTE_DRIVER_URL, options=chrome_options)
+            self.driver = webdriver.Remote(interlinks.REMOTE_SCREENSHOT_DRIVER_URL, options=chrome_options)
         else:
             self.driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
 

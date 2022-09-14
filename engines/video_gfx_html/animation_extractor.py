@@ -35,7 +35,7 @@ def extract_png_sequence(html_assembly_name: str) -> str:
     chrome_options.add_experimental_option("mobileEmulation", device_emulation)
 
     if interlinks.USE_REMOTE_DRIVER:
-        driver = webdriver.Remote(interlinks.REMOTE_DRIVER_URL, options=chrome_options)
+        driver = webdriver.Remote(interlinks.REMOTE_VIDEO_DRIVER_URL, options=chrome_options)
     else:
         driver = webdriver.Chrome(options=chrome_options, service=Service(ChromeDriverManager().install()))
 
@@ -72,7 +72,6 @@ def extract_png_sequence(html_assembly_name: str) -> str:
     for frame in range(int(total_frames)):
         progress_frame = interpolation(interpolation_data, frame)
         driver.execute_script(f'timeline.progress({progress_frame})')
-
         # result = driver.execute_script(f'timeline.progress({progress_frame})')
         driver.save_screenshot(f'{png_path}/{frame:04}.png')
 

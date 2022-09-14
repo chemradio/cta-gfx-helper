@@ -1,15 +1,25 @@
 version: "3.9"
 services:
-  chrome:
-    image: "selenium/standalone-chrome"
-    # image: "seleniarm/standalone-chromium"
-    hostname: chrome
+  screenshot_worker:
+    # image: "selenium/standalone-chrome"
+    image: "seleniarm/standalone-chromium"
+    hostname: screenshot_worker
     privileged: true
     shm_size: 4g
+  video_worker:
+    # image: "selenium/standalone-chrome"
+    image: "seleniarm/standalone-chromium"
+    hostname: video_worker
+    privileged: true
+    shm_size: 4g
+    depends_on:
+      - screenshot_worker
   main:
     build: .
     hostname: html_server
     ports:
       - "9000:9000"
+      # - "5900:5900"
+      # - "7900:7900"
     depends_on: 
-      - chrome
+      - video_worker

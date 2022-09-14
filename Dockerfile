@@ -12,6 +12,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 EXPOSE 9000
+ENV IS_DOCKER yes
 
 CMD [ "python3", "app.py" ]
 
