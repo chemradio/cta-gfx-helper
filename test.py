@@ -1,48 +1,26 @@
-"""
-A simple selenium test example written by python
-"""
+from email.mime import audio
+import ffmpeg
+import interlinks
 
-import unittest
-from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
 
-class TestTemplate(unittest.TestCase):
-    """Include test cases on a given url"""
+def stitch_images(image_folder_path: str, output_path: str = '', audio_path: str = '') -> None:
+    video_input = ffmpeg.input(f'{image_folder_path}/*.png', pattern_type='glob', framerate=25)
+    output = ffmpeg.output(video_input, output_path, video_bitrate=interlinks.VIDEO_BITRATE_KBPS, audio_bitrate=interlinks.AUDIO_BITRATE_KBPS)
 
-    def setUp(self):
-        """Start web driver"""
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument("--window-size=1920,1080")
-        self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.implicitly_wait(10)
+    if audio_path:
+        audio_input = ffmpeg.input(audio_path, itsoffset=interlinks.AUDIO_OFFSET)
+        output = ffmpeg.output(video_input, audio_input, output_path, video_bitrate=f"{interlinks.VIDEO_BITRATE_KBPS}", audio_bitrate=f"{interlinks.AUDIO_BITRATE_KBPS}")
+    
+    output.run()
+    
 
-    def tearDown(self):
-        """Stop web driver"""
-        self.driver.quit()
 
-    def test_case_1(self):
-        """Find and click top-left logo button"""
-        try:
-            self.driver.get('https://www.oursky.com/')
-            el = self.driver.find_element(By.CLASS_NAME, 'header__logo')
-            el.click()
-        except NoSuchElementException as ex:
-            self.fail(ex.msg)
 
-    def test_case_2(self):
-        """Find and click top-right Start your project button"""
-        try:
-            self.driver.get('https://www.oursky.com/')
-            el = self.driver.find_element(By.CLASS_NAME, "header__cta")
-            el.click()
-        except NoSuchElementException as ex:
-            self.fail(ex.msg)
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestTemplate)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    proc = stitch_images(
+        '/Users/tim/code/cta-gfx-telegram-bot/assets/html_assemblies/gfx_html_20220814_17-02-51_076061/png_sequence',
+        '/Users/tim/code/cta-gfx-telegram-bot/assets/video_exports/Tim-gfx.mp4',
+        '/Users/tim/Desktop/temp/test_speech.mp3'
+    )
+    print(proc)
