@@ -22,6 +22,9 @@ EXPIRY_INTERVALS_SECS = 300
 ADMIN_TELEGRAM_IDS = cfg['admin_telegram_ids']
 EDITOR_IDS = cfg['editor_ids']
 DELEGATE_EDITOR = EDITOR_IDS["editor_name"]
+VIDEO_BITRATE_KBPS = 15000
+AUDIO_BITRATE_KBPS = 256
+
 
 # screenshots
 DPI_MULTIPLIER = 2.0
