@@ -39,7 +39,7 @@ logged_in_to_social_websites = True
 
 
 # docker
-USE_DOCKER = False
+USE_DOCKER = os.environ.get('IS_DOCKER', False)
 
 # assets server
 ASSET_SEVER_NAME = 'html_server'
@@ -49,9 +49,15 @@ ASSET_SERVER_ACCESS_PORT = 9000
 
 # selenium remote webdriver
 USE_REMOTE_DRIVER = USE_DOCKER
-REMOTE_DRIVER_HOST = 'chrome'
-REMOTE_DRIVER_PORT = 4444
-REMOTE_DRIVER_URL = f"http://{REMOTE_DRIVER_HOST}:{REMOTE_DRIVER_PORT}/wd/hub"
+
+REMOTE_SCREENSHOT_WORKER_HOST = 'screenshot_worker'
+REMOTE_SCREENSHOT_WORKER_PORT = 4444
+REMOTE_SCREENSHOT_DRIVER_URL = f"http://{REMOTE_SCREENSHOT_WORKER_HOST}:{REMOTE_SCREENSHOT_WORKER_PORT}/wd/hub"
+
+REMOTE_VIDEO_WORKER_HOST = 'video_worker'
+REMOTE_VIDEO_WORKER_PORT = 4444
+REMOTE_VIDEO_DRIVER_URL = f"http://{REMOTE_VIDEO_WORKER_HOST}:{REMOTE_VIDEO_WORKER_PORT}/wd/hub"
+
 SELENIUM_DOCKER_CMD = 'docker run -d --rm -it -p 4444:4444 -p 5900:5900 -p 7900:7900 --shm-size 3g --net="host" seleniarm/standalone-chromium:latest'
 
 
