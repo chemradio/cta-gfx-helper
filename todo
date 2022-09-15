@@ -5,7 +5,7 @@ to docker
 - container 3: chrome video-html
 - container 4: file server
 
-
+ffmpeg -i ./input.mp4 -vf "scale=640:640:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2" -vcodec libx264 -crf 17 -pix_fmt yuv420p -bsf:v h264_metadata=video_full_range_flag=0:colour_primaries=9:transfer_characteristics=18:matrix_coefficients=9 ./output.mp4
 
 
 self_dispatcher
