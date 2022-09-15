@@ -2,6 +2,8 @@ from email.mime import audio
 import ffmpeg
 import interlinks
 
+PATH_PNG = ''
+PATH_MP4 = ''
 
 def stitch_images(image_folder_path: str, output_path: str = '', audio_path: str = '') -> None:
     video_input = ffmpeg.input(f'{image_folder_path}/*.png', pattern_type='glob', framerate=25)
