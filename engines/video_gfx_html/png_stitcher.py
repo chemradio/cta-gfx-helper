@@ -3,11 +3,15 @@ import ffmpeg
 import interlinks
 
 encode_settings = {
-    'video_bitrate': interlinks.VIDEO_BITRATE_KBPS,
-    'audio_bitrate': interlinks.AUDIO_BITRATE_KBPS,
-    'crf': 18,
-    'vcodec': 'libx264rgb',
-    'pix_fmt': 'rgb24',
+    "video_bitrate": interlinks.VIDEO_BITRATE_BPS,
+    "audio_bitrate": interlinks.AUDIO_BITRATE_BPS,
+    "crf": 15,
+    "vcodec": 'libx264',
+    "pix_fmt": 'yuv420p',
+    "color_range": 1,
+    "movflags": '+write_colr',
+    "vf":"scale=out_color_matrix=bt709:out_range=limited",
+    "bsf:v": "h264_metadata=video_full_range_flag=0",
 }
 
 def stitch_images(image_folder_path: str, output_path: str = '', audio_path: str = '') -> None:
