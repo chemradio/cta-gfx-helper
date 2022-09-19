@@ -2,18 +2,23 @@ from email.mime import audio
 import ffmpeg
 import interlinks
 
-bitrate = {
-    'video_bitrate': f"{interlinks.VIDEO_BITRATE_KBPS}k",
-    'audio_bitrate': f"{interlinks.AUDIO_BITRATE_KBPS}k",
+encode_settings = {
+    'video_bitrate': interlinks.VIDEO_BITRATE_KBPS,
+    'audio_bitrate': interlinks.AUDIO_BITRATE_KBPS,
+    'crf': 15,
+    'vcodec': 'libx264rgb',
+    'pix_fmt': 'rgb24',
 }
 
 def stitch_images(image_folder_path: str, output_path: str = '', audio_path: str = '') -> None:
-    video_input = ffmpeg.input(f'{image_folder_path}/*.png', pattern_type='glob', framerate=25)
-    output = ffmpeg.output(video_input, output_path, **bitrate)
+    video_input = ffmpeg.input(f'{image_folder_path}/*.png', pattern_type='glob',
+                                framerate=25,
+                                pix_fmt='rgba',)
+    output = ffmpeg.output(video_input, output_path, **encode_settings)
 
     if audio_path:
         audio_input = ffmpeg.input(audio_path, itsoffset=interlinks.AUDIO_OFFSET)
-        output = ffmpeg.output(video_input, audio_input, output_path, **bitrate)
+        output = ffmpeg.output(video_input, audio_input, output_path, **encode_settings)
     
     output.run()
     

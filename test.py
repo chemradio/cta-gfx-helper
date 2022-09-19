@@ -1,28 +1,42 @@
-from email.mime import audio
 import ffmpeg
 import interlinks
 
-PATH_PNG = ''
-PATH_MP4 = ''
 
-def stitch_images(image_folder_path: str, output_path: str = '', audio_path: str = '') -> None:
-    video_input = ffmpeg.input(f'{image_folder_path}/*.png', pattern_type='glob', framerate=25)
-    output = ffmpeg.output(video_input, output_path, video_bitrate=interlinks.VIDEO_BITRATE_KBPS, audio_bitrate=interlinks.AUDIO_BITRATE_KBPS)
+PATH_PNG = '/Users/tim/Desktop/ffmpeg_test/input/png_sequence'
+PATH_MP4 = '/Users/tim/Desktop/ffmpeg_test/input/ae-stitch.mp4'
 
-    if audio_path:
-        audio_input = ffmpeg.input(audio_path, itsoffset=interlinks.AUDIO_OFFSET)
-        output = ffmpeg.output(video_input, audio_input, output_path, video_bitrate=f"{interlinks.VIDEO_BITRATE_KBPS}", audio_bitrate=f"{interlinks.AUDIO_BITRATE_KBPS}")
-    
+OUTPUT_PATH_STITCH = '/Users/tim/Desktop/ffmpeg_test/output/ff-stitch.mp4'
+
+def stitch_images():
+    video_input = ffmpeg.input(f'{PATH_PNG}/*.png', pattern_type='glob',
+                                framerate=25,
+                                pix_fmt='rgba',
+                                )
+    output = ffmpeg.output(video_input, OUTPUT_PATH_STITCH,
+                            video_bitrate=interlinks.VIDEO_BITRATE_KBPS,
+                            audio_bitrate=interlinks.AUDIO_BITRATE_KBPS,
+                            crf=15,
+
+                            # vcodec='libx264rgb',
+                            # pix_fmt='rgb24',
+
+                            vcodec='libx264',
+                            pix_fmt='yuv420p',
+
+                            # color_range=2,
+                            # movflags= '+write_colr',
+
+                            # add 420
+
+                            # **{"bsf:v": "h264_metadata=video_full_range_flag=0:colour_primaries=1:transfer_characteristics=8:matrix_coefficients=1"}
+                            )
+    print(output.get_args())
     output.run()
     
 
-
-
+def reexport_video():
+    ...
 
 if __name__ == '__main__':
-    proc = stitch_images(
-        '/Users/tim/code/cta-gfx-telegram-bot/assets/html_assemblies/gfx_html_20220814_17-02-51_076061/png_sequence',
-        '/Users/tim/code/cta-gfx-telegram-bot/assets/video_exports/Tim-gfx.mp4',
-        '/Users/tim/Desktop/temp/test_speech.mp3'
-    )
-    print(proc)
+    stitch_images()
+    ...
