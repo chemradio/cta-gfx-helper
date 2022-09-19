@@ -5,7 +5,7 @@ import interlinks
 encode_settings = {
     'video_bitrate': interlinks.VIDEO_BITRATE_KBPS,
     'audio_bitrate': interlinks.AUDIO_BITRATE_KBPS,
-    'crf': 15,
+    'crf': 18,
     'vcodec': 'libx264rgb',
     'pix_fmt': 'rgb24',
 }
