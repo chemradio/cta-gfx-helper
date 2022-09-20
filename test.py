@@ -14,16 +14,24 @@ output_params = {
     "crf": 15,
     "vcodec": 'libx264',
     "pix_fmt": 'yuv420p',
-    "color_range": 1,
     "movflags": '+write_colr',
     "vf":"scale=out_color_matrix=bt709:out_range=limited",
-    "bsf:v": "h264_metadata=video_full_range_flag=0",
+
+    # "vf":"scale=out_color_matrix=bt2020:out_range=limited",
+
+    # "sws_flags": "spline+accurate_rnd+full_chroma_int",
+    # "vf": "colormatrix=bt2020:bt709",
+    # "color_range": 1,
+    # "colorspace": 5,
+    # "color_primaries": 1,
+    # "color_trc": 192,
+    # "bsf:v": "h264_metadata=video_full_range_flag=0",
 }
 
 def stitch_images():
     video_input = ffmpeg.input(f'{PATH_PNG}/*.png', pattern_type='glob',
                                 framerate=25,
-                                pix_fmt='rgba',
+                                # pix_fmt='rgba',
                                 )
     output = ffmpeg.output(video_input, OUTPUT_PATH_STITCH,
                             **output_params)
