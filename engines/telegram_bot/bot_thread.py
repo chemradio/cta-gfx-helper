@@ -41,7 +41,7 @@ from telegram.ext import (
 )
 
 
-def bot_updater_dispatcher() -> Updater:
+def bot_updater_dispatcher_legacy() -> Updater:
     updater = Updater(BOT_TOKEN)
     dispatcher = updater.dispatcher
 
@@ -76,13 +76,29 @@ def bot_updater_dispatcher() -> Updater:
     dispatcher.add_handler(MessageHandler(Filters.text, main_handler))
 
     updater.start_polling()
-    updater.idle()      
+    updater.idle()
+
+
+# def bot_updater_dispatcher_v2():
+#     updater = Updater(BOT_TOKEN)
+#     dispatcher = updater.dispatcher
+
+#     dispatcher.add_handler(CommandHandler("start", start))
+#     dispatcher.add_handler(CommandHandler("exit", exit_handler))
+#     dispatcher.add_handler(CommandHandler("help", help_handler))
+
+#     dispatcher.add_handler(CallbackQueryHandler(inline_button_handler))
+
+#     # dispatcher.add_handler(MessageHandler(Filters.text, main_handler), MessageHandler(None, ))
+
+#     updater.start_polling()
+#     updater.idle()
 
 
 def bot_safe_loop() -> None:
     while True:
         try:
-            bot_updater_dispatcher()
+            bot_updater_dispatcher_legacy()
         except telegram.error.Conflict:
             print('Telegram Conflict')
             time.sleep(10)
@@ -100,7 +116,7 @@ def bot_thread_launcher() -> None:
             try:
                 print('starting to poll!!!!\n\n\n')
                 # polling_bot(updater)
-                bot_updater_dispatcher()
+                bot_updater_dispatcher_legacy()
                 # while True:
                 #     time.sleep(1)
             except telegram.error.Conflict:

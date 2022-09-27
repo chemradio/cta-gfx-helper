@@ -139,6 +139,7 @@ class ScreenshotRoutines:
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> WebElement:
+        time.sleep(3)
         # post_role = "presentation" weird... not used later.delete if not needed
         driver.execute_script(
             """element = document.getElementsByTagName("article")[0];
@@ -168,7 +169,7 @@ class ScreenshotRoutines:
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> WebElement:
-        # time.sleep(5)
+        time.sleep(3)
         post = driver.find_element(By.TAG_NAME, "article")
         return post
 
