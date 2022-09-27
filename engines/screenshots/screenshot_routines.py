@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse
+from .elements_xpaths import PostXpaths
 
 
 SLEEP_DELAY_1S = 2
@@ -112,11 +113,12 @@ class ScreenshotRoutines:
         driver: webdriver.Chrome = None,
         logged_in: bool = False
     ) -> WebElement:
-        # add routine for processing in unlogged state later
-        post = driver.find_element(By.XPATH, f"//div[@role='article']")
+        xpaths = PostXpaths(logged_in)
         if not logged_in:
             driver.execute_script("""el = document.querySelectorAll('[role="feed"]')[0];
             el.style.width = '500px';""")
+
+        post = driver.find_element(By.XPATH, xpaths.facebook_post_xpath)
         time.sleep(1)
         return post
 
