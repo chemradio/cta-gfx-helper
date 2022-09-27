@@ -2,20 +2,20 @@ version: "3.9"
 services:
   screenshot_worker:
     # for amd64 architecture
-    # image: "selenium/standalone-chrome"
+    image: "selenium/standalone-chrome"
 
     # for ARM architecture
-    image: "seleniarm/standalone-chromium"
+    # image: "seleniarm/standalone-chromium"
 
     hostname: screenshot_worker
     privileged: true
     shm_size: 4g
   video_worker:
     # for amd64 architecture
-    # image: "selenium/standalone-chrome"
+    image: "selenium/standalone-chrome"
 
     # for ARM architecture
-    image: "seleniarm/standalone-chromium"
+    # image: "seleniarm/standalone-chromium"
     hostname: video_worker
     privileged: true
     shm_size: 4g
