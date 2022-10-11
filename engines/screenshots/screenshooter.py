@@ -88,7 +88,7 @@ class Screenshooter:
             self.driver.get(link_to_profile)
             self.scwd.remove_ads()
             workflow.profile_routine(driver=self.driver)
-            time.slee(5)
+            time.sleep(5)
             self._capture_profile_page_screenshot(background_name)
 
             # dump updated cookies if required
