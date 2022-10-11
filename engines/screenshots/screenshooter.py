@@ -7,13 +7,13 @@ from io import BytesIO
 import traceback
 
 from PIL import Image
+
 Image.MAX_IMAGE_PIXELS = 933_120_000
-TWO_LAYER_SITES = ('facebook', 'instagram', 'twitter', 'telegram')
+TWO_LAYER_SITES = ("facebook", "instagram", "twitter", "telegram")
 
 from engines.screenshots.screenshot_routines import ScreenshotRoutines
 from engines.screenshots.screenshot_webdriver import ScreenshotWebdriver
 from engines.screenshots.browser_authorizer import BrowserAuthorizer
-
 
 
 class Screenshooter:
@@ -24,29 +24,28 @@ class Screenshooter:
         # self.scwd = ScreenshotWebdriver()
         # self.driver = self.scwd.driver
 
-
     def create_driver(self, mobile: bool = True) -> ScreenshotWebdriver:
         scwd = ScreenshotWebdriver(mobile=mobile)
         return scwd
 
-
     def capture_screenshot(self, url):
         link_type, clean_url, _domain = self.routines.parse_url(url)
 
-        if link_type in interlinks.LOGIN_REQUIRED and interlinks.logged_in_to_social_websites:
+        if (
+            link_type in interlinks.LOGIN_REQUIRED
+            and interlinks.logged_in_to_social_websites
+        ):
             logged_in = True
         else:
             logged_in = False
 
-
-        mobile = False #if link_type == 'twitter' else True
-            
+        mobile = False  # if link_type == 'twitter' else True
 
         # generate file names
         background_name = f"01_BG_{secrets.token_hex(8)}.png"
         foreground_name = f"02_FG_{secrets.token_hex(8)}.png"
 
-        is_two_layer = False if link_type == 'scroll' else True
+        is_two_layer = False if link_type == "scroll" else True
         workflow = self.routines.create_workflow(link_type)
 
         # create driver
@@ -56,8 +55,9 @@ class Screenshooter:
         try:
             # authenticate using cookies if required
             if link_type in interlinks.LOGIN_REQUIRED:
-                self.browser_authorizer.login_driver_to_domain(driver=self.driver, domain=link_type)
-                
+                self.browser_authorizer.login_driver_to_domain(
+                    driver=self.driver, domain=link_type
+                )
 
             # get post screenshot
             if link_type in TWO_LAYER_SITES:
@@ -72,12 +72,14 @@ class Screenshooter:
                     self.driver.execute_script("window.stop();")
                     post = workflow.post_routine(url, self.driver, logged_in=logged_in)
                     self._capture_post_screenshot(post, foreground_name)
-                    link_to_profile = self.routines.extract_profile_url(link_type, url, self.driver, post)
+                    link_to_profile = self.routines.extract_profile_url(
+                        link_type, url, self.driver, post
+                    )
                 except:
                     print("Social URL is probably for the page, not post:", clean_url)
                     link_to_profile = clean_url
                     is_two_layer = False
-                    link_type = 'scroll'
+                    link_type = "scroll"
 
             else:
                 link_to_profile = clean_url
@@ -86,6 +88,7 @@ class Screenshooter:
             self.driver.get(link_to_profile)
             self.scwd.remove_ads()
             workflow.profile_routine(driver=self.driver)
+            time.slee(5)
             self._capture_profile_page_screenshot(background_name)
 
             # dump updated cookies if required
@@ -100,7 +103,6 @@ class Screenshooter:
                 self.scwd.cookie_manager.dump_domain_cookies(link_type, domain_cookies)
             self.driver.quit()
 
-            
             # generate screenshot dict for return
             return {
                 "is_two_layer": is_two_layer,
@@ -116,17 +118,22 @@ class Screenshooter:
             traceback.print_exc()
             raise e
 
-
     def _capture_post_screenshot(self, post, foreground_name):
         time.sleep(2)
         location = post.location
         size = post.size
 
-        full_post_screenshot = self.driver.command_executor._request('POST',
-                self.driver.command_executor._url + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
-                json.dumps({'cmd': "Page.captureScreenshot",
-                            'params': {"format": "png","captureBeyondViewport": False}
-                            }))['value']
+        full_post_screenshot = self.driver.command_executor._request(
+            "POST",
+            self.driver.command_executor._url
+            + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
+            json.dumps(
+                {
+                    "cmd": "Page.captureScreenshot",
+                    "params": {"format": "png", "captureBeyondViewport": False},
+                }
+            ),
+        )["value"]
 
         im = Image.open(BytesIO(base64.urlsafe_b64decode(full_post_screenshot["data"])))
 
@@ -137,35 +144,34 @@ class Screenshooter:
         bottom = (location["y"] + size["height"]) * self.dpi_multiplier
 
         im = im.crop((left, top, right, bottom))
-        im = im.crop((0,0, im.width, min(5000,im.height)))
+        im = im.crop((0, 0, im.width, min(5000, im.height)))
         im.save(f"{interlinks.SCREENSHOT_FOLDER}/{foreground_name}")
         return True
-
 
     def _capture_profile_page_screenshot(self, background_name):
         try:
             time.sleep(5)
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
             time.sleep(1)
-            self.driver.execute_script("window.scrollTo(0, -document.body.scrollHeight)")
+            self.driver.execute_script(
+                "window.scrollTo(0, -document.body.scrollHeight)"
+            )
             time.sleep(3)
 
-
-            page_rect = self.driver.command_executor._request('POST',
-                self.driver.command_executor._url + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
-                json.dumps({'cmd': "Page.getLayoutMetrics",
-                            'params': {}
-                            }))
-
+            page_rect = self.driver.command_executor._request(
+                "POST",
+                self.driver.command_executor._url
+                + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
+                json.dumps({"cmd": "Page.getLayoutMetrics", "params": {}}),
+            )
 
             # page_rect = self.driver.execute_cdp_cmd("Page.getLayoutMetrics", {})
 
             target_height = (
                 5000
-                if page_rect['value']["contentSize"]["height"] > 5000
-                else page_rect['value']["contentSize"]["height"]
+                if page_rect["value"]["contentSize"]["height"] > 5000
+                else page_rect["value"]["contentSize"]["height"]
             )
-
 
             # full_page_screenshot = self.driver.execute_cdp_cmd(
             #     "Page.captureScreenshot",
@@ -182,11 +188,17 @@ class Screenshooter:
             #     },
             # )
 
-            full_page_screenshot = self.driver.command_executor._request('POST',
-                self.driver.command_executor._url + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
-                json.dumps({'cmd': "Page.captureScreenshot",
-                            'params': {"format": "png","captureBeyondViewport": False}
-                            }))['value']
+            full_page_screenshot = self.driver.command_executor._request(
+                "POST",
+                self.driver.command_executor._url
+                + f"/session/{self.driver.session_id}/chromium/send_command_and_get_result",
+                json.dumps(
+                    {
+                        "cmd": "Page.captureScreenshot",
+                        "params": {"format": "png", "captureBeyondViewport": False},
+                    }
+                ),
+            )["value"]
 
             # full_page_screenshot = self.driver.execute_cdp_cmd(
             #     "Page.captureScreenshot",
@@ -196,9 +208,10 @@ class Screenshooter:
             #     },
             # )
 
-
-            im = Image.open(BytesIO(base64.urlsafe_b64decode(full_page_screenshot["data"])))
-            im = im.crop((0,0,im.width, min(7000,im.height)))
+            im = Image.open(
+                BytesIO(base64.urlsafe_b64decode(full_page_screenshot["data"]))
+            )
+            im = im.crop((0, 0, im.width, min(7000, im.height)))
 
             # # must multiply by zoom or dpi multiplier
             # left = location["x"] * self.dpi_multiplier
