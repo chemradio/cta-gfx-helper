@@ -1,0 +1,7 @@
+.vscode/
+.DS_Store
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+volume/user_files/
