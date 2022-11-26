@@ -1,0 +1,42 @@
+DISPATCHER_NODE_HOSTNAME = "dispatcher"
+DISPATCHER_NODE_PORT = 9000
+DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
+
+LIST_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/list"
+GET_ONE_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/get_one"
+
+# !!!
+EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/edit"
+# EDIT_ORDER_ENDPOINT = f"http://localhost:{DISPATCHER_NODE_PORT}/orders/edit"
+
+
+# !!!
+REMOTE_VIDEO_GFX_DRIVER_NAME = "video_gfx_selenium"
+REMOTE_VIDEO_GFX_DRIVER_URL = f"http://{REMOTE_VIDEO_GFX_DRIVER_NAME}:4444/wd/hub"
+# REMOTE_VIDEO_GFX_DRIVER_URL = f"http://localhost:4444/wd/hub"
+
+
+USE_REMOTE_DRIVER = True
+
+AUDIO_OFFSET = 0.3
+
+from pathlib import Path
+
+cwd = Path.cwd()
+HTML_ASSEMBLIES_FOLDER = cwd / "volume" / "html_assemblies"
+HTML_TEMPLATE_FOLDER = cwd / "video_gfx" / "html_template"
+
+
+RENDER_OUTPUT_PATH = cwd / "volume" / "video_exports"
+
+VIDEO_BITRATE_BPS = 15_000_000
+AUDIO_BITRATE_BPS = 256_000
+AUDIO_OFFSET = 0.3
+
+USE_DOCKER = True
+ASSET_SEVER_NAME = "video_gfx_server"
+ASSET_SERVER_ACCESS_PORT = 9006
+ASSET_SERVER_ACCESS_URL = f"http://{ASSET_SEVER_NAME}:{ASSET_SERVER_ACCESS_PORT}"
+
+
+DOCKER_PATH_PREFIX = "/usr/src/app"

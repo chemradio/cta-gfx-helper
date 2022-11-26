@@ -1,0 +1,10 @@
+import requests
+from config import EDIT_ORDER_ENDPOINT
+
+
+def mark_order_screenshots(order: dict) -> None:
+    r = requests.post(
+        EDIT_ORDER_ENDPOINT,
+        json=order,
+    )
+    return r.json() if r.status_code == 200 else None

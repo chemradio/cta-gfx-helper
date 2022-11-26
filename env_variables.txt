@@ -1,0 +1,5 @@
+# Declare this environment variables for bot to function
+
+BOT_ADMIN
+BOT_TOKEN
+POSTGRES_PASSWORD
