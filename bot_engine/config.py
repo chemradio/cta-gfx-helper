@@ -1,7 +1,9 @@
 import os
-from pathlib import Path
-from telegram.constants import ParseMode
 from enum import Enum
+from pathlib import Path
+
+from telegram.constants import ParseMode
+
 from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
@@ -27,6 +29,7 @@ REQUEST_TYPE_TEMP_MAP = {
 
 # containers
 DISPATCHER_NODE_HOSTNAME = "dispatcher"
+# DISPATCHER_NODE_HOSTNAME = "localhost"
 DISPATCHER_NODE_PORT = 9000
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
 
