@@ -1,7 +1,7 @@
 import config
 from telegram import Update
 from telegram.ext import ContextTypes
-from telegram_bot.callbacks.admin_callback.admin_callback import admin_callback
+from telegram_bot.callbacks.admin_callbacks.admin_callback import admin_callback
 from telegram_bot.callbacks.register.auth_callback import auth_callback
 from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.commands.commands_dispatcher import (
@@ -45,13 +45,19 @@ async def dispatcher_callback(
 
     # command handler
     try:
-        if update.message.text.startswith("/"):
-            return await commands_callback(update, context)
+        if update.message.text:
+            if update.message.text.startswith("/"):
+                return await commands_callback(update, context)
+
+        if update.message.caption:
+            if update.message.caption.startswith("/"):
+                return await commands_callback(update, context)
     except WrongCommand as e:
         print(e)
         return
-    except:
+    except Exception as e:
         print("Not a command")
+        print(e)
 
     # set request type
     if user_data.get("status") == "init":

@@ -3,3 +3,7 @@
 BOT_ADMIN
 BOT_TOKEN
 POSTGRES_PASSWORD
+
+#
+JSON-design cookie file should be also provided for the bot to be able to authenticate to social networks.
+/cookie_file - bot command paired with a cookie file json is used to push it to internals of the bot.

@@ -3,12 +3,13 @@ from send_process.send_order import send_order
 from container_interaction.edit_order_db import mark_order_sent
 
 
-def orders_sender():
+async def orders_sender():
     while True:
         order = get_ready_to_send_order()
         print(f"{__name__}:{order=}")
         if not order:
-            break
+            print("No more orders to send.")
+            return
 
-        send_success = send_order(order)
-        mark_order_sent(order, send_success)
+        send_success = await send_order(order)
+        await mark_order_sent(order, send_success)

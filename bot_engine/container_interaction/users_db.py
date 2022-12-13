@@ -27,20 +27,12 @@ async def list_users(type: UserStatus) -> list:
 
 
 async def check_user_status(telegram_id: int) -> UserStatus:
+    print("pre request is admin")
     r = requests.get(
-        f"{DISPATCHER_USERS_ENDPOINT}/checkStatus", json={"telegram_id": telegram_id}
+        f"{DISPATCHER_USERS_ENDPOINT}/check_status", json={"telegram_id": telegram_id}
     )
+    print("post request is admin")
+    print(f"json is {r.json()}")
+    print(f'return is {UserStatus(r.json()["status"])}')
+
     return UserStatus(r.json()["status"])
-
-
-# async def get_allowed_user_ids() -> list:
-#     with open("token.txt", "r") as tf:
-#         return [int(line) for line in tf.readlines()[1:]]
-
-
-# async def get_blocked_user_ids() -> list:
-#     return []
-
-
-# async def get_pending_user_ids() -> list:
-#     return []

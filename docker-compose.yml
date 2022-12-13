@@ -6,14 +6,13 @@ services:
     build: ./dispatcher_engine
     volumes:
       - assets_storage:/usr/src/app/volume
-      # # dev only
-      # - ./dispatcher_engine:/usr/src/app
+      - ./dispatcher_engine:/usr/src/app
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
     expose:
       - "9000"
-    # ports:
-    #   - "9000:9000"
+    ports:
+      - "9000:9000"
     depends_on:
       - db
 
@@ -23,8 +22,7 @@ services:
     build: ./bot_engine
     volumes:
       - assets_storage:/usr/src/app/volume
-      # # dev only 
-      # - ./bot_engine:/usr/src/app/
+      - ./bot_engine:/usr/src/app/
     expose:
       - "9001"
     environment:
@@ -46,7 +44,6 @@ services:
     build: ./screenshot_engine
     volumes:
       - assets_storage:/usr/src/app/volume
-      # # dev only
       # - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
     expose:

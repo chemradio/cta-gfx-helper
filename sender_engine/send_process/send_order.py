@@ -1,9 +1,9 @@
 from bot_instance import bot
 import asyncio
 from telegram import ReplyKeyboardRemove
+import traceback
 
-
-def send_order(order: dict) -> bool:
+async def send_order(order: dict) -> bool:
 
     # get order type
     request_type = order.get("request_type")
@@ -28,7 +28,7 @@ def send_order(order: dict) -> bool:
                 while try_count:
                     try:
                         asyncio.run(
-                            bot.send_document(
+                            await bot.send_document(
                                 chat_id=order["user_telegram_id"],
                                 document=binarified_file,
                                 caption="✅ Твой заказ готов.",
@@ -44,7 +44,8 @@ def send_order(order: dict) -> bool:
                         return True
                     except Exception as e:
                         print("Failed to send file.")
-                        print(e)
+                        print(str(e))
+                        traceback.print_exc()
                         try_count -= 1
                 else:
                     return False

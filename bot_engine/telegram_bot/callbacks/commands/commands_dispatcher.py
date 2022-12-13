@@ -4,20 +4,38 @@ from telegram_bot.callbacks.commands.start_callback import start_callback
 from telegram_bot.callbacks.commands.help_callback import help_callback
 from telegram_bot.callbacks.commands.exit_callback import exit_callback
 from telegram_bot.callbacks.register.auth_callback import auth_callback
+from telegram_bot.callbacks.admin_callbacks.backup_restore_db import (
+    backup_db_callback,
+    restore_db_callback,
+)
 
 
 async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    command = update.message.text[1:]
-    if command == "start":
-        return await start_callback(update, context)
-    if command == "exit":
-        return await exit_callback(update, context)
-    if command == "help":
-        return await help_callback(update, context)
-    if command == "register":
-        return await auth_callback(update, context)
+    if update.message.text:
+        command = update.message.text[1:]
     else:
-        raise WrongCommand(command=command)
+        command = update.message.caption[1:]
+
+    match command:
+        case "start":
+            return await start_callback(update, context)
+        case "exit":
+            return await exit_callback(update, context)
+        case "help":
+            return await help_callback(update, context)
+        case "register":
+            return await auth_callback(update, context)
+
+        # admin commands
+        case "backup":
+            return await backup_db_callback(update, context)
+        case "restore":
+            return await restore_db_callback(update, context)
+        case "cookie_file":
+            return await ...(update, context)
+
+        case _:
+            raise WrongCommand(command=command)
 
 
 class WrongCommand(Exception):

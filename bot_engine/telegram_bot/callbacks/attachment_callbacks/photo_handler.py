@@ -1,6 +1,6 @@
-import config
 from telegram import Message
 
+import config
 from telegram_bot.callbacks.attachment_callbacks.utils.image_converter import (
     convert_image_file,
 )
@@ -18,7 +18,7 @@ async def photo_handler(message: Message, save_file_name: str) -> str:
     # save the photo
     save_file_name = f"{save_file_name}.png"
     photo = await message.photo[best_quality_photo_index].get_file()
-    await photo.download(
+    await photo.download_to_drive(
         custom_path=save_file_name,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
