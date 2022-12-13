@@ -1,21 +1,20 @@
-import config
 from telegram import Update
 from telegram.ext import ContextTypes
+
+import config
 from telegram_bot.callbacks.admin_callbacks.admin_callback import admin_callback
-from telegram_bot.callbacks.register.auth_callback import auth_callback
-from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.commands.commands_dispatcher import (
-    commands_callback,
     WrongCommand,
+    commands_callback,
 )
-from telegram_bot.callbacks.main_callback.main_callback_helpers import (
-    parse_user_id,
-)
+from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.callbacks.main_callback.request_callback_router import (
-    request_type_callback,
     WrongRequestTypeResponse,
     request_router,
+    request_type_callback,
 )
+from telegram_bot.callbacks.register.auth_callback import auth_callback
+from telegram_bot.responders.main_responder import Responder
 
 
 async def dispatcher_callback(
@@ -26,19 +25,19 @@ async def dispatcher_callback(
     # or update.callback_query.from_user.id
     user_id = parse_user_id(update)
 
-    # # if user is admin check if commands, callback_queries contain admin specific elements
-    # # user approval/blocking, listing orders, etc.
-    # if user_id == config.BOT_ADMIN:
-    #     try:
-    #         await admin_callback(update, context)
-    #     except:
-    #         pass
+    # if user is admin check if commands, callback_queries contain admin specific elements
+    # user approval/blocking, listing orders, etc.
+    if user_id == config.BOT_ADMIN:
+        try:
+            await admin_callback(update, context)
+        except:
+            pass
 
-    # # check user allowance. If user is allowed returns without any issues.
-    # try:
-    #     await auth_callback(update, context)
-    # except:
-    #     return
+    # check user allowance. If user is allowed returns without any issues.
+    try:
+        await auth_callback(update, context)
+    except:
+        return
 
     # collect existing user's current order data
     user_data: dict = context.user_data
@@ -52,6 +51,7 @@ async def dispatcher_callback(
         if update.message.caption:
             if update.message.caption.startswith("/"):
                 return await commands_callback(update, context)
+
     except WrongCommand as e:
         print(e)
         return

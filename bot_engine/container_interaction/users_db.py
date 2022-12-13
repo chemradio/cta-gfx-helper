@@ -1,5 +1,6 @@
 import requests
-from config import DISPATCHER_USERS_ENDPOINT, ADD_USER_ENDPOINT, EDIT_USER_ENDPOINT
+
+from config import ADD_USER_ENDPOINT, DISPATCHER_USERS_ENDPOINT, EDIT_USER_ENDPOINT
 from container_interaction.helpers import UserStatus
 
 
@@ -27,12 +28,23 @@ async def list_users(type: UserStatus) -> list:
 
 
 async def check_user_status(telegram_id: int) -> UserStatus:
-    print("pre request is admin")
+    print("entered check user status")
     r = requests.get(
         f"{DISPATCHER_USERS_ENDPOINT}/check_status", json={"telegram_id": telegram_id}
     )
-    print("post request is admin")
-    print(f"json is {r.json()}")
-    print(f'return is {UserStatus(r.json()["status"])}')
+    print("after_request check user status")
 
-    return UserStatus(r.json()["status"])
+    result = r.json()
+    print(f"return is {result}")
+
+    if not result:
+        print("not result f")
+        user_status_string = "unregistered"
+    else:
+        user_status_string = result.get("status")
+
+    print(f"{user_status_string=}")
+    user_status = UserStatus(user_status_string)
+    print(f"{user_status=}")
+
+    return user_status
