@@ -36,9 +36,6 @@ async def attachment_downloader(
     user_data = context.user_data
     stage = user_data.get("stage")
 
-    # # for testing purposes
-    # stage = "bg_file"
-
     target_attachments_map = {
         "audio_file": {"audio"},
         "bg_file": {"photo", "document"},

@@ -5,6 +5,7 @@ from container_interation.video_gfx import signal_to_video_gfx
 from container_interation.sender import signal_to_sender
 import config
 import time
+import json
 
 time.sleep(10)
 app = FastAPI()
@@ -25,6 +26,15 @@ def add_user(user_dict: dict):
     db.add_user(**user_dict)
     return True
 
+
+@app.get("/users/check_status")
+def check_user_status(user_dict: dict):
+    telegram_id = user_dict.pop("telegram_id")
+    user = db.find_user_by_telegram_id(telegram_id)
+    if not user:
+        return False
+    return {'status': user.status}
+    
 
 @app.post("/users/edit")
 def edit_user(user_dict: dict):
@@ -58,9 +68,7 @@ def add_order(order_dict: dict, background_tasks: BackgroundTasks):
     )
     order_dict.update({"status": status, "render_output_path": str(render_output_path)})
 
-    # order_id = db.add_order(**order_dict)
     db.add_order(**order_dict)
-    # order_dict.update({"order_id": order_id})
 
     match status:
         case "screenshots_pending":
@@ -70,10 +78,6 @@ def add_order(order_dict: dict, background_tasks: BackgroundTasks):
         case _:
             return False
 
-    # if request_type in ["video_auto", "only_screenshots"]:
-    #     background_tasks.add_task(signal_to_screenshoter)
-    # if request_type == "video_files":
-    #     background_tasks.add_task(signal_to_video_gfx)
     return True
 
 
@@ -125,19 +129,54 @@ async def get_one(type: dict):
     return orders[0]
 
 
-# @app.post("/orders/screenshots")
-# def add_order(order: dict):
-#     """Adds order to the database. Signals to other workers as needed."""
-#     return True
 
 
-# @app.get("/orders/active")
-# def get_active_orders():
-#     """Returns a list of active orders."""
-#     return {"Hello": "World"}
 
 
-# @app.get("/orders/processing")
-# def get_processing_orders():
-#     """Returns a list of the orders that are being processed."""
-#     return {"Hello": "World"}
+
+
+
+
+
+
+@app.get("/backup")
+def backup_db():
+    "generates a json for database backup"
+    # gather users
+    users = db.list_users()
+    orders = db.list_orders()
+    return {"users": users, "orders": orders}
+
+
+@app.post("/restore")
+def restore_db(backup:dict):
+    "restores db to provided json"
+    # old_state = backup_db()
+    # return old_state
+
+
+    # truncate db
+    db.re_init_full_truncate()
+
+    # add users
+    users: dict[dict] = backup.get('users')
+    for user in users:
+        db.add_user(**user)
+
+    # add orders
+    orders: dict[dict] = backup.get('orders')
+    for order in orders:
+        db.add_order(**order)
+    
+    return True
+
+
+@app.post("/cookie_file")
+def add_cookie_file(cookie_file:dict):
+    "add a cookie file for browser authentication in screenshots module"
+    with open(config.COOKIE_FILE_PATH, 'w+') as cookie_fp:
+        json.dump(cookie_file, cookie_fp)
+    return True
+
+
+    

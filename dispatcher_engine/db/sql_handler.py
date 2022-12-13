@@ -22,13 +22,18 @@ class SQLHandler:
         self.base = Base
         self.base.metadata.create_all(bind=self.engine)
 
+
+    def re_init_full_truncate(self) -> None:
+        self.recreate_tables()
+
+
     def init_add_admin(self) -> None:
         admin_telegram_id = os.environ.get("BOT_ADMIN")
         print(f"{admin_telegram_id=}")
         with self.Session() as session:
             admin = User(
                 first_name="admin",
-                status="approved",
+                status="admin",
                 telegram_id=admin_telegram_id,
                 chat_id=admin_telegram_id,
             )
@@ -89,7 +94,7 @@ class SQLHandler:
             session.commit()
             return order
 
-    def list_users(self, type: str) -> list:
+    def list_users(self, type: str = None) -> list:
         with self.Session() as session:
             if type:
                 query = select(User).where(User.status == type)
@@ -98,7 +103,7 @@ class SQLHandler:
             results = session.scalars(query).all()
             return results if results else []
 
-    def list_orders(self, type: str) -> list:
+    def list_orders(self, type: str=None) -> list:
         with self.Session() as session:
             if type:
                 # to be developed. Order.status - not correct

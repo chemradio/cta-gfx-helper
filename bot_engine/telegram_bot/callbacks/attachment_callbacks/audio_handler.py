@@ -1,6 +1,7 @@
-import config
 from pydub import AudioSegment
 from telegram import Message
+
+import config
 from telegram_bot.callbacks.attachment_callbacks.attachment_exceptions import (
     AudioDurationExceeded,
     WrongAudioFormat,
@@ -19,7 +20,7 @@ async def audio_handler(message: Message, save_file_name: str) -> str:
     save_file_name = f"{save_file_name}.{extension}"
 
     file = await message.audio.get_file()
-    await file.download(
+    await file.download_to_drive(
         custom_path=save_file_name,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,

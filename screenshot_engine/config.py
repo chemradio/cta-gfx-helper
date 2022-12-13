@@ -32,8 +32,10 @@ SOCIAL_WEBSITES = {
     "instagram": "https://instagram.com",
 }
 
+VOLUME_MOUNTPOINT = Path.cwd() / "volume"
 
-COOKIE_FILE = "./cookie_file.json"
+COOKIE_FILE = VOLUME_MOUNTPOINT / "cookie_file.json"
+
 
 # !!!
 REMOTE_SCREENSHOT_DRIVER_URL = f"http://screenshot_selenium:4444/wd/hub"
@@ -42,3 +44,5 @@ REMOTE_SCREENSHOT_DRIVER_URL = f"http://screenshot_selenium:4444/wd/hub"
 
 USE_REMOTE_DRIVER = True
 SCREENSHOT_ATTEMPTS = 2
+
+AD_DB_URL = "https://raw.githubusercontent.com/chemradio/cta-chrome-extension/main/ads_database.json"

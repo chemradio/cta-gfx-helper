@@ -1,7 +1,9 @@
 from pprint import pprint
-import config
+
 from pydub import AudioSegment
 from telegram import Message
+
+import config
 from telegram_bot.callbacks.attachment_callbacks.attachment_exceptions import (
     WrongImageFormat,
 )
@@ -18,7 +20,7 @@ async def document_handler(message: Message, save_file_name: str) -> str:
     if message.document.mime_type == "application/pdf":
         save_file_name = f"{save_file_name}.pdf"
         file = await message.document.get_file()
-        await file.download(
+        await file.download_to_drive(
             custom_path=save_file_name,
             read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
             write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -36,7 +38,7 @@ async def document_handler(message: Message, save_file_name: str) -> str:
 
     # get the file
     file = await message.document.get_file()
-    await file.download(
+    await file.download_to_drive(
         custom_path=save_file_name,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,

@@ -5,6 +5,6 @@ app = FastAPI()
 
 
 @app.post("/send_orders")
-def send_orders(background_tasks: BackgroundTasks):
+async def send_orders(background_tasks: BackgroundTasks):
     background_tasks.add_task(orders_sender)
     return True
