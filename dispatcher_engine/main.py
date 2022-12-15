@@ -47,6 +47,9 @@ def edit_user(user_dict: dict):
 def list_users(type: dict):
     """Returns a list of all users if not specified."""
     status_type = type.get("status")
+    if not status_type or (status_type == 'all'):
+        status_type = None
+        
     users = db.list_users(status_type)
     return {"users": users}
 
