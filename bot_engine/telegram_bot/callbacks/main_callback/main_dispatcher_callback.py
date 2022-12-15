@@ -2,7 +2,9 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import config
-from telegram_bot.callbacks.admin_callbacks.admin_callback import admin_callback
+from telegram_bot.callbacks.admin_callbacks.admin_query_callback import (
+    admin_query_callback,
+)
 from telegram_bot.callbacks.commands.commands_dispatcher import (
     WrongCommand,
     commands_callback,
@@ -29,7 +31,9 @@ async def dispatcher_callback(
     # user approval/blocking, listing orders, etc.
     if user_id == config.BOT_ADMIN:
         try:
-            await admin_callback(update, context)
+            admin_actions = await admin_query_callback(update, context)
+            if admin_actions:
+                return
         except:
             pass
 

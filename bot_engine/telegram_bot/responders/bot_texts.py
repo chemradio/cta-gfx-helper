@@ -88,7 +88,18 @@ class RegisterResponses:
     register_applied_admin: str = "👤 💡 Новая заявка на регистрацию.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
     register_approved_admin: str = "👤 ✅ Заявка на регистрацию одобрена.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
     register_blocked_admin: str = "👤 ❌ Пользователь заблокирован.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
+    register_pended_admin: str = (
+        "👤 ❔ Пользователь в ожидании.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
+    )
+    empty_users_list: str = "👤... Пользователи с таким критерием отсутствуют"
 
+    list_pending_user: str = "👤 ❔ Неодобренный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
+    list_approved_user: str = (
+        "👤 ✅ Одобренный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
+    )
+    list_blocked_user: str = "👤 ❌ Заблокированный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}"
+
+    pend_inline: str = "❔ Решить позже"
     approve_inline: str = "✅ Одобрить"
     block_inline: str = "❌ Заблокировать"
 

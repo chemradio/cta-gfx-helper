@@ -9,6 +9,7 @@ services:
       - ./dispatcher_engine:/usr/src/app
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
+      - IS_DOCKER=true
     expose:
       - "9000"
     ports:
@@ -28,6 +29,7 @@ services:
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
       - BOT_TOKEN=${BOT_TOKEN}
+      - IS_DOCKER=true
     depends_on:
       - dispatcher
 

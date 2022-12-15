@@ -7,3 +7,4 @@ class UserStatus(Enum):
     BLOCKED: str = "blocked"
     PENDING: str = "pending"
     ADMIN: str = "admin"
+    ALL: str = "all"

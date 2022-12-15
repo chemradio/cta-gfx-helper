@@ -1,13 +1,18 @@
 from telegram import ForceReply, Update
 from telegram.ext import ContextTypes
-from telegram_bot.callbacks.commands.start_callback import start_callback
-from telegram_bot.callbacks.commands.help_callback import help_callback
-from telegram_bot.callbacks.commands.exit_callback import exit_callback
-from telegram_bot.callbacks.register.auth_callback import auth_callback
+
+from container_interaction.helpers import UserStatus
 from telegram_bot.callbacks.admin_callbacks.backup_restore_db import (
     backup_db_callback,
     restore_db_callback,
 )
+from telegram_bot.callbacks.admin_callbacks.list_users_to_admin import (
+    list_users_to_admin,
+)
+from telegram_bot.callbacks.commands.exit_callback import exit_callback
+from telegram_bot.callbacks.commands.help_callback import help_callback
+from telegram_bot.callbacks.commands.start_callback import start_callback
+from telegram_bot.callbacks.register.auth_callback import auth_callback
 
 
 async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -34,6 +39,14 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         case "cookie_file":
             return await ...(update, context)
 
+        case "users_blocked":
+            return await list_users_to_admin(UserStatus.BLOCKED)
+        case "users_approved":
+            return await list_users_to_admin(UserStatus.ALLOWED)
+        case "users_pending":
+            return await list_users_to_admin(UserStatus.PENDING)
+        case "users_all":
+            return await list_users_to_admin(UserStatus.ALL)
         case _:
             raise WrongCommand(command=command)
 
