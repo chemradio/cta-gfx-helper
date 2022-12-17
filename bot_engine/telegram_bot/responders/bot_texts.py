@@ -173,6 +173,9 @@ Cтатус: {status}
 Автор цитаты: {quote_author}
 Звук: {audio_enabled}"""
 
+    cookie_file_successfully_uploaded: str = "Cookie-файл загружен успешно"
+    cookie_file_upload_failed: str = "Ошибка загрузки cookie-файла"
+
 
 @dataclass
 class Responses:

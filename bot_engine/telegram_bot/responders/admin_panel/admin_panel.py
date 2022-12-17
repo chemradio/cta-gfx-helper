@@ -82,3 +82,18 @@ class AdminPanelResponder:
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
             disable_web_page_preview=True,
         )
+
+    @staticmethod
+    async def cookie_file_upload_status(admin_id, status: bool):
+        if status is True:
+            text = Responses.admin.cookie_file_successfully_uploaded
+        else:
+            text = Responses.admin.cookie_file_upload_failed
+
+        return await bot.send_message(
+            chat_id=admin_id,
+            text=text,
+            reply_markup=ReplyKeyboardRemove(),
+            parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
+            disable_web_page_preview=True,
+        )

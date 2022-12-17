@@ -8,7 +8,10 @@ from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
 GLOBAL_MESSAGE_PARSE_MODE = ParseMode.HTML
-USER_FILES_FOLDER = Path().cwd() / "volume" / "user_files"
+VOLUME_MOUNTPOINT = Path().cwd() / "volume"
+USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"
+COOKIE_FILE_PATH = VOLUME_MOUNTPOINT / "cookie_file" / "cookie_file.json"
+
 FILE_DOWNLOAD_TIMEOUT = 180
 MAX_AUDIO_LENGTH = 40
 
