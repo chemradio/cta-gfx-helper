@@ -6,6 +6,9 @@ from telegram_bot.callbacks.admin_callbacks.backup_restore_db import (
     backup_db_callback,
     restore_db_callback,
 )
+from telegram_bot.callbacks.admin_callbacks.cookie_file_uploader import (
+    cookie_file_uploader,
+)
 from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
 from telegram_bot.callbacks.commands.exit_callback import exit_callback
 from telegram_bot.callbacks.commands.help_callback import help_callback
@@ -35,7 +38,7 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         case "restore":
             return await restore_db_callback(update, context)
         case "cookie_file":
-            return await ...(update, context)
+            return await cookie_file_uploader(update, context)
 
         case "admin":
             return await admin_panel_callback(update, context)
