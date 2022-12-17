@@ -108,10 +108,17 @@ def truncate_orders():
 
 
 @app.get("/orders/list")
-async def list_orders(type: dict):
-    """Returns a list of all users if not specified."""
+async def list_orders(type: dict={}):
+    """Returns a list of all orders if not specified."""
     status_type = type.get("status")
     orders = db.list_orders(status_type)
+
+    for order in orders:
+        user = db.find_user_by_telegram_id(order.user_telegram_id)
+        order.user_first_name = user.first_name
+        print(order)
+        print(order.user_first_name)
+
     return {"orders": orders}
 
 

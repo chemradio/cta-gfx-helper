@@ -96,6 +96,8 @@ class Order(Base):
     )
 
     user: Mapped["User"] = relationship(back_populates="orders")
+    
+    user_first_name:Mapped[Optional[str]]
 
     def __repr__(self) -> str:
         return textwrap.dedent(

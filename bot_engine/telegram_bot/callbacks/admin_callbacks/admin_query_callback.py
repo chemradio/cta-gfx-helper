@@ -1,7 +1,13 @@
-from telegram import Update
+from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import ContextTypes
 
+from container_interaction.helpers import UserStatus
+from container_interaction.orders_db import cancel_order
 from container_interaction.users_db import allow_user, block_user, pend_user
+from telegram_bot.callbacks.admin_callbacks.list_orders_to_admin import (
+    list_10_orders_to_admin, list_active_orders_to_admin)
+from telegram_bot.callbacks.admin_callbacks.list_users_to_admin import \
+    list_users_to_admin
 from telegram_bot.responders.main_responder import Responder
 
 
@@ -11,6 +17,7 @@ async def admin_query_callback(
     update_dict = update.to_dict()
     callback_query = update_dict.get("callback_query")
     if callback_query:
+        await update.callback_query.message.edit_reply_markup(reply_markup=None)
         await update.callback_query.answer(cache_time=180)
         data = update.callback_query.data
 
@@ -38,4 +45,37 @@ async def admin_query_callback(
                 text=update.callback_query.message.text.split("\n")[2] + "\nPending"
             )
             return True
-    return False
+
+        if "admin_cancel_order_" in data:
+            order_id = int(data.split("admin_cancel_order_")[1])
+            current_message_text = update.callback_query.message.text
+            if await cancel_order(order_id):
+                updated_message_text = current_message_text + "\n\n🛑 CANCELLED"
+            else:
+                updated_message_text = current_message_text + "\n\n🛑 Failed to terminate..."
+
+            await update.callback_query.edit_message_text(text=updated_message_text, disable_web_page_preview=True)
+            return True
+
+        if data == "admin_list_10_orders":
+            await list_10_orders_to_admin()
+            return True
+
+        if data == "admin_list_active_orders":
+            await list_active_orders_to_admin()
+            return True
+
+        if data == "admin_list_approved_users":
+            await list_users_to_admin(UserStatus.ALLOWED)
+            return True
+
+        if data == "admin_list_blocked_users":
+            await list_users_to_admin(UserStatus.BLOCKED)
+            return True
+
+        if data == "admin_list_pending_users":
+            await list_users_to_admin(UserStatus.PENDING)
+            return True
+
+        return False
+        return False

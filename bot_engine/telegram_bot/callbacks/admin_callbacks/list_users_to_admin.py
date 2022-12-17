@@ -5,9 +5,7 @@ from telegram_bot.responders.main_responder import Responder
 
 
 async def list_users_to_admin(type: UserStatus) -> None:
-    print("enter list users")
     users_list = await fetch_users()
-    print(f"{users_list=}")
     target_user_group = [user for user in users_list if user["status"] == type.value]
     if not target_user_group:
         return await Responder.register_admin.empty_users_list(BOT_ADMIN)
