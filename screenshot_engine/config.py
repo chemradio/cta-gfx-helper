@@ -34,7 +34,7 @@ SOCIAL_WEBSITES = {
 
 VOLUME_MOUNTPOINT = Path.cwd() / "volume"
 
-COOKIE_FILE = VOLUME_MOUNTPOINT /"cookie_file"/ "cookie_file.json"
+COOKIE_FILE = VOLUME_MOUNTPOINT / "cookie_file" / "cookie_file.json"
 
 
 # !!!

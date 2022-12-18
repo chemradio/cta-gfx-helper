@@ -1,8 +1,10 @@
-import os
-import config
-import time
 import json
+import os
+import time
+
 from selenium import webdriver
+
+import config
 
 
 class CookieManager:
@@ -15,7 +17,7 @@ class CookieManager:
 
     def initialize_cookie_storage(self) -> None:
         """Create cookie file json if does not exist already."""
-        if not os.path.exists(self.cookie_file):
+        if not self.cookie_file.exists():
             with open(self.cookie_file, "a+") as cookie_file:
                 json.dump({"domain_name": [{}]}, cookie_file)
 

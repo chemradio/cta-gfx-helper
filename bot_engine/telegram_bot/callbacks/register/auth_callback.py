@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Any, Callable
 
 from telegram import Update
@@ -6,7 +7,10 @@ from telegram.ext import ContextTypes
 import config
 from container_interaction.helpers import UserStatus
 from container_interaction.users_db import add_pending_user, check_user_status
-from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.callbacks.main_callback.main_callback_helpers import (
+    parse_user_first_name,
+    parse_user_id,
+)
 from telegram_bot.callbacks.register.auth_exceptions import (
     BlockedUser,
     PendingUser,
@@ -16,9 +20,8 @@ from telegram_bot.responders.main_responder import Responder
 
 
 async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("entered auth_callback")
     user_id = parse_user_id(update)
-    first_name = update.message.from_user.first_name
+    first_name = parse_user_first_name(update)
 
     user_status = await check_user_status(telegram_id=user_id)
 
