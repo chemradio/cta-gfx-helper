@@ -1,7 +1,5 @@
-import os
-
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-
 from telegram import Bot
+
+from config import BOT_TOKEN
 
 bot = Bot(token=BOT_TOKEN)
