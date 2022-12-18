@@ -78,4 +78,3 @@ async def admin_query_callback(
             return True
 
         return False
-        return False
