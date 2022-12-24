@@ -120,15 +120,15 @@ services:
 
 volumes:
   assets_storage:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '$PWD/assets_storage'
+    # driver: local
+    # driver_opts:
+    #   type: 'none'
+    #   o: 'bind'
+    #   device: '$PWD/assets_storage'
 
   pg_data:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '$PWD/pg_data'
+    # driver: local
+    # driver_opts:
+    #   type: 'none'
+    #   o: 'bind'
+    #   device: '$PWD/pg_data'
