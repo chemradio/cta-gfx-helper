@@ -1,11 +1,10 @@
 import os
 from typing import Optional
 
-from sqlalchemy import and_, create_engine, select
-from sqlalchemy.orm import sessionmaker
-
 import config
 from db.sqlalchemy_models import Base, Order, User
+from sqlalchemy import and_, create_engine, select
+from sqlalchemy.orm import sessionmaker
 
 
 class SQLHandler:
@@ -120,7 +119,7 @@ class SQLHandler:
             query = select(Order).where(
                 and_(Order.current_stage == current_stage, Order.status == status)
             )
-            result = session.scalar(query).one()
+            result = session.scalars(query).all()[0]
             return result if result else None
 
     def find_user_by_telegram_id(self, telegram_id: int) -> Optional[User]:
