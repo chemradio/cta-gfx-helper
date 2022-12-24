@@ -97,3 +97,13 @@ class AdminPanelResponder:
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
             disable_web_page_preview=True,
         )
+
+    @staticmethod
+    async def missing_orders(admin_id):
+        return await bot.send_message(
+            chat_id=admin_id,
+            text=Responses.admin.missing_orders,
+            reply_markup=ReplyKeyboardRemove(),
+            parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
+            disable_web_page_preview=True,
+        )

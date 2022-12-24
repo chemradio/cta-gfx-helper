@@ -1,6 +1,6 @@
 from config import SCREENSHOT_ATTEMPTS
-from screenshots.screenshooter import Screenshooter
 from screenshots.parse_link_type import parse_link_type
+from screenshots.screenshooter import Screenshooter
 
 
 def capture_screenshots(order: dict) -> dict:
@@ -27,12 +27,12 @@ def capture_screenshots(order: dict) -> dict:
                 "video_auto": "video_gfx_pending",
             }
 
-            order.update({"status": next_status_map[order["request_type"]]})
+            order.update({"current_stage": next_status_map[order["request_type"]]})
             break
         except Exception as e:
             print(f"Screenshooting failed. Attempt {attempts}/{SCREENSHOT_ATTEMPTS}")
             print(e)
             attempts -= 1
     else:
-        order.update({"status": "screenshot_error"})
+        order.update({"status": "error", "current_stage": "screenshot_error"})
     return order

@@ -173,7 +173,7 @@ Cтатус: {status}
 Автор цитаты: {quote_author}
 Звук: {audio_enabled}"""
 
-    cookie_file_successfully_uploaded: str = "Cookie-файл загружен успешно"
+    missing_orders = "😶 Заказы с таким критерием отсутствуют."
     cookie_file_upload_failed: str = "Ошибка загрузки cookie-файла"
 
 
@@ -191,4 +191,3 @@ class Responses:
     command = CommandResponses
     results = ResultsResponses
     request_options = RequestOptions
-    register = RegisterResponses

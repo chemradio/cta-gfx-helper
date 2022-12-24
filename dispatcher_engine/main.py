@@ -83,18 +83,18 @@ async def add_order(order_dict: dict, background_tasks: BackgroundTasks):
     request_type = order_dict.get("request_type")
 
     if request_type in ["only_screenshots", "video_auto"]:
-        status = "screenshots_pending"
+        current_stage = "screenshots_pending"
     else:
-        status = "video_gfx_pending"
+        current_stage = "video_gfx_pending"
 
     render_output_path = (
         config.RENDER_OUTPUT_PATH / f"{str(request_type)}-gfx-{int(time.time())}.mp4"
     )
-    order_dict.update({"status": status, "render_output_path": str(render_output_path)})
+    order_dict.update({"status": "active","current_stage":current_stage, "render_output_path": str(render_output_path)})
 
     db.add_order(**order_dict)
 
-    match status:
+    match current_stage:
         case "screenshots_pending":
             background_tasks.add_task(signal_to_screenshoter)
         case "video_gfx_pending":
@@ -111,8 +111,8 @@ async def edit_order(order_dict: dict, background_tasks: BackgroundTasks):
     if not db.edit_order(order_id=order_id, **order_dict):
         return False
 
-    status = order_dict["status"]
-    match status:
+    current_stage = order_dict["current_stage"]
+    match current_stage:
         case "ready_to_send":
             background_tasks.add_task(signal_to_sender)
         case "video_gfx_pending":
@@ -129,35 +129,24 @@ async def truncate_orders():
 
 
 @app.get("/orders/list")
-async def list_orders(type: dict = {}):
+async def list_orders(status: dict = {}):
     """Returns a list of all orders if not specified."""
-    status_type = type.get("status")
-    orders = db.list_orders(status_type)
+    status = status.get("status")
+    orders = db.list_orders(status)
 
     for order in orders:
         user = db.find_user_by_telegram_id(order.user_telegram_id)
         order.user_first_name = user.first_name
-        print(order)
-        print(order.user_first_name)
 
-    return {"orders": orders}
-
-
-@app.get("/orders/list_unsent_orders")
-async def list_unsent_orders():
-    """Returns a list of unsent orders."""
-    orders = db.list_orders("ready_to_send")
     return {"orders": orders}
 
 
 @app.get("/orders/get_one")
-async def get_one(type: dict):
+async def get_one(current_stage: dict, status:str="active"):
     """Returns a list of all users if not specified."""
-    status_type = type.get("status")
-    orders = db.list_orders(status_type)
-    if not orders:
-        return {}
-    return orders[0]
+    current_stage = current_stage.get("current_stage")
+    order = db.get_one_order(current_stage, status)
+    return order if order else None
 
 
 @app.get("/backup")

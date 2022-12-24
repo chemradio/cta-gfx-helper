@@ -1,8 +1,8 @@
-token.txt
 .vscode/
 .DS_Store
-volume/user_files/
 # volume/user_files/*
+db_backup.json
+db_backup.json.zip
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
