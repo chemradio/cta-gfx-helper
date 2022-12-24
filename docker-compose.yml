@@ -10,6 +10,7 @@ services:
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
       - IS_DOCKER=true
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     expose:
       - "9000"
     ports:
@@ -37,7 +38,7 @@ services:
   db:
     image: "postgres:15-alpine"
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     # volumes:
     #   - pg_data:/var/lib/postgresql/data
     
