@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 SQL_SERVER = "temp.sqlite"
@@ -8,7 +9,7 @@ RENDER_OUTPUT_PATH = VOLUME_MOUNTPOINT / "video_exports"
 
 # database configuration
 POSTGRES_USER = "postgres"
-POSTGRES_PASSWORD = "currenttimeasia"
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 POSTGRES_HOSTNAME = "db"
 POSTGRES_PORT = "5432"
 POSTGRES_DB = "postgres"
