@@ -17,8 +17,8 @@ async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
     return True
 
 
-async def fetch_orders() -> list:
-    r = requests.get(f"{DISPATCHER_ORDERS_ENDPOINT}/list", json={})
+async def fetch_orders(status: str = None) -> list:
+    r = requests.get(f"{DISPATCHER_ORDERS_ENDPOINT}/list", json={"status": status})
     json = r.json()
     return json["orders"]
 

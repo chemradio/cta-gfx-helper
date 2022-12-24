@@ -1,9 +1,11 @@
 import os
 from typing import Optional
-import config
-from sqlalchemy import create_engine, select
+
+from sqlalchemy import and_, create_engine, select
 from sqlalchemy.orm import sessionmaker
-from db.sqlalchemy_models import Base, User, Order
+
+import config
+from db.sqlalchemy_models import Base, Order, User
 
 
 class SQLHandler:
@@ -22,10 +24,8 @@ class SQLHandler:
         self.base = Base
         self.base.metadata.create_all(bind=self.engine)
 
-
     def re_init_full_truncate(self) -> None:
         self.recreate_tables()
-
 
     def init_add_admin(self) -> None:
         admin_telegram_id = os.environ.get("BOT_ADMIN")
@@ -103,15 +103,25 @@ class SQLHandler:
             results = session.scalars(query).all()
             return results if results else []
 
-    def list_orders(self, type: str=None) -> list:
+    def list_orders(self, status: str = None) -> list:
         with self.Session() as session:
-            if type:
+            if status:
                 # to be developed. Order.status - not correct
-                query = select(Order).where(Order.status == type)
+                query = select(Order).where(Order.status == status)
             else:
                 query = select(Order)
             results = session.scalars(query).all()
             return results if results else []
+
+    def get_one_order(
+        self, current_stage: str, status: str = "active"
+    ) -> Optional[list]:
+        with self.Session() as session:
+            query = select(Order).where(
+                and_(Order.current_stage == current_stage, Order.status == status)
+            )
+            result = session.scalar(query).one()
+            return result if result else None
 
     def find_user_by_telegram_id(self, telegram_id: int) -> Optional[User]:
         with self.Session() as session:

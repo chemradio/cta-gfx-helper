@@ -1,4 +1,5 @@
 import requests
+
 from config import EDIT_ORDER_ENDPOINT
 
 
@@ -7,7 +8,7 @@ async def mark_order_sent(order: dict, send_success: bool) -> None:
         EDIT_ORDER_ENDPOINT,
         json={
             "order_id": order["order_id"],
-            "status": "success" if send_success else "send_error",
+            "current_stage": "success" if send_success else "send_error",
         },
     )
     return r.json() if r.status_code == 200 else None

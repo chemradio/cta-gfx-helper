@@ -1,11 +1,11 @@
-from video_gfx.create_html_gfx import create_html
-from video_gfx.animation_extractor import extract_png_sequence
-from video_gfx.png_stitcher import stitch_images
-from video_gfx.animation_configurator import create_animation_parameters
 import config
+from video_gfx.animation_configurator import create_animation_parameters
+from video_gfx.animation_extractor import extract_png_sequence
+from video_gfx.create_html_gfx import create_html
+from video_gfx.png_stitcher import stitch_images
 
 
-def create_video_gfx(order: dict) -> str:
+def create_video_gfx(order: dict) -> dict:
     """Creates a video of multiple files like Background and Foreground images,
     adds audio file if neccessary and returns path to a ready video"""
     # create animation parameters object
@@ -26,5 +26,5 @@ def create_video_gfx(order: dict) -> str:
     )
     stitch_images(str(png_path), str(ready_video_path), audio_path)
 
-    order.update({"status": "ready_to_send"})
+    order.update({"current_stage": "ready_to_send"})
     return order

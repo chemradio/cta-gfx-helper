@@ -50,6 +50,7 @@ class Order(Base):
     # main description
     status: Mapped[Optional[str]]
     request_type: Mapped[Optional[str]]
+    current_stage: Mapped[Optional[str]]
 
     order_start_timestamp: Mapped[Optional[int]]
     order_creation_end_timestamp: Mapped[Optional[int]]

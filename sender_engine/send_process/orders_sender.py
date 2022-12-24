@@ -10,9 +10,7 @@ from send_process.send_order import send_order
 async def orders_sender():
     while True:
         order = get_ready_to_send_order()
-        print(f"{__name__}:{order=}")
         if not order:
-            print("No more orders to send.")
             break
 
         send_success = await send_order(order)

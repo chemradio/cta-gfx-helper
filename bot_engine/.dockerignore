@@ -4,4 +4,5 @@ __pycache__/
 *.py[cod]
 *$py.class
 .Python
-volume/user_files/
+db_backup.json
+db_backup.json.zip
