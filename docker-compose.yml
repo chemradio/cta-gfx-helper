@@ -65,7 +65,7 @@ services:
     image: "seleniarm/standalone-chromium"
     hostname: screenshot_selenium
     privileged: true
-    shm_size: 4g
+    shm_size: 2g
     # ports:
     #   - "4444:4444"
 
@@ -86,7 +86,7 @@ services:
     image: "seleniarm/standalone-chromium"
     hostname: video_gfx_selenium
     privileged: true
-    shm_size: 4g
+    shm_size: 2g
     # ports:
     #   - "4444:4444"
 
