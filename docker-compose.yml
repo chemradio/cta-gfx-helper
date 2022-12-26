@@ -61,48 +61,48 @@ services:
     #   - "9002:9002"
 
   screenshot_selenium:
-    # image: "selenium/standalone-chrome"
-    image: "seleniarm/standalone-chromium"
+    image: "selenium/standalone-chrome"
+    # image: "seleniarm/standalone-chromium"
     hostname: screenshot_selenium
     privileged: true
-    shm_size: 4g
+    shm_size: 2g
     # ports:
     #   - "4444:4444"
 
-  # # video_gfx
-  # video_gfx:
-  #   build: ./video_gfx
-  #   volumes:
-  #     - asset_storage:/usr/src/app/volume
-  #     # # dev only
-  #     # - ./video_gfx:/usr/src/app
-  #   expose:
-  #     - "9004"
-  #   # ports:
-  #   #   - "9004:9004"
+  # video_gfx
+  video_gfx:
+    build: ./video_gfx
+    volumes:
+      - asset_storage:/usr/src/app/volume
+      # # dev only
+      # - ./video_gfx:/usr/src/app
+    expose:
+      - "9004"
+    # ports:
+    #   - "9004:9004"
   
-  # video_gfx_selenium:
-  #   # image: "selenium/standalone-chrome"
-  #   image: "seleniarm/standalone-chromium"
-  #   hostname: video_gfx_selenium
-  #   privileged: true
-  #   shm_size: 4g
-  #   # ports:
-  #   #   - "4444:4444"
+  video_gfx_selenium:
+    image: "selenium/standalone-chrome"
+    # image: "seleniarm/standalone-chromium"
+    hostname: video_gfx_selenium
+    privileged: true
+    shm_size: 2g
+    # ports:
+    #   - "4444:4444"
 
 
-  # video_gfx_server:
-  #   build: ./video_gfx_server
-  #   # environment:
-  #   #   - IS_DOCKER=true
-  #   volumes:
-  #     - asset_storage:/usr/src/app/volume
-  #     # # dev only
-  #     # - ./video_gfx_server:/usr/src/app
-  #   expose:
-  #     - "9006"
-  #   # ports:
-  #   #   - "9006:9006"
+  video_gfx_server:
+    build: ./video_gfx_server
+    # environment:
+    #   - IS_DOCKER=true
+    volumes:
+      - asset_storage:/usr/src/app/volume
+      # # dev only
+      # - ./video_gfx_server:/usr/src/app
+    expose:
+      - "9006"
+    # ports:
+    #   - "9006:9006"
 
   # sender engine
   sender:
@@ -119,11 +119,6 @@ services:
     # ports:
     #   - "9007:9007"
 
-  # # posegres backup engine
-  # db_backup_engine:
-  #   build: ./sender_engine
-  #   ports:
-  #     - "9008:9008"
 
 volumes:
   asset_storage:
@@ -131,11 +126,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '$PWD/volume/asset_storage'
+      device: '$PWD/dev/volume/asset_storage'
 
   pg_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '$PWD/volume/pg_data'
+      device: '$PWD/dev/volume/pg_data/data'
