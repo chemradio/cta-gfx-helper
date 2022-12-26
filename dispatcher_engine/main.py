@@ -1,14 +1,12 @@
 import json
-import time
 from pathlib import Path
-
-from fastapi import BackgroundTasks, FastAPI
 
 import config
 from container_interation.screenshoter import signal_to_screenshoter
 from container_interation.sender import signal_to_sender
 from container_interation.video_gfx import signal_to_video_gfx
 from db.sql_handler import SQLHandler
+from fastapi import BackgroundTasks, FastAPI
 
 
 def create_volume_folders():
@@ -28,7 +26,6 @@ def create_volume_folders():
 
 create_volume_folders()
 
-time.sleep(10)
 app = FastAPI()
 db = SQLHandler()
 db.recreate_tables()
@@ -90,7 +87,13 @@ async def add_order(order_dict: dict, background_tasks: BackgroundTasks):
     render_output_path = (
         config.RENDER_OUTPUT_PATH / f"{str(request_type)}-gfx-{int(time.time())}.mp4"
     )
-    order_dict.update({"status": "active","current_stage":current_stage, "render_output_path": str(render_output_path)})
+    order_dict.update(
+        {
+            "status": "active",
+            "current_stage": current_stage,
+            "render_output_path": str(render_output_path),
+        }
+    )
 
     db.add_order(**order_dict)
 
@@ -142,7 +145,7 @@ async def list_orders(status: dict = {}):
 
 
 @app.get("/orders/get_one")
-async def get_one(current_stage: dict, status:str="active"):
+async def get_one(current_stage: dict, status: str = "active"):
     """Returns a list of all users if not specified."""
     current_stage = current_stage.get("current_stage")
     order = db.get_one_order(current_stage, status)

@@ -5,7 +5,7 @@ services:
   dispatcher:
     build: ./dispatcher_engine
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       - ./dispatcher_engine:/usr/src/app
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
@@ -16,14 +16,15 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 
   # telegram bot
   telegram_bot:
     build: ./bot_engine
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       - ./bot_engine:/usr/src/app/
     expose:
       - "9001"
@@ -39,6 +40,11 @@ services:
     image: "postgres:15-alpine"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     # volumes:
     #   - pg_data:/var/lib/postgresql/data
     
@@ -46,7 +52,7 @@ services:
   screenshoter:
     build: ./screenshot_engine
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       # - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
     expose:
@@ -67,7 +73,7 @@ services:
   video_gfx:
     build: ./video_gfx
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       # # dev only
       # - ./video_gfx:/usr/src/app
     expose:
@@ -90,7 +96,7 @@ services:
     # environment:
     #   - IS_DOCKER=true
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       # # dev only
       # - ./video_gfx_server:/usr/src/app
     expose:
@@ -102,7 +108,7 @@ services:
   sender:
     build: ./sender_engine
     volumes:
-      - assets_storage:/usr/src/app/volume
+      - asset_storage:/usr/src/app/volume
       # # dev only
       # - ./sender_engine:/usr/src/app
     environment:
@@ -120,16 +126,16 @@ services:
   #     - "9008:9008"
 
 volumes:
-  assets_storage:
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: '$PWD/assets_storage'
+  asset_storage:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '$PWD/volume/asset_storage'
 
   pg_data:
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: '$PWD/pg_data'
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '$PWD/volume/pg_data'
