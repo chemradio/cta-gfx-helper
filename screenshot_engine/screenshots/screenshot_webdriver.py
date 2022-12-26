@@ -1,13 +1,14 @@
+import json
 import time
+
+import config
+from screenshots.ad_block.adblock_script_generator import remove_ads_script
 from screenshots.cookie_manager import CookieManager
 from screenshots.login_routines import LoginRoutines
-import config
-import json
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from screenshots.ad_block.adblock_script_generator import remove_ads_script
 
 
 class ScreenshotWebdriver:
@@ -22,8 +23,8 @@ class ScreenshotWebdriver:
 
         device_emulation = {
             "deviceMetrics": {
-                "width": 1920,
-                "height": 6000,
+                "width": config.SCREENSHOT_DIMENSIONS[0],
+                "height": config.SCREENSHOT_DIMENSIONS[1],
                 "pixelRatio": self.dpi_multiplier,
             },
             "userAgent": user_agent,

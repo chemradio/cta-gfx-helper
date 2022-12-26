@@ -46,3 +46,8 @@ USE_REMOTE_DRIVER = True
 SCREENSHOT_ATTEMPTS = 2
 
 AD_DB_URL = "https://raw.githubusercontent.com/chemradio/cta-chrome-extension/main/ads_database.json"
+
+
+SCREENSHOT_ASPECT_RATIO = [1,3]
+RESOLUTION_MULTIPLIER = 1920
+SCREENSHOT_DIMENSIONS = [aspect*RESOLUTION_MULTIPLIER for aspect in SCREENSHOT_ASPECT_RATIO]
