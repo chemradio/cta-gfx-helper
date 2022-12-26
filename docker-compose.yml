@@ -45,8 +45,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    # volumes:
-    #   - pg_data:/var/lib/postgresql/data
+    volumes:
+      - pg_data:/var/lib/postgresql/data
     
   # screenshots
   screenshoter:
@@ -131,11 +131,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '$PWD/volume/asset_storage'
+      device: '$PWD/dev/volume/asset_storage'
 
   pg_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '$PWD/volume/pg_data'
+      device: '$PWD/dev/volume/pg_data'
