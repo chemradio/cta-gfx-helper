@@ -327,3 +327,6 @@ class SQLHandler:
     #         results = session.scalars(query).all()
 
     #     return len(results) if only_count else results
+
+
+db = SQLHandler()
