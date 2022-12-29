@@ -1,12 +1,8 @@
-from typing import List, Optional
-from sqlalchemy import ForeignKey, Integer, Sequence, BigInteger
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_column,
-    DeclarativeBase,
-    relationship,
-)
 import textwrap
+from typing import List, Optional
+
+from sqlalchemy import BigInteger, ForeignKey, Integer, Sequence
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
@@ -64,15 +60,15 @@ class Order(Base):
 
     # video description
     fg_enabled: Mapped[Optional[bool]]
-    bg_path: Mapped[Optional[str]]
-    fg_path: Mapped[Optional[str]]
+    background_name: Mapped[Optional[str]]
+    foreground_name: Mapped[Optional[str]]
     bg_animation: Mapped[Optional[str]]
     fg_animation: Mapped[Optional[str]]
 
-    video_ready: Mapped[Optional[bool]]
-    render_output_path: Mapped[Optional[str]]
-    audio_enabled: Mapped[Optional[bool]]
+    video_gfx_name: Mapped[Optional[str]]
+    video_gfx_ready: Mapped[Optional[bool]]
     audio_path: Mapped[Optional[str]]
+    audio_enabled: Mapped[Optional[bool]]
 
     quote_enabled: Mapped[Optional[bool]]
     quote_text: Mapped[Optional[str]]
@@ -97,8 +93,8 @@ class Order(Base):
     )
 
     user: Mapped["User"] = relationship(back_populates="orders")
-    
-    user_first_name:Mapped[Optional[str]]
+
+    user_first_name: Mapped[Optional[str]]
 
     def __repr__(self) -> str:
         return textwrap.dedent(

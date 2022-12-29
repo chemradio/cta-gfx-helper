@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 DISPATCHER_NODE_HOSTNAME = "dispatcher"
 DISPATCHER_NODE_PORT = 9000
@@ -11,3 +12,7 @@ GET_ONE_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/get_one"
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 BOT_ADMIN = os.environ.get("BOT_ADMIN")
+
+VOLUME_MOUNTPOINT = Path.cwd() / "volume"
+VIDEO_GFX_FOLDER = VOLUME_MOUNTPOINT / "video_exports"
+SCREENSHOTS_FOLDER = VOLUME_MOUNTPOINT / "screenshots"
