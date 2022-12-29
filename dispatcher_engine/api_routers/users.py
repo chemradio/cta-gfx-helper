@@ -1,16 +1,17 @@
 from fastapi import APIRouter
+
 from db.sql_handler import db
 
 router = APIRouter()
 
 # users
-@router.post("/users/add")
+@router.post("/add")
 async def add_user(user_dict: dict):
     db.add_user(**user_dict)
     return True
 
 
-@router.get("/users/check_status")
+@router.get("/check_status")
 async def check_user_status(user_dict: dict):
     telegram_id = user_dict.pop("telegram_id")
     user = db.find_user_by_telegram_id(telegram_id)
@@ -19,14 +20,14 @@ async def check_user_status(user_dict: dict):
     return {"status": user.status}
 
 
-@router.post("/users/edit")
+@router.post("/edit")
 async def edit_user(user_dict: dict):
     telegram_id = user_dict.pop("telegram_id")
     db.edit_user(telegram_id=telegram_id, **user_dict)
     return True
 
 
-@router.get("/users/list")
+@router.get("/list")
 async def list_users(type: dict):
     """Returns a list of all users if not specified."""
     status_type = type.get("status")

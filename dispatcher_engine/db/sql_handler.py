@@ -1,10 +1,11 @@
 import os
 from typing import Optional
 
-import config
-from db.sqlalchemy_models import Base, Order, User
 from sqlalchemy import and_, create_engine, select
 from sqlalchemy.orm import sessionmaker
+
+import config
+from db.sqlalchemy_models import Base, Order, User
 
 
 class SQLHandler:
@@ -80,7 +81,8 @@ class SQLHandler:
             session.commit()
             return user
 
-    def edit_order(self, order_id: int, **kwargs) -> Optional[Order]:
+    def edit_order(self, **kwargs) -> Optional[Order]:
+        order_id = kwargs.get("order_id")
         with self.Session() as session:
             stmt = select(Order).where(Order.order_id == order_id)
             results = session.scalars(stmt).all()

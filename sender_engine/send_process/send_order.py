@@ -4,25 +4,12 @@ import traceback
 from telegram import ReplyKeyboardRemove
 
 from bot_instance import bot
+from send_process.gather_files import gather_file_paths
 
 
 async def send_order(order: dict) -> bool:
-
     # get order type
-    request_type = order.get("request_type")
-    files_to_send = list()
-
-    match request_type:
-        case "only_screenshots":
-            assets = ("bg_path", "fg_path")
-        case "video_auto":
-            assets = ("render_output_path",)
-        case "video_files":
-            assets = ("render_output_path",)
-        case _:
-            return False
-
-    files_to_send = [order.get(asset) for asset in assets if order.get(asset)]
+    files_to_send = gather_file_paths(order)
 
     for file in files_to_send:
         with open(file, "rb") as binarified_file:
