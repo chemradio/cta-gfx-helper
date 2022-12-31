@@ -1,19 +1,20 @@
-import config
-import time
-import secrets
 import base64
 import json
-from io import BytesIO
+import time
 import traceback
+from io import BytesIO
+from pathlib import Path
 
 from PIL import Image
+
+import config
 
 Image.MAX_IMAGE_PIXELS = 933_120_000
 TWO_LAYER_SITES = ("facebook", "instagram", "twitter", "telegram")
 
+from screenshots.browser_authorizer import BrowserAuthorizer
 from screenshots.screenshot_routines import ScreenshotRoutines
 from screenshots.screenshot_webdriver import ScreenshotWebdriver
-from screenshots.browser_authorizer import BrowserAuthorizer
 
 
 class Screenshooter:
@@ -26,7 +27,7 @@ class Screenshooter:
         scwd = ScreenshotWebdriver(mobile=mobile)
         return scwd
 
-    def capture_screenshot(self, url):
+    def capture_screenshot(self, url, bg_path: Path, fg_path: Path):
         link_type, clean_url, _domain = self.routines.parse_url(url)
 
         if link_type in config.LOGIN_REQUIRED and config.logged_in_to_social_websites:
@@ -35,13 +36,6 @@ class Screenshooter:
             logged_in = False
 
         mobile = False  # if link_type == 'twitter' else True
-
-        # generate file names
-        background_name = f"01_BG_{secrets.token_hex(8)}.png"
-        foreground_name = f"02_FG_{secrets.token_hex(8)}.png"
-
-        bg_path = config.SCREENSHOT_FOLDER / background_name
-        fg_path = config.SCREENSHOT_FOLDER / foreground_name
 
         is_two_layer = False if link_type == "scroll" else True
         workflow = self.routines.create_workflow(link_type)
@@ -98,16 +92,7 @@ class Screenshooter:
                 self.scwd.cookie_manager.dump_domain_cookies(link_type, domain_cookies)
             self.driver.quit()
 
-            # generate screenshot dict for return
-            return_dict = {
-                # "is_two_layer": is_two_layer,
-                "bg_path": str(bg_path),
-                "fg_path": str(fg_path)
-                # if is_two_layer
-                # else None,
-                # "link_type": "instagram" if link_type == "telegram" else link_type,
-            }
-            return return_dict
+            return True
         except Exception as e:
             print("weirdness")
             self.driver.quit()
@@ -115,7 +100,7 @@ class Screenshooter:
             traceback.print_exc()
             raise e
 
-    def _capture_post_screenshot(self, post, fg_path):
+    def _capture_post_screenshot(self, post, fg_path: Path):
         time.sleep(2)
         location = post.location
         size = post.size
@@ -145,7 +130,7 @@ class Screenshooter:
         im.save(str(fg_path))
         return True
 
-    def _capture_profile_page_screenshot(self, bg_path):
+    def _capture_profile_page_screenshot(self, bg_path: Path):
         try:
             time.sleep(5)
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")

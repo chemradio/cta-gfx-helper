@@ -18,7 +18,7 @@ class CookieManager:
     def initialize_cookie_storage(self) -> None:
         """Create cookie file json if does not exist already."""
         if not self.cookie_file.exists():
-            with open(self.cookie_file, "a+") as cookie_file:
+            with open(self.cookie_file, "w+") as cookie_file:
                 json.dump({"domain_name": [{}]}, cookie_file)
 
     def get_stored_cookies(self) -> dict[list[dict]]:

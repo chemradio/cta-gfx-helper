@@ -53,21 +53,16 @@ services:
     build: ./screenshot_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      # - ./screenshot_engine:/usr/src/app
+      - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
+    environment:
+      - IS_DOCKER=true
     expose:
       - "9002"
     # ports:
     #   - "9002:9002"
 
-  screenshot_selenium:
-    image: "selenium/standalone-chrome"
-    # image: "seleniarm/standalone-chromium"
-    hostname: screenshot_selenium
-    privileged: true
-    shm_size: 2g
-    # ports:
-    #   - "4444:4444"
+  
 
   # video_gfx
   video_gfx:
@@ -75,20 +70,13 @@ services:
     volumes:
       - asset_storage:/usr/src/app/volume
       # # dev only
-      # - ./video_gfx:/usr/src/app
+      - ./video_gfx:/usr/src/app
     expose:
       - "9004"
     # ports:
     #   - "9004:9004"
   
-  video_gfx_selenium:
-    image: "selenium/standalone-chrome"
-    # image: "seleniarm/standalone-chromium"
-    hostname: video_gfx_selenium
-    privileged: true
-    shm_size: 2g
-    # ports:
-    #   - "4444:4444"
+  
 
 
   video_gfx_server:
@@ -97,8 +85,6 @@ services:
     #   - IS_DOCKER=true
     volumes:
       - asset_storage:/usr/src/app/volume
-      # # dev only
-      # - ./video_gfx_server:/usr/src/app
     expose:
       - "9006"
     # ports:
@@ -112,12 +98,31 @@ services:
       # # dev only
       # - ./sender_engine:/usr/src/app
     environment:
+      - IS_DOCKER=true
       - BOT_ADMIN=${BOT_ADMIN}
       - BOT_TOKEN=${BOT_TOKEN}
     expose:
       - "9007"
     # ports:
     #   - "9007:9007"
+
+  video_gfx_selenium:
+    # image: "selenium/standalone-chrome"
+    image: "seleniarm/standalone-chromium"
+    hostname: video_gfx_selenium
+    privileged: true
+    shm_size: 3g
+    # ports:
+    #   - "4444:4444"
+
+  screenshot_selenium:
+    # image: "selenium/standalone-chrome"
+    image: "seleniarm/standalone-chromium"
+    hostname: screenshot_selenium
+    privileged: true
+    shm_size: 3g
+    # ports:
+    #   - "4444:4444"
 
 
 volumes:

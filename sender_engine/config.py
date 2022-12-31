@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+IS_DOCKER = os.environ.get("IS_DOCKER")
+
 DISPATCHER_NODE_HOSTNAME = "dispatcher"
 DISPATCHER_NODE_PORT = 9000
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
