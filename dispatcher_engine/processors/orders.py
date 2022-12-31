@@ -1,63 +1,87 @@
 from processors.filename_generator import assign_filenames
 
 
-def process_order(order: dict) -> dict:
+def advance_order_stage(order: dict) -> dict:
     request_type = order.get("request_type")
-    if not order.get("current_stage"):
+    current_stage = order.get("current_stage")
+
+    # assign filenames if missing
+    if not current_stage:
         order = assign_filenames(order)
         order["status"] = "active"
 
+    if current_stage == "sending":
+        order["status"] = "completed"
+        order["current_stage"] = "finished"
+        return order
+
+    # report error in case of error
+    if order.get("error"):
+        order["current_stage"] = "ready_for_send"
+        return order
+
     match request_type:
         case "video_auto":
-            return process_video_auto(order)
+            return advance_video_auto(order)
         case "video_files":
-            return process_video_files(order)
+            return advance_video_files(order)
         case "only_screenshots":
-            return process_only_screenshots(order)
+            return advance_only_screenshots(order)
         case _:
             return None
 
 
-def process_video_auto(order) -> dict:
+def advance_video_auto(order) -> dict:
     current_stage = order.get("current_stage")
     match current_stage:
+        case "ready_for_screenshots":
+            next_stage = "screenshots_pending"
+
         case "screenshots_pending":
-            if order.get("screenshots_ready"):
-                current_stage = "video_gfx_pending"
+            next_stage = "ready_for_video_gfx"
+
+        case "ready_for_video_gfx":
+            next_stage = "video_gfx_pending"
+
         case "video_gfx_pending":
-            if order.get("video_gfx_ready"):
-                current_stage = "ready_to_send"
+            next_stage = "ready_for_send"
+
         case _:
             # in case of new order
-            current_stage = "screenshots_pending"
+            next_stage = "ready_for_screenshots"
 
-    order.update({"current_stage": current_stage})
+    order.update({"current_stage": next_stage})
     return order
 
 
-def process_video_files(order) -> dict:
+def advance_video_files(order) -> dict:
     current_stage = order.get("current_stage")
     match current_stage:
+        case "ready_for_video_gfx":
+            next_stage = "video_gfx_pending"
+
         case "video_gfx_pending":
-            if order.get("video_gfx_ready"):
-                current_stage = "ready_to_send"
+            next_stage = "ready_for_send"
+
         case _:
             # in case of new order
-            current_stage = "video_gfx_pending"
+            next_stage = "ready_for_video_gfx"
 
-    order.update({"current_stage": current_stage})
+    order.update({"current_stage": next_stage})
     return order
 
 
-def process_only_screenshots(order) -> dict:
+def advance_only_screenshots(order) -> dict:
     current_stage = order.get("current_stage")
     match current_stage:
+        case "ready_for_screenshots":
+            next_stage = "screenshots_pending"
+
         case "screenshots_pending":
-            if order.get("screenshots_ready"):
-                current_stage = "ready_to_send"
+            next_stage = "ready_for_send"
         case _:
             # in case of new order
-            current_stage = "screenshots_pending"
+            next_stage = "ready_for_screenshots"
 
-    order.update({"current_stage": current_stage})
+    order.update({"current_stage": next_stage})
     return order

@@ -1,5 +1,7 @@
+import os
 from pathlib import Path
 
+IS_DOCKER = os.environ.get("IS_DOCKER")
 logged_in_to_social_websites = False
 
 SCREENSHOT_FOLDER = Path().cwd() / "volume" / "screenshots"
@@ -38,8 +40,8 @@ COOKIE_FILE = VOLUME_MOUNTPOINT / "cookie_file" / "cookie_file.json"
 
 
 # !!!
-REMOTE_SCREENSHOT_DRIVER_URL = f"http://screenshot_selenium:4444/wd/hub"
-# REMOTE_SCREENSHOT_DRIVER_URL = f"http://localhost:4444/wd/hub"
+SELENIUM_HOSTNAME = "screenshot_selenium" if IS_DOCKER else "localhost"
+REMOTE_SCREENSHOT_DRIVER_URL = f"http://{SELENIUM_HOSTNAME}:4444/wd/hub"
 
 
 USE_REMOTE_DRIVER = True
@@ -48,6 +50,8 @@ SCREENSHOT_ATTEMPTS = 2
 AD_DB_URL = "https://raw.githubusercontent.com/chemradio/cta-chrome-extension/main/ads_database.json"
 
 
-SCREENSHOT_ASPECT_RATIO = [1,3]
+SCREENSHOT_ASPECT_RATIO = [1, 3]
 RESOLUTION_MULTIPLIER = 1920
-SCREENSHOT_DIMENSIONS = [aspect*RESOLUTION_MULTIPLIER for aspect in SCREENSHOT_ASPECT_RATIO]
+SCREENSHOT_DIMENSIONS = [
+    aspect * RESOLUTION_MULTIPLIER for aspect in SCREENSHOT_ASPECT_RATIO
+]

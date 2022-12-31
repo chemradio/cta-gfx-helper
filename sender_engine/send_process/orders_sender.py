@@ -13,15 +13,17 @@ async def orders_sender():
         if not order:
             break
 
-        send_success = await send_order(order)
-        if not send_success:
+        sent_order = await send_order(order)
+
+        if not sent_order.get("send_success"):
             await bot.send_message(BOT_ADMIN, f"Failed to send order\n\n{order}")
 
-        mark_success = await mark_order_sent(order, send_success)
+        mark_success = await mark_order_sent(sent_order)
 
         if not mark_success:
             await bot.send_message(
-                BOT_ADMIN, f"Failed to mark sent order\n{send_success=}\n\n{order=}"
+                BOT_ADMIN,
+                f"Failed to mark sent order\n{sent_order.get('send_success')=}\n\n{sent_order=}",
             )
 
         time.sleep(3)

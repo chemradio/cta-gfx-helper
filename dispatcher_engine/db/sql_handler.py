@@ -122,6 +122,7 @@ class SQLHandler:
                 and_(Order.current_stage == current_stage, Order.status == status)
             )
             result = session.scalars(query).all()
+            print(f"{result}")
             return result[0] if result else None
 
     def find_user_by_telegram_id(self, telegram_id: int) -> Optional[User]:

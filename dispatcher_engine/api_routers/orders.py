@@ -2,14 +2,14 @@ from fastapi import APIRouter, BackgroundTasks
 
 from api_routers.signal_sender import signal_to_services
 from db.sql_handler import db
-from processors.orders import process_order
+from processors.orders import advance_order_stage
 
 router = APIRouter()
 
 # orders
 @router.post("/add")
 def add_order(order: dict, background_tasks: BackgroundTasks):
-    order = process_order(order)
+    order = advance_order_stage(order)
     db.add_order(**order)
     background_tasks.add_task(signal_to_services, order.get("current_stage"))
     return True
@@ -17,7 +17,7 @@ def add_order(order: dict, background_tasks: BackgroundTasks):
 
 @router.post("/edit")
 def edit_order(order: dict, background_tasks: BackgroundTasks):
-    order = process_order(order)
+    order = advance_order_stage(order)
     if not db.edit_order(**order):
         return False
 
@@ -33,9 +33,9 @@ def truncate_orders():
 
 
 @router.get("/list")
-def list_orders(status: dict = {}):
+def list_orders(request: dict = {}):
     """Returns a list of all orders if not specified."""
-    status = status.get("status")
+    status = request.get("status")
     orders = db.list_orders(status)
 
     for order in orders:
@@ -46,8 +46,22 @@ def list_orders(status: dict = {}):
 
 
 @router.get("/get_one")
-def get_one(current_stage: dict, status: str = "active"):
+def get_one(request: dict):
     """Returns a list of all users if not specified."""
-    current_stage = current_stage.get("current_stage")
+    current_stage = request.get("current_stage")
+
+    request_status = request.get("status")
+    status = request_status if request_status else "active"
+
     order = db.get_one_order(current_stage, status)
-    return order if order else None
+    if not order:
+        return None
+
+    # generate and cleanup the order dict
+    order_dict = order.__dict__
+    order_dict.pop("_sa_instance_state")
+
+    updated_order = advance_order_stage(order_dict)
+    db.edit_order(**updated_order)
+
+    return order

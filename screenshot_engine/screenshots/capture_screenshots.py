@@ -1,4 +1,4 @@
-from config import SCREENSHOT_ATTEMPTS
+import config
 from screenshots.parse_link_type import parse_link_type
 from screenshots.screenshooter import Screenshooter
 
@@ -8,31 +8,26 @@ def capture_screenshots(order: dict) -> dict:
     link_type, clean_url = parse_link_type(order["link"])
     order.update({"link_type": link_type, "link": clean_url})
 
-    screenshooter = Screenshooter()
-    attempts = SCREENSHOT_ATTEMPTS
-
+    attempts = config.SCREENSHOT_ATTEMPTS
     while attempts:
+        screenshooter = Screenshooter()
+        bg_path = config.SCREENSHOT_FOLDER / order.get("background_name")
+        fg_path = config.SCREENSHOT_FOLDER / order.get("foreground_name")
+
         try:
-            screenshot_dict = screenshooter.capture_screenshot(url=order["link"])
-            order.update(
-                {
-                    "fg_path": screenshot_dict["fg_path"],
-                    "bg_path": screenshot_dict["bg_path"],
-                    "screenshots_ready": True,
-                }
+            screenshots_ready = screenshooter.capture_screenshot(
+                url=order["link"], bg_path=bg_path, fg_path=fg_path
             )
-
-            next_status_map = {
-                "only_screenshots": "ready_to_send",
-                "video_auto": "video_gfx_pending",
-            }
-
-            order.update({"current_stage": next_status_map[order["request_type"]]})
+            order["screenshots_ready"] = screenshots_ready
             break
         except Exception as e:
-            print(f"Screenshooting failed. Attempt {attempts}/{SCREENSHOT_ATTEMPTS}")
+            print(
+                f"Screenshooting failed. Attempt {attempts}/{config.SCREENSHOT_ATTEMPTS}"
+            )
             print(e)
             attempts -= 1
     else:
-        order.update({"status": "error", "current_stage": "screenshot_error"})
+        order["error"] = "True"
+        order["error_type"] = "screenshot_error"
+
     return order

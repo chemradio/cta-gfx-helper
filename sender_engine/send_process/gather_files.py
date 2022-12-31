@@ -32,7 +32,7 @@ def gather_video_files(order: dict) -> list[Path]:
 def gather_only_screenshots(order: dict) -> list[Path]:
     file_paths = list()
     for filename in ("background_name", "foreground_name"):
-        screenshot_path = config.SCREENSHOTS_FOLDER / filename
+        screenshot_path = config.SCREENSHOTS_FOLDER / order[filename]
         if not screenshot_path.exists():
             continue
         file_paths.append(screenshot_path)

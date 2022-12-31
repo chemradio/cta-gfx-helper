@@ -20,7 +20,7 @@ def create_video_gfx(order: dict) -> dict:
 
     # stitch pngs to mp4
     png_path = html_assembly_path / "png_sequence"
-    ready_video_path: str = order["render_output_path"]
+    ready_video_path = config.RENDER_OUTPUT_PATH / order["video_gfx_name"]
     audio_path = (
         animation_parameters.audio_path if animation_parameters.audio_enabled else ""
     )

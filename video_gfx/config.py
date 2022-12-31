@@ -22,12 +22,12 @@ AUDIO_OFFSET = 0.3
 
 from pathlib import Path
 
-cwd = Path.cwd()
-HTML_ASSEMBLIES_FOLDER = cwd / "volume" / "html_assemblies"
-HTML_TEMPLATE_FOLDER = cwd / "video_gfx" / "html_template"
+VOLUME_MOUNTPOINT = Path.cwd() / "volume"
+HTML_ASSEMBLIES_FOLDER = VOLUME_MOUNTPOINT / "html_assemblies"
+HTML_TEMPLATE_FOLDER = Path.cwd() / "video_gfx" / "html_template"
 
 
-RENDER_OUTPUT_PATH = cwd / "volume" / "video_exports"
+RENDER_OUTPUT_PATH = VOLUME_MOUNTPOINT / "video_exports"
 
 VIDEO_BITRATE_BPS = 15_000_000
 AUDIO_BITRATE_BPS = 256_000

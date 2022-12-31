@@ -1,7 +1,7 @@
 import textwrap
 from typing import List, Optional
 
-from sqlalchemy import BigInteger, ForeignKey, Integer, Sequence
+from sqlalchemy import BigInteger, ForeignKey, Integer, Sequence, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -47,6 +47,8 @@ class Order(Base):
     status: Mapped[Optional[str]]
     request_type: Mapped[Optional[str]]
     current_stage: Mapped[Optional[str]]
+    error: Mapped[bool] = mapped_column(insert_default=False)
+    error_type: Mapped[str] = mapped_column(insert_default="")
 
     order_start_timestamp: Mapped[Optional[int]]
     order_creation_end_timestamp: Mapped[Optional[int]]
@@ -55,7 +57,7 @@ class Order(Base):
     link: Mapped[Optional[str]]
 
     # screenshots / static images
-    screenshots_ready: Mapped[Optional[bool]]
+    screenshots_ready: Mapped[Optional[bool]] = mapped_column(insert_default=False)
     link_type: Mapped[Optional[str]]
 
     # video description
@@ -66,9 +68,11 @@ class Order(Base):
     fg_animation: Mapped[Optional[str]]
 
     video_gfx_name: Mapped[Optional[str]]
-    video_gfx_ready: Mapped[Optional[bool]]
+    video_gfx_ready: Mapped[Optional[bool]] = mapped_column(insert_default=False)
     audio_path: Mapped[Optional[str]]
     audio_enabled: Mapped[Optional[bool]]
+
+    send_success: Mapped[Optional[bool]] = mapped_column(insert_default=False)
 
     quote_enabled: Mapped[Optional[bool]]
     quote_text: Mapped[Optional[str]]
