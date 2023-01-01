@@ -26,6 +26,8 @@ VOLUME_MOUNTPOINT = Path.cwd() / "volume"
 HTML_ASSEMBLIES_FOLDER = VOLUME_MOUNTPOINT / "html_assemblies"
 HTML_TEMPLATE_FOLDER = Path.cwd() / "video_gfx" / "html_template"
 
+SCREENSHOTS_FOLDER = VOLUME_MOUNTPOINT / "screenshots"
+USER_FILES_FOLDER = SCREENSHOTS_FOLDER / "user_files"
 
 RENDER_OUTPUT_PATH = VOLUME_MOUNTPOINT / "video_exports"
 

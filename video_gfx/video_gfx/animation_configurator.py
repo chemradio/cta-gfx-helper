@@ -1,20 +1,27 @@
+from pathlib import Path
+from typing import Optional
+
+from pydub import AudioSegment
+
+import config
 from video_gfx.animation_class_enums import (
+    AnimationParameters,
     BGAnimation,
     FGAnimation,
-    AnimationParameters,
 )
-from pydub import AudioSegment
-from video_gfx.helpers.utils import get_image_orientation
-import config
 from video_gfx.helpers.enums import ImageOrientation
+from video_gfx.helpers.utils import get_image_orientation
 
 
 def create_animation_parameters(order):
-    bg_path = order.get("bg_path", "")
-    fg_path = order.get("fg_path", "")
+    bg_name = order.get("background_name", "")
+    fg_name = order.get("foreground_name", "")
+    audio_name: str = order.get("audio_name", "")
+
+    bg_path, fg_path, audio_path = find_files(bg_name, fg_name, audio_name)
+
     audio_enabled = order.get("audio_enabled", False)
 
-    audio_path: str = order.get("audio_path", "")
     quote_enabled = order.get("quote_enabled", False)
 
     animation_duration = 30
@@ -76,17 +83,40 @@ def create_animation_parameters(order):
 
     animation_parameters = AnimationParameters(
         bg_animation=bg_animation,
-        bg_path=bg_path,
+        bg_path=str(bg_path),
         single_layer=single_layer,
         fg_animation=fg_animation,
-        fg_path=fg_path,
+        fg_path=str(fg_path),
         round_corners=round_corners,
         quote_enabled=quote_enabled,
         quote_text=quote_text,
         quote_author_enabled=quote_author_enabled,
         quote_author=quote_author,
         audio_enabled=audio_enabled,
-        audio_path=audio_path,
+        audio_path=str(audio_path),
         animation_duration=animation_duration,
     )
     return animation_parameters
+
+
+def find_files(
+    bg_name: str = "", fg_name: str = "", audio_name: str = ""
+) -> tuple[Optional[Path]]:
+    bg_path, fg_path, audio_path = "", "", ""
+
+    search_folders = (config.SCREENSHOTS_FOLDER, config.USER_FILES_FOLDER)
+
+    for folder in search_folders:
+        if (folder / bg_name).exists():
+            bg_path = folder / bg_name
+            break
+
+    for folder in search_folders:
+        if (folder / fg_name).exists():
+            fg_path = folder / fg_name
+            break
+
+    if audio_name and (config.USER_FILES_FOLDER / audio_name).exists():
+        audio_path = config.USER_FILES_FOLDER / audio_name
+
+    return bg_path, fg_path, audio_path
