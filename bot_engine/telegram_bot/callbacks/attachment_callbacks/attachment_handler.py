@@ -1,9 +1,10 @@
 import secrets
 from typing import Callable
 
-import config
 from telegram import Update
 from telegram.ext import ContextTypes
+
+import config
 from telegram_bot.callbacks.attachment_callbacks.attachment_exceptions import (
     AudioDurationExceeded,
     WrongAudioFormat,
@@ -57,14 +58,15 @@ async def attachment_downloader(
     ).pop()
     target_function = functions_map[target_function_key]
 
-    save_file_name = config.USER_FILES_FOLDER / f"user_{secrets.token_hex(8)}"
+    save_file_name = f"user_{secrets.token_hex(8)}"
+    save_file_path = config.USER_FILES_FOLDER / save_file_name
     try:
-        downloaded_file: str = await target_function(bald_message, save_file_name)
+        downloaded_file_name: str = await target_function(bald_message)
     except WrongAudioFormat as e:
         print(e)
-        Responder.errors.wrong_audio_format(user_id)
+        return await Responder.errors.wrong_audio_format(user_id)
     except AudioDurationExceeded as e:
         print(e)
-        Responder.errors.audio_duration_exceeded(user_id)
+        return await Responder.errors.audio_duration_exceeded(user_id)
 
-    return downloaded_file
+    return downloaded_file_name

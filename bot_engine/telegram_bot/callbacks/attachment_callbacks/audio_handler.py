@@ -1,3 +1,5 @@
+import secrets
+
 from pydub import AudioSegment
 from telegram import Message
 
@@ -8,7 +10,8 @@ from telegram_bot.callbacks.attachment_callbacks.attachment_exceptions import (
 )
 
 
-async def audio_handler(message: Message, save_file_name: str) -> str:
+async def audio_handler(message: Message) -> str:
+
     try:
         if message.audio.mime_type in ["audio/mpeg3", "audio/mpeg"]:
             extension = "mp3"
@@ -17,11 +20,12 @@ async def audio_handler(message: Message, save_file_name: str) -> str:
     except:
         raise WrongAudioFormat(format=message.audio.mime_type)
 
-    save_file_name = f"{save_file_name}.{extension}"
+    save_file_name = f"user_{secrets.token_hex(8)}.{extension}"
+    save_file_path = config.USER_FILES_FOLDER / save_file_name
 
     file = await message.audio.get_file()
     await file.download_to_drive(
-        custom_path=save_file_name,
+        custom_path=save_file_path,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         connect_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -29,12 +33,12 @@ async def audio_handler(message: Message, save_file_name: str) -> str:
     )
 
     #  check duration
-    audio_file = AudioSegment.from_file(save_file_name, extension)
+    audio_file = AudioSegment.from_file(save_file_path, extension)
     if audio_file.duration_seconds > config.MAX_AUDIO_LENGTH:
         raise AudioDurationExceeded
 
     # convert file
-    await convert_audio_file(save_file_name)
+    await convert_audio_file(save_file_path)
     return save_file_name
 
 

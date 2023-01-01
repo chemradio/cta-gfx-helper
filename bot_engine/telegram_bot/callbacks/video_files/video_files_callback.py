@@ -1,16 +1,18 @@
 from pprint import pprint
+
 from telegram import Update
 from telegram.ext import ContextTypes
+
 from container_interaction.orders_db import add_order_to_db
-from telegram_bot.callbacks.shared_callbacks.audio_callback import audio_callback
-from telegram_bot.callbacks.shared_callbacks.quote_callback import quote_callback
-from telegram_bot.callbacks.shared_callbacks.results_callback import results_callback
-from telegram_bot.responders.main_responder import Responder
-from telegram_bot.responders.bot_texts import Responses
-from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
     attachment_downloader,
 )
+from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.callbacks.shared_callbacks.audio_callback import audio_callback
+from telegram_bot.callbacks.shared_callbacks.quote_callback import quote_callback
+from telegram_bot.callbacks.shared_callbacks.results_callback import results_callback
+from telegram_bot.responders.bot_texts import Responses
+from telegram_bot.responders.main_responder import Responder
 
 
 async def video_files_callback(
@@ -50,7 +52,7 @@ async def video_files_callback(
     # ask fg enabled
     if stage == "bg_file":
         downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"bg_path": downloaded_file, "stage": "fg_enabled"})
+        user_data.update({"background_name": downloaded_file, "stage": "fg_enabled"})
         return await Responder.video_files.ask_fg_enabled(user_id)
 
     # handle fg enabled
@@ -100,7 +102,7 @@ async def video_files_callback(
     # ask quote
     if stage == "fg_file":
         downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"fg_path": downloaded_file, "stage": "quote_enabled"})
+        user_data.update({"foreground_name": downloaded_file, "stage": "quote_enabled"})
         return await Responder.quote.ask_quote_enabled(user_id)
 
     # handle QUOTE responses

@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from fastapi import APIRouter, BackgroundTasks
 
 from api_routers.signal_sender import signal_to_services
@@ -9,6 +11,7 @@ router = APIRouter()
 # orders
 @router.post("/add")
 def add_order(order: dict, background_tasks: BackgroundTasks):
+    pprint(order)
     order = advance_order_stage(order)
     db.add_order(**order)
     background_tasks.add_task(signal_to_services, order.get("current_stage"))
@@ -60,8 +63,9 @@ def get_one(request: dict):
     # generate and cleanup the order dict
     order_dict = order.__dict__
     order_dict.pop("_sa_instance_state")
-
+    print("get_one_log")
+    print(f"{order_dict=}")
     updated_order = advance_order_stage(order_dict)
+    print(f"{updated_order=}")
     db.edit_order(**updated_order)
-
     return order

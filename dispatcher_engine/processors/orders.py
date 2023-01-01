@@ -46,6 +46,9 @@ def advance_video_auto(order) -> dict:
         case "video_gfx_pending":
             next_stage = "ready_for_send"
 
+        case "ready_for_send":
+            next_stage = "sending"
+
         case _:
             # in case of new order
             next_stage = "ready_for_screenshots"
@@ -63,6 +66,9 @@ def advance_video_files(order) -> dict:
         case "video_gfx_pending":
             next_stage = "ready_for_send"
 
+        case "ready_for_send":
+            next_stage = "sending"
+
         case _:
             # in case of new order
             next_stage = "ready_for_video_gfx"
@@ -76,9 +82,10 @@ def advance_only_screenshots(order) -> dict:
     match current_stage:
         case "ready_for_screenshots":
             next_stage = "screenshots_pending"
-
         case "screenshots_pending":
             next_stage = "ready_for_send"
+        case "ready_for_send":
+            next_stage = "sending"
         case _:
             # in case of new order
             next_stage = "ready_for_screenshots"

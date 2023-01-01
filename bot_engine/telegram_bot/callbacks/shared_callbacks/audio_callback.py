@@ -1,11 +1,13 @@
 from typing import Callable
+
 from telegram import Update
 from telegram.ext import ContextTypes
+
 from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
     attachment_downloader,
 )
-from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.responders.main_responder import Responder
 
 
 async def audio_callback(
@@ -35,7 +37,7 @@ async def audio_callback(
 
         if stage == "audio_file":
             downloaded_file = await attachment_downloader(update, context)
-            user_data.update({"audio_path": downloaded_file, "stage": "audio_passed"})
+            user_data.update({"audio_name": downloaded_file, "stage": "audio_passed"})
             return await caller(update, context)
 
     except:
