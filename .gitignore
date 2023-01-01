@@ -6,6 +6,7 @@ dev/volume/asset_storage/
 dev/volume/pg_data/
 
 
+
 cookie_file.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

@@ -1,8 +1,10 @@
 import os
 import time
-import config
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+import config
 
 FPS = 25
 
@@ -68,6 +70,7 @@ def extract_png_sequence(html_assembly_name: str) -> str:
         progress_frame = interpolation(interpolation_data, frame)
         driver.execute_script(f"timeline.progress({progress_frame})")
         driver.save_screenshot(f"{png_path}/{frame:04}.png")
+        print(f"Extracting png sequence: {progress_frame*100}% done")
 
     driver.quit()
 
