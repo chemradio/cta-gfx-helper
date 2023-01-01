@@ -24,7 +24,7 @@ def create_animation_parameters(order):
 
     quote_enabled = order.get("quote_enabled", False)
 
-    animation_duration = 30
+    animation_duration = config.DEFAULT_ANIMATION_DURATION
 
     if audio_path:
         audio_file = AudioSegment.from_file(audio_path, audio_path[-3:])
@@ -43,6 +43,7 @@ def create_animation_parameters(order):
     if request_type == "video_files":
         bg_ani_temp = order.get("bg_animation", "")
         fg_ani_temp = order.get("fg_animation", "")
+        single_layer = not bool(fg_path)
 
         # configure manual bg animation
         if not bg_ani_temp or (bg_ani_temp == "scroll"):
@@ -104,19 +105,20 @@ def find_files(
 ) -> tuple[Optional[Path]]:
     bg_path, fg_path, audio_path = "", "", ""
 
-    search_folders = (config.SCREENSHOTS_FOLDER, config.USER_FILES_FOLDER)
+    folders = (config.SCREENSHOTS_FOLDER, config.USER_FILES_FOLDER)
 
-    for folder in search_folders:
-        if (folder / bg_name).exists():
-            bg_path = folder / bg_name
-            break
+    def find_file(file_name, search_folders) -> Optional[Path]:
+        for folder in search_folders:
+            if (folder / file_name).exists():
+                return folder / file_name
 
-    for folder in search_folders:
-        if (folder / fg_name).exists():
-            fg_path = folder / fg_name
-            break
+    if bg_name:
+        bg_path = find_file(bg_name, folders)
 
-    if audio_name and (config.USER_FILES_FOLDER / audio_name).exists():
-        audio_path = config.USER_FILES_FOLDER / audio_name
+    if fg_name:
+        fg_path = find_file(fg_name, folders)
+
+    if audio_name:
+        audiog_path = find_file(audio_name, folders)
 
     return bg_path, fg_path, audio_path

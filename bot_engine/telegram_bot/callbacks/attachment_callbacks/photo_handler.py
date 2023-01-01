@@ -1,3 +1,5 @@
+import secrets
+
 from telegram import Message
 
 import config
@@ -6,7 +8,10 @@ from telegram_bot.callbacks.attachment_callbacks.utils.image_converter import (
 )
 
 
-async def photo_handler(message: Message, save_file_name: str) -> str:
+async def photo_handler(message: Message) -> str:
+    save_file_name = f"user_{secrets.token_hex(8)}"
+    save_file_path = config.USER_FILES_FOLDER / save_file_name
+
     # find the best quality photo
     photo_file_size = 0
     best_quality_photo_index = 0
@@ -16,10 +21,9 @@ async def photo_handler(message: Message, save_file_name: str) -> str:
             best_quality_photo_index = index
 
     # save the photo
-    save_file_name = f"{save_file_name}.png"
     photo = await message.photo[best_quality_photo_index].get_file()
     await photo.download_to_drive(
-        custom_path=save_file_name,
+        custom_path=save_file_path,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         connect_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -27,5 +31,5 @@ async def photo_handler(message: Message, save_file_name: str) -> str:
     )
 
     # convert photo
-    save_file_name = await convert_image_file(save_file_name)
-    return save_file_name
+    extension = await convert_image_file(save_file_path)
+    return f"{save_file_name}.{extension}"

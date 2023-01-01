@@ -1,3 +1,4 @@
+import secrets
 from pprint import pprint
 
 from pydub import AudioSegment
@@ -15,13 +16,17 @@ from telegram_bot.callbacks.attachment_callbacks.utils.pdf_converter import (
 )
 
 
-async def document_handler(message: Message, save_file_name: str) -> str:
+async def document_handler(message: Message) -> str:
+    save_file_name = f"user_{secrets.token_hex(8)}"
+
     # add extension for pdf
     if message.document.mime_type == "application/pdf":
         save_file_name = f"{save_file_name}.pdf"
+        save_file_path = config.USER_FILES_FOLDER / save_file_name
+
         file = await message.document.get_file()
         await file.download_to_drive(
-            custom_path=save_file_name,
+            custom_path=save_file_path,
             read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
             write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
             connect_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -29,7 +34,7 @@ async def document_handler(message: Message, save_file_name: str) -> str:
         )
 
         # convert the file
-        await convert_pdf_to_image(save_file_name)
+        await convert_pdf_to_image(save_file_path)
         return save_file_name
 
     # refuse all other formats except images
@@ -39,7 +44,7 @@ async def document_handler(message: Message, save_file_name: str) -> str:
     # get the file
     file = await message.document.get_file()
     await file.download_to_drive(
-        custom_path=save_file_name,
+        custom_path=save_file_path,
         read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
         connect_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -47,5 +52,6 @@ async def document_handler(message: Message, save_file_name: str) -> str:
     )
 
     # convert the file
-    save_file_name = await convert_image_file(save_file_name)
-    return save_file_name
+    file_extension = await convert_image_file(save_file_path)
+
+    return f"{save_file_name}.{file_extension}"

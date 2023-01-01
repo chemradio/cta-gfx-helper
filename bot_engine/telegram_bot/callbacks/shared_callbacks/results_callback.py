@@ -1,10 +1,12 @@
 import time
 from typing import Callable
-from telegram import Update
+
+from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import ContextTypes
-from telegram_bot.responders.main_responder import Responder
-from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+
 from container_interaction.orders_db import add_order_to_db
+from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.responders.main_responder import Responder
 
 
 async def results_callback(
@@ -19,9 +21,13 @@ async def results_callback(
             raise Exception()
 
         await update.callback_query.answer(cache_time=180)
-        await update.callback_query.edit_message_text(
-            text=update.callback_query.message.text
-        )
+        try:
+            await update.callback_query.edit_message_text(
+                text=update.callback_query.message.text,
+                reply_markup=ReplyKeyboardRemove(),
+            )
+        except:
+            pass
 
         if update.callback_query.data == "results_correct":
             user_data.update(
@@ -36,5 +42,6 @@ async def results_callback(
             user_data.clear()
             return await Responder.results.results_incorrect(user_id)
 
-    except:
+    except Exception as e:
+        print(str(e))
         return await Responder.errors.gp_error(user_id)
