@@ -10,3 +10,13 @@ SOCIAL_WEBSITES = {
 }
 
 COOKIE_FILE_PATH = Path().cwd() / "cookie_file.json"
+COPY_COOKIE_TO_DEV = True
+
+DEV_COOKIE_FILE_PATH = (
+    Path().cwd().parent.parent
+    / "dev"
+    / "volume"
+    / "asset_storage"
+    / "cookie_file"
+    / "cookie_file.json"
+)

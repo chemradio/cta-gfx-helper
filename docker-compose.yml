@@ -6,7 +6,7 @@ services:
     build: ./dispatcher_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      - ./dispatcher_engine:/usr/src/app
+      # - ./dispatcher_engine:/usr/src/app
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
       - IS_DOCKER=true
@@ -25,7 +25,7 @@ services:
     build: ./bot_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      - ./bot_engine:/usr/src/app/
+      # - ./bot_engine:/usr/src/app/
     expose:
       - "9001"
     environment:
@@ -35,7 +35,6 @@ services:
     depends_on:
       - dispatcher
 
-  # db
   db:
     image: "postgres:15-alpine"
     environment:
@@ -53,49 +52,41 @@ services:
     build: ./screenshot_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      - ./screenshot_engine:/usr/src/app
+      # - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
     environment:
       - IS_DOCKER=true
     expose:
       - "9002"
-    # ports:
-    #   - "9002:9002"
+    depends_on:
+      - dispatcher
 
-  
 
-  # video_gfx
   video_gfx:
     build: ./video_gfx
     volumes:
       - asset_storage:/usr/src/app/volume
-      # # dev only
-      - ./video_gfx:/usr/src/app
+      # - ./video_gfx:/usr/src/app
     expose:
       - "9004"
-    # ports:
-    #   - "9004:9004"
-  
-  
+    depends_on:
+      - dispatcher
 
 
   video_gfx_server:
     build: ./video_gfx_server
-    # environment:
-    #   - IS_DOCKER=true
     volumes:
       - asset_storage:/usr/src/app/volume
     expose:
       - "9006"
-    # ports:
-    #   - "9006:9006"
+    depends_on:
+      - dispatcher
+    
 
-  # sender engine
   sender:
     build: ./sender_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      # # dev only
       # - ./sender_engine:/usr/src/app
     environment:
       - IS_DOCKER=true
@@ -103,8 +94,9 @@ services:
       - BOT_TOKEN=${BOT_TOKEN}
     expose:
       - "9007"
-    # ports:
-    #   - "9007:9007"
+    depends_on:
+      - dispatcher
+
 
   video_gfx_selenium:
     # image: "selenium/standalone-chrome"
@@ -112,8 +104,9 @@ services:
     hostname: video_gfx_selenium
     privileged: true
     shm_size: 3g
-    # ports:
-    #   - "4444:4444"
+    depends_on:
+      - dispatcher
+
 
   screenshot_selenium:
     # image: "selenium/standalone-chrome"
@@ -121,8 +114,8 @@ services:
     hostname: screenshot_selenium
     privileged: true
     shm_size: 3g
-    # ports:
-    #   - "4444:4444"
+    depends_on:
+      - dispatcher
 
 
 volumes:
@@ -133,9 +126,9 @@ volumes:
       o: 'bind'
       device: '$PWD/dev/volume/asset_storage'
 
-  pg_data:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: '$PWD/dev/volume/pg_data/data'
+  # pg_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: 'none'
+  #     o: 'bind'
+  #     device: '$PWD/dev/volume/pg_data/data'

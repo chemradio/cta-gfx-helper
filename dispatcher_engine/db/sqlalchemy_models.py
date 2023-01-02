@@ -71,6 +71,7 @@ class Order(Base):
     video_gfx_ready: Mapped[Optional[bool]] = mapped_column(insert_default=False)
     audio_name: Mapped[Optional[str]]
     audio_enabled: Mapped[Optional[bool]]
+    html_assembly_name: Mapped[Optional[str]]
 
     send_success: Mapped[Optional[bool]] = mapped_column(insert_default=False)
 

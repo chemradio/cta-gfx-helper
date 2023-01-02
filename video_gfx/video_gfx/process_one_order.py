@@ -1,4 +1,5 @@
 import config
+
 from video_gfx.animation_configurator import create_animation_parameters
 from video_gfx.create_html_gfx import create_html
 from video_gfx.png_extractor import extract_png_sequence
@@ -13,8 +14,9 @@ def create_video_gfx(order: dict) -> bool:
         animation_parameters = create_animation_parameters(order)
 
         # build html page with animation
-        html_assembly_name = create_html(animation_parameters.to_object())
+        html_assembly_name = order.get("html_assembly_name")
         html_assembly_path = config.HTML_ASSEMBLIES_FOLDER / html_assembly_name
+        create_html(animation_parameters.to_object(), str(html_assembly_path))
 
         # extract pngs
         extract_png_sequence(html_assembly_name)
