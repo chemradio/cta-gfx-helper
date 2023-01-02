@@ -1,9 +1,9 @@
 from pprint import pprint
 
-from fastapi import APIRouter, BackgroundTasks
-
 from api_routers.signal_sender import signal_to_services
 from db.sql_handler import db
+from fastapi import APIRouter, BackgroundTasks
+from processors.cleanup_order_assets import cleanup_order_assets
 from processors.orders import advance_order_stage
 
 router = APIRouter()
@@ -23,6 +23,14 @@ def edit_order(order: dict, background_tasks: BackgroundTasks):
     order = advance_order_stage(order)
     if not db.edit_order(**order):
         return False
+
+    order_status = order.get("status")
+    if order_status == "completed":
+        try:
+            cleanup_order_assets(order)
+        except Exception as e:
+            print("Error in edit order. strange")
+            print(e)
 
     current_stage = order.get("current_stage")
     background_tasks.add_task(signal_to_services, current_stage)
