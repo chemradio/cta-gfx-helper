@@ -25,7 +25,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    copy_cookie_file_to_dev_volume(
-        main_path=config.COOKIE_FILE_PATH, dev_path=config.DEV_COOKIE_FILE_PATH
-    )
+    main()
