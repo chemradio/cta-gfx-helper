@@ -57,7 +57,7 @@ class Screenshooter:
                 self.scwd.remove_ads()
 
                 try:
-                    self.driver.execute_script("window.stop();")
+                    # self.driver.execute_script("window.stop();")
                     post = workflow.post_routine(url, self.driver, logged_in=logged_in)
                     self._capture_post_screenshot(post, fg_path)
 

@@ -66,21 +66,22 @@ def create_animation_parameters(order):
     # auto mode
     elif request_type == "video_auto":
         link_type = order.get("link_type")
-        fg_temp_path = order.get("fg_path")
 
-        if (link_type == "scroll") or (not fg_temp_path):
+        if (link_type == "scroll") or (not fg_path):
             bg_animation = BGAnimation.BG_ONLY
             single_layer = True
             fg_animation = FGAnimation.NONE
 
         else:
-            bg_animation == BGAnimation.BG_SCROLL
+            single_layer = False
 
-            fg_orientation = get_image_orientation(fg_temp_path)
+            bg_animation = BGAnimation.BG_SCROLL
+
+            fg_orientation = get_image_orientation(fg_path)
             if fg_orientation == ImageOrientation.HORIZONTAL:
-                fg_animation == FGAnimation.ZOOM
+                fg_animation = FGAnimation.ZOOM
             else:
-                fg_animation == FGAnimation.FACEBOOK
+                fg_animation = FGAnimation.FACEBOOK
 
     animation_parameters = AnimationParameters(
         bg_animation=bg_animation,
@@ -107,18 +108,18 @@ def find_files(
 
     folders = (config.SCREENSHOTS_FOLDER, config.USER_FILES_FOLDER)
 
-    def find_file(file_name, search_folders) -> Optional[Path]:
+    def find_path(file_name, search_folders) -> Optional[Path]:
         for folder in search_folders:
             if (folder / file_name).exists():
                 return folder / file_name
 
     if bg_name:
-        bg_path = find_file(bg_name, folders)
+        bg_path = find_path(bg_name, folders)
 
     if fg_name:
-        fg_path = find_file(fg_name, folders)
+        fg_path = find_path(fg_name, folders)
 
     if audio_name:
-        audiog_path = find_file(audio_name, folders)
+        audiog_path = find_path(audio_name, folders)
 
     return bg_path, fg_path, audio_path

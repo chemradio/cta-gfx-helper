@@ -1,18 +1,21 @@
 import json
 import time
 
-import config
-from screenshots.ad_block.adblock_script_generator import remove_ads_script
-from screenshots.cookie_manager import CookieManager
-from screenshots.login_routines import LoginRoutines
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+import config
+from screenshots.ad_block.adblock_script_generator import remove_ads_script
+from screenshots.cookie_manager import CookieManager
+from screenshots.login_routines import LoginRoutines
+
 
 class ScreenshotWebdriver:
-    def __init__(self, only_for_login: bool = False, mobile: bool = True) -> None:
+    def __init__(
+        self, only_for_login: bool = False, mobile: bool = True, localtest: bool = False
+    ) -> None:
         self.cookie_manager = CookieManager()
         self.login_routines = LoginRoutines()
         self.dpi_multiplier = config.DPI_MULTIPLIER
@@ -39,14 +42,18 @@ class ScreenshotWebdriver:
 
         # chrome_options.add_argument("--incognito")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        chrome_options.headless = True
 
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("-–disable-gpu")
-
-        self.driver = webdriver.Remote(
-            config.REMOTE_SCREENSHOT_DRIVER_URL, options=chrome_options
-        )
+        if config.IS_DOCKER:
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("-–disable-gpu")
+            chrome_options.headless = True
+            self.driver = webdriver.Remote(
+                config.REMOTE_SCREENSHOT_DRIVER_URL, options=chrome_options
+            )
+        else:
+            self.driver = webdriver.Chrome(
+                options=chrome_options, service=Service(ChromeDriverManager().install())
+            )
 
         self.driver.implicitly_wait(5)
 
