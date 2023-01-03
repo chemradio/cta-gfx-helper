@@ -3,6 +3,7 @@
 # volume/user_files/*
 db_backup.json
 db_backup.json.zip
+volume/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

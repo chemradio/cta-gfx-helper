@@ -1,9 +1,12 @@
 token.txt
 .vscode/
 .DS_Store
+
 assets_storage/
+asset_storage/
 dev/volume/asset_storage/
 dev/volume/pg_data/
+volume/
 
 
 

@@ -5,6 +5,7 @@ volume/user_files/
 # volume/user_files/*
 
 cookie_file.json
+volume/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
