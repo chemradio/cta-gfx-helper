@@ -2,7 +2,7 @@ token.txt
 .vscode/
 .DS_Store
 # volume/user_files/*
-
+volume/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
