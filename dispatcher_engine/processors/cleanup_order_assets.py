@@ -10,8 +10,9 @@ def cleanup_order_assets(order: dict):
     audio_name = order.get("audio_name")
     video_gfx_name = order.get("video_gfx_name")
     paths = find_files(bg_name, fg_name, audio_name, video_gfx_name)
+    paths = [path for path in paths if path is not None]
     if not paths:
-        return
+        return None
 
     for path in paths:
         path.unlink()
@@ -23,7 +24,8 @@ def cleanup_order_assets(order: dict):
             remove_directory_recursively(html_assembly_path)
 
 
-def find_files(*filenames: str) -> list[Optional[Path]]:
+def find_files(*filenames: list[str]) -> list[Optional[Path]]:
+    print(f"Entered find files. {filenames=}")
     paths = list()
     folders = (
         config.SCREENSHOTS_FOLDER,
@@ -37,7 +39,9 @@ def find_files(*filenames: str) -> list[Optional[Path]]:
                 return folder / file_name
 
     for filename in filenames:
-        files_to_search = [filename]
+        files_to_search = [
+            filename,
+        ]
         if "." in filename:
             files_to_search.append(filename.split(".")[0])
 
@@ -46,6 +50,7 @@ def find_files(*filenames: str) -> list[Optional[Path]]:
             if file_to_remove:
                 paths.append(file_to_remove)
 
+    print(f"{paths=}")
     return paths
 
 

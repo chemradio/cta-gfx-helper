@@ -103,7 +103,7 @@ services:
     # image: "seleniarm/standalone-chromium"
     hostname: screenshot_selenium
     privileged: true
-    shm_size: 3g
+    shm_size: 4g
     depends_on:
       - dispatcher
 
@@ -113,7 +113,7 @@ services:
     # image: "seleniarm/standalone-chromium"
     hostname: video_gfx_selenium
     privileged: true
-    shm_size: 3g
+    shm_size: 4g
     depends_on:
       - dispatcher
 
