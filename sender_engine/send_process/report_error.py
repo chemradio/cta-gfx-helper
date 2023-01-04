@@ -1,5 +1,7 @@
+import requests
 from telegram import ReplyKeyboardRemove
 
+import config
 from bot_instance import bot
 
 
@@ -15,6 +17,22 @@ async def report_error(order):
             write_timeout=300,
             pool_timeout=300,
             connect_timeout=300,
+        )
+        return True
+    except:
+        return False
+
+
+def report_error_raw(order):
+    try:
+        kwargs = {
+            "chat_id": order.get("user_telegram_id"),
+            "text": "✅ Твой заказ готов.",
+        }
+
+        r = requests.post(
+            config.SEND_MESSAGE_TELEGRAM_API_ENDPOINT,
+            params=kwargs,
         )
         return True
     except:
