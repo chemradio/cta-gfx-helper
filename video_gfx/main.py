@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import FastAPI
 
 from video_gfx.order_processor import video_gfx_thread
 
@@ -26,6 +26,6 @@ app = FastAPI()
 
 
 @app.post("/start_video_gfx")
-async def start_video_gfx(background_tasks: BackgroundTasks):
-    background_tasks.add_task(video_gfx_thread)
+def start_video_gfx():
+    video_gfx_thread()
     return True
