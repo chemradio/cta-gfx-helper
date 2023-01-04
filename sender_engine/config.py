@@ -18,3 +18,11 @@ BOT_ADMIN = os.environ.get("BOT_ADMIN")
 VOLUME_MOUNTPOINT = Path.cwd() / "volume"
 VIDEO_GFX_FOLDER = VOLUME_MOUNTPOINT / "video_exports"
 SCREENSHOTS_FOLDER = VOLUME_MOUNTPOINT / "screenshots"
+
+SEND_DOCUMENT_TELEGRAM_API_ENDPOINT = (
+    f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
+)
+
+SEND_MESSAGE_TELEGRAM_API_ENDPOINT = (
+    f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+)
