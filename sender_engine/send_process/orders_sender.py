@@ -1,3 +1,5 @@
+import asyncio
+import threading
 import time
 
 from bot_instance import bot
@@ -29,3 +31,17 @@ async def orders_sender():
         time.sleep(3)
 
     return True
+
+
+def orders_sender_thread():
+    thread_name = "orders_sender"
+    for thread in threading.enumerate():
+        if thread_name in thread.name:
+            print(f"Thread {thread_name} already running... Returning")
+            return
+
+    threading.Thread(
+        target=asyncio.run,
+        args=(orders_sender(),),
+        name=thread_name,
+    ).start()

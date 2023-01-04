@@ -2,7 +2,7 @@ from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI
 
-from video_gfx.order_processor import process_video_gfx_orders
+from video_gfx.order_processor import video_gfx_thread
 
 
 def create_volume_folders():
@@ -27,5 +27,5 @@ app = FastAPI()
 
 @app.post("/start_video_gfx")
 async def start_video_gfx(background_tasks: BackgroundTasks):
-    background_tasks.add_task(process_video_gfx_orders)
+    background_tasks.add_task(video_gfx_thread)
     return True
