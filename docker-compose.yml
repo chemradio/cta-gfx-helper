@@ -98,20 +98,20 @@ services:
       - dispatcher
 
 
-  video_gfx_selenium:
-    # image: "selenium/standalone-chrome"
-    image: "seleniarm/standalone-chromium"
-    hostname: video_gfx_selenium
+  screenshot_selenium:
+    image: "selenium/standalone-chrome"
+    # image: "seleniarm/standalone-chromium"
+    hostname: screenshot_selenium
     privileged: true
     shm_size: 3g
     depends_on:
       - dispatcher
 
 
-  screenshot_selenium:
-    # image: "selenium/standalone-chrome"
-    image: "seleniarm/standalone-chromium"
-    hostname: screenshot_selenium
+  video_gfx_selenium:
+    image: "selenium/standalone-chrome"
+    # image: "seleniarm/standalone-chromium"
+    hostname: video_gfx_selenium
     privileged: true
     shm_size: 3g
     depends_on:

@@ -3,7 +3,6 @@ from pathlib import Path
 volume_path = Path.cwd() / "dev" / "volume"
 assets_path = volume_path / "asset_storage"
 asset_subpaths = (
-    "cookie_file",
     "html_assemblies",
     "screenshots",
     "user_files",
