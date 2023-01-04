@@ -7,7 +7,8 @@ async def report_error(order):
     try:
         await bot.send_message(
             chat_id=order.get("user_telegram_id"),
-            text=order.get("error_type"),
+            text="Произошла ошибка. Перешли это сообщение администатору бота, пожалуйста.\n\n"
+            + order.get("error_type"),
             allow_sending_without_reply=True,
             reply_markup=ReplyKeyboardRemove(),
             read_timeout=300,

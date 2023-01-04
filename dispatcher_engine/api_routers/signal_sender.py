@@ -12,4 +12,4 @@ def signal_to_services(current_stage):
         case "ready_for_send":
             return signal_to_sender()
         case _:
-            return False
+            pass

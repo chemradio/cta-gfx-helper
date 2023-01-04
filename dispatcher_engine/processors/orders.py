@@ -10,6 +10,10 @@ def advance_order_stage(order: dict) -> dict:
         order = assign_filenames(order)
         order["status"] = "active"
 
+    if current_stage == "ready_for_send":
+        order["current_stage"] = "sending"
+        return order
+
     if current_stage == "sending":
         order["status"] = "completed"
         order["current_stage"] = "finished"
