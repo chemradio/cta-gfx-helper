@@ -21,12 +21,12 @@ async def document_handler(message: Message) -> str:
 
     # add extension for pdf
     if message.document.mime_type == "application/pdf":
-        save_file_name = f"{save_file_name}.pdf"
-        save_file_path = config.USER_FILES_FOLDER / save_file_name
+        save_file_name_pdf = f"{save_file_name}.pdf"
+        pdf_save_path = config.USER_FILES_FOLDER / save_file_name_pdf
 
         file = await message.document.get_file()
         await file.download_to_drive(
-            custom_path=save_file_path,
+            custom_path=pdf_save_path,
             read_timeout=config.FILE_DOWNLOAD_TIMEOUT,
             write_timeout=config.FILE_DOWNLOAD_TIMEOUT,
             connect_timeout=config.FILE_DOWNLOAD_TIMEOUT,
@@ -34,7 +34,9 @@ async def document_handler(message: Message) -> str:
         )
 
         # convert the file
-        await convert_pdf_to_image(save_file_path)
+        save_file_name = f"{save_file_name}.png"
+        save_file_path = config.USER_FILES_FOLDER / save_file_name
+        await convert_pdf_to_image(str(pdf_save_path), str(save_file_path))
         return save_file_name
 
     # refuse all other formats except images

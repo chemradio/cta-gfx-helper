@@ -27,7 +27,8 @@ def report_error_raw(order):
     try:
         kwargs = {
             "chat_id": order.get("user_telegram_id"),
-            "text": "✅ Твой заказ готов.",
+            "text": "Произошла ошибка. Перешли это сообщение администатору бота, пожалуйста.\n\n"
+            + order.get("error_type"),
         }
 
         r = requests.post(

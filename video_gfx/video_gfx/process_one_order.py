@@ -14,8 +14,9 @@ def create_video_gfx(order: dict) -> bool:
         animation_parameters = create_animation_parameters(order)
 
         # build html page with animation
-        html_assembly_name = order.get("html_assembly_name")
+        html_assembly_name: str = order.get("html_assembly_name")
         html_assembly_path = config.HTML_ASSEMBLIES_FOLDER / html_assembly_name
+
         create_html(animation_parameters.to_object(), str(html_assembly_path))
 
         # extract pngs
