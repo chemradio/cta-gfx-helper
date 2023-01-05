@@ -71,11 +71,24 @@ def send_files_raw(order):
 
 
 def send_file_raw(file: Path, receiver_id: int) -> None:
+    assert file.is_file()
+    file_size_mb = file.stat().st_size / 1024 / 1024
+
+    print(f"{file_size_mb=}")
+    assert file_size_mb < 49
+
     files = {"document": open(file, "rb")}
     kwargs = {
         "chat_id": receiver_id,
         "caption": "✅ Твой заказ готов.",
+        "disable_content_type_detection": True,
+        "allow_sending_without_reply": True,
     }
     r = requests.post(
         config.SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
     )
+    result = r.json()
+    print(result)
+
+    assert result["ok"] == True
+    assert "document" in result["result"]
