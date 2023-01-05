@@ -1,5 +1,6 @@
-Pillow==9.3.0
 pydub==0.25.1
 python-telegram-bot==20.0a6
 requests==2.28.1
 selenium==4.4.3
+Pillow==9.4.0
+pypdfium2==3.16.0

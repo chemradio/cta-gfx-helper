@@ -28,11 +28,15 @@ def assign_filenames(order: dict) -> dict:
             order["foreground_name"] = foreground_name
             order["video_gfx_name"] = video_gfx_name
             order["html_assembly_name"] = html_assembly_name
+
         case "video_files":
             order["video_gfx_name"] = video_gfx_name
+            order["html_assembly_name"] = html_assembly_name
+
         case "only_screenshots":
             order["background_name"] = background_name
             order["foreground_name"] = foreground_name
+
         case _:
             return None
 
