@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Optional
 
-import config
 from pydub import AudioSegment
 
+import config
 from video_gfx.animation_class_enums import (
     AnimationParameters,
     BGAnimation,
@@ -53,6 +53,10 @@ def create_animation_parameters(order):
 
         # configure manual fg animation
         if not fg_ani_temp:
+            fg_animation = FGAnimation.ZOOM
+        elif fg_ani_temp == "scroll":
+            fg_animation = FGAnimation.FACEBOOK
+        elif fg_ani_temp == "zoom":
             fg_animation = FGAnimation.ZOOM
         elif fg_ani_temp == "facebook":
             fg_animation = FGAnimation.FACEBOOK

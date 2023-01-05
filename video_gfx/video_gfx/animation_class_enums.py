@@ -1,16 +1,17 @@
 from enum import Enum
 
+
 class BGAnimation(Enum):
-    BG_ONLY = 'bgOnly'
-    BG_SCROLL = 'bgScroll'
-    BG_ZOOM = 'bgZoom'
+    BG_ONLY = "bgOnly"
+    BG_SCROLL = "bgScroll"
+    BG_ZOOM = "bgZoom"
 
 
 class FGAnimation(Enum):
-    FACEBOOK = 'facebook'
-    ZOOM = 'photo'
-    DOCUMENT = 'document'
-    NONE = 'none'
+    FACEBOOK = "facebook"
+    ZOOM = "photo"
+    DOCUMENT = "document"
+    NONE = "none"
 
 
 class AnimationParameters:
@@ -44,26 +45,23 @@ class AnimationParameters:
         self.audio_enabled = audio_enabled if self.audio_path else False
         self.animation_duration = animation_duration
 
-    
     def calc_duration(self):
         pass
 
-
     def to_object(self) -> str:
         output = {
-            'singleLayer': self.single_layer,
-            'backgroundClass': self.bg_animation,
-            'backgroundPath': self.bg_path,
-            'foregroundClass': self.fg_animation,
-            'foregroundPath': self.fg_path,
-            'roundCorners': self.round_corners,
-            'quoteEnabled': self.quote_enabled,
-            'quoteTextText': self.quote_text,
-            'quoteAuthorText': self.quote_author,
-            'audioEnabled': self.audio_enabled,
-            'audioPath': self.audio_path,
-            'animationDuration': self.animation_duration
+            "singleLayer": self.single_layer,
+            "backgroundClass": self.bg_animation,
+            "backgroundPath": self.bg_path,
+            "foregroundClass": self.fg_animation,
+            "foregroundPath": self.fg_path,
+            "roundCorners": self.round_corners,
+            "quoteEnabled": self.quote_enabled,
+            "quoteTextText": self.quote_text,
+            "quoteAuthorText": self.quote_author,
+            "audioEnabled": self.audio_enabled,
+            "audioPath": self.audio_path,
+            "animationDuration": self.animation_duration,
         }
 
         return output
-        
