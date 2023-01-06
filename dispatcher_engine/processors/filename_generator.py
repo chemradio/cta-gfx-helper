@@ -6,7 +6,7 @@ from datetime import datetime
 def generate_filenames() -> tuple[str, str, str, str]:
     background_name = f"01_BG_{secrets.token_hex(8)}.png"
     foreground_name = f"02_FG_{secrets.token_hex(8)}.png"
-    video_gfx_name = f"video-gfx-{int(time.time())}.mp4"
+    video_gfx_name = f"video-gfx-{secrets.token_hex(8)}.mp4"
 
     # generate temp folder path
     html_assembly_name = f"gfx_html_{datetime.now().strftime('%Y%m%d_%H-%M-%S_%f')}"

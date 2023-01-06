@@ -15,7 +15,10 @@ def cleanup_order_assets(order: dict):
         return None
 
     for path in paths:
-        path.unlink()
+        if path.is_file():
+            path.unlink()
+        elif path.is_dir():
+            path.rmdir()
 
     html_assembly_name: str = order.get("html_assembly_name")
     if html_assembly_name:
@@ -33,12 +36,20 @@ def find_files(*filenames: list[str]) -> list[Optional[Path]]:
         config.RENDER_OUTPUT_PATH,
     )
 
-    def find_file(file_name, search_folders) -> Optional[Path]:
+    def find_file(file_name: str, search_folders: list[Path]) -> Optional[list[Path]]:
+        output = list()
         for folder in search_folders:
             if (folder / file_name).exists():
-                return folder / file_name
+                output.append(folder / file_name)
+            for item in folder.glob(f"{file_name}*"):
+                if item.exists():
+                    output.append(item)
+        return output if output else None
 
     for filename in filenames:
+        if not filename:
+            continue
+
         files_to_search = [
             filename,
         ]
@@ -48,7 +59,7 @@ def find_files(*filenames: list[str]) -> list[Optional[Path]]:
         for file in files_to_search:
             file_to_remove = find_file(file, folders)
             if file_to_remove:
-                paths.append(file_to_remove)
+                paths.extend(file_to_remove)
 
     print(f"{paths=}")
     return paths
