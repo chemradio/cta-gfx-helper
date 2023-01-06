@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Optional
 
+import config
 from pydub import AudioSegment
 
-import config
 from video_gfx.animation_class_enums import (
     AnimationParameters,
     BGAnimation,
@@ -124,6 +124,6 @@ def find_files(
         fg_path = find_path(fg_name, folders)
 
     if audio_name:
-        audiog_path = find_path(audio_name, folders)
+        audio_path = find_path(audio_name, folders)
 
     return bg_path, fg_path, audio_path
