@@ -27,7 +27,7 @@ def create_animation_parameters(order):
     animation_duration = config.DEFAULT_ANIMATION_DURATION
 
     if audio_path:
-        audio_file = AudioSegment.from_file(audio_path, audio_path[-3:])
+        audio_file = AudioSegment.from_file(str(audio_path), str(audio_path)[-3:])
         audio_duration = audio_file.duration_seconds
         animation_duration = float(config.AUDIO_OFFSET) + float(audio_duration)
 
