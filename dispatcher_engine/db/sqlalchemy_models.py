@@ -12,6 +12,9 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
     first_name: Mapped[Optional[str]]
+    email: Mapped[Optional[str]]
+    password: Mapped[Optional[str]]
+
     description: Mapped[Optional[str]]
 
     status: Mapped[Optional[str]]
@@ -49,6 +52,8 @@ class Order(Base):
     current_stage: Mapped[Optional[str]]
     error: Mapped[bool] = mapped_column(insert_default=False)
     error_type: Mapped[str] = mapped_column(insert_default="")
+
+    ordered_from: Mapped[Optional[str]]  # 'telegram' or 'web
 
     order_start_timestamp: Mapped[Optional[int]]
     order_creation_end_timestamp: Mapped[Optional[int]]
