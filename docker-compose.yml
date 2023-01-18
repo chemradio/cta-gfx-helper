@@ -6,7 +6,7 @@ services:
     build: ./dispatcher_engine
     volumes:
       - asset_storage:/usr/src/app/volume
-      # - ./dispatcher_engine:/usr/src/app
+      - ./dispatcher_engine:/usr/src/app
     environment:
       - BOT_ADMIN=${BOT_ADMIN}
       - IS_DOCKER=true
@@ -39,6 +39,7 @@ services:
     image: "postgres:15-alpine"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_URL=${POSTGRES_URL}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

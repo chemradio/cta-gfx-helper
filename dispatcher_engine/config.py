@@ -11,14 +11,14 @@ USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"
 HTML_ASSEMBLIES_FOLDER = VOLUME_MOUNTPOINT / "html_assemblies"
 
 # database configuration
-POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres") 
+POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 POSTGRES_HOSTNAME = os.environ.get("POSTGRES_HOSTNAME", "db")
 POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "5432")
 POSTGRES_DB = os.environ.get("POSTGRES_DB", "postgres")
 POSTGRES_URL = os.environ.get(
     "POSTGRES_URL",
-    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
 
 
