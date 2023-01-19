@@ -5,7 +5,7 @@ volume/user_files/
 # volume/user_files/*
 volume/
 
-
+temp/
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
