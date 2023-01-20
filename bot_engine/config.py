@@ -3,7 +3,6 @@ from enum import Enum
 from pathlib import Path
 
 from telegram.constants import ParseMode
-
 from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
@@ -38,7 +37,7 @@ DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}
 
 # orders
 DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders"
-ADD_ORDER_ENDPOINT = f"{DISPATCHER_ORDERS_ENDPOINT}/add"
+ADD_ORDER_ENDPOINT = f"{DISPATCHER_ORDERS_ENDPOINT}/add_order_telegram"
 
 
 # users

@@ -12,7 +12,7 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
     first_name: Mapped[Optional[str]]
-    email: Mapped[Optional[str]]
+    email: Mapped[Optional[str]] = mapped_column(insert_default="")
     password: Mapped[Optional[str]]
 
     description: Mapped[Optional[str]]
@@ -101,6 +101,7 @@ class Order(Base):
     user_telegram_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("users.telegram_id")
     )
+    user_email: Mapped[Optional[str]]
 
     user: Mapped["User"] = relationship(back_populates="orders")
 
