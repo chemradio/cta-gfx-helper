@@ -1,11 +1,10 @@
 import os
 from typing import Optional
 
-from sqlalchemy import and_, create_engine, select
-from sqlalchemy.orm import sessionmaker
-
 import config
 from db.sqlalchemy_models import Base, Order, User
+from sqlalchemy import and_, create_engine, select
+from sqlalchemy.orm import sessionmaker
 
 
 class SQLHandler:
@@ -56,7 +55,13 @@ class SQLHandler:
         print(f"{__name__}:{user.telegram_id=}")
 
         with self.Session() as session:
-            order = Order(**kwargs, user=user, user_telegram_id=user.telegram_id)
+            order = Order(
+                **kwargs,
+                user=user,
+                user_telegram_id=user.telegram_id,
+                user_email=user.email,
+            )
+
             session.add(order)
             session.commit()
             return order.order_id
