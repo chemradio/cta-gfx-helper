@@ -39,3 +39,5 @@ VIDEOGFX_ENDPOINT = f"http://{VIDEOGFX_HOSTNAME}:{VIDEOGFX_PORT}/start_video_gfx
 SENDER_ENDPOINT = f"http://{SENDER_HOSTNAME}:{SENDER_PORT}/send_orders"
 
 COOKIE_FILE_PATH = VOLUME_MOUNTPOINT / "cookie_file.json"
+
+JWT_SECRET = os.environ.get("JWT_SECRET")
