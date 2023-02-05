@@ -1,10 +1,11 @@
 import os
 from typing import Optional
 
-import config
-from db.sqlalchemy_models import Base, Order, User
 from sqlalchemy import and_, create_engine, select
 from sqlalchemy.orm import sessionmaker
+
+import config
+from db.sqlalchemy_models import Base, Order, User
 
 
 class SQLHandler:
@@ -133,6 +134,12 @@ class SQLHandler:
     def find_user_by_telegram_id(self, telegram_id: int) -> Optional[User]:
         with self.Session() as session:
             query = select(User).where(User.telegram_id == telegram_id)
+            results = session.scalars(query).all()
+            return results[0] if results else None
+
+    def find_user_by_email(self, email: str) -> Optional[User]:
+        with self.Session() as session:
+            query = select(User).where(User.email == email)
             results = session.scalars(query).all()
             return results[0] if results else None
 

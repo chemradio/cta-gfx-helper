@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Response
 
 from api_routers import (
+    auth_local,
     db_backup_restore,
     direct_download,
     orders,
@@ -20,6 +21,7 @@ app.include_router(users.router, prefix="/users")
 app.include_router(orders.router, prefix="/orders")
 app.include_router(db_backup_restore.router, prefix="/database")
 app.include_router(validators.router, prefix="/validators")
+app.include_router(auth_local.router, prefix="/auth_web_local")
 app.include_router(temp_form.router)
 app.include_router(direct_download.router)
 

@@ -13,7 +13,7 @@ class User(Base):
     __tablename__ = "users"
     first_name: Mapped[Optional[str]]
     email: Mapped[Optional[str]] = mapped_column(insert_default="")
-    password: Mapped[Optional[str]]
+    password_hash: Mapped[Optional[str]]
 
     description: Mapped[Optional[str]]
 
