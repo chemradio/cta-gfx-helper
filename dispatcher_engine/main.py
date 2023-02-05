@@ -1,7 +1,15 @@
-from api_routers import db_backup_restore, orders, temp_form, users, validators
+from fastapi import FastAPI, Response
+
+from api_routers import (
+    db_backup_restore,
+    direct_download,
+    orders,
+    temp_form,
+    users,
+    validators,
+)
 from create_volume_folders import create_volume_folders
 from db.sql_handler import db
-from fastapi import FastAPI, Response
 
 create_volume_folders()
 db.recreate_tables()
@@ -13,6 +21,7 @@ app.include_router(orders.router, prefix="/orders")
 app.include_router(db_backup_restore.router, prefix="/database")
 app.include_router(validators.router, prefix="/validators")
 app.include_router(temp_form.router)
+app.include_router(direct_download.router)
 
 
 # @app.get("/")
