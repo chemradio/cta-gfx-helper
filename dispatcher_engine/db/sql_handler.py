@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 import config
 from db.sqlalchemy_models import Base, Order, User
+from processors.password_hashing import generate_password_hash
 
 
 class SQLHandler:
@@ -16,7 +17,7 @@ class SQLHandler:
 
     def __init__(self) -> None:
         self.engine = create_engine(
-            config.POSTGRES_URL,
+            config.DB_CONNECTION_STRING,
             echo=True,
             future=True,
         )
@@ -30,12 +31,16 @@ class SQLHandler:
     def init_add_admin(self) -> None:
         admin_telegram_id = os.environ.get("BOT_ADMIN")
         print(f"{admin_telegram_id=}")
+        admin_password = os.environ.get("BOT_ADMIN_PASSWORD")
+
         with self.Session() as session:
             admin = User(
                 first_name="admin",
                 status="admin",
                 telegram_id=admin_telegram_id,
                 chat_id=admin_telegram_id,
+                password_hash=generate_password_hash(admin_password),
+                email=os.environ.get("BOT_ADMIN_EMAIL"),
             )
             session.add(admin)
             session.commit()
@@ -72,6 +77,7 @@ class SQLHandler:
             user = User(**kwargs)
             session.add(user)
             session.commit()
+            session.refresh(user)
             return user  # .user_id
 
     def edit_user(self, telegram_id: int, **kwargs) -> Optional[User]:

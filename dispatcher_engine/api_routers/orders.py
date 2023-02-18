@@ -2,9 +2,10 @@ import os
 import time
 from pprint import pprint
 
+from fastapi import APIRouter, BackgroundTasks, Form, Request, UploadFile
+
 from api_routers.signal_sender import signal_to_services
 from db.sql_handler import db
-from fastapi import APIRouter, BackgroundTasks, Form, UploadFile
 from processors.cleanup_order_assets import cleanup_order_assets
 from processors.orders import advance_order_stage
 from processors.save_user_file_to_volume import save_user_file_to_volume
@@ -23,6 +24,7 @@ def add_order(order: dict, background_tasks: BackgroundTasks):
 
 @router.post("/add_order_web")
 async def add_order_web(
+    # request: Request,
     background_tasks: BackgroundTasks,
     # global request type
     requestType: str = Form(None),
@@ -39,6 +41,12 @@ async def add_order_web(
     videoFilesPrimaryDocument: UploadFile | None = None,
     videoFilesBackgroundDocument: UploadFile | None = None,
 ):
+    # # print(dir(request))
+    # # print(await request.body())
+    # # x = request.items()
+    # x = await request.form()
+    # print(x)
+
     # inititalize empty order
     order = dict()
     order["ordered_from"] = "web"
@@ -51,8 +59,10 @@ async def add_order_web(
     order["order_creation_end_timestamp"] = int(time.time())
 
     # parse request type
-    request_type_map = {"videoAuto": "video_auto", "videoFiles": "video_files"}
-    order["request_type"] = request_type_map[requestType]
+    # request_type_map = {"videoAuto": "video_auto", "videoFiles": "video_files"}
+    # order["request_type"] = request_type_map[requestType]
+
+    order["request_type"] = "video_auto"
 
     # parse quote settings
     order["quote_enabled"] = quoteEnabled
