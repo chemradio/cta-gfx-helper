@@ -1,7 +1,14 @@
 # Declare this environment variables for bot to function
 
-BOT_ADMIN
+# for telegram bot
 BOT_TOKEN
+
+# administration
+BOT_ADMIN
+BOT_ADMIN_PASSWORD
+BOT_ADMIN_EMAIL
+
+
 POSTGRES_PASSWORD
 JWT_SECRET
 

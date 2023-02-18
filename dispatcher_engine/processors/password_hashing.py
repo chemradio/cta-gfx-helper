@@ -13,9 +13,3 @@ def generate_password_hash(password: str) -> str:
 def verify_password(password: str, stored_hash) -> bool:
     if not bcrypt.verify(password, stored_hash):
         raise PasswordVerificationFailed()
-
-
-x = generate_password_hash("123")
-y = verify_password("1234", x)
-
-print(y)

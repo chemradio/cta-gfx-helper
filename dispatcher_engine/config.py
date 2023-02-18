@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+IS_DOCKER = os.environ.get("IS_DOCKER")
+
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"
 RECENT_ORDERS_INTERVAL_HOURS = 12
@@ -20,6 +22,9 @@ POSTGRES_URL = os.environ.get(
     "POSTGRES_URL",
     f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
+SQLITE_URL = "sqlite:///db.sqlite"
+
+DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else SQLITE_URL
 
 
 # other containers
@@ -40,4 +45,6 @@ SENDER_ENDPOINT = f"http://{SENDER_HOSTNAME}:{SENDER_PORT}/send_orders"
 
 COOKIE_FILE_PATH = VOLUME_MOUNTPOINT / "cookie_file.json"
 
-JWT_SECRET = os.environ.get("JWT_SECRET")
+import secrets
+
+JWT_SECRET = os.environ.get("JWT_SECRET", secrets.token_hex(16))

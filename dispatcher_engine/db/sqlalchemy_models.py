@@ -12,8 +12,9 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
     first_name: Mapped[Optional[str]]
-    email: Mapped[Optional[str]] = mapped_column(insert_default="")
+    email: Mapped[Optional[str]] = mapped_column(insert_default="", unique=True)
     password_hash: Mapped[Optional[str]]
+    username: Mapped[Optional[str]]
 
     description: Mapped[Optional[str]]
 
@@ -24,7 +25,7 @@ class User(Base):
     user_id: Mapped[int] = mapped_column(
         "user_id", Integer, Sequence("user_id_seq"), primary_key=True
     )
-    telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True)
+    telegram_id: Mapped[Optional[int]] = mapped_column(BigInteger, unique=True)
 
     chat_id: Mapped[Optional[int]]
     orders: Mapped[List["Order"]] = relationship(
@@ -41,6 +42,19 @@ class User(Base):
                 Telegram ID: {self.telegram_id}
                 Status: {self.status})"""
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "first_name": self.first_name,
+            "email": self.email,
+            "password_hash": self.password_hash,
+            "description": self.description,
+            "status": self.status,
+            "current_stage": self.current_stage,
+            "user_id": self.user_id,
+            "telegram_id": self.telegram_id,
+            "chat_id": self.chat_id,
+        }
 
 
 class Order(Base):

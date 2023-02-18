@@ -1,5 +1,4 @@
 import requests
-
 from config import ADD_USER_ENDPOINT, DISPATCHER_USERS_ENDPOINT, EDIT_USER_ENDPOINT
 from container_interaction.helpers import UserStatus
 
