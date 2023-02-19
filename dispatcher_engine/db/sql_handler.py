@@ -54,23 +54,30 @@ class SQLHandler:
         self.base.metadata.create_all(bind=self.engine, tables=[Order.__table__])
 
     def add_order(self, **kwargs) -> Order:
-        user_telegram_id = kwargs.pop("telegram_id")
-        print(f"{__name__}:{user_telegram_id=}")
-        user = self.find_user_by_telegram_id(user_telegram_id)
+        user_telegram_id = kwargs.pop("telegram_id", None)
+        user_email = kwargs.pop("user_email", None)
+
+        if user_telegram_id:
+            user = self.find_user_by_telegram_id(user_telegram_id)
+        elif user_email:
+            user = self.find_user_by_email(user_email)
+
         print(f"{__name__}:{user=}")
-        print(f"{__name__}:{user.telegram_id=}")
+        print(f"{__name__}:{user_telegram_id=}")
+        print(f"{__name__}:{user_email=}")
 
         with self.Session() as session:
             order = Order(
                 **kwargs,
                 user=user,
-                user_telegram_id=user.telegram_id,
-                user_email=user.email,
+                user_telegram_id=user_telegram_id,
+                user_email=user_email,
             )
 
             session.add(order)
             session.commit()
-            return order.order_id
+            session.refresh(order)
+            return order
 
     def add_user(self, **kwargs) -> User:
         with self.Session() as session:
