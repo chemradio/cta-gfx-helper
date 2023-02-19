@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api_routers import (
-    auth_local,
     db_backup_restore,
     direct_download,
     orders,
@@ -10,13 +9,12 @@ from api_routers import (
     users,
     validators,
 )
+from api_routers.web_api import web_auth_local, web_orders
 from create_volume_folders import create_volume_folders
-from db.sql_handler import db
+from db.seeding import seed_db
 
 create_volume_folders()
-db.recreate_tables()
-db.init_add_admin()
-
+seed_db()
 
 app = FastAPI()
 
@@ -37,14 +35,7 @@ app.include_router(users.router, prefix="/users")
 app.include_router(orders.router, prefix="/orders")
 app.include_router(db_backup_restore.router, prefix="/database")
 app.include_router(validators.router, prefix="/validators")
-app.include_router(auth_local.router, prefix="/auth_web_local")
+app.include_router(web_auth_local.router, prefix="/web_api/users")
+app.include_router(web_orders.router, prefix="/web_api/orders")
 app.include_router(temp_form.router)
 app.include_router(direct_download.router)
-
-
-# @app.get("/")
-# async def read_root():
-#     """Unused at the moment"""
-#     with open("./base_html/index.html") as index_html:
-#         data = index_html.read()
-#     return Response(content=data, media_type="text/html")
