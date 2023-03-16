@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import Optional
 
 import config
-from processors.asset_finder import find_files
+from utils.assets.asset_finder import find_files
 
 
 def cleanup_order_assets(order: dict):

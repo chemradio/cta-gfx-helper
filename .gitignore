@@ -8,7 +8,7 @@ dev/volume/asset_storage/
 dev/volume/pg_data/
 volume/
 
-
+__blobstorage__/
 
 cookie_file.json
 

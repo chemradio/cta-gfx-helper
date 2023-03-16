@@ -24,7 +24,7 @@ POSTGRES_URL = os.environ.get(
 )
 SQLITE_URL = "sqlite:///db.sqlite"
 
-DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else SQLITE_URL
+DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else "postgresql://localhost"
 
 
 # other containers
