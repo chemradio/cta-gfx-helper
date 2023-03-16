@@ -1,11 +1,13 @@
 import secrets
 
-import config
 from fastapi import UploadFile
 
+import config
 
-def save_user_file_to_volume(file: UploadFile = None) -> str:
+
+def save_user_file_to_volume(file: UploadFile = None, filename: str = None) -> str:
     """Save a UploadFile instance to VOLUME and return new filename"""
+
     temp_name = f"user_{secrets.token_hex(8)}"
     extension = file.filename.split(".")[-1]
     full_filename = f"{temp_name}.{extension}"

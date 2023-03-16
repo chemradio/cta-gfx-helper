@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
-from processors.asset_finder import find_files
+from utils.assets.asset_finder import find_files
 
 router = APIRouter()
 
 # orders
-@router.get("/direct_download/{filename}")
+@router.get("/{filename}")
 def direct_download(filename: str):
     target_file_list = find_files(filename)
 

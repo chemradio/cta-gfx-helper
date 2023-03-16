@@ -11,6 +11,9 @@ services:
       - BOT_ADMIN=${BOT_ADMIN}
       - IS_DOCKER=true
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - BOT_ADMIN_PASSWORD=${BOT_ADMIN_PASSWORD}
+      - BOT_ADMIN_EMAIL=${BOT_ADMIN_EMAIL}
     expose:
       - "9000"
     ports:
@@ -18,7 +21,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
 
   # telegram bot
   telegram_bot:
@@ -41,14 +43,14 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_URL=${POSTGRES_URL}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
     # volumes:
     #   - pg_data:/var/lib/postgresql/data
-    
-  # screenshots
+
+    # screenshots
   screenshoter:
     build: ./screenshot_engine
     volumes:
@@ -62,7 +64,6 @@ services:
     depends_on:
       - dispatcher
 
-
   video_gfx:
     build: ./video_gfx
     volumes:
@@ -73,7 +74,6 @@ services:
     depends_on:
       - dispatcher
 
-
   video_gfx_server:
     build: ./video_gfx_server
     volumes:
@@ -82,7 +82,6 @@ services:
       - "9006"
     depends_on:
       - dispatcher
-    
 
   sender:
     build: ./sender_engine
@@ -98,7 +97,6 @@ services:
     depends_on:
       - dispatcher
 
-
   screenshot_selenium:
     # image: "selenium/standalone-chrome"
     image: "seleniarm/standalone-chromium"
@@ -107,7 +105,6 @@ services:
     shm_size: 4g
     depends_on:
       - dispatcher
-
 
   video_gfx_selenium:
     # image: "selenium/standalone-chrome"
@@ -118,7 +115,6 @@ services:
     depends_on:
       - dispatcher
 
-
 volumes:
   asset_storage:
     driver: local
@@ -126,7 +122,6 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '$PWD/dev/volume/asset_storage'
-
   # pg_data:
   #   driver: local
   #   driver_opts:

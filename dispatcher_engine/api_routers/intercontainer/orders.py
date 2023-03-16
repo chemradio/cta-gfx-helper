@@ -1,0 +1,50 @@
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from pydantic import BaseModel
+
+from container_interaction.signal_sender import signal_to_services
+from db_tortoise.order_controller import OrderController
+from db_tortoise.orders_models import Order, Order_Pydantic
+from utils.request_json_parser import request_json_parser
+
+router = APIRouter()
+
+
+class IntercontainerOrder_GetOne(BaseModel):
+    current_stage: str
+    status: str | None = "active"
+
+
+@router.put("/")
+async def edit_order_intercontainer(
+    background_tasks: BackgroundTasks,
+    order_json: dict | None = Depends(request_json_parser),
+):
+    if not order_json:
+        raise HTTPException(400, "Request body could not be parsed.")
+
+    order_db = await Order.filter(id=order_json["id"]).first()
+    order_db.update_from_dict(**order_json)
+    await OrderController.advance_order_stage(order_db)
+    await order_db.save()
+
+    if order_db.status == "completed":
+        # order completed
+        # cleanup_order_assets(order_db)
+        pass
+
+    background_tasks.add_task(signal_to_services, order_db.current_stage)
+    return None
+
+
+@router.get("/")
+async def get_one_intercontainer(order: IntercontainerOrder_GetOne):
+    order_db = await Order.filter(
+        current_stage=order.current_stage, status=order.status
+    ).first()
+    if not order_db:
+        return None
+
+    order_pydantic = await Order_Pydantic.from_tortoise_orm(order_db)
+    await OrderController.advance_order_stage(order_db)
+    await order_db.save()
+    return order_pydantic

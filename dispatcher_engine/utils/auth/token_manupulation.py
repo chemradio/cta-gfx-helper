@@ -1,9 +1,14 @@
+from datetime import datetime
+
 import jwt
 
 from config import JWT_SECRET
 
 
 def generate_jwt_token(data: dict) -> str:
+    for key, value in data.items():
+        if isinstance(value, datetime):
+            data[key] = value.isoformat()
     return jwt.encode(data, JWT_SECRET)
 
 
