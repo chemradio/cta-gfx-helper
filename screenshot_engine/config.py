@@ -19,11 +19,9 @@ DISPATCHER_NODE_PORT = 9000
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
 
 LIST_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/list"
-GET_ONE_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/get_one"
+GET_ONE_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 
-# !!!
-EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/edit"
-# EDIT_ORDER_ENDPOINT = f"http://localhost:{DISPATCHER_NODE_PORT}/orders/edit"
+EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 
 
 TWO_LAYER_LINKS = ("facebook", "twitter", "instagram", "telegram")
