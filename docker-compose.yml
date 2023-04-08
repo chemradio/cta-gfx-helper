@@ -23,6 +23,23 @@ services:
       db:
         condition: service_healthy
 
+  # svelte frontend
+  front-svelte:
+    build: ./front-svelte
+    volumes:
+      - asset_storage:/usr/src/app/volume
+      - ./front-svelte:/usr/src/app/
+    expose:
+      - "9009"
+    ports:
+      - "9009:9009"
+    environment:
+      - BOT_ADMIN=${BOT_ADMIN}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - IS_DOCKER=true
+    depends_on:
+      - dispatcher
+
   # telegram bot
   telegram_bot:
     build: ./bot_engine
