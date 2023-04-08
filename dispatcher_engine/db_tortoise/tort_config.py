@@ -1,5 +1,7 @@
+import config
+
 TORTOISE_ORM = {
-    "connections": {"default": "postgres://localhost:5432/tim"},
+    "connections": {"default": config.DB_CONNECTION_STRING},
     "apps": {
         "user": {
             "models": [

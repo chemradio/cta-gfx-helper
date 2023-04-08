@@ -1,4 +1,4 @@
-from telegram.ext import Application, CommandHandler
+from telegram.ext import Application
 
 from .all_handler import AllHandler
 from .bot_instance import BOT_TOKEN

@@ -12,6 +12,7 @@ router = APIRouter()
 class IntercontainerOrder_GetOne(BaseModel):
     current_stage: str
     status: str | None = "active"
+    ordered_from: str | None = None
 
 
 @router.put("/")
@@ -39,7 +40,9 @@ async def edit_order_intercontainer(
 @router.get("/")
 async def get_one_intercontainer(order: IntercontainerOrder_GetOne):
     order_db = await Order.filter(
-        current_stage=order.current_stage, status=order.status
+        current_stage=order.current_stage,
+        status=order.status,
+        ordered_from="" if order.ordered_from is None else order.ordered_from,
     ).first()
     if not order_db:
         return None

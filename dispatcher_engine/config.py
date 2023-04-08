@@ -20,11 +20,11 @@ POSTGRES_PORT = os.environ.get("POSTGRES_PORT", "5432")
 POSTGRES_DB = os.environ.get("POSTGRES_DB", "postgres")
 POSTGRES_URL = os.environ.get(
     "POSTGRES_URL",
-    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}",
+    f"postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
 SQLITE_URL = "sqlite:///db.sqlite"
 
-DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else "postgresql://localhost"
+DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else "postgres://localhost"
 
 
 # other containers
