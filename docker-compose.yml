@@ -24,18 +24,17 @@ services:
         condition: service_healthy
 
   # svelte frontend
-  front-svelte:
-    build: ./front-svelte
+  front_svelte:
+    build: ./front_svelte
     volumes:
       - asset_storage:/usr/src/app/volume
-      - ./front-svelte:/usr/src/app/
+      - ./front_svelte:/usr/src/app/
     expose:
       - "9009"
     ports:
       - "9009:9009"
     environment:
-      - BOT_ADMIN=${BOT_ADMIN}
-      - BOT_TOKEN=${BOT_TOKEN}
+      - PORT=9009
       - IS_DOCKER=true
     depends_on:
       - dispatcher

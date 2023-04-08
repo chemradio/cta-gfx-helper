@@ -1,9 +1,5 @@
 import asyncio
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.fastapi import register_tortoise
-
 from api_routers.administration import db_manipulation
 from api_routers.intercontainer import orders as intercontainer_orders
 from api_routers.web_api import direct_download
@@ -15,6 +11,9 @@ from db_tortoise.init_tort_orm import (
     rebuild_tortoise_postgres,
 )
 from db_tortoise.tort_config import TORTOISE_ORM
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from tortoise.contrib.fastapi import register_tortoise
 
 asyncio.get_event_loop().create_task(initialize_tortoise_postgres())
 
@@ -23,6 +22,7 @@ create_volume_folders()
 app = FastAPI()
 
 origins = [
+    "http://front_svelte:9009",
     "http://localhost:3000",
     "http://localhost:5176",
 ]
