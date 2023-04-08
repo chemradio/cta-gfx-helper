@@ -10,7 +10,10 @@ from api_routers.web_api import direct_download
 from api_routers.web_api import orders as web_orders
 from api_routers.web_api import users as web_users
 from create_volume_folders import create_volume_folders
-from db_tortoise.init_tort_orm import initialize_tortoise_postgres
+from db_tortoise.init_tort_orm import (
+    initialize_tortoise_postgres,
+    rebuild_tortoise_postgres,
+)
 from db_tortoise.tort_config import TORTOISE_ORM
 
 asyncio.get_event_loop().create_task(initialize_tortoise_postgres())
@@ -21,6 +24,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "http://localhost:5176",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +32,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=1000000,
 )
 
 

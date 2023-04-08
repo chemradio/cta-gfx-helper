@@ -1,12 +1,23 @@
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 
-# from api_routers.signal_sender import signal_to_services
+from container_interaction.signal_sender import signal_to_services
 from db_tortoise.order_controller import OrderController
 from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
 from db_tortoise.users_models import User, User_Pydantic
 from utils.auth.cookie_parser import cookie_parser
 
 router = APIRouter()
+
+
+# @router.post("/")
+# async def add_order(
+#     request: Request,
+#     user_cookie: User_Pydantic | None = Depends(cookie_parser),
+#     # order_in: OrderIn_Pydantic = Depends(OrderIn_Pydantic.as_form),
+# ):
+#     form_data = await request.body()
+#     print(form_data)
+#     return None
 
 
 @router.post("/")

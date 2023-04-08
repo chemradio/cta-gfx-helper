@@ -13,5 +13,11 @@ async def generate_cookie_json_response(user: User) -> JSONResponse:
     # add a cookie with a jwt-token to the response
     access_token = generate_jwt_token(user_py_jsonable)
     response = JSONResponse(content=user_py_jsonable)
-    response.set_cookie(key="jwt", value=f"Bearer {access_token}")
+    response.set_cookie(
+        key="jwt",
+        value=f"Bearer {access_token}",
+        # httponly=False,
+        # samesite="None",
+        # secure=True,
+    )
     return response

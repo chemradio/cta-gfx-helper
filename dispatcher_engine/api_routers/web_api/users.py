@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, Response
 
@@ -19,12 +19,15 @@ async def login(
     user: UserIn_Pydantic | None = Depends(UserIn_Pydantic.as_form),
     user_cookie: User_Pydantic | None = Depends(cookie_parser),
 ):
+    print("trying login ")
     # check if already logged in
     if user_cookie:
         print("Correct cookie detected. Sending it back.")
         user_cookie_jsonable = jsonable_encoder(user_cookie)
         response = JSONResponse(content=user_cookie_jsonable)
         return response
+
+    print(user.dict())
 
     # check user in db
     user_db = await User.filter(email=user.email).first()
@@ -43,10 +46,12 @@ async def login(
 
 @router.delete("/sessions")
 async def logout(
+    request: Request,
     response: Response,
     # request: Request,
     # user_cookie: User_Pydantic | None = Depends(cookie_parser),
 ):
+    print(response)
     response.delete_cookie("jwt")
     return True
 
@@ -69,4 +74,14 @@ async def register(
     )
 
     response = await generate_cookie_json_response(user_db)
+    return response
+
+
+@router.get("/verify_token")
+async def verify_token(
+    token: User_Pydantic | None = Depends(cookie_parser),
+):
+    print("received token: ", token)
+    user_cookie_jsonable = jsonable_encoder(token)
+    response = JSONResponse(content=user_cookie_jsonable)
     return response

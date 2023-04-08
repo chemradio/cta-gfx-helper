@@ -1,7 +1,14 @@
+import asyncio
 import time
 from pathlib import Path
 
-from telegram_bot.main_dispatcher import bot_application_v20
+from telegram.ext import Application
+
+from telegram_bot.all_handler import AllHandler
+from telegram_bot.bot_instance import BOT_TOKEN
+from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (
+    dispatcher_callback,
+)
 
 
 def create_volume_folders():
@@ -24,11 +31,15 @@ def main():
     while True:
         try:
             print("starting the bot")
-            bot_application_v20()
+            application = Application.builder().token(BOT_TOKEN).build()
+            application.add_handler(AllHandler(dispatcher_callback))
+            application.run_polling()
         except Exception as e:
             print(e)
             time.sleep(5)
 
 
 if __name__ == "__main__":
-    main()
+    application = Application.builder().token(BOT_TOKEN).build()
+    application.add_handler(AllHandler(dispatcher_callback))
+    application.run_polling()

@@ -23,12 +23,30 @@ async def drop_tables() -> None:
 
 
 async def create_tables() -> None:
-    await Tortoise.init(db_url=DB_URL, modules={"models": ["db_tortoise.models"]})
+    await Tortoise.init(
+        db_url=DB_URL,
+        modules={
+            "models": [
+                "db_tortoise.users_models",
+                "db_tortoise.orders_models",
+                "db_tortoise.system_events_models",
+            ],
+        },
+    )
     await Tortoise.generate_schemas()
 
 
 async def check_models_in_db() -> bool:
-    await Tortoise.init(db_url=DB_URL, modules={"models": ["db_tortoise.models"]})
+    await Tortoise.init(
+        db_url=DB_URL,
+        modules={
+            "models": [
+                "db_tortoise.users_models",
+                "db_tortoise.orders_models",
+                "db_tortoise.system_events_models",
+            ],
+        },
+    )
     db_description = Tortoise.describe_models()
     models = ("Order", "User", "SystemEvent")
     for model in models:
