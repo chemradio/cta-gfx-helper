@@ -4,7 +4,9 @@
 background: linear-gradient(180deg, rgba(3,31,59,1) 0%, rgba(82,82,82,1) 100%);
 } */
 
-
+body {
+    background-color: #DEE5EC;
+}
 
 
 .footer-main {
@@ -18,7 +20,8 @@ background: linear-gradient(180deg, rgba(3,31,59,1) 0%, rgba(82,82,82,1) 100%);
   }
 header {
     z-index: 1;
-    
+    background-color: #2D1996;
+    color: #2D1996;
 }
 
 main {

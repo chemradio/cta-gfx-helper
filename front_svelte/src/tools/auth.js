@@ -13,10 +13,8 @@ export const authenticateUser = async (event) => {
 
     if (response.ok) {
       const user = await response.json();
-      console.log("user is: ", user);
       return user;
     } else {
-      console.log("Token verification failed");
       return null;
     }
   } catch (err) {

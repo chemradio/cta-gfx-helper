@@ -1,4 +1,4 @@
-const dispatcherURL = "http://dispatcher:9000";
+const dispatcherURL = "http://127.0.0.1:8000";
 export const dispatcherLoginURL = `${dispatcherURL}/web_api/users/sessions`;
 export const dispatcherVerifyToken = `${dispatcherURL}/web_api/users/verify_token`;
 export const dispatcherRegisterURL = `${dispatcherURL}/web_api/users`;

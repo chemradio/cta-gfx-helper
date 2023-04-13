@@ -1,15 +1,10 @@
 <script>
-  import { onMount } from "svelte";
-  import { dispatcherLoginURL } from "../../config";
-
-  const logout = async () => {
-    const res = await fetch(`${dispatcherLoginURL}`, {
-      method: "delete",
-      credentials: "include",
+    import { invalidate } from "$app/navigation";
+    import { onMount } from "svelte";
+    onMount(async () => {
+        await invalidate("/logout");
+        await invalidate("/login");
     });
-    if (res.status === 200) window.location.href = "/";
-  };
-  onMount(async () => {
-    await logout();
-  });
+    export let form;
+    if (form) console.log(form);
 </script>

@@ -41,6 +41,7 @@ class UserIn_Pydantic(BaseModel):
     username: str | None = None
     email: EmailStr
     password: str
+    passphrase: str | None = None
 
     @classmethod
     def as_form(
@@ -48,8 +49,12 @@ class UserIn_Pydantic(BaseModel):
         username: str | None = Form(None),
         email: EmailStr = Form(...),
         password: str = Form(...),
+        passphrase: str | None = Form(None),
     ):
-        return cls(username=username, email=email, password=password)
+        print(username, email, password, passphrase)
+        return cls(
+            username=username, email=email, password=password, passphrase=passphrase
+        )
 
 
 User_Pydantic = pydantic_model_creator(User, name="User", exclude=("password_hash",))

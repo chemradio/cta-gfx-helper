@@ -1,10 +1,7 @@
 export const load = ({ locals }) => {
-  if (locals.user) {
-    console.log("user is OK");
-    console.log("user is:", locals.user);
-    return { user: locals.user };
-  } else {
-    console.log("user is empty");
-    return { user: null };
-  }
+    if (Object.keys(locals.user).length > 0) {
+        return { user: locals.user, toasts: locals.toasts };
+    } else {
+        return { user: null, toasts: locals.toasts };
+    }
 };

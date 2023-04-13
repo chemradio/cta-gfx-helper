@@ -1,43 +1,44 @@
 <script>
-  import { onMount } from "svelte";
-  import VideoGfxForm from "../../components/newOrderForms/VideoGFXForm.svelte";
-  import PreviousOrderList from "../../components/previousOrders/PreviousOrderList.svelte";
-  import { dispatcherOrdersURL } from "../../config";
-  export let data;
-  let orders = [];
-  console.log(data);
+    import VideoGfxForm from "../../components/newOrderForms/VideoGFXForm.svelte";
+    import PreviousOrderList from "../../components/previousOrders/PreviousOrderList.svelte";
 
-  const fetchUserOrders = async () => {
-    console.log("entered fetchOrders");
-    const res = await fetch(dispatcherOrdersURL, {
-      method: "get",
-      credentials: "include",
-    });
-    console.log("response from the getOrders");
-    console.log(res);
-    const data = await res.json();
-    console.log("data: ", data);
-    return data;
-  };
-
-  onMount(async () => {
-    orders = await fetchUserOrders();
-    orders = orders.reverse();
-  });
+    export let data;
+    let orders = data.orders;
 </script>
 
 <svelte:head>
-  <title>My Orders</title>
-  <meta name="description" content="Svelte demo app" />
+    <title>My Orders</title>
+    <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
 <div class="col">
-  <div class="row">
-    <VideoGfxForm />
-  </div>
+    <div class="d-flex">
+        <div
+            class="toast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            auto-hode="false"
+        >
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="..." />
+                <strong class="me-auto">Bootstrap</strong>
+                <small>11 mins ago</small>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="toast"
+                    aria-label="Close"
+                />
+            </div>
+            <div class="toast-body">Hello, world! This is a toast message.</div>
+        </div>
+    </div>
 
-  <hr />
-  {#if data}
-    <PreviousOrderList {orders} />
-  {/if}
+    <VideoGfxForm />
+
+    <hr />
+    {#if data}
+        <PreviousOrderList {orders} />
+    {/if}
 </div>
