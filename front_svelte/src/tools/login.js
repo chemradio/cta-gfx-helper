@@ -16,19 +16,16 @@ export const handleUserSubmit = async (email, password) => {
     },
   })
     .then((response) => {
-      console.log("response status is: ", response.status);
       if (response.status === 200) {
         return response.json();
       } else {
         // handle error response
-        console.log("Invalid credentials. Try again.");
         return null;
         // return { status: 403, message: "Unauthorized. Invalid credentials." };
       }
     })
     .catch((error) => {
       // handle network or fetch error
-      console.log(error);
       return null;
       // return { status: 500, message: "Server error." };
     });

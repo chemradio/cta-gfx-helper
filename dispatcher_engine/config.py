@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
+
 IS_DOCKER = os.environ.get("IS_DOCKER")
 
 SQL_SERVER = "temp.sqlite"

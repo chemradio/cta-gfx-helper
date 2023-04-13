@@ -16,8 +16,5 @@ async def generate_cookie_json_response(user: User) -> JSONResponse:
     response.set_cookie(
         key="jwt",
         value=f"Bearer {access_token}",
-        # httponly=False,
-        # samesite="None",
-        # secure=True,
     )
     return response
