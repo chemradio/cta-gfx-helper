@@ -14,7 +14,7 @@ export const load = async (event, resolve) => {
     }
     event.locals.user = {};
     return {
-        status: "OK",
+        status: "ok",
         message: "Log in or Register to continue",
     };
 };

@@ -7,14 +7,15 @@ services:
     volumes:
       - asset_storage:/usr/src/app/volume
       - ./dispatcher_engine:/usr/src/app
-    environment:
-      - POSTGRES_URL=${POSTGRES_URL}
-      - BOT_ADMIN=${BOT_ADMIN}
-      - IS_DOCKER=true
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - BOT_ADMIN_PASSWORD=${BOT_ADMIN_PASSWORD}
-      - BOT_ADMIN_EMAIL=${BOT_ADMIN_EMAIL}
+    env_file:
+      - .env
+    # environment:
+    #   - BOT_ADMIN=${BOT_ADMIN}
+    #   - IS_DOCKER=true
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    #   - JWT_SECRET=${JWT_SECRET}
+    #   - BOT_ADMIN_PASSWORD=${BOT_ADMIN_PASSWORD}
+    #   - BOT_ADMIN_EMAIL=${BOT_ADMIN_EMAIL}
     expose:
       - "9000"
     ports:
@@ -33,9 +34,11 @@ services:
       - "9009"
     ports:
       - "9009:9009"
+    env_file:
+      - .env
     environment:
       - PORT=9009
-      - IS_DOCKER=true
+    #   - IS_DOCKER=true
     depends_on:
       - dispatcher
 
@@ -47,17 +50,21 @@ services:
       # - ./bot_engine:/usr/src/app/
     expose:
       - "9001"
-    environment:
-      - BOT_ADMIN=${BOT_ADMIN}
-      - BOT_TOKEN=${BOT_TOKEN}
-      - IS_DOCKER=true
+    env_file:
+      - .env      
+    # environment:
+    #   - BOT_ADMIN=${BOT_ADMIN}
+    #   - BOT_TOKEN=${BOT_TOKEN}
+    #   - IS_DOCKER=true
     depends_on:
       - dispatcher
 
   db:
     image: "postgres:15-alpine"
-    environment:
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env    
+    # environment:
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -73,8 +80,10 @@ services:
       - asset_storage:/usr/src/app/volume
       # - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
-    environment:
-      - IS_DOCKER=true
+    env_file:
+      - .env    
+    # environment:
+    #   - IS_DOCKER=true
     expose:
       - "9002"
     depends_on:
@@ -104,10 +113,12 @@ services:
     volumes:
       - asset_storage:/usr/src/app/volume
       # - ./sender_engine:/usr/src/app
-    environment:
-      - IS_DOCKER=true
-      - BOT_ADMIN=${BOT_ADMIN}
-      - BOT_TOKEN=${BOT_TOKEN}
+    env_file:
+      - .env
+    # environment:
+    #   - IS_DOCKER=true
+    #   - BOT_ADMIN=${BOT_ADMIN}
+    #   - BOT_TOKEN=${BOT_TOKEN}
     expose:
       - "9007"
     depends_on:

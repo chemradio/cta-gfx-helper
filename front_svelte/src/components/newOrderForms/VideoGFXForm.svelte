@@ -1,106 +1,96 @@
 <script>
     import { enhance } from "$app/forms";
     import Icon from "@iconify/svelte";
+    // import { onMount } from "svelte";
+
     import toast from "svelte-french-toast";
     import VideoAuto from "./videoGFXComponents/VideoAuto.svelte";
     import VideoFiles from "./videoGFXComponents/VideoFiles.svelte";
     import Audio from "./videoGFXComponents/shared/Audio.svelte";
     import Quote from "./videoGFXComponents/shared/Quote.svelte";
-    let formData = {
-        request_type: "video_auto",
-        quote_enabled: false,
-        quote_text: "",
-        quote_author_text: "",
-        audio_enabled: false,
-        audio_file: "",
-        link: "",
-        foreground_file: "",
-        background_file: "",
-    };
-
+    let request_type = "video_auto";
+    export let data;
     let loading = false;
     const submitVideoGFXOrder = async ({}) => {
-        return async ({ result, update }) => {
-            loading = true;
+        return async ({ result }) => {
             console.log(result);
             switch (result.data?.status) {
+                case "ok":
+                    toast.success("Order submitted successfully");
+                    break;
                 case "error":
-                    toast.error(result.data.message);
-                    await update();
+                    toast.error("A problem occured");
                     break;
                 default:
-                    toast.success("Successfully registered");
+                    toast.error("Something went wrong");
                     break;
             }
-            loading = false;
-            await update();
+            window.location.href = "/";
         };
     };
 </script>
 
-<h5>Новый заказ</h5>
-<div class="container">
-    <form
-        method="POST"
-        action="/orders?/submitVideoGFXOrder"
-        id="videoGFXForm"
-        class="card rounded-0"
-        use:enhance={submitVideoGFXOrder}
-    >
-        <div class="card-header">
-            <h5 class="form-label">Видео-графика</h5>
-            <small>Укажи ссылку или пришли файлы, получи MP4-видео</small>
+<form
+    method="POST"
+    action="/orders?/submitVideoGFXOrder"
+    id="videoGFXForm"
+    class="card rounded-0 bg-secondary p-0"
+    use:enhance={submitVideoGFXOrder}
+>
+    <div class="card-header">
+        <h3 class="form-label fw-bold">Видео-графика</h3>
+        <small>Укажи ссылку или пришли файлы, получи MP4-видео</small>
+    </div>
+
+    <div class="card-body">
+        <div class="mb-3 d-flex justify-content-between">
+            <input
+                class="btn-check"
+                type="radio"
+                bind:group={request_type}
+                name="request_type"
+                id="request_video_auto"
+                value="video_auto"
+            />
+
+            <label
+                class="btn btn-outline-primary rounded-0 w-50"
+                for="request_video_auto"
+            >
+                <Icon icon="material-symbols:link" /> Из ссылки
+            </label>
+            <div class="m-2" style="border-left:1px solid #000;height:20px" />
+            <input
+                class="btn-check"
+                type="radio"
+                bind:group={request_type}
+                name="request_type"
+                id="request_video_files"
+                value="video_files"
+            />
+            <label
+                class="btn btn-outline-primary rounded-0 w-50"
+                for="request_video_files"
+                ><Icon icon="material-symbols:file-copy-rounded" /> Из файлов</label
+            >
+        </div>
+        <hr />
+
+        <div hidden={request_type !== "video_auto"}>
+            <VideoAuto {request_type} />
+        </div>
+        <div hidden={request_type !== "video_files"}>
+            <VideoFiles {request_type} />
         </div>
 
-        <div class="card-body">
-            <div class="mb-3 d-flex justify-content-between">
-                <input
-                    class="btn-check"
-                    type="radio"
-                    bind:group={formData.request_type}
-                    name="request_type"
-                    id="request_video_auto"
-                    value={"video_auto"}
-                />
-
-                <label
-                    class="btn btn-outline-primary px-5 w-50"
-                    for="request_video_auto"
-                >
-                    <Icon icon="material-symbols:link" /> Из ссылки
-                </label>
-                <div
-                    class="m-2"
-                    style="border-left:1px solid #000;height:20px"
-                />
-                <input
-                    class="btn-check"
-                    type="radio"
-                    bind:group={formData.request_type}
-                    name="request_type"
-                    id="request_video_files"
-                    value={"video_files"}
-                />
-                <label
-                    class="btn btn-outline-primary px-5 w-50"
-                    for="request_video_files"
-                    ><Icon icon="material-symbols:file-copy-rounded" /> Из файлов</label
-                >
-            </div>
-            <hr />
-
-            {#if formData.request_type === "video_auto"}
-                <VideoAuto bind:formData />
-            {:else}
-                <VideoFiles bind:formData />
-            {/if}
-            <Quote bind:formData />
-            <Audio bind:formData />
+        <div hidden={!["video_files", "video_auto"].includes(request_type)}>
+            <Quote />
+            <Audio />
             <button
                 disabled={loading}
-                class="btn btn-primary w-100"
+                class="btn btn-primary w-100 rounded-0"
                 type="submit">Заказать</button
             >
         </div>
-    </form>
-</div>
+    </div>
+</form>

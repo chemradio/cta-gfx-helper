@@ -44,7 +44,7 @@ async def register(
     return response
 
 
-@router.post("/sessions")
+@router.post("/sessions/")
 async def login(
     request: Request,
     user: UserIn_Pydantic | None = Depends(UserIn_Pydantic.as_form),
@@ -78,7 +78,7 @@ async def login(
     return response
 
 
-@router.delete("/sessions")
+@router.delete("/sessions/")
 async def logout(
     request: Request,
     response: Response,
@@ -90,7 +90,7 @@ async def logout(
     return True
 
 
-@router.get("/verify_token")
+@router.get("/verify_token/")
 async def verify_token(
     token: User_Pydantic | None = Depends(cookie_parser),
 ):

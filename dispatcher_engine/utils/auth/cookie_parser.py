@@ -7,7 +7,7 @@ from utils.auth.token_manupulation import decode_jwt_payload
 async def cookie_parser(jwt: str | None = Cookie(None)):
     try:
         print("cookie parser started")
-        print("jwt: ", jwt)
+        print(f"{jwt=}")
         user_dict = decode_jwt_payload(jwt)
         print(user_dict)
         # check user exists

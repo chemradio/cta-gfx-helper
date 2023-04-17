@@ -1,5 +1,5 @@
 from fastapi import Form, UploadFile
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 from tortoise import fields
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from tortoise.models import Model
@@ -67,7 +67,7 @@ class OrderIn_Pydantic(BaseModel):
     status: str | None = None
     request_type: str
     stage: str | None = None
-    link: str | None = None
+    link: HttpUrl | None = None
     quote_enabled: bool | None = False
     quote_text: str | None = None
     quote_author_text: str | None = None
@@ -84,7 +84,7 @@ class OrderIn_Pydantic(BaseModel):
         status: str = Form(None),
         request_type: str = Form(...),
         stage: str | None = Form(None),
-        link: str | None = Form(None),
+        link: HttpUrl | None = Form(None),
         quote_enabled: bool = Form(False),
         quote_text: str | None = Form(None),
         quote_author_text: str | None = Form(None),

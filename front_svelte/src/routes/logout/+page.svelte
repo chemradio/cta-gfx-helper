@@ -1,10 +1,10 @@
 <script>
-    import { invalidate } from "$app/navigation";
     import { onMount } from "svelte";
-    onMount(async () => {
-        await invalidate("/logout");
-        await invalidate("/login");
+    export let data;
+    onMount(() => {
+        // const { email, password } = Object.fromEntries(data.entries());
+        if (data.status === "ok") {
+            window.location.href = "/";
+        }
     });
-    export let form;
-    if (form) console.log(form);
 </script>

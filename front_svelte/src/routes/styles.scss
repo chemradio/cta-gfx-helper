@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+// $theme-colors: {
+//     "primary": #2D1996,
+// };
+$plum: #2D1996;
+$white: #FFFFFF;
+$pool:  #0ECAE3;
+$midnight:  #102C44;
+$raspberry: #FF0055;
+$heather:  #DEE5EC;
+
+// asia
+$purple: #3E11B0;
+$lava: #FF6F43;
+
+
+$primary: $purple;
+$secondary: $heather;
+$danger: $lava;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+html {
+    min-height: 100%;
+
+}
+
+
+body {
+    font-family: 'Roboto Condensed';
+    background-color: $white;
+    // background: linear-gradient(180deg, $pool, $white) fixed;
+    // background-size: cover;
+}
+

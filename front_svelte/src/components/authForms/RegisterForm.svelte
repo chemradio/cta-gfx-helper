@@ -22,7 +22,7 @@
     };
 </script>
 
-<div class="card border-warning">
+<div class="card bg-secondary rounded-0">
     <form method="POST" action="/login?/register" id="registerForm" use:enhance>
         <div class="card-header">
             <h5>Регистрация</h5>
@@ -36,7 +36,8 @@
                         name="register_email"
                         type="text"
                         disabled={loading}
-                        class="form-control {form?.errors?.register_email
+                        class="form-control rounded-0 {form?.errors
+                            ?.register_email
                             ? 'border-danger'
                             : ''}"
                     />
@@ -54,7 +55,8 @@
                         name="register_password"
                         type="password"
                         disabled={loading}
-                        class="form-control {form?.errors?.register_password
+                        class="form-control rounded-0 {form?.errors
+                            ?.register_password
                             ? 'border-danger'
                             : ''}"
                     />
@@ -72,7 +74,8 @@
                         name="register_passphrase"
                         type="password"
                         disabled={loading}
-                        class="form-control {form?.errors?.register_passphrase
+                        class="form-control rounded-0 {form?.errors
+                            ?.register_passphrase
                             ? 'border-danger'
                             : ''}"
                     />
@@ -86,7 +89,7 @@
 
             <button
                 disabled={loading}
-                class="btn btn-primary mb-2 w-100"
+                class="btn btn-primary rounded-0 mb-2 w-100"
                 type="submit">Отправить</button
             >
         </div>

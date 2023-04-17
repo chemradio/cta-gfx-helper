@@ -17,12 +17,13 @@
                     break;
             }
             loading = false;
-            await update();
+            window.location.href = "/";
+            // await update();
         };
     };
 </script>
 
-<div class="card border-primary">
+<div class="card bg-secondary rounded-0">
     <form
         method="POST"
         action="/login?/login"
@@ -40,7 +41,7 @@
                     <input
                         name="login_email"
                         type="text"
-                        class="form-control {form?.errors?.login_email
+                        class="form-control rounded-0 {form?.errors?.login_email
                             ? 'border-danger'
                             : ''}"
                         value={form?.data?.login_email ?? ""}
@@ -61,7 +62,8 @@
                         name="login_password"
                         type="password"
                         disabled={loading}
-                        class="form-control {form?.errors?.login_password
+                        class="form-control rounded-0 {form?.errors
+                            ?.login_password
                             ? 'border-danger'
                             : ''}"
                     />
@@ -74,7 +76,7 @@
             </div>
             <button
                 disabled={loading}
-                class="btn btn-primary w-100"
+                class="btn btn-primary w-100 rounded-0"
                 type="submit">Отправить</button
             >
         </div>
