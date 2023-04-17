@@ -1,5 +1,5 @@
 <script>
-    export let formData;
+    export let request_type;
 </script>
 
 <div class="mb-1">
@@ -9,11 +9,9 @@
             name="foreground_file"
             class="form-control"
             type="file"
+            value=""
             accept="image/*,.pdf"
-            on:change={(event) => {
-                formData.foreground_file = event.target.files[0];
-            }}
-            required
+            required={request_type === "video_files"}
         />
     </label>
 </div>
@@ -24,10 +22,9 @@
             name="background_file"
             class="form-control"
             type="file"
+            value=""
             accept="image/*,.pdf"
-            on:change={(event) => {
-                formData.background_file = event.target.files[0];
-            }}
+            required={request_type === "video_files"}
         />
     </label>
 </div>
