@@ -1,11 +1,10 @@
+from config import REGISTER_PASSPHRASE
+from db_tortoise.helper_enums import NormalUserPermission
+from db_tortoise.users_models import User, User_Pydantic, UserIn_Pydantic
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, Response
 from pydantic import EmailStr
-
-from config import REGISTER_PASSPHRASE
-from db_tortoise.helper_enums import NormalUserPermission
-from db_tortoise.users_models import User, User_Pydantic, UserIn_Pydantic
 from utils.auth.cookie_parser import cookie_parser
 from utils.auth.jwt_cookie_response import generate_cookie_json_response
 from utils.auth.password_hashing import (
@@ -85,7 +84,6 @@ async def logout(
     # request: Request,
     # user_cookie: User_Pydantic | None = Depends(cookie_parser),
 ):
-    print(response)
     response.delete_cookie("jwt")
     return True
 

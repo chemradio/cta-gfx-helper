@@ -24,6 +24,8 @@ POSTGRES_URL = os.environ.get(
     "POSTGRES_URL",
     f"postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
+POSTGRES_URL = f"postgres://postgres:{POSTGRES_PASSWORD}@db:5432/postgres"
+
 SQLITE_URL = "sqlite:///db.sqlite"
 
 DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else "postgres://localhost"
