@@ -12,3 +12,4 @@ RUN pnpm build
 
 EXPOSE 9009
 CMD ["node", "build"]
+# CMD ["pnpm", "run", "dev", '--', "--port", "9009"]

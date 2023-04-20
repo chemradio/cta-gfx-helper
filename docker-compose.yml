@@ -3,7 +3,10 @@ services:
 
   # main dispatcher api
   dispatcher:
-    build: ./dispatcher_engine
+    build: 
+      context: ./dispatcher_engine
+      args:
+        - REBUILD_DB=true
     volumes:
       - asset_storage:/usr/src/app/volume
       - ./dispatcher_engine:/usr/src/app
@@ -38,7 +41,7 @@ services:
       - .env
     environment:
       - PORT=9009
-    #   - IS_DOCKER=true
+      - IS_DOCKER=true
     depends_on:
       - dispatcher
 

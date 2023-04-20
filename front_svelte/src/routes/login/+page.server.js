@@ -3,20 +3,20 @@ import { z } from "zod";
 import { dispatcherLoginURL, dispatcherRegisterURL } from "../../config.js";
 
 export const load = async (event, resolve) => {
-    // remove current cookie if present
-    event.cookies.delete("jwt");
-    try {
-        await event.fetch(dispatcherLoginURL, {
-            method: "DELETE",
-        });
-    } catch (e) {
-        console.log("Logout server reports error: ", e);
-    }
-    event.locals.user = {};
-    return {
-        status: "ok",
-        message: "Log in or Register to continue",
-    };
+    // // remove current cookie if present
+    // event.cookies.delete("jwt");
+    // try {
+    //     await event.fetch(dispatcherLoginURL, {
+    //         method: "DELETE",
+    //     });
+    // } catch (e) {
+    //     console.log("Logout server reports error: ", e);
+    // }
+    // event.locals.user = {};
+    // return {
+    //     status: "ok",
+    //     message: "Log in or Register to continue",
+    // };
 };
 
 const loginSchema = z.object({
@@ -114,7 +114,7 @@ export const actions = {
         registerFormData.append("password", register_password);
         registerFormData.append("passphrase", register_passphrase);
 
-        const res = await fetch(`${dispatcherRegisterURL}/`, {
+        const res = await fetch(dispatcherRegisterURL, {
             method: "POST",
             body: registerFormData,
         });

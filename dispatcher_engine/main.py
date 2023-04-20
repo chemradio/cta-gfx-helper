@@ -1,31 +1,26 @@
 import asyncio
+import os
+import time
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.fastapi import register_tortoise
-
+import uvicorn
 from api_routers.administration import db_manipulation
 from api_routers.intercontainer import orders as intercontainer_orders
 from api_routers.web_api import direct_download
 from api_routers.web_api import orders as web_orders
 from api_routers.web_api import users as web_users
 from create_volume_folders import create_volume_folders
-from db_tortoise.init_tort_orm import (
-    initialize_tortoise_postgres,
-    rebuild_tortoise_postgres,
-)
 from db_tortoise.tort_config import TORTOISE_ORM
-
-asyncio.get_event_loop().create_task(initialize_tortoise_postgres())
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from generate_schemas import main as db_check_rebuild
+from tortoise.contrib.fastapi import register_tortoise
 
 create_volume_folders()
 
 app = FastAPI()
 
 origins = [
-    "http://front_svelte:9009",
-    "http://localhost:3000",
-    "http://localhost:5176",
+    "http://front_svelte",
     "http://localhost",
 ]
 app.add_middleware(
@@ -75,7 +70,29 @@ register_tortoise(
 )
 
 
-if __name__ == "__main__":
-    import uvicorn
+async def main():
+    print("Dispatcher launch initiated")
 
-    uvicorn.run(app)
+    print("Waiting 10 secs for DB check/rebuild")
+    time.sleep(10)
+    print("Running DB check / rebuild")
+    await db_check_rebuild()
+    print("DB check rebuild complete")
+    print("Starting the server")
+    config = uvicorn.Config(
+        "main:app",
+        port=9000,
+        host="0.0.0.0" if os.environ.get("IS_DOCKER") else "127.0.0.1",
+        log_level="info",
+    )
+    server = uvicorn.Server(config)
+    await server.serve()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+    # uvicorn.run(
+    #     app,
+    #     host="0.0.0.0" if os.environ.get("IS_DOCKER") else "127.0.0.1",
+    #     port=9000,
+    # )
