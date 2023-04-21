@@ -7,6 +7,7 @@
     const submitRegisterUser = async ({}) => {
         return async ({ result, update }) => {
             loading = true;
+            alert(JSON.stringify(result.data));
             switch (result.data?.status) {
                 case "error":
                     toast.error(result.data.message);
@@ -23,7 +24,12 @@
 </script>
 
 <div class="card bg-secondary rounded-0">
-    <form method="POST" action="/login?/register" id="registerForm" use:enhance>
+    <form
+        method="POST"
+        action="/login?/register"
+        id="registerForm"
+        use:enhance={submitRegisterUser}
+    >
         <div class="card-header">
             <h5>Регистрация</h5>
             <small>Получи кодовое слово у администратора</small>

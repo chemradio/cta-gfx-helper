@@ -7,6 +7,8 @@
         // const { email, password } = Object.fromEntries(data.entries());
         return async ({ result, update }) => {
             loading = true;
+            alert(JSON.stringify(result.data));
+            await update();
             switch (result.data?.status) {
                 case "error":
                     toast.error(result.data.message);
@@ -17,8 +19,8 @@
                     break;
             }
             loading = false;
-            window.location.href = "/";
-            // await update();
+            // window.location.href = "/";
+            await update();
         };
     };
 </script>
