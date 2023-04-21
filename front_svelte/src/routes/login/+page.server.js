@@ -3,22 +3,20 @@ import { z } from "zod";
 import { dispatcherLoginURL, dispatcherRegisterURL } from "../../config.js";
 
 export const load = async (event, resolve) => {
-    const res = await fetch("https://dummyjson.com/products/1");
-    return await res.json();
-    // // remove current cookie if present
-    // event.cookies.delete("jwt");
-    // try {
-    //     await event.fetch(dispatcherLoginURL, {
-    //         method: "DELETE",
-    //     });
-    // } catch (e) {
-    //     console.log("Logout server reports error: ", e);
-    // }
-    // event.locals.user = {};
-    // return {
-    //     status: "ok",
-    //     message: "Log in or Register to continue",
-    // };
+    // remove current cookie if present
+    event.cookies.delete("jwt");
+    try {
+        await event.fetch(dispatcherLoginURL, {
+            method: "DELETE",
+        });
+    } catch (e) {
+        console.log("Logout server reports error: ", e);
+    }
+    event.locals.user = {};
+    return {
+        status: "ok",
+        message: "Log in or Register to continue",
+    };
 };
 
 const loginSchema = z.object({
@@ -48,14 +46,14 @@ const registerSchema = z.object({
 
 export const actions = {
     login: async (event) => {
-        console.log("login hi");
-
-        const resp = await fetch("https://dummyjson.com/products/1");
-        const respJSON = await resp.json();
-
-        return { from: "login", ...respJSON };
+        // console.log("login hi");
+        // const resp = await fetch("https://dummyjson.com/products/1");
+        // const respJSON = await resp.json();
+        // return { from: "login", ...respJSON };
 
         console.log("Login action hit");
+        console.log("dispatcherLoginURL", dispatcherLoginURL);
+
         let jwt = event.cookies.get("jwt");
 
         const formData = Object.fromEntries(await event.request.formData());
@@ -78,7 +76,7 @@ export const actions = {
         loginFormData.append("email", login_email);
         loginFormData.append("password", login_password);
 
-        const res = await event.fetch(dispatcherLoginURL, {
+        const res = await fetch(dispatcherLoginURL, {
             method: "POST",
             body: loginFormData,
             headers: {
@@ -102,13 +100,13 @@ export const actions = {
     },
 
     register: async (event) => {
-        console.log("register hi");
+        // console.log("register hi");
+        // const resp = await fetch("https://dummyjson.com/products/1");
+        // const respJSON = await resp.json();
+        // return { from: "register", ...respJSON };
 
-        const resp = await fetch("https://dummyjson.com/products/1");
-        const respJSON = await resp.json();
-
-        return { from: "register", ...respJSON };
-
+        console.log("Register action hit!");
+        console.log("dispatcherRegisterURL", dispatcherRegisterURL);
         const formData = Object.fromEntries(await event.request.formData());
         // validate form
         try {

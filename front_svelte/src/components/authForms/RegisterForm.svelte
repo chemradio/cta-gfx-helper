@@ -7,7 +7,7 @@
     const submitRegisterUser = async ({}) => {
         return async ({ result, update }) => {
             loading = true;
-            alert(JSON.stringify(result.data));
+            // alert(JSON.stringify(result.data));
             switch (result.data?.status) {
                 case "error":
                     toast.error(result.data.message);
