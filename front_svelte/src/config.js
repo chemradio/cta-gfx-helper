@@ -1,4 +1,4 @@
-const isDocker = import.meta.env.VITE_IS_DOCKER === "true";
+const isDocker = true;
 
 export const dispatcherURL = isDocker
     ? "http://dispatcher:9000"

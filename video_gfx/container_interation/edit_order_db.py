@@ -3,7 +3,7 @@ from config import EDIT_ORDER_ENDPOINT
 
 
 def mark_order_video_gfx(order: dict) -> None:
-    r = requests.post(
+    r = requests.put(
         EDIT_ORDER_ENDPOINT,
         json=order,
     )
