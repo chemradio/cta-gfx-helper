@@ -40,7 +40,6 @@ services:
     env_file:
       - .env
     environment:
-      - PORT=9009
       - IS_DOCKER=true
     depends_on:
       - dispatcher

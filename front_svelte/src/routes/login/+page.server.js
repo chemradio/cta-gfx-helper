@@ -3,6 +3,8 @@ import { z } from "zod";
 import { dispatcherLoginURL, dispatcherRegisterURL } from "../../config.js";
 
 export const load = async (event, resolve) => {
+    const res = await fetch("https://dummyjson.com/products/1");
+    return await res.json();
     // // remove current cookie if present
     // event.cookies.delete("jwt");
     // try {
@@ -46,6 +48,13 @@ const registerSchema = z.object({
 
 export const actions = {
     login: async (event) => {
+        console.log("login hi");
+
+        const resp = await fetch("https://dummyjson.com/products/1");
+        const respJSON = await resp.json();
+
+        return { from: "login", ...respJSON };
+
         console.log("Login action hit");
         let jwt = event.cookies.get("jwt");
 
@@ -93,6 +102,13 @@ export const actions = {
     },
 
     register: async (event) => {
+        console.log("register hi");
+
+        const resp = await fetch("https://dummyjson.com/products/1");
+        const respJSON = await resp.json();
+
+        return { from: "register", ...respJSON };
+
         const formData = Object.fromEntries(await event.request.formData());
         // validate form
         try {
