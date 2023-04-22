@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from container_interaction.signal_sender import signal_to_services
 from db_tortoise.order_controller import OrderController
 from db_tortoise.orders_models import Order, Order_Pydantic
@@ -23,9 +25,27 @@ async def edit_order_intercontainer(
         raise HTTPException(400, "Request body could not be parsed.")
 
     order_db = await Order.filter(id=order_json["id"]).first()
-    order_db.update_from_dict(**order_json)
+
+    # order_db.update_from_dict(
+    #     {
+    #         k: v
+    #         for k, v in order_json.items()
+    #         if k
+    #         in (
+    #             "error",
+    #             "error_type",
+    #             "screenshots_ready",
+    #             "send_success",
+    #             "video_gfx_ready",
+    #         )
+    #     }
+    # )
+    order = order_db.update_from_dict(order_json)
+    pprint(f"pre order advance: {order_db=}")
+    await order_db.refresh_from_db()
     await OrderController.advance_order_stage(order_db)
     await order_db.save()
+    pprint(f"after order advance: {order_db=}")
 
     if order_db.status == "completed":
         # order completed

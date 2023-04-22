@@ -1,7 +1,7 @@
 token.txt
 .vscode/
 .DS_Store
-
+seed.json
 assets_storage/
 asset_storage/
 dev/volume/asset_storage/

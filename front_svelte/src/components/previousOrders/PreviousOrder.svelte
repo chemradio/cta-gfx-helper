@@ -58,8 +58,26 @@
         <div>
             <strong>Заказ № {order.id}</strong><br />
             <small>Стадия: {currentStageMap[order.current_stage]}</small>
+
+            {#if order.current_stage === "ready_for_send"}
+                <p>
+                    <a href={`/downloads?filename=${order.video_gfx_name}`}
+                        >Скачать</a
+                    >
+                </p>
+            {/if}
         </div>
-        <div class="spinner-border align-self-center" role="status" />
+        {#if order.current_stage === "ready_for_send"}
+            <div
+                class="spinner-grow text-primary align-self-center"
+                role="status"
+            />
+        {:else}
+            <div
+                class="spinner-border text-primary align-self-center"
+                role="status"
+            />
+        {/if}
     </div>
     <div class="card-body">
         {#if order.error}
