@@ -5,6 +5,7 @@
     import RegisterForm from "../../components/authForms/RegisterForm.svelte";
     export let form;
     export let data;
+    let fileName = "README.md";
 
     onMount(() => {
         toast.success(data?.message, { icon: "🔐" });
