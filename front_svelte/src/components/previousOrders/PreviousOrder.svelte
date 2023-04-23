@@ -15,9 +15,9 @@
     }
 
     let currentStageMap = {
-        ready_for_screenshots: "Подготовка к захвату скриншотов",
+        ready_for_screenshots: "Ожидание в очереди к захвату скриншотов",
         screenshots_pending: "Захват скриншотов",
-        ready_for_video_gfx: "Подготовка к анимации",
+        ready_for_video_gfx: "Ожидание в очереди к обработке анимации",
         video_gfx_pending: "Обработка анимации",
         ready_for_send: "Готов",
     };
@@ -60,18 +60,21 @@
             <small>Стадия: {currentStageMap[order.current_stage]}</small>
 
             {#if order.current_stage === "ready_for_send"}
-                <p>
-                    <a href={`/downloads?filename=${order.video_gfx_name}`}
-                        >Скачать</a
-                    >
-                </p>
+                <p />
             {/if}
         </div>
         {#if order.current_stage === "ready_for_send"}
-            <div
-                class="spinner-grow text-primary align-self-center"
-                role="status"
-            />
+            <a
+                href={`/downloads?filename=${order.video_gfx_name}`}
+                class="btn btn-primary rounded-0 align-self-center"
+            >
+                <span class="align-self-center">Скачать</span>
+                <span class="p-1" />
+                <span
+                    class="spinner-grow spinner-grow-sm text-white align-self-center"
+                    role="status"
+                />
+            </a>
         {:else}
             <div
                 class="spinner-border text-primary align-self-center"
@@ -88,8 +91,12 @@
         {#if order.request_type === "video_auto"}
             <p><strong>Ссылка:</strong> <span>{order.link}</span></p>
         {/if}
-        <p><strong>В обработке:</strong> <span>{formattedTimeString}</span></p>
 
+        {#if order.current_stage !== "ready_for_send"}
+            <p>
+                <strong>В обработке:</strong> <span>{formattedTimeString}</span>
+            </p>
+        {/if}
         <!-- quote part -->
         {#if order.quote_enabled}
             <p>
