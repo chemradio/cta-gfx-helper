@@ -1,8 +1,20 @@
 <script>
+    import { invalidate } from "$app/navigation";
+    import { onMount } from "svelte";
     import VideoGfxForm from "../../components/newOrderForms/VideoGFXForm.svelte";
     import PreviousOrderList from "../../components/previousOrders/PreviousOrderList.svelte";
     export let data;
     let orders = data.orders;
+    const reloadOrders = async () => {
+        // any of these will cause the `load` function to re-run
+        await invalidate("app:previousOrders");
+        orders = data.orders;
+    };
+
+    onMount(() => {
+        // Call `updateData()` every 2 seconds
+        setInterval(reloadOrders, 2000);
+    });
 </script>
 
 <svelte:head>

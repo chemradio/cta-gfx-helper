@@ -2,7 +2,9 @@ import { z } from "zod";
 import { dispatcherOrdersURL } from "../../config";
 
 export const load = async (event) => {
+    event.depends("app:previousOrders");
     const orders = await fetchUserOrders(event);
+
     return { user: { ...event.locals.user }, orders: orders.reverse() };
 };
 
