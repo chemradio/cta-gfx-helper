@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
 from api_routers.administration import db_manipulation
+from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
 from api_routers.web_api import direct_download
 from api_routers.web_api import orders as web_orders
@@ -51,6 +52,7 @@ app.include_router(direct_download.router, prefix="/web_api/direct_download")
 
 # intercontainer
 app.include_router(intercontainer_orders.router, prefix="/intercontainer/orders")
+app.include_router(files.router, prefix="/intercontainer/files")
 
 
 # app.include_router(validators.router, prefix="/validators")
