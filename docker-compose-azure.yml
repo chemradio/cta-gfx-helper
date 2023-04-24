@@ -13,8 +13,8 @@ services:
     #   - ./dispatcher_engine:/usr/src/app
     env_file:
       - .env
-    expose:
-      - "9000"
+    # expose:
+    #   - "9000"
     # ports:
     #   - "9000:9000"
     depends_on:
@@ -22,7 +22,7 @@ services:
         condition: service_healthy
 
   # svelte frontend
-  front_svelte:
+  front-svelte:
     build: ./front_svelte
     image: chemradiogfxhelper.azurecr.io/front_svelte
     # volumes:
