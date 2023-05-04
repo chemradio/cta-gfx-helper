@@ -3,7 +3,7 @@ services:
 
   # main dispatcher api
   dispatcher:
-    build: 
+    build:
       context: ./dispatcher_engine
       args:
         - REBUILD_DB=true
@@ -53,7 +53,7 @@ services:
     expose:
       - "9001"
     env_file:
-      - .env      
+      - .env
     # environment:
     #   - BOT_ADMIN=${BOT_ADMIN}
     #   - BOT_TOKEN=${BOT_TOKEN}
@@ -64,7 +64,7 @@ services:
   db:
     image: "postgres:15-alpine"
     env_file:
-      - .env    
+      - .env
     # environment:
     #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
@@ -84,7 +84,7 @@ services:
       # - ./screenshot_engine:/usr/src/app
     hostname: screenshoter
     env_file:
-      - .env    
+      - .env
     # environment:
     #   - IS_DOCKER=true
     expose:
@@ -155,7 +155,6 @@ volumes:
       type: 'none'
       o: 'bind'
       device: '$PWD/dev/volume/asset_storage'
-
   # pg_data:
   #   driver: local
   #   driver_opts:
