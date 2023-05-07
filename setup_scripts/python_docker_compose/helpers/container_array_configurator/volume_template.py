@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 
 @dataclass
@@ -6,6 +6,9 @@ class VolumeOptions:
     type: str | None = None
     o: str | None = None
     device: str | None = None
+
+    def to_dict(self):
+        return {key: value for key, value in asdict(self).items() if value}
 
 
 @dataclass
@@ -21,5 +24,8 @@ class DockerComposeVolume:
 
     def __post_init__(self):
         self.driver_opts = VolumeOptions(
-            type=self.driver_type, o=self.driver.o, device=self.driver_device
+            type=self.driver_type, o=self.driver_o, device=self.driver_device
         )
+
+    def to_dict(self):
+        return {"driver": self.driver, "driver_opts": self.driver_opts.to_dict()}

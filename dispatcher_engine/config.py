@@ -32,14 +32,14 @@ DB_CONNECTION_STRING = POSTGRES_URL if IS_DOCKER else "postgres://localhost"
 
 
 # other containers
-SCREENSHOTER_HOSTNAME = "screenshoter"
-SCREENSHOTER_PORT = 9002
+SCREENSHOTER_HOSTNAME = os.getenv("screenshoter_name", "screenshoter")
+SCREENSHOTER_PORT = int(os.getenv("screenshoter_port", 9002))
 
-VIDEOGFX_HOSTNAME = "video_gfx"
-VIDEOGFX_PORT = 9004
+VIDEOGFX_HOSTNAME = os.getenv("video_gfx_name", "video_gfx")
+VIDEOGFX_PORT = int(os.getenv("video_gfx_port", 9004))
 
-SENDER_HOSTNAME = "sender"
-SENDER_PORT = 9007
+SENDER_HOSTNAME = os.getenv("telegram_sender_name", "sender")
+SENDER_PORT = int(os.getenv("telegram_sender_port", 9007))
 
 SCREENSHOTER_ENDPOINT = (
     f"http://{SCREENSHOTER_HOSTNAME}:{SCREENSHOTER_PORT}/start_screenshoting"

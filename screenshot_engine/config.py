@@ -12,8 +12,14 @@ DPI_MULTIPLIER = 2.0
 LOGIN_REQUIRED = ("facebook", "twitter", "instagram")
 
 
-DISPATCHER_NODE_HOSTNAME = "dispatcher"
-DISPATCHER_NODE_PORT = 9000
+DISPATCHER_NODE_HOSTNAME = (
+    os.getenv("dispatcher_name", "dispatcher")
+    if os.environ.get("IS_DOCKER")
+    else "localhost"
+)
+DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
+# containers
+DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 
 
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
@@ -38,7 +44,11 @@ COOKIE_FILE = VOLUME_MOUNTPOINT / "cookie_file" / "cookie_file.json"
 
 
 # !!!
-SELENIUM_HOSTNAME = "screenshot_selenium" if IS_DOCKER else "localhost"
+SELENIUM_HOSTNAME = (
+    os.getenv("screenshot_selenium_name", "screenshot_selenium")
+    if IS_DOCKER
+    else "localhost"
+)
 REMOTE_SCREENSHOT_DRIVER_URL = f"http://{SELENIUM_HOSTNAME}:4444/wd/hub"
 
 

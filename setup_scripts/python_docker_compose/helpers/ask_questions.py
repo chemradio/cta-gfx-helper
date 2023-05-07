@@ -64,7 +64,7 @@ def gather_user_data() -> dict:
             inquirer.List(
                 "specify_container_names",
                 "Do you want to give containers different names?",
-                [True, False],
+                [False, True],
             )
         ]
     )["specify_container_names"]
@@ -105,9 +105,9 @@ def gather_user_data() -> dict:
                     "video_gfx_server",
                 ),
                 inquirer.Text(
-                    "sender",
+                    "telegram_sender",
                     "Container name: the Telegram ready order sender engine",
-                    "sender",
+                    "telegram_sender",
                 ),
                 inquirer.Text(
                     "screenshot_selenium",
@@ -132,7 +132,7 @@ def gather_user_data() -> dict:
             inquirer.List(
                 "specify_container_ports",
                 "Do you want to assign different port numbers to containers?",
-                [True, False],
+                [False, True],
             )
         ]
     )["specify_container_ports"]
@@ -167,7 +167,7 @@ def gather_user_data() -> dict:
                     9006,
                 ),
                 inquirer.Text(
-                    "sender",
+                    "telegram_sender",
                     "Container port: the Telegram ready order sender engine",
                     9007,
                 ),
@@ -190,18 +190,18 @@ def gather_user_data() -> dict:
     )
     output.update(is_arm)
 
-    # run after generation
-    print("\033c", end="")
-    run_after_generation = inquirer.prompt(
-        [
-            inquirer.List(
-                "run_after_generation",
-                "Should Docker-Compose run after generation?",
-                [True, False],
-            )
-        ]
-    )
-    output.update(run_after_generation)
+    # # run after generation
+    # print("\033c", end="")
+    # run_after_generation = inquirer.prompt(
+    #     [
+    #         inquirer.List(
+    #             "run_after_generation",
+    #             "Should Docker-Compose run after generation?",
+    #             [True, False],
+    #         )
+    #     ]
+    # )
+    # output.update(run_after_generation)
 
     return output
 

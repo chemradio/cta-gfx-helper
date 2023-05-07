@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 
 DISPATCHER_DEPENDENCY = ["dispatcher"]
 
@@ -15,7 +15,7 @@ class DockerComposeContainer:
     #
     port: str | None = None
     port_mapping: dict | None = None
-    volumes: list[dict] | None = None
+    volumes: list[str] | None = field(default_factory=list)
     #
     expose: bool = False
     env_file: str = ".env"
@@ -28,3 +28,11 @@ class DockerComposeContainer:
     def __post_init__(self):
         if not self.hostname:
             self.hostname = self.name
+
+    def to_dict(self):
+        container_dict = asdict(self)
+        return {
+            key: value
+            for key, value in container_dict.items()
+            if (value) and (key != "base_name") and (key != "port")
+        }

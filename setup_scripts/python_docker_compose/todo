@@ -1,0 +1,10 @@
+remove port from main and add to environment
+
+
+rebuild db
+
+
+run docker compose
+
+azure-volume config
+azure images config

@@ -1,8 +1,8 @@
 # FROM --platform=linux/amd64 python:3.9
 FROM python:3.10
 
-ARG REBUILD_DB=false
-ENV REBUILD_DB=$REBUILD_DB
+ARG PORT=9000
+ENV PORT=$dispatcher_port
 
 
 RUN apt update
@@ -14,11 +14,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
-EXPOSE 9000
-ENV IS_DOCKER yes
-
+EXPOSE $PORT
 
 CMD ["python3", "main.py"]
-
-# RUN if [ "$REBUILD_DB" = "true" ] ; then python3 rebuild_db.py ; fi
-# CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "9000"]

@@ -30,9 +30,11 @@ REQUEST_TYPE_TEMP_MAP = {
 
 
 # containers
-DISPATCHER_NODE_HOSTNAME = "dispatcher" if os.environ.get("IS_DOCKER") else "localhost"
-DISPATCHER_NODE_PORT = 9000
-DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
+DISPATCHER_NAME = (
+    os.getenv("dispatcher_name", 'dispatcher') if os.environ.get("IS_DOCKER") else "localhost"
+)
+DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
+DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 
 
 # orders
