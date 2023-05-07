@@ -1,5 +1,7 @@
-DISPATCHER_NODE_HOSTNAME = "dispatcher"
-DISPATCHER_NODE_PORT = 9000
+import os
+
+DISPATCHER_NODE_HOSTNAME = os.getenv("dispatcher_name", "dispatcher")
+DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
 
 # LIST_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/list"
@@ -11,7 +13,9 @@ EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 
 
 # !!!
-REMOTE_VIDEO_GFX_DRIVER_NAME = "video_gfx_selenium"
+REMOTE_VIDEO_GFX_DRIVER_NAME = os.getenv(
+    "video_gfx_selenium_name", "video_gfx_selenium"
+)
 REMOTE_VIDEO_GFX_DRIVER_URL = f"http://{REMOTE_VIDEO_GFX_DRIVER_NAME}:4444/wd/hub"
 # REMOTE_VIDEO_GFX_DRIVER_URL = f"http://localhost:4444/wd/hub"
 
@@ -36,10 +40,10 @@ AUDIO_BITRATE_BPS = 256_000
 AUDIO_OFFSET = 0.3
 
 USE_DOCKER = True
-ASSET_SEVER_NAME = "video_gfx_server"
-ASSET_SERVER_ACCESS_PORT = 9006
+ASSET_SEVER_NAME = os.getenv("video_gfx_server_name", "video_gfx_server")
+ASSET_SERVER_ACCESS_PORT = os.getenv("video_gfx_server_port", 9006)
 ASSET_SERVER_ACCESS_URL = f"http://{ASSET_SEVER_NAME}:{ASSET_SERVER_ACCESS_PORT}"
 
 
 DOCKER_PATH_PREFIX = "/usr/src/app"
-DEFAULT_ANIMATION_DURATION = 15
+DEFAULT_ANIMATION_DURATION = 30
