@@ -1,6 +1,11 @@
+import os
+
 import inquirer
 
-from helpers.enums.enum_docker_environment import DockerEnvironment
+from helpers.enums.enum_docker_environment import (
+    DockerEnvironment,
+    DockerRegistryProvider,
+)
 
 
 def gather_user_data() -> dict:
@@ -23,6 +28,35 @@ def gather_user_data() -> dict:
         ]
     )
     output.update(platform)
+
+    # Ask container registry prefix.
+    # This assumes that container images are named
+    # exactly as the default base_names of the containers:
+    # Like "dispatcher" or "front_svelte"
+    registry_provider = inquirer.prompt(
+        [
+            inquirer.List(
+                "registry_provider",
+                "Please select your registry provider",
+                [
+                    DockerRegistryProvider.DOCKERHUB,
+                    DockerRegistryProvider.AZURE,
+                ],
+            ),
+        ]
+    )
+    output.update(registry_provider)
+
+    registry_prefix = inquirer.prompt(
+        [
+            inquirer.Text(
+                "registry_prefix",
+                "Please type your registry prefix. Ex. somebody.",
+                default=os.getenv("REGISTRY_PREFIX", ""),
+            ),
+        ]
+    )
+    output.update(registry_prefix)
 
     # rebuild db
     print("\033c", end="")
@@ -57,125 +91,125 @@ def gather_user_data() -> dict:
     )
     output.update(mount_code_folders)
 
-    # specify container names
-    print("\033c", end="")
-    specify_container_names = inquirer.prompt(
-        [
-            inquirer.List(
-                "specify_container_names",
-                "Do you want to give containers different names?",
-                [False, True],
-            )
-        ]
-    )["specify_container_names"]
-    if specify_container_names:
-        output.update({"specify_container_names": True})
+    # # specify container names
+    # print("\033c", end="")
+    # specify_container_names = inquirer.prompt(
+    #     [
+    #         inquirer.List(
+    #             "specify_container_names",
+    #             "Do you want to give containers different names?",
+    #             [False, True],
+    #         )
+    #     ]
+    # )["specify_container_names"]
+    # if specify_container_names:
+    #     output.update({"specify_container_names": True})
 
-        container_names = inquirer.prompt(
-            [
-                inquirer.Text(
-                    "dispatcher",
-                    "Container name: the Dispatcher - Python/FastAPI",
-                    "dispatcher",
-                ),
-                inquirer.Text(
-                    "front_svelte",
-                    "Container name: the SvelteKit frontend website",
-                    "front_svelte",
-                ),
-                inquirer.Text(
-                    "telegram_bot",
-                    "Container name: the Telegram frontend bot",
-                    "telegram_bot",
-                ),
-                inquirer.Text(
-                    "db", "Container name: the Postgres database container", "db"
-                ),
-                inquirer.Text(
-                    "screenshoter",
-                    "Container name: the Screenshoter engine",
-                    "screenshoter",
-                ),
-                inquirer.Text(
-                    "video_gfx", "Container name: the VideoGFX engine", "video_gfx"
-                ),
-                inquirer.Text(
-                    "video_gfx_server",
-                    "Container name: the VideoGFX Server container",
-                    "video_gfx_server",
-                ),
-                inquirer.Text(
-                    "telegram_sender",
-                    "Container name: the Telegram ready order sender engine",
-                    "telegram_sender",
-                ),
-                inquirer.Text(
-                    "screenshot_selenium",
-                    "Utility: Selenium grid node for Screenshot engine",
-                    "screenshot_selenium",
-                ),
-                inquirer.Text(
-                    "video_gfx_selenium",
-                    "Utility: Selenium grid node for VideoGFX engine",
-                    "video_gfx_selenium",
-                ),
-            ]
-        )
-        output.update({"container_names": container_names})
-    else:
-        output.update({"specify_container_names": False})
+    #     container_names = inquirer.prompt(
+    #         [
+    #             inquirer.Text(
+    #                 "dispatcher",
+    #                 "Container name: the Dispatcher - Python/FastAPI",
+    #                 "dispatcher",
+    #             ),
+    #             inquirer.Text(
+    #                 "front_svelte",
+    #                 "Container name: the SvelteKit frontend website",
+    #                 "front_svelte",
+    #             ),
+    #             inquirer.Text(
+    #                 "telegram_bot",
+    #                 "Container name: the Telegram frontend bot",
+    #                 "telegram_bot",
+    #             ),
+    #             inquirer.Text(
+    #                 "db", "Container name: the Postgres database container", "db"
+    #             ),
+    #             inquirer.Text(
+    #                 "screenshoter",
+    #                 "Container name: the Screenshoter engine",
+    #                 "screenshoter",
+    #             ),
+    #             inquirer.Text(
+    #                 "video_gfx", "Container name: the VideoGFX engine", "video_gfx"
+    #             ),
+    #             inquirer.Text(
+    #                 "video_gfx_server",
+    #                 "Container name: the VideoGFX Server container",
+    #                 "video_gfx_server",
+    #             ),
+    #             inquirer.Text(
+    #                 "telegram_sender",
+    #                 "Container name: the Telegram ready order sender engine",
+    #                 "telegram_sender",
+    #             ),
+    #             inquirer.Text(
+    #                 "screenshot_selenium",
+    #                 "Utility: Selenium grid node for Screenshot engine",
+    #                 "screenshot_selenium",
+    #             ),
+    #             inquirer.Text(
+    #                 "video_gfx_selenium",
+    #                 "Utility: Selenium grid node for VideoGFX engine",
+    #                 "video_gfx_selenium",
+    #             ),
+    #         ]
+    #     )
+    #     output.update({"container_names": container_names})
+    # else:
+    #     output.update({"specify_container_names": False})
 
-    # specify container ports
-    print("\033c", end="")
-    specify_container_ports = inquirer.prompt(
-        [
-            inquirer.List(
-                "specify_container_ports",
-                "Do you want to assign different port numbers to containers?",
-                [False, True],
-            )
-        ]
-    )["specify_container_ports"]
-    if specify_container_ports:
-        output.update({"specify_container_ports": True})
-        container_ports = inquirer.prompt(
-            [
-                inquirer.Text(
-                    "dispatcher",
-                    "Container port: the Dispatcher - Python/FastAPI",
-                    9000,
-                ),
-                inquirer.Text(
-                    "front_svelte",
-                    "Container port: the SvelteKit frontend website",
-                    9009,
-                ),
-                inquirer.Text(
-                    "telegram_bot",
-                    "Container port: the Telegram frontend bot",
-                    9001,
-                ),
-                inquirer.Text(
-                    "screenshoter",
-                    "Container port: the Screenshoter engine",
-                    9002,
-                ),
-                inquirer.Text("video_gfx", "Container port: the VideoGFX engine", 9004),
-                inquirer.Text(
-                    "video_gfx_server",
-                    "Container port: the VideoGFX Server container",
-                    9006,
-                ),
-                inquirer.Text(
-                    "telegram_sender",
-                    "Container port: the Telegram ready order sender engine",
-                    9007,
-                ),
-            ]
-        )
-        output.update({"container_ports": container_ports})
-    else:
-        output.update({"specify_container_ports": False})
+    # # specify container ports
+    # print("\033c", end="")
+    # specify_container_ports = inquirer.prompt(
+    #     [
+    #         inquirer.List(
+    #             "specify_container_ports",
+    #             "Do you want to assign different port numbers to containers?",
+    #             [False, True],
+    #         )
+    #     ]
+    # )["specify_container_ports"]
+    # if specify_container_ports:
+    #     output.update({"specify_container_ports": True})
+    #     container_ports = inquirer.prompt(
+    #         [
+    #             inquirer.Text(
+    #                 "dispatcher",
+    #                 "Container port: the Dispatcher - Python/FastAPI",
+    #                 9000,
+    #             ),
+    #             inquirer.Text(
+    #                 "front_svelte",
+    #                 "Container port: the SvelteKit frontend website",
+    #                 9009,
+    #             ),
+    #             inquirer.Text(
+    #                 "telegram_bot",
+    #                 "Container port: the Telegram frontend bot",
+    #                 9001,
+    #             ),
+    #             inquirer.Text(
+    #                 "screenshoter",
+    #                 "Container port: the Screenshoter engine",
+    #                 9002,
+    #             ),
+    #             inquirer.Text("video_gfx", "Container port: the VideoGFX engine", 9004),
+    #             inquirer.Text(
+    #                 "video_gfx_server",
+    #                 "Container port: the VideoGFX Server container",
+    #                 9006,
+    #             ),
+    #             inquirer.Text(
+    #                 "telegram_sender",
+    #                 "Container port: the Telegram ready order sender engine",
+    #                 9007,
+    #             ),
+    #         ]
+    #     )
+    #     output.update({"container_ports": container_ports})
+    # else:
+    #     output.update({"specify_container_ports": False})
 
     # check architecture ARM or not
     print("\033c", end="")

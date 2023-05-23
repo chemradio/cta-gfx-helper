@@ -34,15 +34,24 @@ CONTAINER_LIST_SELENIUM_MAPPING = {
     "video_gfx": "video_gfx_selenium",
 }
 
-CONTAINER_LIST_DEV_FOLDERS = {
+CONTAINER_LIST_BUILD_DEV_FOLDERS = {
     "dispatcher": "./dispatcher_engine",
     "front_svelte": "./front_svelte",
     "telegram_bot": "./bot_engine",
     "telegram_sender": "./sender_engine",
     "screenshoter": "./screenshot_engine",
     "video_gfx": "./video_gfx",
-    # "video_gfx_server":"./video_gfx_server",
+    "video_gfx_server": "./video_gfx_server",
 }
 
+CONTAINER_LIST_REQUIRE_CUSTOM_REMOTE_IMAGE = [
+    "dispatcher",
+    "front_svelte",
+    "telegram_bot",
+    "telegram_sender",
+    "screenshoter",
+    "video_gfx",
+    "video_gfx_server",
+]
 
 DOCKER_COMPOSE_VERSION = "3.9"
