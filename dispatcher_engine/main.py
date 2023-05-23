@@ -3,6 +3,10 @@ import os
 import time
 
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from tortoise.contrib.fastapi import register_tortoise
+
 from api_routers.administration import db_manipulation
 from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
@@ -11,11 +15,8 @@ from api_routers.web_api import orders as web_orders
 from api_routers.web_api import users as web_users
 from create_volume_folders import create_volume_folders
 from db_tortoise.tort_config import TORTOISE_ORM
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from generate_schemas import main as db_check_rebuild
 from seeding import seed as seed_db
-from tortoise.contrib.fastapi import register_tortoise
 
 create_volume_folders()
 
@@ -85,8 +86,11 @@ async def main():
 
     if os.environ.get("IS_DOCKER"):
         print("Seeding if necessary")
-        seed_result = await seed_db()
-        print(f"Seeding done: {seed_result=}")
+        try:
+            seed_result = await seed_db()
+            print(f"Seeding done: {seed_result=}")
+        except:
+            print("failed to seed the db")
 
     print("Starting the server")
     config = uvicorn.Config(

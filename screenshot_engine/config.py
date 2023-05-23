@@ -19,6 +19,7 @@ DISPATCHER_NODE_HOSTNAME = (
 )
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 # containers
+DISPATCHER_NAME = os.getenv("dispatcher_name", "dispatcher")
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 
 

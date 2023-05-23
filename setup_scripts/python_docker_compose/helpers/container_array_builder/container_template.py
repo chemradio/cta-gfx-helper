@@ -14,12 +14,13 @@ class DockerComposeContainer:
     image: str | None = None
     #
     port: str | None = None
+    ports: list[str] | None = field(default_factory=list)  # ports attach to host
     port_mapping: dict | None = None
     volumes: list[str] | None = field(default_factory=list)
     #
     expose: bool = False
     env_file: str = ".env"
-    depends_on: list | dict | None = None
+    depends_on: list[str] | None = field(default_factory=list)
 
     healthcheck: dict | None = None
     privileged: bool | None = None
@@ -34,5 +35,5 @@ class DockerComposeContainer:
         return {
             key: value
             for key, value in container_dict.items()
-            if (value) and (key != "base_name") and (key != "port")
+            if (value) and (key not in ("base_name", "name", "port"))
         }

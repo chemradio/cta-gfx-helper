@@ -22,7 +22,7 @@ def create_volume_folders():
 create_volume_folders()
 
 SERVER_URL = "0.0.0.0"
-SERVER_PORT = os.getenv("video_gfx_server_port", 9006)
+SERVER_PORT = int(os.getenv("video_gfx_server_port", 9006))
 
 
 def start_httpd(
