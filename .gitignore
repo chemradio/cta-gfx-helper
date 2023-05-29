@@ -9,7 +9,8 @@ dev/volume/pg_data/
 volume/
 
 __blobstorage__/
-
+storage_unit/tests/store/on_client/
+storage_unit/tests/store/on_server/
 cookie_file.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
