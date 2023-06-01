@@ -1,15 +1,15 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 
-import config
+from utils.assets.asset_finder import find_file
 
 router = APIRouter()
 
 
-@router.post("/")
-async def store_file(
-    upload_file: UploadFile,
-):
-    with open(config.DEFAULT_PATH / upload_file.filename, "wb") as f:
-        f.write(upload_file.file.read())
+@router.get("/")
+async def get_file(filename: str):
+    search = find_file(filename)
+    if not search:
+        raise HTTPException(404, f"File *{filename}* not found")
 
-    return f"File {upload_file.filename} was stored"
+    return FileResponse(search[0])

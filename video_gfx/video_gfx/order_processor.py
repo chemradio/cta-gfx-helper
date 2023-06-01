@@ -3,7 +3,8 @@ import threading
 
 from container_interation.edit_order_db import mark_order_video_gfx
 from container_interation.gather_orders import get_ready_to_video_gfx_order
-
+from container_interation.post_result_to_storage_unit import store_result
+from utils.cleanup_assets import cleanup_order
 from video_gfx.process_one_order import create_video_gfx
 
 
@@ -20,10 +21,12 @@ async def process_video_gfx_orders():
 
         if video_gfx_success:
             order["video_gfx_ready"] = True
+            store_result(order)
         else:
             order["error"] = True
             order["error_type"] = f"video_gfx_error: {error}"
 
+        cleanup_order(order)
         mark_order_video_gfx(order)
 
 
