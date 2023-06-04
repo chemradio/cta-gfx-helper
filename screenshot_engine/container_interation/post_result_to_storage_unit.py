@@ -21,7 +21,7 @@ def store_result(order: dict):
     for asset in store_asset_list:
         asset_name = order.get(asset)
         for folder in search_folders:
-            if (folder / asset_name).exists():
+            if (folder / str(asset_name)).exists():
                 output_paths.append(folder / asset_name)
                 break
 

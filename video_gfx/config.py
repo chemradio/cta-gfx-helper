@@ -32,6 +32,7 @@ HTML_TEMPLATE_FOLDER = Path.cwd() / "video_gfx" / "html_template"
 
 SCREENSHOTS_FOLDER = VOLUME_MOUNTPOINT / "screenshots"
 USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"
+STORAGE_UNIT_FOLDER = VOLUME_MOUNTPOINT / "from_storage_unit"
 
 RENDER_OUTPUT_PATH = VOLUME_MOUNTPOINT / "video_exports"
 
@@ -40,10 +41,13 @@ AUDIO_BITRATE_BPS = 256_000
 AUDIO_OFFSET = 0.3
 
 USE_DOCKER = True
-ASSET_SEVER_NAME = os.getenv("video_gfx_server_name", "video_gfx_server")
-ASSET_SERVER_ACCESS_PORT = os.getenv("video_gfx_server_port", 9006)
+ASSET_SEVER_NAME = os.getenv("video_gfx_name", "video_gfx")
+ASSET_SERVER_ACCESS_PORT = os.getenv("video_gfx_port", 9004)
 ASSET_SERVER_ACCESS_URL = f"http://{ASSET_SEVER_NAME}:{ASSET_SERVER_ACCESS_PORT}"
 
+STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
+STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)
+STORAGE_UNIT_URL = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}"
 
 DOCKER_PATH_PREFIX = "/usr/src/app"
 DEFAULT_ANIMATION_DURATION = 30

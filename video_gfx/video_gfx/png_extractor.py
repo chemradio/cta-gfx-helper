@@ -44,6 +44,11 @@ def extract_png_sequence(html_assembly_name: str) -> str:
 
     driver.implicitly_wait(5)
 
+    # # previous code
+    # html_assembly_server_url = (
+    #     f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
+    # )
+
     html_assembly_server_url = (
         f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
     )

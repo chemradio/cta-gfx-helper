@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-
 from utils.assets.asset_finder import find_file
 
 router = APIRouter()

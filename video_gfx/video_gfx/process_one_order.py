@@ -1,7 +1,7 @@
 import config
-
 from video_gfx.animation_configurator import create_animation_parameters
 from video_gfx.create_html_gfx import create_html
+from video_gfx.get_storage import get_order_files_from_storage_unit
 from video_gfx.png_extractor import extract_png_sequence
 from video_gfx.png_stitcher import stitch_images
 
@@ -11,6 +11,10 @@ def create_video_gfx(order: dict) -> bool:
     adds audio file if neccessary and returns path to a ready video"""
     # create animation parameters object
     try:
+        # get files from storage unit
+        get_order_files_from_storage_unit(order)
+
+        # weird too complicated function...
         animation_parameters = create_animation_parameters(order)
 
         # build html page with animation
@@ -31,7 +35,6 @@ def create_video_gfx(order: dict) -> bool:
             else ""
         )
         stitch_images(str(png_path), str(ready_video_path), audio_path)
-
         return True, None
     except Exception as e:
         print(e)

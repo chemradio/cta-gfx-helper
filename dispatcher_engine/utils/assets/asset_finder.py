@@ -8,7 +8,7 @@ def find_files(*filenames: list[str]) -> list[Optional[Path]]:
     def find_file(file_name: str, search_folders: list[Path]) -> list[Optional[Path]]:
         output = list()
         for folder in search_folders:
-            if (folder / file_name).exists():
+            if (folder / str(file_name)).exists():
                 output.append(folder / file_name)
         return output
 

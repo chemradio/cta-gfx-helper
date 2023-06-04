@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Optional
 
-import config
 from pydub import AudioSegment
 
+import config
 from video_gfx.animation_class_enums import (
     AnimationParameters,
     BGAnimation,
@@ -110,7 +110,11 @@ def find_files(
 ) -> tuple[Optional[Path]]:
     bg_path, fg_path, audio_path = "", "", ""
 
-    folders = (config.SCREENSHOTS_FOLDER, config.USER_FILES_FOLDER)
+    folders = (
+        config.SCREENSHOTS_FOLDER,
+        config.USER_FILES_FOLDER,
+        config.STORAGE_UNIT_FOLDER,
+    )
 
     def find_path(file_name, search_folders) -> Optional[Path]:
         for folder in search_folders:

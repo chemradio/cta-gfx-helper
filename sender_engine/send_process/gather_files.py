@@ -19,7 +19,7 @@ def gather_file_paths(order: dict) -> list:
 
 def gather_video_auto(order: dict) -> list[Path]:
     video_gfx_name: str = order.get("video_gfx_name")
-    video_gfx_path = config.VIDEO_GFX_FOLDER / video_gfx_name
+    video_gfx_path = config.VIDEO_GFX_FOLDER / str(video_gfx_name)
     if not video_gfx_path.exists():
         return None
     return [video_gfx_path]
@@ -32,7 +32,7 @@ def gather_video_files(order: dict) -> list[Path]:
 def gather_only_screenshots(order: dict) -> list[Path]:
     file_paths = list()
     for filename in ("background_name", "foreground_name"):
-        screenshot_path = config.SCREENSHOTS_FOLDER / order[filename]
+        screenshot_path = config.SCREENSHOTS_FOLDER / str(order[filename])
         if not screenshot_path.exists():
             continue
         file_paths.append(screenshot_path)
