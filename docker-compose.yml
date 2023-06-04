@@ -15,7 +15,7 @@ services:
     ports:
     - 9000:9000
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./dispatcher_engine:/usr/src/app
   front_svelte:
     build: ./front_svelte
@@ -27,7 +27,7 @@ services:
     ports:
     - 9009:9009
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./front_svelte:/usr/src/app
   screenshot_selenium:
     depends_on:
@@ -45,7 +45,7 @@ services:
     hostname: screenshoter
     image: chemradio/gfx-helper:screenshoter
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./screenshot_engine:/usr/src/app
   telegram_bot:
     build: ./bot_engine
@@ -55,7 +55,7 @@ services:
     hostname: telegram_bot
     image: chemradio/gfx-helper:telegram_bot
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./bot_engine:/usr/src/app
   telegram_sender:
     build: ./sender_engine
@@ -65,7 +65,7 @@ services:
     hostname: sender
     image: chemradio/gfx-helper:telegram_sender
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./sender_engine:/usr/src/app
   video_gfx:
     build: ./video_gfx
@@ -75,7 +75,7 @@ services:
     hostname: video_gfx
     image: chemradio/gfx-helper:video_gfx
     volumes:
-    - asset_storage:/usr/src/app/volume
+    # - asset_storage:/usr/src/app/volume
     - ./video_gfx:/usr/src/app
   video_gfx_selenium:
     depends_on:
@@ -85,22 +85,32 @@ services:
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 4g
-  video_gfx_server:
-    build: ./video_gfx_server
+  # video_gfx_server:
+  #   build: ./video_gfx_server
+  #   depends_on:
+  #   - dispatcher
+  #   env_file: .env
+  #   hostname: video_gfx_server
+  #   image: chemradio/gfx-helper:video_gfx_server
+  #   volumes:
+  #   # - asset_storage:/usr/src/app/volume
+  #   - ./video_gfx_server:/usr/src/app
+  storage_unit:
+    build: ./storage_unit
     depends_on:
     - dispatcher
     env_file: .env
-    hostname: video_gfx_server
-    image: chemradio/gfx-helper:video_gfx_server
+    hostname: storage_unit
+    image: chemradio/gfx-helper:storage_unit
     volumes:
-    - asset_storage:/usr/src/app/volume
-    - ./video_gfx_server:/usr/src/app
+    # - asset_storage:/usr/src/app/volume
+    - ./storage_unit:/usr/src/app
 
-volumes:
-  asset_storage:
-    driver: local
-    driver_opts:
-      device: $PWD/dev/volume/asset_storage
-      o: bind
-      type: none
+# volumes:
+#   asset_storage:
+#     driver: local
+#     driver_opts:
+#       device: $PWD/dev/volume/asset_storage
+#       o: bind
+#       type: none
 

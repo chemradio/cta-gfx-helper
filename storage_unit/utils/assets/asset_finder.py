@@ -12,7 +12,7 @@ def find_file(
 ) -> list[Optional[Path]]:
     output = list()
     for folder in search_folders:
-        if (folder / file_name).exists():
+        if (folder / str(file_name)).exists():
             output.append(folder / file_name)
     return output
 

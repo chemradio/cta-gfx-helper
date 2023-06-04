@@ -16,4 +16,7 @@ COPY . .
 
 EXPOSE $PORT
 
-CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "9004"]
+
+CMD ["python3", "main.py"]
+
+# CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", $PORT]

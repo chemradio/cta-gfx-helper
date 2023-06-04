@@ -1,10 +1,9 @@
+from db_tortoise.helper_enums import OrderRequestType, OrderSource
 from fastapi import Form, UploadFile
 from pydantic import BaseModel, HttpUrl
 from tortoise import fields
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from tortoise.models import Model
-
-from db_tortoise.helper_enums import OrderRequestType, OrderSource
 
 
 class Order(Model):
@@ -16,7 +15,7 @@ class Order(Model):
     request_type = fields.CharEnumField(enum_type=OrderRequestType, null=False)
     current_stage = fields.CharField(max_length=100, null=True)
     error = fields.BooleanField(default=False)
-    error_type = fields.CharField(max_length=100, null=True, default="")
+    error_type = fields.CharField(max_length=300, null=True, default="")
 
     ordered_from = fields.CharEnumField(enum_type=OrderSource)
 
