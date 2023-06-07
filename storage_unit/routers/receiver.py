@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Form, UploadFile
-
 import config
+from fastapi import APIRouter, Form, UploadFile
 
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/file")
 async def store_file(upload_file: UploadFile, category: str | None = Form(None)):
     print(category)
     with open(config.DEFAULT_PATH / upload_file.filename, "wb+") as f:
