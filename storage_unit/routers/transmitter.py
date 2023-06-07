@@ -5,7 +5,7 @@ from utils.assets.asset_finder import find_file
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/file")
 async def get_file(filename: str):
     search = find_file(filename)
     if not search:

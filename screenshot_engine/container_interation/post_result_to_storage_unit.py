@@ -6,7 +6,7 @@ from config import SCREENSHOT_FOLDER
 
 STORAGE_UNIT_NAME = os.getenv("STORAGE_UNIT_NAME", "storage_unit")
 STORAGE_UNIT_PORT = os.getenv("STORAGE_UNIT_PORT", 9010)
-STORAGE_UNIT_ENDPOINT = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/"
+STORAGE_UNIT_ENDPOINT = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
 
 
 def store_result(order: dict):

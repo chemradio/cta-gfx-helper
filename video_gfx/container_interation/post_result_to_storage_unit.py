@@ -2,11 +2,7 @@ import os
 from pathlib import Path
 
 import requests
-from config import HTML_ASSEMBLIES_FOLDER, RENDER_OUTPUT_PATH
-
-STORAGE_UNIT_NAME = os.getenv("STORAGE_UNIT_NAME", "storage_unit")
-STORAGE_UNIT_PORT = os.getenv("STORAGE_UNIT_PORT", 9010)
-STORAGE_UNIT_ENDPOINT = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/"
+from config import RENDER_OUTPUT_PATH, STORAGE_UNIT_URL
 
 
 def store_result(order: dict):
@@ -30,7 +26,7 @@ def store_result(order: dict):
 def store_file(filepath: str | Path) -> None:
     print("storing file:", filepath)
     response = requests.post(
-        STORAGE_UNIT_ENDPOINT,
+        STORAGE_UNIT_URL,
         files={"upload_file": open(filepath, "rb")},
         data={"category": "video_gfx"},
     )
