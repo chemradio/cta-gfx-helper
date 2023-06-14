@@ -38,10 +38,15 @@ class LocalDefaultConfig:
     VIDEO_GFX_IMAGE = ""
     VIDEO_GFX_BUILD = "./video_gfx"
 
-    VIDEO_GFX_SERVER_NAME = "video_gfx_server"
-    VIDEO_GFX_SERVER_PORT = 9006
-    VIDEO_GFX_SERVER_IMAGE = ""
-    VIDEO_GFX_SERVER_BUILD = "./video_gfx_server"
+    # VIDEO_GFX_SERVER_NAME = "video_gfx_server"
+    # VIDEO_GFX_SERVER_PORT = 9006
+    # VIDEO_GFX_SERVER_IMAGE = ""
+    # VIDEO_GFX_SERVER_BUILD = "./video_gfx_server"
+
+    STORAGE_UNIT_NAME = "storage_unit"
+    STORAGE_UNIT_PORT = 9010
+    STORAGE_UNIT_IMAGE = ""
+    STORAGE_UNIT_BUILD = "./storage_unit"
 
     SCREENSHOT_SELENIUM_NAME = "screenshot_selenium"
     SCREENSHOT_SELENIUM_PORT = ""

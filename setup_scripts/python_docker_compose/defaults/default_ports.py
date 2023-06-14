@@ -9,4 +9,5 @@ class DefaultContainerPorts:
     telegram_sender = 9007
     screenshoter = 9002
     video_gfx = 9004
-    video_gfx_server = 9006
+    # video_gfx_server = 9006
+    storage_unit = 9010
