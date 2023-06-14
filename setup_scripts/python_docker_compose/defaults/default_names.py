@@ -10,6 +10,7 @@ class DefaultContainerNames:
     db = "db"
     screenshoter = "screenshoter"
     video_gfx = "video_gfx"
-    video_gfx_server = "video_gfx_server"
+    # video_gfx_server = "video_gfx_server"
+    storage_unit = "storage_unit"
     screenshot_selenium = "screenshot_selenium"
     video_gfx_selenium = "video_gfx_selenium"

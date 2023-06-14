@@ -1,6 +1,7 @@
 from helpers.constants import (
     CONTAINER_LIST_BUILD_DEV_FOLDERS,
     CONTAINER_LIST_REQUIRE_CUSTOM_REMOTE_IMAGE,
+    CONTAINER_LIST_REQUIRE_DISPATCHER,
     CONTAINER_LIST_REQUIRE_VOLUME_MOUNT,
 )
 from helpers.container_array_builder.compose_template import (
@@ -38,20 +39,20 @@ class ComposeConfigurator:
     def _general_config(
         cls, user_data: dict, compose_template: UniversalDockerComposeTemplate
     ) -> None:
-        if user_data.get("specify_container_names"):
-            for container_base_name, container_user_name in user_data[
-                "container_names"
-            ].items():
-                container = getattr(compose_template, container_base_name)
-                container.name = container_user_name
-                container.hostname = container_user_name
+        # if user_data.get("specify_container_names"):
+        #     for container_base_name, container_user_name in user_data[
+        #         "container_names"
+        #     ].items():
+        #         container = getattr(compose_template, container_base_name)
+        #         container.name = container_user_name
+        #         container.hostname = container_user_name
 
-        if user_data.get("specify_container_ports"):
-            for container_base_name, container_user_port in user_data[
-                "container_ports"
-            ].items():
-                container = getattr(compose_template, container_base_name)
-                container.port = container_user_port
+        # if user_data.get("specify_container_ports"):
+        #     for container_base_name, container_user_port in user_data[
+        #         "container_ports"
+        #     ].items():
+        #         container = getattr(compose_template, container_base_name)
+        #         container.port = container_user_port
 
         # is Arm
         if user_data.get("is_arm"):
@@ -71,17 +72,7 @@ class ComposeConfigurator:
             container.privileged = True
 
         # intercontainer dependencies
-        dispatcher_dependents = [
-            "front_svelte",
-            "telegram_bot",
-            "telegram_sender",
-            "screenshoter",
-            "video_gfx",
-            "video_gfx_server",
-            "screenshot_selenium",
-            "video_gfx_selenium",
-        ]
-        for container in dispatcher_dependents:
+        for container in CONTAINER_LIST_REQUIRE_DISPATCHER:
             container: DockerComposeContainer = getattr(compose_template, container)
             container.depends_on.append("dispatcher")
 
@@ -102,9 +93,9 @@ class ComposeConfigurator:
     def _configure_for_local(
         cls, user_data: dict, compose_template: UniversalDockerComposeTemplate
     ) -> None:
-        volume = cls._generate_local_volume()
-        compose_template.volumes.append(volume)
-        cls._assign_storage_volume_to_containers(volume, compose_template)
+        # volume = cls._generate_local_volume()
+        # compose_template.volumes.append(volume)
+        # cls._assign_storage_volume_to_containers(volume, compose_template)
         cls._assign_remote_images_to_containers(user_data, compose_template)
 
         # mount code folders
@@ -127,9 +118,9 @@ class ComposeConfigurator:
     def _configure_for_azure(
         cls, user_data: dict, compose_template: UniversalDockerComposeTemplate
     ) -> None:
-        volume = cls._generate_azure_volume()
-        compose_template.volumes.append(volume)
-        cls._assign_storage_volume_to_containers(volume, compose_template)
+        # volume = cls._generate_azure_volume()
+        # compose_template.volumes.append(volume)
+        # cls._assign_storage_volume_to_containers(volume, compose_template)
         cls._assign_remote_images_to_containers(user_data, compose_template)
 
         # expose ports
