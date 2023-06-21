@@ -38,10 +38,12 @@ const registerSchema = z.object({
         .max(64, { message: "Too Long" })
         .email({ message: "Invalid email" }),
     register_password: z
-        .string({ required_error: "Email must be provided" })
+        .string({ required_error: "Password must be provided" })
         .min(5, { message: "Too short" })
         .max(64, { message: "Too Long" }),
-    register_passphrase: z.string({ required_error: "Email must be provided" }),
+    register_passphrase: z.string({
+        required_error: "Passphrase must be provided",
+    }),
 });
 
 export const actions = {

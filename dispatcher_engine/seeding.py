@@ -1,4 +1,5 @@
 import json
+import os
 
 from db_tortoise.helper_enums import NormalUserPermission
 from db_tortoise.users_models import User
@@ -34,3 +35,15 @@ async def seed() -> dict[list]:
     orders_seeded = await seed_orders(seed_data.get("orders"))
 
     return {"users": users_seeded, "orders": orders_seeded}
+
+
+async def seed_admin() -> dict[list]:
+    admin_data = {
+        "email": os.getenv("BOT_ADMIN_EMAIL"),
+        "password": os.getenv("BOT_ADMIN_PASSWORD"),
+    }
+    return await seed_users(
+        [
+            admin_data,
+        ]
+    )

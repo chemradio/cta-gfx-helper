@@ -1,27 +1,10 @@
 # Declare this environment variables for bot to function
-
-# set this to true
-IS_DOCKER=true
-
-# for telegram bot
-BOT_TOKEN
-
-# administration
-BOT_ADMIN
-BOT_ADMIN_PASSWORD
-BOT_ADMIN_EMAIL
-
-
+REGISTER_PASSPHRASE - string
+BOT_ADMIN_PASSWORD - string
+BOT_ADMIN_EMAIL - email
 POSTGRES_PASSWORD
 JWT_SECRET
-REGISTER_PASSPHRASE
+
 #
 JSON-design cookie file should be also provided for the bot to be able to authenticate to social networks.
 /cookie_file - bot command paired with a cookie file json is used to push it to internals of the bot.
-
-
-Route to token - submit username + password here
-http://dispatcher:9000/auth_web_local/
-post - /token to get token
-delete - /toket to deauthenticate user
-post - /register to register new user

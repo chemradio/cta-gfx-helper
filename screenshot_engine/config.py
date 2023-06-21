@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-IS_DOCKER = os.environ.get("IS_DOCKER")
+IS_DOCKER = os.environ.get("IS_DOCKER", True)
 logged_in_to_social_websites = True
 
 SCREENSHOT_FOLDER = Path().cwd() / "volume" / "screenshots"
@@ -14,7 +14,7 @@ LOGIN_REQUIRED = ("facebook", "twitter", "instagram")
 
 DISPATCHER_NODE_HOSTNAME = (
     os.getenv("dispatcher_name", "dispatcher")
-    if os.environ.get("IS_DOCKER")
+    if os.environ.get("IS_DOCKER", True)
     else "localhost"
 )
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)

@@ -2,72 +2,56 @@ version: '3.9'
 
 services:
   db:
-    env_file: .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
     image: postgres:15-alpine
   dispatcher:
     build: ./dispatcher_engine
     depends_on:
     - db
-    env_file: .env
+    environment:
+      BOT_ADMIN_EMAIL: ${BOT_ADMIN_EMAIL}
+      BOT_ADMIN_PASSWORD: ${BOT_ADMIN_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REGISTER_PASSPHRASE: ${REGISTER_PASSPHRASE}
     hostname: dispatcher
-    image: chemradio:dispatcher
+    image: chemradio/cta-gfx-helper:dispatcher
   front_svelte:
     build: ./front_svelte
     depends_on:
     - dispatcher
-    env_file: .env
     hostname: front_svelte
-    image: chemradio:front_svelte
+    image: chemradio/cta-gfx-helper:front_svelte
     ports:
     - 80:9009
   screenshot_selenium:
-    env_file: .env
     hostname: screenshot_selenium
-    image: selenium/standalone-chrome
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 4g
   screenshoter:
     build: ./screenshot_engine
     depends_on:
     - dispatcher
-    env_file: .env
     hostname: screenshoter
-    image: chemradio:screenshoter
+    image: chemradio/cta-gfx-helper:screenshoter
   storage_unit:
     build: ./storage_unit
     depends_on:
     - dispatcher
-    env_file: .env
     hostname: storage_unit
-    image: chemradio:storage_unit
-  telegram_bot:
-    build: ./bot_engine
-    depends_on:
-    - dispatcher
-    env_file: .env
-    hostname: telegram_bot
-    image: chemradio:telegram_bot
-  telegram_sender:
-    build: ./sender_engine
-    depends_on:
-    - dispatcher
-    env_file: .env
-    hostname: sender
-    image: chemradio:telegram_sender
+    image: chemradio/cta-gfx-helper:storage_unit
   video_gfx:
     build: ./video_gfx
     depends_on:
     - dispatcher
-    env_file: .env
     hostname: video_gfx
-    image: chemradio:video_gfx
+    image: chemradio/cta-gfx-helper:video_gfx
   video_gfx_selenium:
-    env_file: .env
     hostname: video_gfx_selenium
-    image: selenium/standalone-chrome
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 4g
-
-volumes: {}
 
