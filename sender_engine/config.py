@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-IS_DOCKER = os.environ.get("IS_DOCKER")
+IS_DOCKER = os.environ.get("IS_DOCKER", True)
 
 DISPATCHER_NODE_HOSTNAME = os.getenv("dispatcher_name", "dispatcher")
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)

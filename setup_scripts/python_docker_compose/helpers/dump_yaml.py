@@ -1,6 +1,5 @@
-import yaml
-
 import config
+import yaml
 
 
 def write_to_yaml(output_dict: dict):
@@ -10,5 +9,7 @@ def write_to_yaml(output_dict: dict):
         f.write("\n")
         yaml.dump({"services": output_dict["services"]}, f)
         f.write("\n")
-        yaml.dump({"volumes": output_dict["volumes"]}, f)
-        f.write("\n")
+
+        if output_dict.get("volumes"):
+            yaml.dump({"volumes": output_dict["volumes"]}, f)
+            f.write("\n")

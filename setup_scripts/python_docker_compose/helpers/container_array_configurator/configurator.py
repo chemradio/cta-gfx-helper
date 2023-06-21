@@ -3,6 +3,7 @@ from helpers.constants import (
     CONTAINER_LIST_REQUIRE_CUSTOM_REMOTE_IMAGE,
     CONTAINER_LIST_REQUIRE_DISPATCHER,
     CONTAINER_LIST_REQUIRE_VOLUME_MOUNT,
+    ENV_VAR_REQUIREMENTS,
 )
 from helpers.container_array_builder.compose_template import (
     UniversalDockerComposeTemplate,
@@ -85,6 +86,14 @@ class ComposeConfigurator:
         compose_template.env_file["rebuild_db"] = (
             True if user_data.get("rebuild_db") else False
         )
+
+        # add env vars to db and dispatcher containers
+        for container_base_name, env_var_list in ENV_VAR_REQUIREMENTS.items():
+            container: DockerComposeContainer = getattr(
+                compose_template, container_base_name
+            )
+            for env_var in env_var_list:
+                container.environment.update({env_var: "${" + env_var + "}"})
 
         # provide build context for containers without predefined images
         cls._assing_build_folders_to_containers(compose_template)

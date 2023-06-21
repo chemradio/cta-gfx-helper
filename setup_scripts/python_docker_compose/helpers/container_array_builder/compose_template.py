@@ -63,7 +63,7 @@ class UniversalDockerComposeTemplate:
 
     def generate_env_dict(self) -> dict:
         output = dict()
-        for base_name in CONTAINER_LIST:
-            output[f"{base_name}_name"] = getattr(self, base_name).name
-            output[f"{base_name}_port"] = getattr(self, base_name).port
+        # for base_name in CONTAINER_LIST:
+        #     output[f"{base_name}_name"] = getattr(self, base_name).name
+        #     output[f"{base_name}_port"] = getattr(self, base_name).port
         return output

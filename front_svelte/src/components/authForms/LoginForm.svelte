@@ -46,7 +46,7 @@
                         class="form-control rounded-0 {form?.errors?.login_email
                             ? 'border-danger'
                             : ''}"
-                        value={form?.data?.login_email ?? "g@f.co"}
+                        value={form?.data?.login_email ?? ""}
                         disabled={loading}
                     />
                     {#if form?.errors?.login_email}
@@ -68,7 +68,7 @@
                             ?.login_password
                             ? 'border-danger'
                             : ''}"
-                        value="12345"
+                        value=""
                     />
                     {#if form?.errors?.login_password}
                         <small class="text-danger"

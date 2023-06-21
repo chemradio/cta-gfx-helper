@@ -15,6 +15,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from generate_schemas import main as db_check_rebuild
 from seeding import seed as seed_db
+from seeding import seed_admin
 from tortoise.contrib.fastapi import register_tortoise
 
 create_volume_folders()
@@ -76,14 +77,21 @@ register_tortoise(
 async def main():
     print("Dispatcher launch initiated")
 
-    if os.environ.get("IS_DOCKER"):
+    if os.environ.get("IS_DOCKER", True):
         print("Waiting 10 secs for DB check/rebuild")
         time.sleep(10)
     print("Running DB check / rebuild")
     await db_check_rebuild()
     print("DB check rebuild complete")
 
-    if os.environ.get("IS_DOCKER"):
+    if os.environ.get("IS_DOCKER", True):
+        print("Seeding administrator")
+        try:
+            seed_result = await seed_db()
+            print(f"Seeding admin done")
+        except:
+            print("failed to seed admin")
+
         print("Seeding if necessary")
         try:
             seed_result = await seed_db()
@@ -95,7 +103,7 @@ async def main():
     config = uvicorn.Config(
         "main:app",
         port=os.environ.get("dispatcher_port", 9000),
-        host="0.0.0.0" if os.environ.get("IS_DOCKER") else "127.0.0.1",
+        host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
         log_level="info",
     )
     server = uvicorn.Server(config)
@@ -106,6 +114,6 @@ if __name__ == "__main__":
     asyncio.run(main())
     # uvicorn.run(
     #     app,
-    #     host="0.0.0.0" if os.environ.get("IS_DOCKER") else "127.0.0.1",
+    #     host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
     #     port=9000,
     # )

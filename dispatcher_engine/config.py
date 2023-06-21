@@ -3,7 +3,7 @@ from pathlib import Path
 
 REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
 
-IS_DOCKER = os.environ.get("IS_DOCKER")
+IS_DOCKER = os.environ.get("IS_DOCKER", True)
 
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"

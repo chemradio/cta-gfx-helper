@@ -19,7 +19,8 @@ class DockerComposeContainer:
     volumes: list[str] | None = field(default_factory=list)
     #
     expose: bool = False
-    env_file: str = ".env"
+    env_file: str | None = None  # ".env"
+    environment: dict | None = field(default_factory=dict)
     depends_on: list[str] | None = field(default_factory=list)
 
     healthcheck: dict | None = None
