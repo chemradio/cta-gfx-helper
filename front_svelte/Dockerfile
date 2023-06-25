@@ -15,14 +15,14 @@ RUN npm install --include=dev
 # COPY --chown=node:node package.json .
 
 ENV HOST=0.0.0.0
-ENV PORT=9009
+ENV PORT=80
 # ENV PROTOCOL_HEADER="x-forwarded-proto"
 # ENV HOST_HEADER="x-forwarded-host"
 # ENV ORIGIN="http://localhost:9009"
 
-EXPOSE 9009
+# EXPOSE 9009
 
-CMD ["npm","run", "preview", "--", "--host", "0.0.0.0", "--port", "9009"]
+CMD ["npm","run", "preview", "--", "--host", "0.0.0.0", "--port", "80"]
 
 # ENTRYPOINT npm run dev
 # CMD ["node", "build"]
