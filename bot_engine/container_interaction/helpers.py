@@ -1,10 +1,14 @@
 from enum import Enum
 
 
-class UserStatus(Enum):
-    UNREGISTERED: str = "unregistered"
-    ALLOWED: str = "allowed"
-    BLOCKED: str = "blocked"
-    PENDING: str = "pending"
-    ADMIN: str = "admin"
-    ALL: str = "all"
+class UserPermission(str, Enum):
+    UNREGISTERED: str = "UNREGISTERED"
+    APPROVED: str = "APPROVED"
+    BLOCKED: str = "BLOCKED"
+    PENDING: str = "PENDING"
+    ADMIN: str = "ADMIN"
+
+
+class UserRole(str, Enum):
+    ADMIN = "ADMIN"
+    NORMAL = "NORMAL"

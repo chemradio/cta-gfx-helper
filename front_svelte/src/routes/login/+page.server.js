@@ -92,6 +92,8 @@ export const actions = {
             jwt = res.headers.get("set-cookie").split('"')[1];
             event.cookies.set("jwt", jwt, {
                 path: "/",
+                secure: false,
+                maxAge: 60 * 60 * 24 * 30,
             });
             throw redirect(302, "/orders");
         } else {
@@ -110,7 +112,9 @@ export const actions = {
         console.log("Register action hit!");
         console.log("dispatcherRegisterURL", dispatcherRegisterURL);
         const formData = Object.fromEntries(await event.request.formData());
+
         // validate form
+        console.log("Form validation started");
         try {
             const result = registerSchema.parse(formData);
         } catch (err) {
@@ -125,11 +129,13 @@ export const actions = {
         const { register_email, register_password, register_passphrase } =
             formData;
 
+        console.log("Creating form data");
         const registerFormData = new FormData();
         registerFormData.append("email", register_email);
         registerFormData.append("password", register_password);
         registerFormData.append("passphrase", register_passphrase);
 
+        console.log("Pre fetch to dispatcher");
         const res = await fetch(dispatcherRegisterURL, {
             method: "POST",
             body: registerFormData,
@@ -137,13 +143,27 @@ export const actions = {
 
         if (res.status === 200) {
             // authenticated. attach new cookie. redirect to home
+            console.log("Fetch status 200! Trying to add cookie");
+            console.log(
+                "Set cookie from the response headers:",
+                res.headers.get("set-cookie")
+            );
+            console.log(
+                "Atttaching split part:",
+                res.headers.get("set-cookie").split('"')[1]
+            );
             event.cookies.set(
                 "jwt",
                 res.headers.get("set-cookie").split('"')[1],
                 {
                     path: "/",
+                    // httpOnly: true,
+                    // sameSite: "none",
+                    secure: false,
+                    maxAge: 60 * 60 * 24 * 30,
                 }
             );
+            console.log("Cookie added. Throwing redirect");
             throw redirect(302, "/orders");
         } else {
             const responseJSON = await res.json();

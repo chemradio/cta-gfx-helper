@@ -57,15 +57,16 @@ class AdminPanelResponder:
                 [
                     InlineKeyboardButton(
                         Responses.admin.cancel_order,
-                        callback_data=f"admin_cancel_order_{order['order_id']}",
+                        callback_data=f"admin_cancel_order_{order['id']}",
                     )
                 ],
             ]
         )
 
         message_text = Responses.admin.list_single_order.format(
-            order_id=order.get("order_id"),
-            customer_name=order.get("user_first_name"),
+            order_id=order.get("id"),
+            customer_name=order["user"].get("first_name"),
+            customer_email=order["user"].get("email"),
             request_type=order.get("request_type"),
             status=order.get("status"),
             wait_time=order.get("wait_time"),

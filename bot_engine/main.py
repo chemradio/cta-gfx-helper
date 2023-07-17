@@ -40,6 +40,4 @@ def main():
 
 
 if __name__ == "__main__":
-    application = Application.builder().token(BOT_TOKEN).build()
-    application.add_handler(AllHandler(dispatcher_callback))
-    application.run_polling()
+    main()

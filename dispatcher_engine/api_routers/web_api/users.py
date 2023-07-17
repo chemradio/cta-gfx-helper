@@ -1,10 +1,11 @@
-from config import REGISTER_PASSPHRASE
-from db_tortoise.helper_enums import NormalUserPermission
-from db_tortoise.users_models import User, User_Pydantic, UserIn_Pydantic
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse, Response
 from pydantic import EmailStr
+
+from config import REGISTER_PASSPHRASE
+from db_tortoise.helper_enums import NormalUserPermission
+from db_tortoise.users_models import User, User_Pydantic, UserIn_Pydantic
 from utils.auth.cookie_parser import cookie_parser
 from utils.auth.jwt_cookie_response import generate_cookie_json_response
 from utils.auth.password_hashing import (
@@ -50,7 +51,6 @@ async def login(
     user_cookie: User_Pydantic | None = Depends(cookie_parser),
 ):
     # check if already logged in
-    print(user_cookie)
     if user_cookie:
         print("Correct cookie detected. Sending it back.")
         user_cookie_jsonable = jsonable_encoder(user_cookie)
@@ -58,16 +58,12 @@ async def login(
         response.set_cookie(key="jwt", value=request.cookies.get("jwt"))
         return response
 
-    print(user.dict())
-
     # check user in db
-    print("checking if user is in db")
     user_db = await User.filter(email=user.email).first()
     if not user_db:
         raise HTTPException(401, detail="User is missing from the database")
 
     # verify user's password
-    print("verifying password")
     try:
         verify_password(user.password, user_db.password_hash)
     except PasswordVerificationFailed:

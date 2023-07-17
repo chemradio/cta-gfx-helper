@@ -13,11 +13,14 @@ async def seed_users(users: list[dict]):
     return_users = list()
 
     for user in users:
+        user_password = user.pop("password")
+
         user = await User.create(
-            email=user.get("email"),
-            password_hash=generate_password_hash(user.get("password")),
+            password_hash=generate_password_hash(user_password),
             permission=NormalUserPermission.APPROVED.value,
+            **user
         )
+
         return_users.append(dict(user))
 
     return return_users

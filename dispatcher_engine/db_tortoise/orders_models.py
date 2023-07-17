@@ -1,9 +1,10 @@
-from db_tortoise.helper_enums import OrderRequestType, OrderSource
 from fastapi import Form, UploadFile
 from pydantic import BaseModel, HttpUrl
 from tortoise import fields
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from tortoise.models import Model
+
+from db_tortoise.helper_enums import OrderRequestType, OrderSource
 
 
 class Order(Model):
@@ -18,7 +19,6 @@ class Order(Model):
     error_type = fields.CharField(max_length=300, null=True, default="")
 
     ordered_from = fields.CharEnumField(enum_type=OrderSource)
-
     order_start_timestamp = fields.DatetimeField(null=True)
     order_creation_end_timestamp = fields.DatetimeField(auto_now_add=True)
 
@@ -70,7 +70,7 @@ class OrderIn_Pydantic(BaseModel):
     quote_enabled: bool | None = False
     quote_text: str | None = None
     quote_author_text: str | None = None
-    quote_author_enabled: str | None = None
+    quote_author_enabled: bool | None = None
     audio_enabled: bool | None = False
     audio_file: UploadFile | None = None
     foreground_file: UploadFile | None = None

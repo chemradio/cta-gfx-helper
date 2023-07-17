@@ -13,7 +13,7 @@ class User(Model):
     first_name = fields.CharField(max_length=100, null=True)
     username = fields.CharField(max_length=100, null=True)
     telegram_id = fields.BigIntField(null=True, unique=True)
-    email = fields.CharField(max_length=100, unique=True)
+    email = fields.CharField(max_length=100, unique=True, null=True)
 
     created = fields.DatetimeField(auto_now_add=True)
     password_hash = fields.CharField(max_length=200, null=True)

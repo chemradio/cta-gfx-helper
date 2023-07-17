@@ -3,6 +3,7 @@ from enum import Enum
 from pathlib import Path
 
 from telegram.constants import ParseMode
+
 from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
@@ -13,6 +14,9 @@ COOKIE_FILE_PATH = VOLUME_MOUNTPOINT / "cookie_file" / "cookie_file.json"
 
 FILE_DOWNLOAD_TIMEOUT = 180
 MAX_AUDIO_LENGTH = 40
+
+IS_DOCKER = os.getenv("IS_DOCKER")
+IS_DOCKER = False
 
 
 class Readspeed(Enum):
@@ -31,24 +35,23 @@ REQUEST_TYPE_TEMP_MAP = {
 
 # containers
 DISPATCHER_NAME = (
-    os.getenv("dispatcher_name", "dispatcher")
-    if os.environ.get("IS_DOCKER", True)
-    else "localhost"
+    os.getenv("dispatcher_name", "dispatcher") if IS_DOCKER else "localhost"
 )
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 
 
 # orders
-DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders"
-ADD_ORDER_ENDPOINT = f"{DISPATCHER_ORDERS_ENDPOINT}/add_order_telegram"
+DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/orders"
+ADD_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/orders"
 
 
 # users
-DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/users"
-ADD_USER_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/add"
-EDIT_USER_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/edit"
+DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/users"
+ADD_USER_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}"
+EDIT_USER_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/users/telegram"
 
+LIST_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/users"
 
 ALLOWED_USERS_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/allowed"
 BLOCKED_USERS_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/blocked"

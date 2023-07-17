@@ -15,6 +15,7 @@ async def rebuild_db() -> None:
 
 
 async def main():
+    # await rebuild_db()
     tables_correct = await check_tables()
     if tables_correct:
         print("Tablenames match. Exiting...")
