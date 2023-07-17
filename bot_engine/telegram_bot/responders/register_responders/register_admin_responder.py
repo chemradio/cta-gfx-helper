@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
 
 import config
-from container_interaction.helpers import UserStatus
+from container_interaction.helpers import UserPermission
 from telegram_bot.bot_instance import bot
 from telegram_bot.responders.bot_texts import Responses
 
@@ -72,19 +72,19 @@ class RegisterAdminResponder:
     # following responders are for allowing / blocking / pending existing users
 
     @staticmethod
-    async def list_user(admin_id, user_status: UserStatus, user_id, first_name):
+    async def list_user(admin_id, user_status: UserPermission, user_id, first_name):
         match user_status:
-            case UserStatus.ALLOWED:
+            case UserPermission.APPROVED:
                 text = Responses.register.list_approved_user.format(
                     first_name=first_name, telegram_id=user_id
                 )
 
-            case UserStatus.PENDING:
+            case UserPermission.PENDING:
                 text = Responses.register.list_pending_user.format(
                     first_name=first_name, telegram_id=user_id
                 )
 
-            case UserStatus.BLOCKED:
+            case UserPermission.BLOCKED:
                 text = Responses.register.list_blocked_user.format(
                     first_name=first_name, telegram_id=user_id
                 )

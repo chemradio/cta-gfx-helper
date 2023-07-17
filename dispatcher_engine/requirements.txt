@@ -27,3 +27,4 @@ tortoise-orm==0.19.3
 typing_extensions==4.5.0
 urllib3==1.26.15
 uvicorn==0.21.0
+python-telegram-bot==20.0a6

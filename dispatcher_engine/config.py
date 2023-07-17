@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
 
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
 
 IS_DOCKER = os.environ.get("IS_DOCKER", True)
+IS_DOCKER = False
 
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"
