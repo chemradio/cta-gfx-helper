@@ -4,6 +4,7 @@ services:
   db:
     restart: always
     environment:
+      IS_DOCKER: true
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
     image: postgres:15-alpine
@@ -19,12 +20,15 @@ services:
     depends_on:
     - db
     environment:
+      IS_DOCKER: true
       BOT_ADMIN_EMAIL: ${BOT_ADMIN_EMAIL}
       BOT_ADMIN_PASSWORD: ${BOT_ADMIN_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REGISTER_PASSPHRASE: ${REGISTER_PASSPHRASE}
     hostname: dispatcher
+    ports:
+      - "9000:9000"
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:dispatcher
     deploy:
       resources:
@@ -46,6 +50,23 @@ services:
         limits:
           cpus: "0.20"
           memory: 1G
+  bot-engine:
+    restart: always
+    build: ./bot_engine
+    platform: ${PLATFORM}
+    environment:
+      IS_DOCKER: true
+      BOT_ADMIN: ${BOT_ADMIN}
+      BOT_TOKEN: ${BOT_TOKEN}
+    # depends_on:
+    # - dispatcher
+    hostname: bot_engine
+    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:front_svelte
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: 1G
   screenshot-selenium:
     restart: always
     hostname: screenshot_selenium
@@ -61,6 +82,8 @@ services:
     restart: always
     build: ./screenshot_engine
     platform: ${PLATFORM}
+    environment:
+      IS_DOCKER: true
     depends_on:
     - dispatcher
     hostname: screenshoter
@@ -74,6 +97,8 @@ services:
     restart: always
     build: ./storage_unit
     platform: ${PLATFORM}
+    environment:
+      IS_DOCKER: true
     depends_on:
     - dispatcher
     hostname: storage_unit
@@ -87,6 +112,8 @@ services:
     restart: always
     build: ./video_gfx
     platform: ${PLATFORM}
+    environment:
+      IS_DOCKER: true
     depends_on:
     - dispatcher
     hostname: video_gfx

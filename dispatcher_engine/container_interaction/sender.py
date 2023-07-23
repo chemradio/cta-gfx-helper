@@ -1,7 +1,11 @@
-import requests
+import asyncio
+
 from config import SENDER_ENDPOINT
+from db_tortoise.helper_enums import OrderSource
+from db_tortoise.orders_models import Order
+from telegram_sender.telegram_sender import TelegramSender
 
 
-def signal_to_sender():
-    r = requests.post(SENDER_ENDPOINT)
-    print(r.json())
+async def signal_to_sender(order: Order):
+    if order.ordered_from == OrderSource.TELEGRAM:
+        await TelegramSender.send_order(dict(order))

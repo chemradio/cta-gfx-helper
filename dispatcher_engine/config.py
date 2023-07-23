@@ -1,11 +1,9 @@
 import os
 from pathlib import Path
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
 REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
 
-IS_DOCKER = os.environ.get("IS_DOCKER", True)
-IS_DOCKER = False
+IS_DOCKER = os.environ.get("IS_DOCKER", False)
 
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"
@@ -54,3 +52,7 @@ COOKIE_FILE_PATH = VOLUME_MOUNTPOINT / "cookie_file.json"
 import secrets
 
 JWT_SECRET = os.environ.get("JWT_SECRET", secrets.token_hex(16))
+
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+TELEGRAM_SEND_DOCUMENT_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
+TELEGRAM_SEND_MESSAGE_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"

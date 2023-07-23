@@ -3,7 +3,6 @@ import time
 from pathlib import Path
 
 from telegram.ext import Application
-
 from telegram_bot.all_handler import AllHandler
 from telegram_bot.bot_instance import BOT_TOKEN
 from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (
@@ -31,6 +30,8 @@ def main():
     while True:
         try:
             print("starting the bot")
+            print(f"{BOT_TOKEN}")
+
             application = Application.builder().token(BOT_TOKEN).build()
             application.add_handler(AllHandler(dispatcher_callback))
             application.run_polling()
