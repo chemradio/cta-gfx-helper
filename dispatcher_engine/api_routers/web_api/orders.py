@@ -1,7 +1,3 @@
-from container_interaction.signal_sender import signal_to_services
-from db_tortoise.order_controller import OrderController
-from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
-from db_tortoise.users_models import User, User_Pydantic
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -11,6 +7,11 @@ from fastapi import (
     Request,
     UploadFile,
 )
+
+from container_interaction.signal_sender import signal_to_services
+from db_tortoise.order_controller import OrderController
+from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
+from db_tortoise.users_models import User, User_Pydantic
 from utils.auth.cookie_parser import cookie_parser
 
 router = APIRouter()
@@ -35,7 +36,7 @@ async def add_order(
     await order_db.save()
     await order_db.refresh_from_db()
 
-    background_tasks.add_task(signal_to_services, order_db.current_stage)
+    background_tasks.add_task(signal_to_services, order_db)
     return await Order_Pydantic.from_tortoise_orm(order_db)
 
 

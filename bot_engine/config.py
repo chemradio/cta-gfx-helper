@@ -3,7 +3,6 @@ from enum import Enum
 from pathlib import Path
 
 from telegram.constants import ParseMode
-
 from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
@@ -16,7 +15,6 @@ FILE_DOWNLOAD_TIMEOUT = 180
 MAX_AUDIO_LENGTH = 40
 
 IS_DOCKER = os.getenv("IS_DOCKER")
-IS_DOCKER = False
 
 
 class Readspeed(Enum):

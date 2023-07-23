@@ -3,10 +3,6 @@ import os
 import time
 
 import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.fastapi import register_tortoise
-
 from api_routers.administration import db_manipulation
 from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
@@ -17,9 +13,12 @@ from api_routers.web_api import orders as web_orders
 from api_routers.web_api import users as web_users
 from create_volume_folders import create_volume_folders
 from db_tortoise.tort_config import TORTOISE_ORM
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from generate_schemas import main as db_check_rebuild
 from seeding import seed as seed_db
 from seeding import seed_admin
+from tortoise.contrib.fastapi import register_tortoise
 
 create_volume_folders()
 
@@ -91,9 +90,9 @@ Tortoise.init_models(
 async def main():
     print("Dispatcher launch initiated")
 
-    # if os.environ.get("IS_DOCKER", True):
-    #     print("Waiting 10 secs for DB check/rebuild")
-    #     time.sleep(10)
+    if os.environ.get("IS_DOCKER", True):
+        print("Waiting 10 secs for DB check/rebuild")
+        time.sleep(10)
     print("Running DB check / rebuild")
     await db_check_rebuild()
     print("DB check rebuild complete")
