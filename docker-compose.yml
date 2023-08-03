@@ -8,11 +8,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
     image: postgres:15-alpine
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: "0.5G"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.20"
+    #       memory: "0.5G"
   dispatcher:
     restart: always
     build: ./dispatcher_engine
@@ -23,6 +23,7 @@ services:
       IS_DOCKER: true
       BOT_ADMIN_EMAIL: ${BOT_ADMIN_EMAIL}
       BOT_ADMIN_PASSWORD: ${BOT_ADMIN_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
       JWT_SECRET: ${JWT_SECRET}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REGISTER_PASSPHRASE: ${REGISTER_PASSPHRASE}
@@ -30,11 +31,11 @@ services:
     ports:
       - "9000:9000"
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:dispatcher
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: 1G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.20"
+    #       memory: 1G
   front-svelte:
     restart: always
     build: ./front_svelte
@@ -45,11 +46,11 @@ services:
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:front_svelte
     ports:
       - "80:80"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: 1G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.20"
+    #       memory: 1G
   bot-engine:
     restart: always
     build: ./bot_engine
@@ -62,22 +63,22 @@ services:
     # - dispatcher
     hostname: bot_engine
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:front_svelte
-    deploy:
-      resources:
-        limits:
-          cpus: "0.20"
-          memory: 1G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.20"
+    #       memory: 1G
   screenshot-selenium:
     restart: always
     hostname: screenshot_selenium
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 2g
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: 2G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.50"
+    #       memory: 2G
   screenshoter:
     restart: always
     build: ./screenshot_engine
@@ -88,11 +89,11 @@ services:
     - dispatcher
     hostname: screenshoter
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:screenshoter
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: "0.2G"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.50"
+    #       memory: "0.2G"
   storage-unit:
     restart: always
     build: ./storage_unit
@@ -103,11 +104,11 @@ services:
     - dispatcher
     hostname: storage_unit
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:storage_unit
-    deploy:
-      resources:
-        limits:
-          cpus: "0.10"
-          memory: "0.2G"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.10"
+    #       memory: "0.2G"
   video-gfx:
     restart: always
     build: ./video_gfx
@@ -118,19 +119,19 @@ services:
     - dispatcher
     hostname: video_gfx
     # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:video_gfx
-    deploy:
-      resources:
-        limits:
-          cpus: "1.00"
-          memory: 1G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.00"
+    #       memory: 1G
   video-gfx-selenium:
     restart: always
     hostname: video_gfx_selenium
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 2g
-    deploy:
-      resources:
-        limits:
-          cpus: "1.00"
-          memory: 2G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.00"
+    #       memory: 2G
