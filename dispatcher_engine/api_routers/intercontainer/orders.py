@@ -1,10 +1,12 @@
 from pprint import pprint
 
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from pydantic import BaseModel
+
 from container_interaction.signal_sender import signal_to_services
 from db_tortoise.order_controller import OrderController
 from db_tortoise.orders_models import Order, Order_Pydantic
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from pydantic import BaseModel
+from utils.models_manager.fetch_user import combine_order_user_dict
 from utils.request_json_parser import request_json_parser
 
 router = APIRouter()
@@ -26,20 +28,6 @@ async def edit_order_intercontainer(
 
     order_db = await Order.filter(id=order_json["id"]).first()
 
-    # order_db.update_from_dict(
-    #     {
-    #         k: v
-    #         for k, v in order_json.items()
-    #         if k
-    #         in (
-    #             "error",
-    #             "error_type",
-    #             "screenshots_ready",
-    #             "send_success",
-    #             "video_gfx_ready",
-    #         )
-    #     }
-    # )
     order = order_db.update_from_dict(order_json)
     pprint(f"pre order advance: {order_db=}")
     await order_db.refresh_from_db()
@@ -52,7 +40,7 @@ async def edit_order_intercontainer(
         # cleanup_order_assets(order_db)
         pass
 
-    background_tasks.add_task(signal_to_services, order_db.current_stage)
+    background_tasks.add_task(signal_to_services, order)
     return None
 
 
@@ -61,7 +49,7 @@ async def get_one_intercontainer(order: IntercontainerOrder_GetOne):
     order_db = await Order.filter(
         current_stage=order.current_stage,
         status=order.status,
-        ordered_from="web" if order.ordered_from is None else order.ordered_from,
+        # ordered_from="web" if order.ordered_from is None else order.ordered_from,
     ).first()
     if not order_db:
         return None

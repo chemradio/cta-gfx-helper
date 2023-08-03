@@ -4,13 +4,18 @@ from container_interaction.video_gfx import signal_to_video_gfx
 from db_tortoise.orders_models import Order
 
 
-def signal_to_services(order: Order):
+async def signal_to_services(order: Order):
+    print(f"signalling to services, current stage is {order.current_stage}")
     match order.current_stage:
         case "ready_for_screenshots":
-            return signal_to_screenshoter()
+            print("Signalling to screenshooter")
+            return await signal_to_screenshoter()
         case "ready_for_video_gfx":
-            return signal_to_video_gfx()
+            print("Signalling to video_gfx")
+            return await signal_to_video_gfx()
         case "ready_for_send":
-            return signal_to_sender(order)
+            print("Signalling to sender")
+            return await signal_to_sender(order)
         case _:
+            print("no match. signal declined")
             pass

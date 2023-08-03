@@ -1,14 +1,18 @@
 import tempfile
+from pprint import pprint
 
 import requests
 
 import config
+from db_tortoise.orders_models import Order
 
 
 class TelegramSender:
     @classmethod
-    async def send_order(cls, order: dict) -> None:
-        recipient_telegram_id = order["user"]["telegram_id"]
+    async def send_order(cls, order: Order) -> None:
+        await order.fetch_related("user")
+
+        recipient_telegram_id = order.user.telegram_id
 
         # fetch files based on the order type
         files_to_send = await cls._gather_files(order)
@@ -16,33 +20,27 @@ class TelegramSender:
         # send optional finishing message to the user
         await cls._send_message("Your order is ready", recipient_telegram_id)
 
-        for file in files_to_send:
-            cls._send_file(file, recipient_telegram_id)
+        for file_tuple in files_to_send:
+            await cls._send_file(file_tuple, recipient_telegram_id)
 
     @classmethod
-    async def _gather_files(cls, order) -> list[bytes]:
-        request_type = order["request_type"]
-        files = list()
-
-        match request_type:
+    async def _gather_files(cls, order: Order) -> list[tuple[str, bytes]]:
+        match order.request_type:
             case "video_auto":
-                video_gfx_name: str = order["video_gfx_name"]
-                file = await cls._fetch_file_from_storage(video_gfx_name)
-                files.append(file)
-
+                filetypes = ("video_gfx_name",)
             case "video_files":
-                video_gfx_name: str = order["video_gfx_name"]
-                file = await cls._fetch_file_from_storage(video_gfx_name)
-                files.append(file)
-
+                filetypes = ("video_gfx_name",)
             case "only_screenshots":
-                cases = ("background_name", "foreground_name")
-                for filename in cases:
-                    file = await cls._fetch_file_from_storage(filename)
-                    if file:
-                        files.append(file)
+                filetypes = ("background_name", "foreground_name")
             case _:
                 return []
+
+        files = list()
+        for filetype in filetypes:
+            filename = getattr(order, filetype)
+            file_bytes = await cls._fetch_file_from_storage(filename)
+            if file_bytes:
+                files.append((filename, file_bytes))
 
         return files
 
@@ -59,8 +57,10 @@ class TelegramSender:
         r = requests.post(config.TELEGRAM_SEND_MESSAGE_API, params=kwargs)
 
     @classmethod
-    async def _send_file(cls, file: bytes, recipient_telegram_id: int) -> None:
-        files = {"document": file}
+    async def _send_file(
+        cls, file_tuple: dict[bytes], recipient_telegram_id: int
+    ) -> None:
+        files = {"document": file_tuple}
         kwargs = {
             "chat_id": recipient_telegram_id,
             "caption": "✅ Твой заказ готов.",

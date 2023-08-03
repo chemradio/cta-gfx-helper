@@ -8,4 +8,5 @@ from telegram_sender.telegram_sender import TelegramSender
 
 async def signal_to_sender(order: Order):
     if order.ordered_from == OrderSource.TELEGRAM:
-        await TelegramSender.send_order(dict(order))
+        print("sending telegram order now!!!")
+        return await TelegramSender.send_order(order)

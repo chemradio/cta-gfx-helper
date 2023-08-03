@@ -4,6 +4,9 @@ from pathlib import Path
 REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
 
 IS_DOCKER = os.environ.get("IS_DOCKER", False)
+STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
+STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)
+STORAGE_UNIT_URL = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
 
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"
@@ -53,6 +56,7 @@ import secrets
 
 JWT_SECRET = os.environ.get("JWT_SECRET", secrets.token_hex(16))
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
 TELEGRAM_SEND_DOCUMENT_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
 TELEGRAM_SEND_MESSAGE_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
