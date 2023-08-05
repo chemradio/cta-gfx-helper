@@ -8,6 +8,7 @@ from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
 from api_routers.telegram_api import orders as telegram_orders
 from api_routers.telegram_api import users as telegram_users
+from api_routers.user_files import user_file_handler
 from api_routers.web_api import direct_download
 from api_routers.web_api import orders as web_orders
 from api_routers.web_api import users as web_users
@@ -56,6 +57,8 @@ app.include_router(direct_download.router, prefix="/web_api/direct_download")
 app.include_router(telegram_users.router, prefix="/telegram_api/users")
 app.include_router(telegram_orders.router, prefix="/telegram_api/orders")
 
+# user file receptor
+app.include_router(user_file_handler.router, prefix="/user_files")
 
 # intercontainer
 app.include_router(intercontainer_orders.router, prefix="/intercontainer/orders")
