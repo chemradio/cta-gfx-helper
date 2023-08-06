@@ -10,6 +10,7 @@ class ErrorResponses:
     audio_duration_exceeded: str = (
         "🆘🔊 Этот аудио-файл длиннее 40 секунд. Попробуй другой."
     )
+    max_attachment_size_exceeded: str = "🆘🔊 Слишком большой файл. Не могу скачать."
 
 
 @dataclass
@@ -51,7 +52,6 @@ class ReadtimeResponses:
 
 @dataclass
 class CommonResponses:
-
     sessions_terminated_start: str = (
         "❎ Все предыдущие заказы отменены. Новый заказ - /start"
     )

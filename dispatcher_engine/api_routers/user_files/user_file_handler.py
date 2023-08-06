@@ -41,4 +41,4 @@ async def add_user_file(
         # data={"category": "screenshots"},
     )
     response.raise_for_status()
-    return filename
+    return {"filename": filename}
