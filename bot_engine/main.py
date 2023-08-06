@@ -1,8 +1,8 @@
-import asyncio
 import time
 from pathlib import Path
 
 from telegram.ext import Application
+
 from telegram_bot.all_handler import AllHandler
 from telegram_bot.bot_instance import BOT_TOKEN
 from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (

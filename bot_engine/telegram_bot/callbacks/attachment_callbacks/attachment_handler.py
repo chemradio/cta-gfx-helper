@@ -1,14 +1,10 @@
-import secrets
 from typing import Callable
 
-from telegram import Update
+import requests
+from telegram import File, Update
 from telegram.ext import ContextTypes
 
 import config
-from telegram_bot.callbacks.attachment_callbacks.attachment_exceptions import (
-    AudioDurationExceeded,
-    WrongAudioFormat,
-)
 from telegram_bot.callbacks.attachment_callbacks.attachment_helpers import (
     attachment_finder,
     reply_to_message_parser,
@@ -58,15 +54,34 @@ async def attachment_downloader(
     ).pop()
     target_function = functions_map[target_function_key]
 
-    save_file_name = f"user_{secrets.token_hex(8)}"
-    save_file_path = config.USER_FILES_FOLDER / save_file_name
-    try:
-        downloaded_file_name: str = await target_function(bald_message)
-    except WrongAudioFormat as e:
-        print(e)
-        return await Responder.errors.wrong_audio_format(user_id)
-    except AudioDurationExceeded as e:
-        print(e)
-        return await Responder.errors.audio_duration_exceeded(user_id)
+    telegram_file: File
+    mime_type: str
+    telegram_file, mime_type = await target_function(bald_message)
+    print(f"Telegram File Size: {telegram_file.file_size=}")
 
-    return downloaded_file_name
+    if telegram_file.file_size > config.MAX_ATTACHMENT_SIZE:
+        await Responder.errors.max_attachment_size_exceeded(user_id)
+        raise Exception()
+
+    stored_file_filename = await store_file_in_storage_unit(
+        filename=telegram_file.file_id,
+        file_bytes=await telegram_file.download_as_bytearray(),
+        mime_type=mime_type,
+    )
+
+    return stored_file_filename
+
+
+async def store_file_in_storage_unit(
+    filename: str, file_bytes: bytes, mime_type: str
+) -> str:
+    """Send a HTTP Post request to the central dispatcher node
+    for further processing. On success dispatcher node returns
+    filename with which the file was stored in storage unit."""
+
+    response = requests.post(
+        f"{config.DISPATCHER_NODE_URL}/user_files/",
+        files={"upload_file": (filename, file_bytes, mime_type)},
+    )
+    response.raise_for_status()
+    return response.json()["filename"]

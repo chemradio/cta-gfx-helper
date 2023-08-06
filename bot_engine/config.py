@@ -3,6 +3,7 @@ from enum import Enum
 from pathlib import Path
 
 from telegram.constants import ParseMode
+
 from telegram_bot.responders.bot_texts import Responses
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
@@ -60,3 +61,9 @@ RESTORE_DB_ENDPONT = f"{DISPATCHER_NODE_URL}/database/restore"
 
 DB_BACKUP_FILE_PATH = "./db_backup.json"
 DB_BACKUP_FILE_TEMP_PATH = "./db_backup_temp"
+
+STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
+STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)
+STORAGE_UNIT_URL = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
+
+MAX_ATTACHMENT_SIZE = 100000000000
