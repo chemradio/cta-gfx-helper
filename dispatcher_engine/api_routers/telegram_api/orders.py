@@ -25,15 +25,20 @@ class TelegramOrderIn(BaseModel):
 
     status: str | None = None
     stage: str | None = None
+
     quote_enabled: bool | None = False
     quote_text: str | None = None
     quote_author_text: str | None = None
     quote_author_enabled: bool | None = None
+
+    audio_enabled: bool | None = False
     audio_name: str | None = None
+
     foreground_name: str | None = None
     background_name: str | None = None
     bg_animation: str | None = None
     fg_animation: str | None = None
+
     link: str | None = None
     ordered_from: str = "telegram"
 
