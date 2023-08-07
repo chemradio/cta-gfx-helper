@@ -23,7 +23,6 @@ async def audio_callback(
                 raise Exception()
 
             await update.callback_query.answer(cache_time=180)
-            await update.callback_query.message.delete()
             # await update.callback_query.edit_message_text(
             #     text=update.callback_query.message.text
             # )

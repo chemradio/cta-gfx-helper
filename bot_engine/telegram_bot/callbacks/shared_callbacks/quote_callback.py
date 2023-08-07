@@ -1,8 +1,10 @@
 from typing import Callable
+
 from telegram import Update
 from telegram.ext import ContextTypes
-from telegram_bot.responders.main_responder import Responder
+
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.responders.main_responder import Responder
 from telegram_bot.utils.check_url import check_is_url
 
 
@@ -19,7 +21,6 @@ async def quote_callback(
                 raise Exception()
 
             await update.callback_query.answer(cache_time=180)
-            await update.callback_query.message.delete()
             # await update.callback_query.edit_message_text(
             #     text=update.callback_query.message.text
             # )
@@ -49,7 +50,6 @@ async def quote_callback(
                 raise Exception()
 
             await update.callback_query.answer(cache_time=60)
-            await update.callback_query.message.delete()
             # await update.callback_query.edit_message_text(
             #     text=update.callback_query.message.text
             # )
