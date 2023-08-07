@@ -7,6 +7,9 @@ router = APIRouter()
 
 @router.get("/file")
 async def get_file(filename: str):
+    print("Request for retrieving file from the storage unit.")
+    print(f"Filename: {filename}")
+
     search = find_file(filename)
     if not search:
         raise HTTPException(404, f"File *{filename}* not found")

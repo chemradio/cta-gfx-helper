@@ -18,21 +18,24 @@ router = APIRouter()
 
 
 class TelegramOrderIn(BaseModel):
-    status: str | None = None
     request_type: str
+    telegram_id: int
+    order_creation_end_timestamp: int
+    order_start_timestamp: int
+
+    status: str | None = None
     stage: str | None = None
     quote_enabled: bool | None = False
     quote_text: str | None = None
     quote_author_text: str | None = None
     quote_author_enabled: bool | None = None
-    audio_file: UploadFile | None = None
-    foreground_file: UploadFile | None = None
-    background_file: UploadFile | None = None
+    audio_name: str | None = None
+    foreground_name: str | None = None
+    background_name: str | None = None
+    bg_animation: str | None = None
+    fg_animation: str | None = None
     link: str | None = None
     ordered_from: str = "telegram"
-    telegram_id: int
-    order_creation_end_timestamp: int
-    order_start_timestamp: int
 
 
 @router.post("/")
@@ -49,7 +52,6 @@ async def add_order(
 
     order_db.quote_author_enabled = True if order_in.quote_author_text else False
 
-    await OrderController.save_user_files(order_db)
     await OrderController.advance_order_stage(order_db)
     await order_db.save()
     await order_db.refresh_from_db()

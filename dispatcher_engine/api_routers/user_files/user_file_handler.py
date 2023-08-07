@@ -1,10 +1,10 @@
+import mimetypes
+import secrets
+
 import requests
 from config import STORAGE_UNIT_URL
 from fastapi import APIRouter, HTTPException, UploadFile
-from utils.assets.file_convert.file_convert import (
-    convert_unsupported_file,
-    generate_random_filename,
-)
+from utils.assets.file_convert.file_convert import convert_unsupported_file
 
 router = APIRouter()
 
@@ -25,20 +25,32 @@ async def add_user_file(
 
     if upload_file.content_type not in native_support_mimes:
         try:
-            filename, file_bytes = await convert_unsupported_file(upload_file)
+            file_bytes = await convert_unsupported_file(upload_file)
         except Exception as e:
             raise HTTPException(400, f"Bad file. {str(e)}")
     else:
-        filename = generate_random_filename(
-            extension=upload_file.filename.split(".")[-1]
-        )
         file_bytes = upload_file.file.read()
+
+    filename = generate_random_filename(
+        extension=get_file_extension_from_mime(upload_file.content_type)
+    )
 
     # store file in the storage unit
     response = requests.post(
         STORAGE_UNIT_URL,
         files={"upload_file": (filename, file_bytes)},
-        # data={"category": "screenshots"},
     )
     response.raise_for_status()
     return {"filename": filename}
+
+
+def get_file_extension_from_mime(mime_type):
+    # Returns a tuple with file extension and encoding
+    file_extension = mimetypes.guess_extension(mime_type)
+    return file_extension
+
+
+def generate_random_filename(prefix: str = "user", extension: str = str()):
+    random_name = secrets.token_hex(12)
+    extension = extension[1:] if extension.startswith(".") else extension
+    return f"{prefix}_{random_name}.{extension}"
