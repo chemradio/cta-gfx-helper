@@ -1,11 +1,10 @@
 import secrets
 from datetime import datetime
 
-from fastapi import UploadFile
-
 import config
 from db_tortoise.helper_enums import OrderRequestType
 from db_tortoise.orders_models import Order
+from fastapi import UploadFile
 
 
 class OrderController:
@@ -99,6 +98,12 @@ class OrderController:
     @classmethod
     async def _advance_video_files(cls, order: Order) -> None:
         match order.current_stage:
+            case "ready_for_screenshots":
+                next_stage = "screenshots_pending"
+
+            case "screenshots_pending":
+                next_stage = "ready_for_video_gfx"
+
             case "ready_for_video_gfx":
                 next_stage = "video_gfx_pending"
 
@@ -110,7 +115,11 @@ class OrderController:
 
             case _:
                 # in case of new order
-                next_stage = "ready_for_video_gfx"
+                # check if background screendshot needed as the background image
+                if order.background_screenshot:
+                    next_stage = "ready_for_screenshots"
+                else:
+                    next_stage = "ready_for_video_gfx"
 
         order.current_stage = next_stage
 
