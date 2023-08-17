@@ -7,9 +7,8 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 import config
-from screenshots.ad_block.adblock_script_generator import remove_ads_script
-from screenshots.cookie_manager import CookieManager
-from screenshots.login_routines import LoginRoutines
+from screenshots.logic.authentication.cookie_manager import CookieManager
+from screenshots.logic.authentication.login_routines import LoginRoutines
 
 
 class ScreenshotWebdriver:

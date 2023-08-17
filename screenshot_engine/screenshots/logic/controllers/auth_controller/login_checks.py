@@ -1,19 +1,29 @@
-from selenium.webdriver.common.by import By
 from selenium import webdriver
-import config
-import time
+from selenium.webdriver.common.by import By
+
+from screenshots.logic.helpers.parse_link_type import parse_link_type
 
 
-class LoginRoutines:
-    def __init__(self) -> None:
-        self.routines = {"instagram": None}
-        self.login_checks = {
-            "instagram": self.check_instagram_login,
-            "facebook": self.check_fb_login,
-            "twitter": self.check_twitter_login,
-        }
+class LoginChecker:
+    @classmethod
+    def check_domain_login(
+        cls, driver: webdriver.Chrome | webdriver.Remote, domain: str = ""
+    ) -> bool:
+        if not domain:
+            clean_url, domain, _ = parse_link_type(driver.current_url)
 
-    def check_instagram_login(self, driver: webdriver.Chrome) -> bool:
+        match domain:
+            case "instagram":
+                return cls.check_instagram_login(driver=driver)
+            case "facebook":
+                return cls.check_fb_login(driver=driver)
+            case "twitter":
+                return cls.check_instagram_login(driver=driver)
+            case _:
+                return None
+
+    @staticmethod
+    def check_instagram_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
         # check if not already logged in
         try:
             search_bar = driver.find_element(
@@ -29,7 +39,8 @@ class LoginRoutines:
             # continue authentication
             return False
 
-    def check_fb_login(self, driver: webdriver.Chrome) -> bool:
+    @staticmethod
+    def check_fb_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
         try:
             friends_button = driver.find_element(
                 By.XPATH, '//a[@href="https://www.facebook.com/friends/"]'
@@ -44,7 +55,8 @@ class LoginRoutines:
             # continue authentication
             return False
 
-    def check_twitter_login(self, driver: webdriver.Chrome) -> bool:
+    @staticmethod
+    def check_twitter_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
         try:
             account_menu = driver.find_element(
                 By.XPATH, '//div[@aria-label="Account menu"]'

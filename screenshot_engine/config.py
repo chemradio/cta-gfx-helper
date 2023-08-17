@@ -64,3 +64,6 @@ RESOLUTION_MULTIPLIER = 1920
 SCREENSHOT_DIMENSIONS = [
     aspect * RESOLUTION_MULTIPLIER for aspect in SCREENSHOT_ASPECT_RATIO
 ]
+
+
+REMOTE_ADBLOCK_DB = "https://raw.githubusercontent.com/chemradio/cta-chrome-extension/main/ads_database.json"

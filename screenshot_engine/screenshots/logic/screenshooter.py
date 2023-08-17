@@ -12,9 +12,9 @@ import config
 Image.MAX_IMAGE_PIXELS = 933_120_000
 TWO_LAYER_SITES = ("facebook", "instagram", "twitter", "telegram")
 
-from screenshots.browser_authorizer import BrowserAuthorizer
-from screenshots.screenshot_routines import ScreenshotRoutines
-from screenshots.screenshot_webdriver import ScreenshotWebdriver
+from screenshots.logic.authentication.auth_controller import BrowserAuthorizer
+from screenshots.logic.custom_driver.create_driver import ScreenshotWebdriver
+from screenshots.logic.routines.screenshot_routines import ScreenshotRoutines
 
 
 class Screenshooter:
