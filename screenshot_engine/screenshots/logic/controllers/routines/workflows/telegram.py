@@ -35,3 +35,11 @@ def telegram_profile_routine(driver: webdriver.Chrome | webdriver.Remote) -> Web
     )
     driver.execute_script("document.body.style.zoom = '1.6'")
     return driver.find_element(By.TAG_NAME, "body")
+
+
+def extract_telegram_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
+    try:
+        effective_path = driver.current_url.split("//t.me/")[1]
+        return f"https://t.me/s/{effective_path}"
+    except:
+        return f"https://t.me/"

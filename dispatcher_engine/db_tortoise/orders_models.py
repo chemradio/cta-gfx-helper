@@ -1,9 +1,10 @@
-from db_tortoise.helper_enums import OrderRequestType, OrderSource
 from fastapi import Form, UploadFile
 from pydantic import BaseModel, HttpUrl
 from tortoise import fields
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from tortoise.models import Model
+
+from db_tortoise.helper_enums import OrderRequestType, OrderSource
 
 
 class Order(Model):

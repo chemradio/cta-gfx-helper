@@ -3,7 +3,9 @@ import time
 from selenium import webdriver
 
 import config
-from screenshots.logic.controllers.auth_controller.cookie_manager import CookieManager
+from screenshots.logic.controllers.auth_controller.cookie_manager.cookie_manager import (
+    CookieManager,
+)
 from screenshots.logic.controllers.auth_controller.login_checks import LoginChecker
 
 

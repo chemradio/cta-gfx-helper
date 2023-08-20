@@ -16,3 +16,8 @@ def twitter_profile_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebE
     el.parentNode.removeChild(el);"""
     )
     return driver.find_element(By.TAG_NAME, "body")
+
+
+def extract_twitter_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
+    post = driver.find_element(By.TAG_NAME, "article")
+    return post.find_element(By.TAG_NAME, "a").get_attribute("href")
