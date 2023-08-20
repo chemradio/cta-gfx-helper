@@ -1,10 +1,12 @@
 import asyncio
 import threading
 
+import config
 from container_interation.edit_order_db import mark_order_screenshots
 from container_interation.gather_orders import get_ready_to_screenshot_order
 from container_interation.post_result_to_storage_unit import store_result
-from screenshots.capture_screenshots import capture_screenshots
+from screenshots.logic.screenshooter import capture_screenshots
+from screenshots.logic.type_classes.screenshot import ScreenshotResults
 from utils.cleanup_assets import cleanup_order
 
 
@@ -16,10 +18,25 @@ async def process_screenshot_orders():
         if not order:
             break
 
-        screenshots_processed_order = capture_screenshots(order)
-        store_result(screenshots_processed_order)
-        mark_order_screenshots(screenshots_processed_order)
-        cleanup_order(order)
+        capture_attempts = config.SCREENSHOT_ATTEMPTS
+        while capture_attempts:
+            try:
+                screenshot_results = capture_screenshots(order)
+                break
+            except:
+                print("Failed to capture screenshots from these urls:")
+                print(order.get("link"))
+                print(order.get("background_link"))
+                capture_attempts -= 1
+                continue
+        else:
+            screenshot_results = ScreenshotResults(success=False)
+
+        if screenshot_results.success:
+            store_result(screenshot_results)
+
+        mark_order_screenshots(order)
+        # cleanup_order(order)
 
 
 def screenshooter_thread():

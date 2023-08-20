@@ -1,43 +1,47 @@
-    def login_to_social(self) -> bool:
-        for domain in config.LOGIN_REQUIRED:
-            chrome_options = Options()
-            chrome_options.add_experimental_option(
-                "excludeSwitches", ["enable-automation"]
-            )
-            login_driver = webdriver.Chrome(
-                options=chrome_options, service=Service(ChromeDriverManager().install())
-            )
-            login_driver.implicitly_wait(5)
+import time
 
-            website_link = config.SOCIAL_WEBSITES[domain]
-            login_driver.get(website_link)
+import config
+from screenshots.logic.controllers.auth_controller.cookie_manager.cookie_manager import (
+    CookieManager,
+)
+from screenshots.logic.controllers.auth_controller.login_checks import LoginChecker
+from screenshots.logic.custom_driver.create_driver import create_driver
 
-            try:
-                self.cookie_manager.add_domain_cookies(domain, login_driver)
-                time.sleep(2)
-                login_driver.refresh()
-            except:
-                print(f"No cookies avalable for domain: {domain}")
 
-            if self.login_routines.login_checks[domain](login_driver):
-                print(f"Already logged into domain: {domain}")
-                domain_cookies = login_driver.get_cookies()
-                self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
-                login_driver.quit()
-                continue
+def generate_cookies() -> None:
+    CookieManager.initialize_cookie_storage()
 
-            # Give user time to log in to website/social network
-            while True:
-                try:
-                    _ = login_driver.window_handles
-                    domain_cookies = login_driver.get_cookies()
-                    time.sleep(1)
-                except:
-                    break
+    for domain in config.LOGIN_REQUIRED:
+        driver = create_driver(high_resolution=False)
+        driver.implicitly_wait(5)
+        website_link = config.SOCIAL_WEBSITES[domain]
+        driver.get(website_link)
 
-            if domain_cookies:
-                self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
-
-            time.sleep(1)
-            login_driver.quit()
+        try:
+            CookieManager.add_domain_cookies(domain, driver)
             time.sleep(2)
+            driver.refresh()
+        except:
+            print(f"No cookies avalable for domain: {domain}")
+
+        if LoginChecker.check_domain_login(driver, domain):
+            print(f"Already logged into domain: {domain}")
+            domain_cookies = driver.get_cookies()
+            CookieManager.dump_domain_cookies(domain, domain_cookies)
+            continue
+
+        # Give user time to log in to website/social network
+        while True:
+            try:
+                _ = driver.window_handles
+                domain_cookies = driver.get_cookies()
+                time.sleep(1)
+            except:
+                break
+
+        if domain_cookies:
+            CookieManager.dump_domain_cookies(domain, domain_cookies)
+
+        time.sleep(1)
+
+        driver.quit()

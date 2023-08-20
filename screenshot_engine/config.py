@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-IS_DOCKER = os.environ.get("IS_DOCKER", True)
+IS_DOCKER = os.environ.get("IS_DOCKER", False)
 logged_in_to_social_websites = True
 
 SCREENSHOT_FOLDER = Path().cwd() / "volume" / "screenshots"

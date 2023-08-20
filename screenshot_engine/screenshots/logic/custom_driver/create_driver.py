@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 
 from selenium import webdriver
@@ -10,12 +11,12 @@ import config
 
 @dataclass
 class UserAgent:
-    DESKTOP = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15"
+    DESKTOP = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
     MOBILE = "userAgent=Mozilla/5.0 (iPhone; CPU iPhone OS 15_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/101.0.4951.44 Mobile/15E148 Safari/604.1"
 
 
 def create_driver(
-    mobile_agent: bool = True,
+    mobile_agent: bool = False,
     high_resolution: bool = True,
 ) -> webdriver.Chrome | webdriver.Remote:
     user_agent = UserAgent.MOBILE if mobile_agent else UserAgent.DESKTOP
@@ -48,7 +49,8 @@ def create_driver(
         )
     else:
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
+            executable_path=os.getenv("CHROMEDRIVER_EXECUTABLE"),
+            # service=Service(ChromeDriverManager().install()),
             options=chrome_options,
         )
 
