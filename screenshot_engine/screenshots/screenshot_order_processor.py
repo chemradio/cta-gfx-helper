@@ -22,6 +22,7 @@ async def process_screenshot_orders():
         while capture_attempts:
             try:
                 screenshot_results = capture_screenshots(order)
+                order["screenshots_ready"] = True
                 break
             except:
                 print("Failed to capture screenshots from these urls:")
@@ -30,7 +31,11 @@ async def process_screenshot_orders():
                 capture_attempts -= 1
                 continue
         else:
+            print("Screenshooting failed.")
             screenshot_results = ScreenshotResults(success=False)
+            order["screenshots_ready"] = False
+            order["error"] = "True"
+            order["error_type"] = "screenshot_error"
 
         if screenshot_results.success:
             store_result(screenshot_results)
