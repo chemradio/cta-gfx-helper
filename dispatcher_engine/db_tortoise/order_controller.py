@@ -1,10 +1,11 @@
 import secrets
 from datetime import datetime
 
+from fastapi import UploadFile
+
 import config
 from db_tortoise.helper_enums import OrderRequestType
 from db_tortoise.orders_models import Order
-from fastapi import UploadFile
 
 
 class OrderController:
@@ -33,6 +34,8 @@ class OrderController:
             case OrderRequestType.VIDEO_FILES:
                 order.video_gfx_name = video_gfx_name
                 order.html_assembly_name = html_assembly_name
+                if order.background_screenshot:
+                    order.background_name = background_name
             case OrderRequestType.ONLY_SCREENSHOTS:
                 order.background_name = background_name
                 order.foreground_name = foreground_name

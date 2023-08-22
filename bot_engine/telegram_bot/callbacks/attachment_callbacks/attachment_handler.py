@@ -37,6 +37,8 @@ async def attachment_downloader(
         "audio_file": {"audio"},
         "bg_file": {"photo", "document"},
         "fg_file": {"photo", "document"},
+        "background_file": {"photo", "document"},
+        "main_file": {"photo", "document"},
     }
 
     target_attachment_types: set = target_attachments_map[stage]
@@ -78,7 +80,6 @@ async def store_file_in_storage_unit(
     """Send a HTTP Post request to the central dispatcher node
     for further processing. On success dispatcher node returns
     filename with which the file was stored in storage unit."""
-
     response = requests.post(
         f"{config.DISPATCHER_NODE_URL}/user_files/",
         files={"upload_file": (filename, file_bytes, mime_type)},

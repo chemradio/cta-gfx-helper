@@ -24,10 +24,12 @@ class VideoFilesResponder:
             [
                 [
                     InlineKeyboardButton(
-                        f"Zoom", callback_data="background_screenshot"
+                        f"Скриншот", callback_data="background_screenshot"
                     ),
-                    InlineKeyboardButton(f"Scroll", callback_data="background_file"),
-                    InlineKeyboardButton(f"Zoom", callback_data="no_background"),
+                    InlineKeyboardButton(f"Есть файл", callback_data="background_file"),
+                    InlineKeyboardButton(
+                        f"Без подложки", callback_data="no_background"
+                    ),
                 ]
             ]
         )
