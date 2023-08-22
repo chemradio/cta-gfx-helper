@@ -44,7 +44,9 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
     if two_layer:
         driver.get(target_url)
         try:
-            foreground_screenshot = capture_screenshot(driver, ScreenshotRole.POST)
+            foreground_screenshot = capture_screenshot(
+                driver, ScreenshotRole.POST, order.get("background_name")
+            )
             foreground_screenshot = crop_screenshot(foreground_screenshot)
             profile_url = ScreenshotRoutines.extract_profile_url(driver)
             target_url = profile_url
@@ -55,7 +57,9 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
 
     # get PROFILE / MAIN screenshot
     driver.get(target_url)
-    background_screenshot = capture_screenshot(driver, ScreenshotRole.FULL_SIZE)
+    background_screenshot = capture_screenshot(
+        driver, ScreenshotRole.FULL_SIZE, order.get("background_name")
+    )
     background_screenshot = crop_screenshot(background_screenshot)
 
     driver.quit()

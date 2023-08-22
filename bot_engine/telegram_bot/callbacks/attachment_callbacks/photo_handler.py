@@ -8,7 +8,7 @@ from telegram_bot.callbacks.attachment_callbacks.utils.image_converter import (
 )
 
 
-async def photo_handler(message: Message) -> File:
+async def photo_handler(message: Message) -> tuple[File, str]:
     # find the best quality photo
     photo_file_size = 0
     best_quality_photo_index = 0

@@ -22,7 +22,6 @@ from telegram_bot.responders.main_responder import Responder
 async def dispatcher_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
-
     # first parse user_id from update.message.from_user.id
     # or update.callback_query.from_user.id
     user_id = parse_user_id(update)

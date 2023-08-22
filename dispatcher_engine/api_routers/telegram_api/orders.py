@@ -1,7 +1,3 @@
-from container_interaction.signal_sender import signal_to_services
-from db_tortoise.order_controller import OrderController
-from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
-from db_tortoise.users_models import User, User_Pydantic
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -12,6 +8,11 @@ from fastapi import (
     UploadFile,
 )
 from pydantic import BaseModel, HttpUrl
+
+from container_interaction.signal_sender import signal_to_services
+from db_tortoise.order_controller import OrderController
+from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
+from db_tortoise.users_models import User, User_Pydantic
 from utils.auth.cookie_parser import cookie_parser
 
 router = APIRouter()
@@ -38,6 +39,9 @@ class TelegramOrderIn(BaseModel):
     background_name: str | None = None
     bg_animation: str | None = None
     fg_animation: str | None = None
+
+    background_screenshot: bool = False
+    background_link: str | None = None
 
     link: str | None = None
     ordered_from: str = "telegram"

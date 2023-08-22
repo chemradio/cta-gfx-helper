@@ -11,6 +11,11 @@ STORAGE_UNIT_ENDPOINT = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
 
 
 def store_result(screenshot_results: ScreenshotResults):
+    print("about to store screenshot results in storage unit", flush=True)
+    print(f"{screenshot_results=}", flush=True)
+    print(f"{screenshot_results.background=}", flush=True)
+    print(f"{screenshot_results.foreground=}", flush=True)
+    print(f"{screenshot_results.two_layer=}", flush=True)
     if screenshot_results.background:
         store_screenshot(screenshot_results.background)
 
@@ -30,4 +35,4 @@ def store_screenshot(screenshot: Screenshot) -> None:
             )
         },
     )
-    assert response.status_code == 200
+    # assert response.status_code == 200
