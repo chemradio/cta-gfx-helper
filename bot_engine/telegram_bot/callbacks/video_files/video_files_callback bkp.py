@@ -22,12 +22,13 @@ async def video_files_callback(
     user_data = context.user_data
     stage = user_data.get("stage")
 
-    # ask main file
+    # ask bg animation
     if stage == "start_order":
-        user_data.update({"stage": "main_file"})
+        user_data.update({"stage": "bg_animation"})
         return await Responder.video_files.ask_bg_animation(user_id)
 
-    # choose backgroun file vs background screenshot
+    # handle bg animation
+    # ask bg file
     if stage == "bg_animation":
         try:
             if update.callback_query.data not in ["bg_scroll", "bg_zoom"]:
@@ -47,21 +48,12 @@ async def video_files_callback(
         except:
             return await Responder.errors.gp_error(user_id)
 
-    # ask background file
+    # handle bg file
+    # ask fg enabled
     if stage == "bg_file":
         downloaded_file = await attachment_downloader(update, context)
         user_data.update({"background_name": downloaded_file, "stage": "fg_enabled"})
         return await Responder.video_files.ask_fg_enabled(user_id)
-    # OR
-    # ask background link
-
-    # ask bg animation
-
-    # handle bg animation
-    # ask bg file
-
-    # handle bg file
-    # ask fg enabled
 
     # handle fg enabled
     # ask fg animation
@@ -84,6 +76,34 @@ async def video_files_callback(
                 return await Responder.quote.ask_quote_enabled(user_id)
         except:
             return await Responder.errors.gp_error(user_id)
+
+    # handle fg animation
+    # ask fg file
+    if stage == "fg_animation":
+        try:
+            if update.callback_query.data not in ["fg_scroll", "fg_zoom"]:
+                raise Exception()
+
+            await update.callback_query.answer(cache_time=180)
+            await update.callback_query.edit_message_text(
+                text=Responses.video_files.fg_animation_type_responded.format(
+                    # "bg_scroll" becomes "Scroll" for ex...
+                    fg_animation=update.callback_query.data[3:].capitalize()
+                )
+            )
+            user_data.update(
+                {"fg_animation": update.callback_query.data[3:], "stage": "fg_file"}
+            )
+            return await Responder.video_files.ask_fg_file(user_id)
+        except:
+            return await Responder.errors.gp_error(user_id)
+
+    # handle fg file
+    # ask quote
+    if stage == "fg_file":
+        downloaded_file = await attachment_downloader(update, context)
+        user_data.update({"foreground_name": downloaded_file, "stage": "quote_enabled"})
+        return await Responder.quote.ask_quote_enabled(user_id)
 
     # handle QUOTE responses
     if stage in [
