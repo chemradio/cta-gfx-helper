@@ -18,7 +18,7 @@ class TelegramSender:
         files_to_send = await cls._gather_files(order)
 
         # send optional finishing message to the user
-        await cls._send_message("Your order is ready", recipient_telegram_id)
+        # await cls._send_message("Your order is ready", recipient_telegram_id)
 
         for file_tuple in files_to_send:
             await cls._send_file(file_tuple, recipient_telegram_id)

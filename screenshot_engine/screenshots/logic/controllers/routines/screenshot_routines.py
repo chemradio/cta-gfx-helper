@@ -99,5 +99,6 @@ class ScreenshotRoutines:
         workflow: Callable = cls.workflow_base.get(
             domain_name, cls.workflow_base.get("scroll")
         ).get("extract_profile")
+        print(workflow, flush=True)
 
         return workflow(driver=driver)
