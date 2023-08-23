@@ -4,7 +4,7 @@ services:
   db:
     restart: always
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
     image: postgres:15-alpine
@@ -20,7 +20,7 @@ services:
     depends_on:
     - db
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
       BOT_ADMIN_EMAIL: ${BOT_ADMIN_EMAIL}
       BOT_ADMIN_PASSWORD: ${BOT_ADMIN_PASSWORD}
       BOT_TOKEN: ${BOT_TOKEN}
@@ -56,7 +56,7 @@ services:
     build: ./bot_engine
     platform: ${PLATFORM}
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
       BOT_ADMIN: ${BOT_ADMIN}
       BOT_TOKEN: ${BOT_TOKEN}
     # depends_on:
@@ -84,7 +84,7 @@ services:
     build: ./screenshot_engine
     platform: ${PLATFORM}
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
     depends_on:
     - dispatcher
     hostname: screenshoter
@@ -99,7 +99,7 @@ services:
     build: ./storage_unit
     platform: ${PLATFORM}
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
     depends_on:
     - dispatcher
     hostname: storage_unit
@@ -114,7 +114,7 @@ services:
     build: ./video_gfx
     platform: ${PLATFORM}
     environment:
-      IS_DOCKER: true
+      IS_DOCKER: 1
     depends_on:
     - dispatcher
     hostname: video_gfx
