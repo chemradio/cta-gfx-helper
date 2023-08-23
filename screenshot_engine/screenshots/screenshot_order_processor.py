@@ -22,6 +22,11 @@ async def process_screenshot_orders():
         while capture_attempts:
             try:
                 screenshot_results = capture_screenshots(order)
+                if order["request_type"] == "video_files":
+                    order["is_two_layer"] = True
+                elif order["request_type"] == "video_auto":
+                    order["is_two_layer"] = screenshot_results.two_layer
+
                 order["screenshots_ready"] = True
                 break
             except:

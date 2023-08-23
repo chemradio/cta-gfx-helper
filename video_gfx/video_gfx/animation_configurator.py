@@ -40,51 +40,22 @@ def create_animation_parameters(order):
     request_type = order.get("request_type")
 
     # manual mode
-    if request_type == "video_files":
-        bg_ani_temp = order.get("bg_animation", "")
-        fg_ani_temp = order.get("fg_animation", "")
-        single_layer = not bool(fg_path)
+    if single_layer:
+        bg_animation = BGAnimation.BG_ONLY
+        fg_animation = FGAnimation.NONE
+    else:
+        bg_orientation = get_image_orientation(bg_path)
+        match bg_orientation:
+            case ImageOrientation.HORIZONTAL:
+                bg_animation = BGAnimation.BG_ZOOM
+            case _:
+                bg_animation = BGAnimation.BG_SCROLL
 
-        # configure manual bg animation
-        if not bg_ani_temp or (bg_ani_temp == "scroll"):
-            bg_animation = BGAnimation.BG_SCROLL
-        else:
-            bg_animation = BGAnimation.BG_ZOOM
-
-        # configure manual fg animation
-        if not fg_ani_temp:
-            fg_animation = FGAnimation.ZOOM
-        elif fg_ani_temp == "scroll":
-            fg_animation = FGAnimation.FACEBOOK
-        elif fg_ani_temp == "zoom":
-            fg_animation = FGAnimation.ZOOM
-        elif fg_ani_temp == "facebook":
-            fg_animation = FGAnimation.FACEBOOK
-        elif fg_ani_temp == "document":
-            fg_animation = FGAnimation.DOCUMENT
-        elif fg_ani_temp in ("twitter", "instagram", "telegram", "photo"):
-            fg_animation = FGAnimation.ZOOM
-        else:
-            fg_animation = FGAnimation.NONE
-
-    # auto mode
-    elif request_type == "video_auto":
-        link_type = order.get("link_type")
-
-        if (link_type == "scroll") or (not fg_path):
-            bg_animation = BGAnimation.BG_ONLY
-            single_layer = True
-            fg_animation = FGAnimation.NONE
-
-        else:
-            single_layer = False
-
-            bg_animation = BGAnimation.BG_SCROLL
-
-            fg_orientation = get_image_orientation(fg_path)
-            if fg_orientation == ImageOrientation.HORIZONTAL:
+        fg_orientation = get_image_orientation(fg_path)
+        match fg_orientation:
+            case ImageOrientation.HORIZONTAL:
                 fg_animation = FGAnimation.ZOOM
-            else:
+            case _:
                 fg_animation = FGAnimation.FACEBOOK
 
     animation_parameters = AnimationParameters(

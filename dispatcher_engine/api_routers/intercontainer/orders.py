@@ -25,22 +25,40 @@ async def edit_order_intercontainer(
 ):
     if not order_json:
         raise HTTPException(400, "Request body could not be parsed.")
-
+    print(order_json)
     order_db = await Order.filter(id=order_json["id"]).first()
 
-    order = order_db.update_from_dict(order_json)
-    pprint(f"pre order advance: {order_db=}")
+    update_keys = (
+        "error_type",
+        "error",
+        "error_type",
+        "screenshots_ready",
+        "is_two_layer",
+        "video_gfx_ready",
+    )
+    update_dict = {key: order_json[key] for key in update_keys if key in order_json}
+
+    order_db = order_db.update_from_dict(update_dict)
+    pprint(f"pre order advance: {dict(order_db)}")
+    await order_db.save()
     await order_db.refresh_from_db()
+    pprint(f"refresh order: {dict(order_db)}")
     await OrderController.advance_order_stage(order_db)
     await order_db.save()
-    pprint(f"after order advance: {order_db=}")
+    pprint(f"after order advance: {dict(order_db)}")
+
+    # await order_db.refresh_from_db()
+    # pprint(f"refresh order: {dict(order_db)}")
+    # await OrderController.advance_order_stage(order_db)
+    # await order_db.save()
+    # pprint(f"after order advance: {dict(order_db)}")
 
     if order_db.status == "completed":
         # order completed
         # cleanup_order_assets(order_db)
         pass
 
-    background_tasks.add_task(signal_to_services, order)
+    background_tasks.add_task(signal_to_services, order_db)
     return None
 
 

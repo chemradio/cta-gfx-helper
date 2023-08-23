@@ -64,10 +64,10 @@ async def video_files_callback(
     # handle background link
     if stage in ("background_link", "background_file"):
         if stage == "background_link":
-            link = check_is_url(update.message.text)[0]
-            if not link:
+            link_list = check_is_url(update.message.text)
+            if not link_list:
                 return await Responder.link.bad_link(user_id)
-            user_data.update({"background_link": link})
+            user_data.update({"background_link": link_list[0]})
 
         elif stage == "background_file":
             downloaded_file = await attachment_downloader(update, context)

@@ -31,6 +31,7 @@ class Order(Model):
     screenshots_ready = fields.BooleanField(default=False)
 
     # video description
+    is_two_layer = fields.BooleanField(default=False)
     fg_enabled = fields.BooleanField(default=False)
     background_name = fields.CharField(max_length=50, null=True)
     foreground_name = fields.CharField(max_length=50, null=True)

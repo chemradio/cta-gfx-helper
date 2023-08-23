@@ -1,3 +1,5 @@
+import time
+
 import config
 from screenshots.logic.capture_process.capture_process import capture_screenshot
 from screenshots.logic.controllers.adblocker.adblocker import Adblocker
@@ -43,9 +45,10 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
     # get POST screenshot
     if two_layer:
         driver.get(target_url)
+        time.sleep(3)
         try:
             foreground_screenshot = capture_screenshot(
-                driver, ScreenshotRole.POST, order.get("background_name")
+                driver, ScreenshotRole.POST, order.get("foreground_name")
             )
             foreground_screenshot = crop_screenshot(foreground_screenshot)
             profile_url = ScreenshotRoutines.extract_profile_url(driver)
@@ -57,6 +60,8 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
 
     # get PROFILE / MAIN screenshot
     driver.get(target_url)
+    time.sleep(3)
+
     background_screenshot = capture_screenshot(
         driver, ScreenshotRole.FULL_SIZE, order.get("background_name")
     )

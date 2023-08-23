@@ -43,6 +43,8 @@ class TelegramOrderIn(BaseModel):
     background_screenshot: bool = False
     background_link: str | None = None
 
+    is_two_layer: bool | None = False
+
     link: str | None = None
     ordered_from: str = "telegram"
 
