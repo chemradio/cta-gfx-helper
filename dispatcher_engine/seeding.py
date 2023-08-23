@@ -14,12 +14,10 @@ async def seed_users(users: list[dict]):
 
     for user in users:
         user_password = user.pop("password")
+        if user_password:
+            user["password_hash"] = generate_password_hash(user_password)
 
-        user = await User.create(
-            password_hash=generate_password_hash(user_password),
-            permission=NormalUserPermission.APPROVED.value,
-            **user
-        )
+        user = await User.create(**user)
 
         return_users.append(dict(user))
 
