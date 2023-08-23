@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
     image: postgres:15-alpine
+    volumes:
+       - ./pg_data:/var/lib/postgresql/data
     # deploy:
     #   resources:
     #     limits:
