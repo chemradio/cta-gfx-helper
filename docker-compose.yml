@@ -10,11 +10,6 @@ services:
     image: postgres:15-alpine
     volumes:
        - ./pg_data:/var/lib/postgresql/data
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.20"
-    #       memory: "0.5G"
   dispatcher:
     restart: always
     build: ./dispatcher_engine
@@ -32,12 +27,6 @@ services:
     hostname: dispatcher
     ports:
       - "9000:9000"
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:dispatcher
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.20"
-    #       memory: 1G
   front-svelte:
     restart: always
     build: ./front_svelte
@@ -45,14 +34,8 @@ services:
     # depends_on:
     # - dispatcher
     hostname: front_svelte
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:front_svelte
     ports:
       - "80:80"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.20"
-    #       memory: 1G
   bot-engine:
     restart: always
     build: ./bot_engine
@@ -64,23 +47,12 @@ services:
     # depends_on:
     # - dispatcher
     hostname: bot_engine
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:front_svelte
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.20"
-    #       memory: 1G
   screenshot-selenium:
     restart: always
     hostname: screenshot_selenium
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 2g
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.50"
-    #       memory: 2G
   screenshoter:
     restart: always
     build: ./screenshot_engine
@@ -90,12 +62,6 @@ services:
     depends_on:
     - dispatcher
     hostname: screenshoter
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:screenshoter
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.50"
-    #       memory: "0.2G"
   storage-unit:
     restart: always
     build: ./storage_unit
@@ -105,12 +71,6 @@ services:
     depends_on:
     - dispatcher
     hostname: storage_unit
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:storage_unit
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.10"
-    #       memory: "0.2G"
   video-gfx:
     restart: always
     build: ./video_gfx
@@ -120,20 +80,23 @@ services:
     depends_on:
     - dispatcher
     hostname: video_gfx
-    # image: ctagfx.azurecr.io/rg-inno-prod-graphichelper-test:video_gfx
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "1.00"
-    #       memory: 1G
-  video-gfx-selenium:
+    volumes:
+      - ./video_gfx:/usr/src/app
+  video-gfx-selenium-1:
     restart: always
-    hostname: video_gfx_selenium
+    hostname: video_gfx_selenium_one
     image: ${SELENIUM_IMAGE}
     privileged: true
-    shm_size: 2g
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "1.00"
-    #       memory: 2G
+    shm_size: 3g
+  video-gfx-selenium-2:
+    restart: always
+    hostname: video_gfx_selenium_two
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-3:
+    restart: always
+    hostname: video_gfx_selenium_three
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
