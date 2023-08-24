@@ -13,11 +13,11 @@ EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 
 
 # !!!
-REMOTE_VIDEO_GFX_DRIVER_NAME = os.getenv(
-    "video_gfx_selenium_name", "video_gfx_selenium"
+SELENIUM_CONTAINERS = (
+    "http://video_gfx_selenium_one:4444/wd/hub",
+    "http://video_gfx_selenium_two:4444/wd/hub",
+    "http://video_gfx_selenium_three:4444/wd/hub",
 )
-REMOTE_VIDEO_GFX_DRIVER_URL = f"http://{REMOTE_VIDEO_GFX_DRIVER_NAME}:4444/wd/hub"
-# REMOTE_VIDEO_GFX_DRIVER_URL = f"http://localhost:4444/wd/hub"
 
 
 USE_REMOTE_DRIVER = True
