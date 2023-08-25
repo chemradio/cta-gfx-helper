@@ -1,10 +1,9 @@
+from db_tortoise.helper_enums import OrderRequestType, OrderSource
 from fastapi import Form, UploadFile
 from pydantic import BaseModel, HttpUrl
 from tortoise import fields
 from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from tortoise.models import Model
-
-from db_tortoise.helper_enums import OrderRequestType, OrderSource
 
 
 class Order(Model):
@@ -22,7 +21,7 @@ class Order(Model):
     order_start_timestamp = fields.DatetimeField(null=True)
     order_creation_end_timestamp = fields.DatetimeField(auto_now_add=True)
 
-    link = fields.CharField(max_length=200, null=True)
+    link = fields.CharField(max_length=700, null=True)
     link_type = fields.CharField(max_length=100, null=True)
     background_screenshot = fields.BooleanField(default=False)
     background_link = fields.CharField(max_length=200, null=True)
