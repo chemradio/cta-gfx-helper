@@ -21,6 +21,7 @@ async def convert_unsupported_file(upload_file: UploadFile) -> bytes:
             return await convert_audio_to_wav(upload_file)
 
         elif file_mime == "application/pdf":
+            print("pdf detected")
             return await convert_pdf_to_png(upload_file)
 
         elif file_mime == "application/msword":

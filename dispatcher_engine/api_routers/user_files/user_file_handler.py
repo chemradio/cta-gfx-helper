@@ -2,8 +2,9 @@ import mimetypes
 import secrets
 
 import requests
-from config import STORAGE_UNIT_URL
 from fastapi import APIRouter, HTTPException, UploadFile
+
+from config import STORAGE_UNIT_URL
 from utils.assets.file_convert.file_convert import convert_unsupported_file
 
 router = APIRouter()
@@ -27,6 +28,8 @@ async def add_user_file(
         try:
             file_bytes = await convert_unsupported_file(upload_file)
         except Exception as e:
+            print("Something went wrong")
+            print(str(e))
             raise HTTPException(400, f"Bad file. {str(e)}")
     else:
         file_bytes = upload_file.file.read()
