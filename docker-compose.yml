@@ -100,3 +100,15 @@ services:
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 3g
+  video-gfx-selenium-4:
+    restart: always
+    hostname: video_gfx_selenium_four
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-5:
+    restart: always
+    hostname: video_gfx_selenium_five
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
