@@ -16,9 +16,9 @@ EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 SELENIUM_CONTAINERS = (
     "http://video_gfx_selenium_one:4444/wd/hub",
     "http://video_gfx_selenium_two:4444/wd/hub",
-    "http://video_gfx_selenium_three:4444/wd/hub",
-    "http://video_gfx_selenium_four:4444/wd/hub",
-    "http://video_gfx_selenium_five:4444/wd/hub",
+    # "http://video_gfx_selenium_three:4444/wd/hub",
+    # "http://video_gfx_selenium_four:4444/wd/hub",
+    # "http://video_gfx_selenium_five:4444/wd/hub",
 )
 
 
