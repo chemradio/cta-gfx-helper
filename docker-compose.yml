@@ -82,6 +82,7 @@ services:
     hostname: video_gfx
     volumes:
       - ./video_gfx:/usr/src/app
+    shm_size: 3g
   video-gfx-selenium-1:
     restart: always
     hostname: video_gfx_selenium_one
