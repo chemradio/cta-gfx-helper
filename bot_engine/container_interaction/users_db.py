@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 from config import DISPATCHER_USERS_ENDPOINT, EDIT_USER_ENDPOINT, LIST_USERS_ENDPOINT
@@ -57,6 +59,10 @@ async def check_user_role(telegram_id: int) -> UserRole:
         return UserPermission.UNREGISTERED
 
     return UserRole(r.json().get("role"))
+
+
+async def check_user_role_admin(telegram_id: int) -> bool:
+    return True if telegram_id == int(os.getenv("BOT_ADMIN")) else False
 
 
 async def get_user_data(telegram_id: int) -> dict:
