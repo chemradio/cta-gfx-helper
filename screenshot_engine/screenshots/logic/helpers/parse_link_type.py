@@ -17,7 +17,7 @@ def parse_link_type(url: str) -> tuple[str, str, bool]:
         two_layer = True
         domain = "instagram"
 
-    elif "/t.co" in url or "twitter" in url:
+    elif ("/t.co" in url) or ("twitter" in url) or ("/x.com/" in url):
         two_layer = True
         domain = "twitter"
         if "?" in url:
