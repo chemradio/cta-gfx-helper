@@ -47,6 +47,8 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
         driver.get(target_url)
         time.sleep(3)
         try:
+            Adblocker.remove_ads(driver)
+            time.sleep(1)
             foreground_screenshot = capture_screenshot(
                 driver, ScreenshotRole.POST, order.get("foreground_name")
             )
@@ -61,6 +63,9 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
     # get PROFILE / MAIN screenshot
     driver.get(target_url)
     time.sleep(3)
+
+    Adblocker.remove_ads(driver)
+    time.sleep(1)
 
     background_screenshot = capture_screenshot(
         driver, ScreenshotRole.FULL_SIZE, order.get("background_name")

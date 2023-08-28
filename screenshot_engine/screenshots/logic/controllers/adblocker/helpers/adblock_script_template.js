@@ -1,25 +1,5 @@
 function getDomain() {
 	return window.location.hostname;
-
-	let url = window.location.href;
-	let parsedUrl = url
-		.replace('https://', '')
-		.replace('http://', '')
-		.replace('www.', '');
-	let domain = parsedUrl
-		.slice(
-			0,
-			parsedUrl.indexOf('/') == -1
-				? parsedUrl.length
-				: parsedUrl.indexOf('/')
-		)
-		.slice(
-			0,
-			parsedUrl.indexOf('?') == -1
-				? parsedUrl.length
-				: parsedUrl.indexOf('?')
-		);
-	return domain;
 }
 
 function gatherElements(elementNames) {
@@ -54,17 +34,8 @@ function removeAds(elements) {
 }
 
 function main() {
-	// get domain
 	let domain = getDomain();
-
-	// get ads dom names, classes, ids, etc.
 	let elementNames = adsDatabase[domain];
-
-	// get elements
 	let elements = gatherElements(elementNames);
-
-	// disable elements
 	removeAds(elements);
 }
-
-// main()
