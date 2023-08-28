@@ -195,13 +195,16 @@ function preprocessString(text) {
 		text.indexOf('Ё') > -1 ||
 		text.indexOf('«') > -1 ||
 		text.indexOf('»') > -1 ||
-		text.indexOf(' - ') > -1
+		text.indexOf(' - ') > -1 ||
+		text.indexOf('\n') > -1
 	) {
 		text = text.replace('ё', 'е');
 		text = text.replace('Ё', 'Е');
 		text = text.replace('«', '"');
 		text = text.replace('»', '"');
 		text = text.replace(' - ', ' – ');
+		// text = text.replace('\n', ' ');
+		text = text.replace('\n', ' <...> ');
 	}
 	text = text.replace(/^\s+|\s+$/g, '');
 	while (text.indexOf('  ') > -1) {
