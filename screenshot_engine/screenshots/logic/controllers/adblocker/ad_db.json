@@ -1,30 +1,84 @@
 {
-	"www.asiaplustj.info": [
+	"generic": [
+		"[data-testid='StandardAd']",
+		".ad",
+		"#google_ads_top_frame",
+		"[aria-label='Advertisement']",
+		"div[id^='adfox_']",
+		".adsbygoogle",
+		"#adv",
+		"div[id^='yandex_rtb_']",
+		".cookie",
+		"div[class^='ad']",
+		"[id^='google_ads']"
+	],
+	"asiaplustj.info": [
 		"#topbanners",
-		".newsbox-outer-banner",
-		".banner-a5",
+		".grv-dialog-host",
 		".banner-b1",
-		".after-article"
+		".newsbox-outer-banner"
 	],
-	"8am.af": [".cookie-law-info-again"],
-	"forbes.kz": [".grv-dialog-host", ".ad"],
-	"informburo.kz": [".grv-dialog-host", ".banner-block"],
-	"24.kg": ["iframe"],
-	"kaktus.media": [
-		".BannerA",
-		".BannerB",
-		".BannerB1",
-		".Dashboard--CompanyArticles",
-		".Article--block-banner",
-		".Article--ad",
-		"[class*=anner]"
+	"24.kg": [".widget-last-news", "iframe"],
+	"kaktus.media": [".bnr"],
+	"www.rbc.ru": [".push-allow", ".fox-tail", ".live-tv", ".live-tv__main"],
+	"vlast.kz": [".donate-vlast", ".banner"],
+	"www.nytimes.com": [
+		"[data-testid='StandardAd']",
+		".css-1ichrj1",
+		"#gateway-content",
+		".css-bs95eu",
+		".ad"
 	],
-	"meduza.io": [".Layout-bannerTop", "Layout-skipLink"],
-	"rsf.org": [".tarteaucitronAlertBigBottom"],
-	"www.hrw.org": [
-		"#hrw-cookie-dialog",
-		"#block-donationcalloutheaderbar",
-		"#block-donationcalloutbanner",
-		".email-sign-up-bar"
-	]
+	"www.washingtonpost.com": [
+		"#leaderboard-wrapper",
+		"#google_ads_top_frame",
+		"[id^='paywall-']",
+		".paywall-overlay",
+		"[aria-label='Advertisement']",
+		"[data-qa='article-body-ad']",
+		"[data-qa='softwall-expanded-body']"
+	],
+	"ria.ru": [
+		".banner__content",
+		"aside",
+		".lenta",
+		".widgets",
+		".banner__content"
+	],
+	"tengrinews.kz": [
+		".tn-top-banner",
+		".push-form-container",
+		".tn-line-banner",
+		".banner__content",
+		"div[id^='adfox_']",
+		".tn-left-240x400-1-banner",
+		".tn-tape-single-container"
+	],
+	"www.zakon.kz": ["div[id^='adfox_']", ".headerBottom"],
+	"www.hronikatm.com": [".adsbygoogle"],
+	"turkmen.news": [".adsbygoogle"],
+
+	"kun.uz": ["div[id^='adfox_']", "#adv", "div[id^='yandex_rtb_']"],
+	"www.gazeta.uz": [".lb-970", "[loading='lazy']"],
+	"fergana.agency": [
+		"div[id^='yandex_rtb_']",
+		".js-relap-widget-wrapper",
+		".js-relap-widget"
+	],
+	"www.occrp.org": ["#mc_embed_signup", ".occrp-cookie-overlay", ".cookie"],
+	"ratel.kz": [
+		"img[src='/ratel.jpeg']",
+		"div[id^='zone_']",
+		"div[class^='ad']",
+		"div[id^='adfox_']"
+	],
+	"www.uralskweek.kz": [
+		"top_banner1",
+		"[id^='adfox_']",
+		".bannersh",
+		"[id^='google_ads']",
+		".kms"
+	],
+	"podrobno.uz": [".offer-block", ".offer-large", ".about-offer"],
+	"meduza.io": [".Layout-bannerTop"]
 }

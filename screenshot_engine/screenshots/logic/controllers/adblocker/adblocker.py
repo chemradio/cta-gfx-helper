@@ -17,20 +17,23 @@ class Adblocker:
         ad_db = cls._get_database()
         js_script = cls._generate_js_script(ad_db)
         try:
+            print("trying to remove ads", flush=True)
             driver.execute_script(js_script)
-        except:
-            print(f"Failed to remove ads from URL: {driver.current_url}")
+            print("Success in removing ads", flush=True)
+        except Exception as e:
+            print(f"Failed to remove ads from URL: {driver.current_url}", flush=True)
+            print(str(e), flush=True)
 
     @staticmethod
-    def _get_database(cls) -> dict:
-        r = requests.get(config.REMOTE_ADBLOCK_DB)
-        if r.status_code == 200:
-            print("Remote adblock database loaded successfully")
-            return r.json()
+    def _get_database() -> dict:
+        # r = requests.get(config.REMOTE_ADBLOCK_DB)
+        # if r.status_code == 200:
+        #     print("Remote adblock database loaded successfully")
+        #     return r.json()
 
-        print(
-            f"Local adblock database loaded. Remote failed with status code: {r.status_code}."
-        )
+        # print(
+        #     f"Local adblock database loaded. Remote failed with status code: {r.status_code}."
+        # )
         local_ad_db = (
             Path.cwd()
             / "screenshots"
