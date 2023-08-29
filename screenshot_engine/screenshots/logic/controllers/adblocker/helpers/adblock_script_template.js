@@ -35,7 +35,7 @@ function removeAds(elements) {
 
 function main() {
 	let domain = getDomain();
-	let elementNames = adsDatabase[domain];
+	let elementNames = [...adsDatabase[domain], ...adsDatabase['generic']];
 	let elements = gatherElements(elementNames);
 	removeAds(elements);
 }

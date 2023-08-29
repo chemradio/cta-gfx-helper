@@ -21,7 +21,7 @@
 	"24.kg": [".widget-last-news", "iframe"],
 	"kaktus.media": [".bnr"],
 	"www.rbc.ru": [".push-allow", ".fox-tail", ".live-tv", ".live-tv__main"],
-	"vlast.kz": [".donate-vlast", ".banner"],
+	"vlast.kz": [".banner"],
 	"www.nytimes.com": [
 		"[data-testid='StandardAd']",
 		".css-1ichrj1",
@@ -80,5 +80,6 @@
 		".kms"
 	],
 	"podrobno.uz": [".offer-block", ".offer-large", ".about-offer"],
-	"meduza.io": [".Layout-bannerTop"]
+	"meduza.io": [".Layout-bannerTop", ".Layout-module-banner"],
+	"orda.kz": [".ad1", ".ad1box", ".ad2", ".ad2box", ".layer0"]
 }
