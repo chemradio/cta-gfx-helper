@@ -10,7 +10,7 @@ encode_settings = {
     "pix_fmt": "yuv420p",
     "color_range": 1,
     "movflags": "+write_colr",
-    "vf": "scale=out_color_matrix=bt709:out_range=limited,tinterlace=interleave_top,fieldorder=tff",
+    "vf": "scale=out_color_matrix=bt709:out_range=limited",
     "bsf:v": "h264_metadata=video_full_range_flag=0",
 }
 
@@ -21,7 +21,7 @@ def stitch_images(
     video_input = ffmpeg.input(
         f"{image_folder_path}/*.png",
         pattern_type="glob",
-        framerate=50,
+        framerate=25,
         pix_fmt="rgba",
     )
     output = ffmpeg.output(video_input, output_path, **encode_settings)
