@@ -21,7 +21,7 @@ def stitch_images(
     video_input = ffmpeg.input(
         f"{image_folder_path}/*.png",
         pattern_type="glob",
-        framerate=25,
+        framerate=50,
         pix_fmt="rgba",
     )
     output = ffmpeg.output(video_input, output_path, **encode_settings)
