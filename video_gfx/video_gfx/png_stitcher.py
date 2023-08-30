@@ -1,15 +1,16 @@
 import ffmpeg
+
 import config
 
 encode_settings = {
     "video_bitrate": config.VIDEO_BITRATE_BPS,
     "audio_bitrate": config.AUDIO_BITRATE_BPS,
-    "crf": 15,
+    "crf": 13,
     "vcodec": "libx264",
     "pix_fmt": "yuv420p",
     "color_range": 1,
     "movflags": "+write_colr",
-    "vf": "scale=out_color_matrix=bt709:out_range=limited",
+    "vf": "scale=out_color_matrix=bt709:out_range=limited,tinterlace=interleave_top,fieldorder=tff",
     "bsf:v": "h264_metadata=video_full_range_flag=0",
 }
 
