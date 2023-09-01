@@ -31,8 +31,8 @@ services:
     restart: always
     build: ./front_svelte
     platform: ${PLATFORM}
-    # depends_on:
-    # - dispatcher
+    depends_on:
+    - dispatcher
     hostname: front_svelte
     ports:
       - "80:80"
@@ -44,8 +44,8 @@ services:
       IS_DOCKER: 1
       BOT_ADMIN: ${BOT_ADMIN}
       BOT_TOKEN: ${BOT_TOKEN}
-    # depends_on:
-    # - dispatcher
+    depends_on:
+    - dispatcher
     hostname: bot_engine
   screenshot-selenium:
     restart: always
@@ -92,6 +92,30 @@ services:
   video-gfx-selenium-2:
     restart: always
     hostname: video_gfx_selenium_two
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-3:
+    restart: always
+    hostname: video_gfx_selenium_three
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-4:
+    restart: always
+    hostname: video_gfx_selenium_four
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-5:
+    restart: always
+    hostname: video_gfx_selenium_five
+    image: ${SELENIUM_IMAGE}
+    privileged: true
+    shm_size: 3g
+  video-gfx-selenium-6:
+    restart: always
+    hostname: video_gfx_selenium_six
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 3g

@@ -39,5 +39,6 @@ async def audio_callback(
             user_data.update({"audio_name": downloaded_file, "stage": "audio_passed"})
             return await caller(update, context)
 
-    except:
-        return await Responder.errors.gp_error(user_id)
+    except Exception as e:
+        print(str(e), flush=True)
+        return await Responder.errors.gp_error(user_id, str(e))
