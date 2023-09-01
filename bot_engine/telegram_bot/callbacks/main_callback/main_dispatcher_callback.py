@@ -67,7 +67,7 @@ async def dispatcher_callback(
         try:
             await request_type_callback(update, context)
         except WrongRequestTypeResponse as e:
-            print(e)
+            print(str(e))
             return
 
     # route to appropriate order workflow

@@ -44,6 +44,9 @@ DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/orders"
 ADD_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/orders"
 
+# process quote string api
+DISPATCHER_STRING_PROCESSOR_ENDPOINT = f"{DISPATCHER_NODE_URL}/helpers/text_processor"
+
 
 # users
 DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/users"

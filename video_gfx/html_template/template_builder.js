@@ -84,8 +84,12 @@ function buildHTML(config) {
 
 	// create quote box
 	if (config.quoteEnabled) {
-		let quoteTextLength = config.quoteTextText.length;
-		let quoteAuthorLength = config.quoteTextText.length;
+		preprocessString;
+		let quoteTextText = preprocessString(config.quoteTextText);
+		let quoteAuthorText = preprocessString(config.quoteAuthorText);
+
+		let quoteTextLength = quoteTextText.length;
+		let quoteAuthorLength = quoteAuthorText.length;
 
 		let targetLength =
 			quoteTextLength > quoteAuthorLength
@@ -102,8 +106,7 @@ function buildHTML(config) {
 		let quoteBox = document.createElement('div');
 		quoteBox.setAttribute('class', 'quote-box');
 
-		const prepText = preprocessString(config.quoteTextText);
-		const lines = splitStringParagraph(prepText);
+		const lines = splitStringParagraph(quoteTextText);
 		for (let i = 0; i < lines.length; i++) {
 			let quoteTextText = document.createElement('div');
 			quoteTextText.setAttribute('class', 'quote-text-text');
@@ -115,7 +118,7 @@ function buildHTML(config) {
 			let quoteBreak = document.createElement('br');
 			let quoteAuthorText = document.createElement('div');
 			quoteAuthorText.setAttribute('class', 'quote-author-text');
-			quoteAuthorText.innerHTML = config.quoteAuthorText;
+			quoteAuthorText.innerHTML = quoteAuthorText;
 			quoteBox.append(quoteBreak);
 			quoteBox.append(quoteAuthorText);
 		}

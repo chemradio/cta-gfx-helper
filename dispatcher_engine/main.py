@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
 from api_routers.administration import db_manipulation
+from api_routers.helpers import text_processors
 from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
 from api_routers.telegram_api import orders as telegram_orders
@@ -64,6 +65,9 @@ app.include_router(user_file_handler.router, prefix="/user_files")
 # intercontainer
 app.include_router(intercontainer_orders.router, prefix="/intercontainer/orders")
 app.include_router(files.router, prefix="/intercontainer/files")
+
+# helpers
+app.include_router(text_processors.router, prefix="/helpers/text_processor")
 
 
 # app.include_router(validators.router, prefix="/validators")

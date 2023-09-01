@@ -1,14 +1,15 @@
-import config
 from telegram import Update
 from telegram.ext import ContextTypes
-from telegram_bot.responders.bot_texts import Responses
-from telegram_bot.callbacks.video_auto.video_auto_callback import video_auto_callback
-from telegram_bot.callbacks.video_files.video_files_callback import video_files_callback
-from telegram_bot.callbacks.readtime.readtime_callback import readtime_callback
+
+import config
 from telegram_bot.callbacks.commands.start_callback import start_callback
 from telegram_bot.callbacks.only_screenshots.only_screenshots_callback import (
     only_screenshots_callback,
 )
+from telegram_bot.callbacks.readtime.readtime_callback import readtime_callback
+from telegram_bot.callbacks.video_auto.video_auto_callback import video_auto_callback
+from telegram_bot.callbacks.video_files.video_files_callback import video_files_callback
+from telegram_bot.responders.bot_texts import Responses
 
 
 async def request_type_callback(
@@ -32,8 +33,10 @@ async def request_type_callback(
 
 
 async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    print("Routing request", flush=True)
     user_data = context.user_data
     user_request_type = user_data.get("request_type")
+    print(f"{user_request_type=}", flush=True)
 
     # route to appropriate callbacks
     if user_request_type:

@@ -1,8 +1,11 @@
+import html
+
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
+
 import config
-from telegram_bot.responders.bot_texts import Responses
-from telegram_bot.bot_instance import bot
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 from config import REQUEST_TYPE_TEMP_MAP
+from telegram_bot.bot_instance import bot
+from telegram_bot.responders.bot_texts import Responses
 
 
 class ResultsResponder:
@@ -80,12 +83,12 @@ class ResultsResponder:
             )
 
         if quote_enabled:
-            results_message += f"{Responses.results.quote_text} {quote_text}\n"
+            results_message += (
+                f"{Responses.results.quote_text} {html.escape(quote_text)}\n"
+            )
 
         if quote_author_enabled:
-            results_message += (
-                f"{Responses.results.quote_author_text} {quote_author_text}\n\n"
-            )
+            results_message += f"{Responses.results.quote_author_text} {html.escape(quote_author_text)}\n\n"
 
         if audio_enabled:
             results_message += (
