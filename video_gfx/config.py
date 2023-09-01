@@ -1,5 +1,8 @@
 import os
 
+USE_THREADS = False
+USER_PROCESSES = not USE_THREADS
+
 DISPATCHER_NODE_HOSTNAME = os.getenv("dispatcher_name", "dispatcher")
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"

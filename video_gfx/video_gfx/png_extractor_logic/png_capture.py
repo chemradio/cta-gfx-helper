@@ -2,6 +2,7 @@ import time
 
 from selenium import webdriver
 
+from video_gfx.png_extractor_logic.create_driver import create_driver
 from video_gfx.png_extractor_logic.helpers.linear_interpolator import (
     linear_interpolation,
 )
@@ -12,8 +13,9 @@ def png_capture(
     range_tuple: tuple,
     png_path: str,
     target_url: str,
-    driver: webdriver.Remote,
+    driver_url: str,
 ) -> None:
+    driver = create_driver(driver_url)
     interpolation_data = [[0, 0], [total_frames, 1]]
     start_frame, end_frame = range_tuple
     print("getting target url", flush=True)

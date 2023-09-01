@@ -1,3 +1,4 @@
+import multiprocessing
 import os
 import threading
 import time
@@ -37,31 +38,43 @@ def extract_png_sequence(html_assembly_name: str) -> str:
     )
     os.mkdir(png_path)
 
-    # create webdriver threads
-    driver_threads = list()
+    # create webdriver threads / processes
+    driver_threads_processes = list()
     for index, driver_url in enumerate(config.SELENIUM_CONTAINERS):
-        driver = create_driver(driver_url)
-        driver_thread = threading.Thread(
-            target=png_capture,
-            args=(
-                total_frames,
-                ranges[index],
-                png_path,
-                target_url,
-                driver,
-            ),
-            name="main_driver_thread",
-        )
-        driver_threads.append(driver_thread)
+        if config.USE_THREADS:
+            driver_thread_process = threading.Thread(
+                target=png_capture,
+                args=(
+                    total_frames,
+                    ranges[index],
+                    png_path,
+                    target_url,
+                    driver_url,
+                ),
+                name="main_driver_thread",
+            )
+        else:
+            driver_thread_process = multiprocessing.Process(
+                target=png_capture,
+                args=(
+                    total_frames,
+                    ranges[index],
+                    png_path,
+                    target_url,
+                    driver_url,
+                ),
+                name="main_driver_thread",
+            )
+        driver_threads_processes.append(driver_thread_process)
 
-    print("starting threads", flush=True)
-    for thread in driver_threads:
-        thread.start()
-    print("threads started", flush=True)
+    print("starting threads/processes", flush=True)
+    for thread_process in driver_threads_processes:
+        thread_process.start()
+    print("threads/processes started", flush=True)
 
-    for thread in driver_threads:
-        thread.join()
-    # support_driver_thread.join()
-    print("threads finished", flush=True)
+    for thread_process in driver_threads_processes:
+        thread_process.join()
+
+    print("threads/processes finished", flush=True)
 
     return png_path
