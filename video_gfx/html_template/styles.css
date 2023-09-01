@@ -30,7 +30,7 @@ body {
     justify-content: center;
     align-items: start;
     clip-path: inset(0% 0% 0% 0%);
-    filter: blur(0.5px);
+    /* filter: blur(0.5px); */
 }
 
 .background-fitter {
@@ -66,8 +66,8 @@ body {
 
 .quote-box {
     background-color: #0ECAE3;
-    backdrop-filter: blur(200px);
-    opacity: .6;
+    /* backdrop-filter: blur(200px); */
+    /* opacity: .6; */
     max-width: 86%;
     max-height: 60%;
     padding: 30px;

@@ -101,4 +101,3 @@ services:
     image: ${SELENIUM_IMAGE}
     privileged: true
     shm_size: 3g
-  
