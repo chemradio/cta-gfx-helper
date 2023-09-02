@@ -1,5 +1,7 @@
+import json
 from typing import Callable
 
+from requests.exceptions import RequestException
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -34,13 +36,17 @@ async def quote_callback(
             if not message_text:
                 raise Exception()
 
-            user_data.update(
-                {
-                    "quote_text": await process_quote_string(message_text),
-                    "stage": "quote_author_enabled",
-                }
-            )
-            return await Responder.quote.ask_quote_author_enabled(user_id)
+            try:
+                user_data.update(
+                    {
+                        "quote_text": await process_quote_string(message_text),
+                        "stage": "quote_author_enabled",
+                    }
+                )
+                return await Responder.quote.ask_quote_author_enabled(user_id)
+            except RequestException as base_exception:
+                exception_text = json.loads(base_exception.response.text)["detail"]
+                return await Responder.errors.custom_error(user_id, exception_text)
 
         if stage == "quote_author_enabled":
             if update.callback_query.data not in [
@@ -69,14 +75,17 @@ async def quote_callback(
             message_text = update.message.text
             if not message_text:
                 raise Exception()
-
-            user_data.update(
-                {
-                    "quote_author_text": await process_quote_string(message_text),
-                    "stage": "quote_passed",
-                }
-            )
-            return await caller(update, context)
+            try:
+                user_data.update(
+                    {
+                        "quote_author_text": await process_quote_string(message_text),
+                        "stage": "quote_passed",
+                    }
+                )
+                return await caller(update, context)
+            except RequestException as base_exception:
+                exception_text = json.loads(base_exception.response.text)["detail"]
+                return await Responder.errors.custom_error(user_id, exception_text)
 
     except Exception as e:
         print(str(e), flush=True)

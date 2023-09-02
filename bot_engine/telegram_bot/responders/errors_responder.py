@@ -59,3 +59,21 @@ class ErrorsResponder:
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
+
+    @staticmethod
+    async def text_too_short(user_id):
+        await bot.send_message(
+            chat_id=user_id,
+            text=Responses.error.text_too_short,
+            reply_markup=ReplyKeyboardRemove(),
+            parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
+        )
+
+    @staticmethod
+    async def custom_error(user_id, error_text: str):
+        await bot.send_message(
+            chat_id=user_id,
+            text=error_text,
+            reply_markup=ReplyKeyboardRemove(),
+            parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
+        )
