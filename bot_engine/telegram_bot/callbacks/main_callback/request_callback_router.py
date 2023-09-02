@@ -39,17 +39,19 @@ async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     print(f"{user_request_type=}", flush=True)
 
     # route to appropriate callbacks
-    if user_request_type:
-        if user_request_type == "video_auto":
+    match user_request_type:
+        case "video_auto":
             return await video_auto_callback(update, context)
-        if user_request_type == "video_files":
+        case "video_files":
             return await video_files_callback(update, context)
-        if user_request_type == "only_screenshots":
+        case "only_screenshots":
             return await only_screenshots_callback(update, context)
-        if user_request_type == "readtime":
+        case "readtime":
             return await readtime_callback(update, context)
-        else:
-            return await start_callback(update, context)
+        case _:
+            raise WrongRequestTypeResponse
+        # else:
+        #     return await start_callback(update, context)
 
 
 class WrongRequestTypeResponse(Exception):

@@ -14,11 +14,11 @@ class TelegramSender:
 
         recipient_telegram_id = order.user.telegram_id
 
+        if order.error:
+            return await cls._report_error_to_user(order, recipient_telegram_id)
+
         # fetch files based on the order type
         files_to_send = await cls._gather_files(order)
-
-        # send optional finishing message to the user
-        # await cls._send_message("Your order is ready", recipient_telegram_id)
 
         for file_tuple in files_to_send:
             await cls._send_file(file_tuple, recipient_telegram_id)
@@ -69,3 +69,11 @@ class TelegramSender:
         }
         r = requests.post(config.TELEGRAM_SEND_DOCUMENT_API, params=kwargs, files=files)
         r.raise_for_status()
+
+    @classmethod
+    async def _report_error_to_user(
+        cls, order: Order, recipient_telegram_id: int
+    ) -> None:
+        message = f"Произошла ошибка. Пожалуйста, перешли это сообщение администратору.\n\n{dict(order)}"
+        kwargs = {"chat_id": recipient_telegram_id, "text": message}
+        r = requests.post(config.TELEGRAM_SEND_MESSAGE_API, params=kwargs)

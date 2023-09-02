@@ -10,39 +10,6 @@ from db_tortoise.orders_models import Order
 
 class OrderController:
     @classmethod
-    async def generate_filenames(cls):
-        background_name = f"01_BG_{secrets.token_hex(8)}.png"
-        foreground_name = f"02_FG_{secrets.token_hex(8)}.png"
-        video_gfx_name = f"video-gfx-{secrets.token_hex(8)}.mp4"
-        html_assembly_name = f"gfx_html_{datetime.now().strftime('%Y%m%d_%H-%M-%S_%f')}"
-        return background_name, foreground_name, video_gfx_name, html_assembly_name
-
-    @classmethod
-    async def _assign_filenames(cls, order: Order):
-        (
-            background_name,
-            foreground_name,
-            video_gfx_name,
-            html_assembly_name,
-        ) = await cls.generate_filenames()
-        match order.request_type:
-            case OrderRequestType.VIDEO_AUTO:
-                order.background_name = background_name
-                order.foreground_name = foreground_name
-                order.video_gfx_name = video_gfx_name
-                order.html_assembly_name = html_assembly_name
-            case OrderRequestType.VIDEO_FILES:
-                order.video_gfx_name = video_gfx_name
-                order.html_assembly_name = html_assembly_name
-                if order.background_screenshot:
-                    order.background_name = background_name
-            case OrderRequestType.ONLY_SCREENSHOTS:
-                order.background_name = background_name
-                order.foreground_name = foreground_name
-            case _:
-                return
-
-    @classmethod
     async def advance_order_stage(cls, order: Order) -> None:
         # assign filenames if missing
         if not order.current_stage:
@@ -73,6 +40,39 @@ class OrderController:
                 return await cls._advance_only_screenshots(order)
             case _:
                 return None
+
+    @classmethod
+    async def _generate_filenames(cls):
+        background_name = f"01_BG_{secrets.token_hex(8)}.png"
+        foreground_name = f"02_FG_{secrets.token_hex(8)}.png"
+        video_gfx_name = f"video-gfx-{secrets.token_hex(8)}.mp4"
+        html_assembly_name = f"gfx_html_{datetime.now().strftime('%Y%m%d_%H-%M-%S_%f')}"
+        return background_name, foreground_name, video_gfx_name, html_assembly_name
+
+    @classmethod
+    async def _assign_filenames(cls, order: Order):
+        (
+            background_name,
+            foreground_name,
+            video_gfx_name,
+            html_assembly_name,
+        ) = await cls._generate_filenames()
+        match order.request_type:
+            case OrderRequestType.VIDEO_AUTO:
+                order.background_name = background_name
+                order.foreground_name = foreground_name
+                order.video_gfx_name = video_gfx_name
+                order.html_assembly_name = html_assembly_name
+            case OrderRequestType.VIDEO_FILES:
+                order.video_gfx_name = video_gfx_name
+                order.html_assembly_name = html_assembly_name
+                if order.background_screenshot:
+                    order.background_name = background_name
+            case OrderRequestType.ONLY_SCREENSHOTS:
+                order.background_name = background_name
+                order.foreground_name = foreground_name
+            case _:
+                return
 
     @classmethod
     async def _advance_video_auto(cls, order: Order) -> None:

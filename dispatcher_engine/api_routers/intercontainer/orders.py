@@ -39,19 +39,10 @@ async def edit_order_intercontainer(
     update_dict = {key: order_json[key] for key in update_keys if key in order_json}
 
     order_db = order_db.update_from_dict(update_dict)
-    pprint(f"pre order advance: {dict(order_db)}")
     await order_db.save()
     await order_db.refresh_from_db()
-    pprint(f"refresh order: {dict(order_db)}")
     await OrderController.advance_order_stage(order_db)
     await order_db.save()
-    pprint(f"after order advance: {dict(order_db)}")
-
-    # await order_db.refresh_from_db()
-    # pprint(f"refresh order: {dict(order_db)}")
-    # await OrderController.advance_order_stage(order_db)
-    # await order_db.save()
-    # pprint(f"after order advance: {dict(order_db)}")
 
     if order_db.status == "completed":
         # order completed

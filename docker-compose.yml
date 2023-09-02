@@ -1,5 +1,4 @@
 version: '3.9'
-
 services:
   db:
     restart: always
@@ -13,7 +12,7 @@ services:
   dispatcher:
     restart: always
     build: ./dispatcher_engine
-    platform: ${PLATFORM}
+    platform: linux/arm64
     depends_on:
     - db
     environment:
@@ -30,7 +29,7 @@ services:
   front-svelte:
     restart: always
     build: ./front_svelte
-    platform: ${PLATFORM}
+    platform: linux/arm64
     depends_on:
     - dispatcher
     hostname: front_svelte
@@ -39,7 +38,7 @@ services:
   bot-engine:
     restart: always
     build: ./bot_engine
-    platform: ${PLATFORM}
+    platform: linux/arm64
     environment:
       IS_DOCKER: 1
       BOT_ADMIN: ${BOT_ADMIN}
@@ -50,13 +49,13 @@ services:
   screenshot-selenium:
     restart: always
     hostname: screenshot_selenium
-    image: ${SELENIUM_IMAGE}
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 2g
   screenshoter:
     restart: always
     build: ./screenshot_engine
-    platform: ${PLATFORM}
+    platform: linux/arm64
     environment:
       IS_DOCKER: 1
     depends_on:
@@ -65,7 +64,7 @@ services:
   storage-unit:
     restart: always
     build: ./storage_unit
-    platform: ${PLATFORM}
+    platform: linux/arm64
     environment:
       IS_DOCKER: 1
     depends_on:
@@ -74,7 +73,7 @@ services:
   video-gfx:
     restart: always
     build: ./video_gfx
-    platform: ${PLATFORM}
+    platform: linux/arm64
     environment:
       IS_DOCKER: 1
     depends_on:
@@ -86,18 +85,18 @@ services:
   video-gfx-selenium-1:
     restart: always
     hostname: video_gfx_selenium_one
-    image: ${SELENIUM_IMAGE}
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
   video-gfx-selenium-2:
     restart: always
     hostname: video_gfx_selenium_two
-    image: ${SELENIUM_IMAGE}
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
   video-gfx-selenium-3:
     restart: always
     hostname: video_gfx_selenium_three
-    image: ${SELENIUM_IMAGE}
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
