@@ -1,7 +1,10 @@
 def preprocess_string(string: str) -> str:
     string = (
         string.strip()
-        .replace("\t", " ")
+        .replace("\n\n", "\n")
+        .replace("\t\t", "\t")
+        .replace("\n\t", "\n")
+        .replace("\t", "\n")
         .replace("\n", " <...> ")
         .replace("Ë", "Е")
         .replace("ё", "е")
