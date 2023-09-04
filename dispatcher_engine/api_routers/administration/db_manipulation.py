@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from db_tortoise.orders_models import Order, Order_Pydantic
@@ -87,10 +89,17 @@ async def list_users(filters: dict | None = Depends(request_json_parser)):
 
 @router.get("/orders")
 async def list_orders(filters: dict | None = Depends(request_json_parser)):
+    limit = filters.pop("limit", 10) if filters is not None else 10
     if filters:
-        orders_db = await Order.filter(**filters).all()
+        orders_db = await Order.filter(**filters).all().order_by("-id").limit(limit)
     else:
-        orders_db = await Order.all()
+        orders_db = await Order.all().order_by("-id").limit(limit)
+
+    # orders_list = [dict(order) for order in orders_db[:10]]
+    # pprint(orders_db)
+    # orders_db = orders_db
+    # orders_list = [dict(order) for order in orders_db[:10]]
+    # pprint(orders_db)
 
     orders_pydantic = list()
     for order_db in orders_db:

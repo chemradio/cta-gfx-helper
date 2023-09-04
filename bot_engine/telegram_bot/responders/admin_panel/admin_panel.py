@@ -79,6 +79,7 @@ class AdminPanelResponder:
         return await bot.send_message(
             chat_id=admin_id,
             text=message_text,
+            # text=dict(order),
             reply_markup=order_cancel_markup,
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
             disable_web_page_preview=True,

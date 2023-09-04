@@ -172,6 +172,8 @@ class AdminResponses:
 
     list_single_order: str = """Заказ № {order_id}
 
+Статус: {status}
+
 Заказчик: {customer_name}
 Тип заказа: {request_type}
 Cтатус: {status}
