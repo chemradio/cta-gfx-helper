@@ -12,6 +12,8 @@ services:
   dispatcher:
     restart: always
     build: ./dispatcher_engine
+    volumes:
+      - ./dispatcher_engine:/usr/src/app
     platform: linux/arm64
     depends_on:
     - db
@@ -38,6 +40,8 @@ services:
   bot-engine:
     restart: always
     build: ./bot_engine
+    volumes:
+      - ./bot_engine:/usr/src/app
     platform: linux/arm64
     environment:
       IS_DOCKER: 1
@@ -55,6 +59,8 @@ services:
   screenshoter:
     restart: always
     build: ./screenshot_engine
+    volumes:
+      - ./screenshot_engine:/usr/src/app
     platform: linux/arm64
     environment:
       IS_DOCKER: 1

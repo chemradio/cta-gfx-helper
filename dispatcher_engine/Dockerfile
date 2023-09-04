@@ -1,9 +1,7 @@
-# FROM --platform=linux/amd64 python:3.9
 FROM python:3.10
 
 ARG PORT=9000
 ENV PORT=$dispatcher_port
-
 
 RUN apt update
 RUN apt -y upgrade
