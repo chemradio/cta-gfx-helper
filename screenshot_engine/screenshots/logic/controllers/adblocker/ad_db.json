@@ -81,5 +81,13 @@
 	],
 	"podrobno.uz": [".offer-block", ".offer-large", ".about-offer"],
 	"meduza.io": [".Layout-bannerTop", ".Layout-module-banner"],
-	"orda.kz": [".ad1", ".ad1box", ".ad2", ".ad2box", ".layer0"]
+	"orda.kz": [".ad1", ".ad1box", ".ad2", ".ad2box", ".layer0"],
+	"bloknot.ru": [
+		".news-feed_wrapper",
+		".fd8e3d5ae",
+		".x6eda9114",
+		".b45d49515",
+		".features-news_wrapper"
+	],
+	"86.ru": [".Myw1Z", ".V8MR1", ".POHrm", ".u4ySL", ".Bgux0", ".XmulL"]
 }
