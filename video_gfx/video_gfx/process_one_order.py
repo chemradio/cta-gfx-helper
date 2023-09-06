@@ -1,4 +1,7 @@
+from time import perf_counter
+
 import config
+
 from video_gfx.animation_configurator import create_animation_parameters
 from video_gfx.create_html_gfx import create_html
 from video_gfx.get_storage import get_order_files_from_storage_unit
@@ -24,9 +27,13 @@ def create_video_gfx(order: dict) -> bool:
         create_html(animation_parameters.to_object(), str(html_assembly_path))
 
         # extract pngs
+        t1 = perf_counter()
         extract_png_sequence(html_assembly_name)
+        t2 = perf_counter()
+        print("png extraction took", t2 - t1, flush=True)
 
         # stitch pngs to mp4
+        t1 = perf_counter()
         png_path = html_assembly_path / "png_sequence"
         ready_video_path = config.RENDER_OUTPUT_PATH / order["video_gfx_name"]
         audio_path = (
@@ -35,6 +42,8 @@ def create_video_gfx(order: dict) -> bool:
             else ""
         )
         stitch_images(str(png_path), str(ready_video_path), audio_path)
+        t2 = perf_counter()
+        print("stitching pngs took", t2 - t1, flush=True)
         return True, None
     except Exception as e:
         print(e)
