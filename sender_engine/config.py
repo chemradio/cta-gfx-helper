@@ -8,6 +8,7 @@ DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
 
 ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer_orders"
+USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/users"
 
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
