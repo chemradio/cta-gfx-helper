@@ -7,12 +7,8 @@ DISPATCHER_NODE_HOSTNAME = os.getenv("dispatcher_name", "dispatcher")
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
 
-# LIST_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/orders/list"
-GET_ONE_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
 
-# !!!
-EDIT_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer/orders"
-# EDIT_ORDER_ENDPOINT = f"http://localhost:{DISPATCHER_NODE_PORT}/orders/edit"
+ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer_orders"
 
 
 # !!!

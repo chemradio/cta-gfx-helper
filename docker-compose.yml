@@ -2,13 +2,10 @@ version: '3.9'
 services:
   db:
     restart: always
-    environment:
-      IS_DOCKER: 1
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     hostname: db
-    image: postgres:15-alpine
-    volumes:
-       - ./pg_data:/var/lib/postgresql/data
+    image: mongo:latest
+    # expose:
+    #   - 27017
   dispatcher:
     restart: always
     build: ./dispatcher_engine
@@ -21,22 +18,22 @@ services:
       IS_DOCKER: 1
       BOT_ADMIN_EMAIL: ${BOT_ADMIN_EMAIL}
       BOT_ADMIN_PASSWORD: ${BOT_ADMIN_PASSWORD}
+      BOT_ADMIN: ${BOT_ADMIN}
       BOT_TOKEN: ${BOT_TOKEN}
       JWT_SECRET: ${JWT_SECRET}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       REGISTER_PASSPHRASE: ${REGISTER_PASSPHRASE}
     hostname: dispatcher
     ports:
       - "9000:9000"
-  front-svelte:
-    restart: always
-    build: ./front_svelte
-    platform: linux/arm64
-    depends_on:
-    - dispatcher
-    hostname: front_svelte
-    ports:
-      - "80:80"
+  # front-svelte:
+  #   restart: always
+  #   build: ./front_svelte
+  #   platform: linux/arm64
+  #   depends_on:
+  #   - dispatcher
+  #   hostname: front_svelte
+  #   ports:
+  #     - "80:80"
   bot-engine:
     restart: always
     build: ./bot_engine

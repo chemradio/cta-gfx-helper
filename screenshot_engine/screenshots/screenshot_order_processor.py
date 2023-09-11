@@ -12,11 +12,11 @@ from utils.cleanup_assets import cleanup_order
 
 async def process_screenshot_orders():
     while True:
-        print("Getting ready for screenshoting orders")
+        print("Getting ready for screenshoting orders", flush=True)
         order = get_ready_to_screenshot_order()
-        print(f"Current screenshot order = {order}")
         if not order:
             break
+        print(f"Current screenshot order = {order}", flush=True)
 
         capture_attempts = config.SCREENSHOT_ATTEMPTS
         while capture_attempts:

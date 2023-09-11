@@ -22,6 +22,9 @@ from telegram_bot.responders.main_responder import Responder
 
 async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = parse_user_id(update)
+    if user_id == config.BOT_ADMIN:
+        return True
+
     first_name = parse_user_first_name(update)
 
     user_role = await check_user_role(telegram_id=user_id)

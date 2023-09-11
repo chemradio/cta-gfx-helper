@@ -69,20 +69,3 @@ async def add_order(
 
     background_tasks.add_task(signal_to_services, order_db)
     return await Order_Pydantic.from_tortoise_orm(order_db)
-
-
-# @router.get("/")
-# async def get_user_active_orders(
-#     user_cookie: User_Pydantic | None = Depends(cookie_parser),
-# ):
-#     """Returns all active orders from user in a form of a list of dicts."""
-#     if not user_cookie:
-#         raise HTTPException(401, detail="Unauthorized")
-
-#     user = await User.filter(email=user_cookie.email).first()
-
-#     orders_db = await Order.filter(status="active", user=user)
-#     orders_pydantic = [
-#         await Order_Pydantic.from_tortoise_orm(order_db) for order_db in orders_db
-#     ]
-#     return orders_pydantic

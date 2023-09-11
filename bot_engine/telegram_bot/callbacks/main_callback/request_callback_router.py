@@ -44,6 +44,8 @@ async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             return await video_auto_callback(update, context)
         case "video_files":
             return await video_files_callback(update, context)
+        case "video_mixed":
+            return await video_files_callback(update, context)
         case "only_screenshots":
             return await only_screenshots_callback(update, context)
         case "readtime":
