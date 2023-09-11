@@ -2,7 +2,6 @@
 FROM python:3.10
 
 ARG PORT=9007
-ENV PORT=$telegram_sender_port
 
 RUN apt update
 RUN apt -y upgrade
