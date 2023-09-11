@@ -2,7 +2,6 @@ import os
 
 import requests
 
-from config import SCREENSHOT_FOLDER
 from screenshots.logic.type_classes.screenshot import Screenshot, ScreenshotResults
 
 STORAGE_UNIT_NAME = os.getenv("STORAGE_UNIT_NAME", "storage_unit")
