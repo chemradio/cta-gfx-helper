@@ -5,6 +5,7 @@ import config
 from telegram_bot.callbacks.admin_callbacks.admin_query_callback import (
     admin_query_callback,
 )
+from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
 from telegram_bot.callbacks.commands.commands_dispatcher import (
     WrongCommand,
     commands_callback,

@@ -1,33 +1,45 @@
-from pprint import pprint
-
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter
+from pymongo import ReturnDocument
 
 from container_interaction.signal_sender import signal_to_services
-from db_tortoise.order_controller import OrderController
-from db_tortoise.orders_models import Order, Order_Pydantic
-from utils.models_manager.fetch_user import combine_order_user_dict
-from utils.request_json_parser import request_json_parser
+from db_mongo.db_config.db_init import Orders
+from db_mongo.models.orders import Order
+from utils.order_logic.stage_increments import StageFlows
 
 router = APIRouter()
 
 
-class IntercontainerOrder_GetOne(BaseModel):
-    current_stage: str
-    status: str | None = "active"
-    ordered_from: str | None = None
+@router.get("/")
+async def get_one_intercontainer(filter: Order):
+    print(f"Incoming filter: {filter=}")
+    filter = {k: v for k, v in dict(filter).items() if v is not None}
+    print(f"Search criteria: {filter=}")
+
+    # fetch presend order
+    order_db = Orders.find_one(filter)
+    if not order_db:
+        return None
+    print(f"Found order: {order_db}")
+    order = Order(**order_db)
+    print(f"Converted order: {order}")
+
+    # modify stage and save
+    StageFlows.advance_stage(order)
+    print(f"advanced order: {order}")
+
+    Orders.update_one({"_id": order.id}, {"$set": dict(order)})
+    print(f"after update")
+
+    return order
 
 
-@router.put("/")
-async def edit_order_intercontainer(
-    background_tasks: BackgroundTasks,
-    order_json: dict | None = Depends(request_json_parser),
+@router.put("/", response_model=Order)
+async def update_order(
+    update: Order,
 ):
-    if not order_json:
-        raise HTTPException(400, "Request body could not be parsed.")
-    print(order_json)
-    order_db = await Order.filter(id=order_json["id"]).first()
-
+    # StageFlows.advance_stage(Order(order))
+    print(f"Incoming update: {update=}")
+    StageFlows.advance_stage(update)
     update_keys = (
         "error_type",
         "error",
@@ -35,35 +47,16 @@ async def edit_order_intercontainer(
         "screenshots_ready",
         "is_two_layer",
         "video_gfx_ready",
+        "current_stage",
     )
-    update_dict = {key: order_json[key] for key in update_keys if key in order_json}
-
-    order_db = order_db.update_from_dict(update_dict)
-    await order_db.save()
-    await order_db.refresh_from_db()
-    await OrderController.advance_order_stage(order_db)
-    await order_db.save()
-
-    if order_db.status == "completed":
-        # order completed
-        # cleanup_order_assets(order_db)
-        pass
-
-    background_tasks.add_task(signal_to_services, order_db)
-    return None
-
-
-@router.get("/")
-async def get_one_intercontainer(order: IntercontainerOrder_GetOne):
-    order_db = await Order.filter(
-        current_stage=order.current_stage,
-        status=order.status,
-        # ordered_from="web" if order.ordered_from is None else order.ordered_from,
-    ).first()
-    if not order_db:
-        return None
-
-    order_pydantic = await Order_Pydantic.from_tortoise_orm(order_db)
-    await OrderController.advance_order_stage(order_db)
-    await order_db.save()
-    return order_pydantic
+    update_data = {
+        k: v for k, v in dict(update).items() if (v is not None) and (k in update_keys)
+    }
+    print(f"Updating order: {update_data}")
+    order = Orders.find_one_and_update(
+        {"_id": update.id},
+        {"$set": update_data},
+        return_document=ReturnDocument.AFTER,
+    )
+    await signal_to_services(Order(**order))
+    return order

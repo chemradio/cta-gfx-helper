@@ -7,40 +7,47 @@ from container_interaction.helpers import UserPermission, UserRole
 
 
 async def add_pending_user(user_dict: dict):
-    print("posting")
     try:
-        r = requests.post(DISPATCHER_USERS_ENDPOINT, json=user_dict)
+        r = requests.post(
+            DISPATCHER_USERS_ENDPOINT,
+            json={**user_dict, "permission": UserPermission.PENDING.value},
+        )
     except:
         print("bad")
 
 
 async def allow_user(telegram_id: int):
     r = requests.put(
-        f"{EDIT_USER_ENDPOINT}/{telegram_id}",
-        json={"permission": UserPermission.APPROVED.value},
+        DISPATCHER_USERS_ENDPOINT,
+        json={
+            "telegram_id": telegram_id,
+            "permission": UserPermission.APPROVED.value,
+            "role": UserRole.NORMAL.value,
+        },
     )
     return r.json()
 
 
 async def pend_user(telegram_id: int):
     r = requests.put(
-        f"{EDIT_USER_ENDPOINT}/{telegram_id}",
-        json={"permission": UserPermission.PENDING.value},
+        DISPATCHER_USERS_ENDPOINT,
+        json={
+            "telegram_id": telegram_id,
+            "permission": UserPermission.PENDING.value,
+            "role": UserRole.NORMAL.value,
+        },
     )
     return r.json()
 
 
 async def block_user(telegram_id: int):
     r = requests.put(
-        f"{EDIT_USER_ENDPOINT}/{telegram_id}",
-        json={"permission": UserPermission.BLOCKED.value},
-    )
-    return r.json()
-
-
-async def fetch_users(type: UserPermission | None = None) -> list:
-    r = requests.get(
-        LIST_USERS_ENDPOINT, json={"status": type.value} if type is not None else {}
+        DISPATCHER_USERS_ENDPOINT,
+        json={
+            "telegram_id": telegram_id,
+            "permission": UserPermission.BLOCKED.value,
+            "role": UserRole.NORMAL.value,
+        },
     )
     return r.json()
 
@@ -70,4 +77,13 @@ async def get_user_data(telegram_id: int) -> dict:
     if r.status_code == 404:
         return None
 
+    return r.json()
+
+
+async def fetch_users(permission: UserPermission | None = None) -> list:
+    r = requests.get(
+        f"{DISPATCHER_USERS_ENDPOINT}/list/",
+        json={"permission": permission.value} if permission is not None else {},
+    )
+    print(f"Fetched users: {r.json()}", flush=True)
     return r.json()
