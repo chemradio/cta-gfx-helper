@@ -47,6 +47,13 @@ services:
     depends_on:
     - dispatcher
     hostname: bot_engine
+  telegram_sender:
+    build: ./sender_engine
+    depends_on:
+    - dispatcher
+    hostname: sender
+    volumes:
+    - ./sender_engine:/usr/src/app
   screenshot-selenium:
     restart: always
     hostname: screenshot_selenium
