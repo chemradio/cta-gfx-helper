@@ -49,6 +49,8 @@ services:
     hostname: bot_engine
   telegram_sender:
     build: ./sender_engine
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
     depends_on:
     - dispatcher
     hostname: sender
