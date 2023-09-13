@@ -6,6 +6,7 @@ IS_DOCKER = os.environ.get("IS_DOCKER")
 DISPATCHER_NODE_HOSTNAME = os.getenv("dispatcher_name", "dispatcher")
 DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
 DISPATCHER_NODE_URL = f"http://{DISPATCHER_NODE_HOSTNAME}:{DISPATCHER_NODE_PORT}"
+STORAGE_UNIT_URL = f"http://storage_unit:9010/file"
 
 ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer_orders"
 USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/users"

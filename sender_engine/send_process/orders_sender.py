@@ -13,18 +13,8 @@ def orders_sender_raw():
             break
 
         sent_order = send_order_raw(order)
-        # if not sent_order.get("send_success"):
-        #     asyncio.run(bot.send_message(BOT_ADMIN, f"Failed to send order\n\n{order}"))
-
         mark_success = mark_order_sent(sent_order)
 
-        # if not mark_success:
-        #     asyncio.run(
-        #         bot.send_message(
-        #             BOT_ADMIN,
-        #             f"Failed to mark sent order\n{sent_order.get('send_success')=}\n\n{sent_order=}",
-        #         )
-        #     )
         time.sleep(3)
 
     return True
