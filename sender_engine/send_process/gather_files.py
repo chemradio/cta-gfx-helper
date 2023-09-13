@@ -1,7 +1,7 @@
 from container_interaction.get_file_storage import fetch_file_from_storage
 
 
-def gather_file_paths(order: dict) -> list:
+def gather_files_from_storage(order: dict) -> list:
     match order["request_type"]:
         case "video_auto":
             filetypes = ("video_gfx_name",)
@@ -15,7 +15,7 @@ def gather_file_paths(order: dict) -> list:
     files = list()
     for filetype in filetypes:
         filename = order.get(filetype)
-        file_bytes = fetch_file_from_storage
+        file_bytes = fetch_file_from_storage(filename)
         if file_bytes:
             files.append((filename, file_bytes))
 
