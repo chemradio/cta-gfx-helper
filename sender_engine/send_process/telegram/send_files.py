@@ -1,14 +1,13 @@
 import traceback
 from pathlib import Path
 
-import config
 import requests
-from bot_instance import bot
+
+import config
 from send_process.gather_files import gather_file_paths
-from telegram import ReplyKeyboardRemove
 
 
-def send_files_raw(order):
+def send_files_raw(order: dict, user_id: int):
     send_successes = list()
     files_to_send = gather_file_paths(order)
     for file in files_to_send:
@@ -17,7 +16,7 @@ def send_files_raw(order):
             try:
                 send_file_raw(
                     file,
-                    order["user_telegram_id"],
+                    user_id,
                 )
                 send_successes.append(True)
                 break
