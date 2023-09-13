@@ -22,17 +22,18 @@ async def process_screenshot_orders():
         while capture_attempts:
             try:
                 screenshot_results = capture_screenshots(order)
-                if order["request_type"] == "video_files":
+                if order["request_type"] == "video_mixed":
                     order["is_two_layer"] = True
                 elif order["request_type"] == "video_auto":
                     order["is_two_layer"] = screenshot_results.two_layer
 
                 order["screenshots_ready"] = True
                 break
-            except:
-                print("Failed to capture screenshots from these urls:")
-                print(order.get("link"))
-                print(order.get("background_link"))
+            except Exception as e:
+                print("Failed to capture screenshots from these urls:", flush=True)
+                print(order.get("link"), flush=True)
+                print(order.get("background_link"), flush=True)
+                print(str(e), flush=True)
                 capture_attempts -= 1
                 continue
         else:

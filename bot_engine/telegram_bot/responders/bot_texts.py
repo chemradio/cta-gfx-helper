@@ -128,6 +128,7 @@ class CommandResponses:
 class RequestOptions:
     video_auto: str = "Графика из ссылки"
     video_files: str = "Графика из файлов"
+    video_mixed: str = "Графика из файла + скриншот"
     only_screenshots: str = "Только скриншоты"
     readtime: str = "Хрон текста"
 
