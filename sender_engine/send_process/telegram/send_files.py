@@ -32,8 +32,7 @@ def send_files_raw(order: dict, user_id: int):
     return all(send_successes)
 
 
-def send_file_raw(file: Path, receiver_id: int) -> None:
-    files = {"document": open(file, "rb")}
+def send_file_raw(file_tuple: dict[str, bytes], receiver_id: int) -> None:
     files = {"document": file_tuple}
 
     kwargs = {
