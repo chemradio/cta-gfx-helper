@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 from db_mongo.db_config.db_init import Users
 from db_mongo.models.orders import Order
 from db_mongo.models.users import User
@@ -7,10 +8,14 @@ def find_user(user: User | dict) -> User | None:
     if isinstance(user, dict):
         user = User(**user)
     # print(f"Searching for user... {user}, {type(user)=}")
+
     if user.email:
         query = {"email": user.email}
     elif user.telegram_id:
         query = {"telegram_id": user.telegram_id}
+    elif user.id:
+        print(user.id)
+        query = {"_id": user.id}
 
     user_db = Users.find_one(query)
     # print(f"Search result: {user_db=}")
