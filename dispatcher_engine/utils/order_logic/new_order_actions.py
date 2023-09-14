@@ -24,6 +24,11 @@ def assign_filenames(order: Order) -> None:
             if order.background_screenshot:
                 order.background_name = background_name
 
+        case OrderRequestType.VIDEO_MIXED:
+            order.background_name = background_name
+            order.html_assembly_name = html_assembly_name
+            order.video_gfx_name = video_gfx_name
+
         case OrderRequestType.ONLY_SCREENSHOTS:
             order.background_name = background_name
             order.foreground_name = foreground_name

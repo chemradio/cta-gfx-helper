@@ -14,28 +14,38 @@ FPS = 25
 def extract_png_sequence(html_assembly_name: str) -> str:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
+    print("creating driver", flush=True)
     driver = create_driver(config.SELENIUM_CONTAINERS[0])
     driver.implicitly_wait(5)
 
+    print("getting server url", flush=True)
     html_assembly_server_url = (
         f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
     )
+    print(f"{html_assembly_server_url=}", flush=True)
 
     target_url = f"{html_assembly_server_url}/main.html"
+    print(f"{target_url=}", flush=True)
     driver.get(target_url)
     time.sleep(2)
+    print(f"getting timeline duration", flush=True)
+
     timeline_duration = driver.execute_script("return timeline.duration()")
     driver.quit()
 
+    print(f"splitting work", flush=True)
     total_frames = timeline_duration * FPS
     ranges = split_timeline_segments(
         int(total_frames), pieces=len(config.SELENIUM_CONTAINERS)
     )
 
+    print(f"generating png path", flush=True)
     # create a folder for png-sequence
     png_path = os.path.join(
         f"{config.HTML_ASSEMBLIES_FOLDER}/{html_assembly_name}", "png_sequence"
     )
+    print(f"{png_path=}", flush=True)
+
     os.mkdir(png_path)
 
     # create webdriver threads / processes

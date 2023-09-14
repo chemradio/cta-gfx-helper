@@ -10,11 +10,11 @@ from video_gfx.process_one_order import create_video_gfx
 
 async def process_video_gfx_orders():
     while True:
-        print("fetching one order")
+        print("fetching one order", flush=True)
         order = get_ready_to_video_gfx_order()
         if not order:
             break
-        print(f"fetched order: {order}")
+        print(f"fetched order: {order}", flush=True)
 
         video_gfx_success, error = create_video_gfx(order)
 
