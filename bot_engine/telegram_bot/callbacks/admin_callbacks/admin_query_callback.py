@@ -1,15 +1,15 @@
-from telegram import ReplyKeyboardRemove, Update
-from telegram.ext import ContextTypes
-
 from container_interaction.helpers import UserPermission
 from container_interaction.orders_db import cancel_order
 from container_interaction.users_db import allow_user, block_user, pend_user
+from telegram import ReplyKeyboardRemove, Update
+from telegram.ext import ContextTypes
 from telegram_bot.callbacks.admin_callbacks.list_orders_to_admin import (
     list_10_orders_to_admin,
     list_active_orders_to_admin,
 )
 from telegram_bot.callbacks.admin_callbacks.list_users_to_admin import (
     list_users_to_admin,
+    list_users_to_admin_raw,
 )
 from telegram_bot.responders.main_responder import Responder
 
@@ -82,6 +82,10 @@ async def admin_query_callback(
 
         if data == "admin_list_pending_users":
             await list_users_to_admin(UserPermission.PENDING)
+            return True
+
+        if data == "dump_users":
+            await list_users_to_admin_raw()
             return True
 
         return False
