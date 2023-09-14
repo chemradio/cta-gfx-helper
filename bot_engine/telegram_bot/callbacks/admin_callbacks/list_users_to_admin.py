@@ -28,5 +28,5 @@ async def list_users_to_admin_raw():
     users_list = await fetch_users()
     return await bot.send_message(
         chat_id=BOT_ADMIN,
-        text=json.loads(str(users_list)),
+        text=str(users_list),
     )

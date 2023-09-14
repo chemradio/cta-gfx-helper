@@ -1,3 +1,5 @@
+import traceback
+
 from container_interaction.helpers import UserPermission
 from container_interaction.orders_db import cancel_order
 from container_interaction.users_db import allow_user, block_user, pend_user
@@ -85,7 +87,12 @@ async def admin_query_callback(
             return True
 
         if data == "dump_users":
-            await list_users_to_admin_raw()
-            return True
+            try:
+                await list_users_to_admin_raw()
+            except Exception as e:
+                print(str(e))
+                traceback.print_exc()
+            finally:
+                return True
 
         return False
