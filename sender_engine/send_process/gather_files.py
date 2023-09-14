@@ -7,6 +7,8 @@ def gather_files_from_storage(order: dict) -> list:
             filetypes = ("video_gfx_name",)
         case "video_files":
             filetypes = ("video_gfx_name",)
+        case "video_mixed":
+            filetypes = ("video_gfx_name",)
         case "only_screenshots":
             filetypes = ("background_name", "foreground_name")
         case _:
