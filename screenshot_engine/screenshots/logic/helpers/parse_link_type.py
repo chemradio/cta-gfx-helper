@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+
 def parse_link_type(url: str) -> tuple[str, str, bool]:
     """Gets link type e.g. social media like Facebook. Cleans up the url.
     Determines the possibility of two-layer screenshots.
@@ -26,6 +29,22 @@ def parse_link_type(url: str) -> tuple[str, str, bool]:
     elif "//t.me/" in url:
         two_layer = True
         domain = "telegram"
+
+    elif "/vk.com/" in url:
+        two_layer = True
+        domain = "vk"
+        clean_url = url
+
+        up = urlparse(url)
+        if up.path.startswith("/wall"):
+            pass
+        elif up.query:
+            usable_queries = [
+                query for query in up.query.split("&") if query.startswith("w=wall")
+            ]
+            query = usable_queries[0] if usable_queries else None
+            if query:
+                clean_url = f"https://vk.com/{query[2:]}"
 
     else:
         two_layer = False

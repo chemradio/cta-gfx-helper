@@ -31,6 +31,11 @@ from screenshots.logic.controllers.routines.workflows.twitter import (
     twitter_post_routine,
     twitter_profile_routine,
 )
+from screenshots.logic.controllers.routines.workflows.vk import (
+    extract_vk_profile_url,
+    vk_post_routine,
+    vk_profile_routine,
+)
 from screenshots.logic.helpers.parse_link_type import parse_link_type
 
 
@@ -55,6 +60,11 @@ class ScreenshotRoutines:
             "post": telegram_post_routine,
             "profile": telegram_profile_routine,
             "extract_profile": extract_telegram_profile_url,
+        },
+        "vk": {
+            "post": vk_post_routine,
+            "profile": vk_profile_routine,
+            "extract_profile": extract_vk_profile_url,
         },
         "scroll": {
             "post": None,

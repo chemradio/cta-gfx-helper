@@ -15,16 +15,16 @@ cookie_file.json
 *.code-workspace
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
-
+optional_seed_data.json
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+mongodata/
 # C extensions
 *.so
-
+test.py
 # Distribution / packaging
 .Python
 build/

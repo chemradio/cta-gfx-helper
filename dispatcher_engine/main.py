@@ -29,6 +29,7 @@ from db_mongo.seeding.mandatory import seed_admin
 # from generate_schemas import main as db_check_rebuild
 # from seeding import seed as seed_db
 # from seeding import seed_admin
+from db_mongo.seeding.optional import seed_users
 
 create_volume_folders()
 
@@ -87,8 +88,10 @@ app.include_router(text_processors.router, prefix="/helpers/text_processor")
 
 
 def main():
-    # seed admin
+    # seed admin and users
     seed_admin()
+    seed_users()
+
     print("Starting the server")
     config = uvicorn.Config(
         "main:app",
@@ -105,8 +108,3 @@ if __name__ == "__main__":
 
     time.sleep(3)
     main()
-    # uvicorn.run(
-    #     app,
-    #     host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
-    #     port=9000,
-    # )
