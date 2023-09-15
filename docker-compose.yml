@@ -3,9 +3,9 @@ services:
   db:
     restart: always
     hostname: db
-    image: mongo:latest
-    # expose:
-    #   - 27017
+    image: mongo:6.0
+    volumes:
+      - ./mongodata:/data/db
   dispatcher:
     restart: always
     build: ./dispatcher_engine
