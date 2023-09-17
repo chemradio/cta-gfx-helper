@@ -1,11 +1,12 @@
-import mimetypes
-import secrets
-
 import requests
 from fastapi import APIRouter, HTTPException, UploadFile
 
 from config import STORAGE_UNIT_URL
 from utils.assets.file_convert.file_convert import convert_unsupported_file
+from utils.assets.filenames import (
+    generate_random_filename,
+    get_file_extension_from_mime,
+)
 
 router = APIRouter()
 
@@ -45,15 +46,3 @@ async def add_user_file(
     )
     response.raise_for_status()
     return {"filename": filename}
-
-
-def get_file_extension_from_mime(mime_type):
-    # Returns a tuple with file extension and encoding
-    file_extension = mimetypes.guess_extension(mime_type)
-    return file_extension
-
-
-def generate_random_filename(prefix: str = "user", extension: str = str()):
-    random_name = secrets.token_hex(12)
-    extension = extension[1:] if extension.startswith(".") else extension
-    return f"{prefix}_{random_name}.{extension}"

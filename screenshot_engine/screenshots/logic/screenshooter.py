@@ -19,7 +19,7 @@ from screenshots.logic.type_classes.screenshot_role import ScreenshotRole
 
 def capture_screenshots(order: dict) -> ScreenshotResults:
     match order.get("request_type"):
-        case "video_files":
+        case "video_mixed":
             original_url = order.get("background_link")
             clean_url, domain, _ = parse_link_type(original_url)
             two_layer = False
@@ -49,14 +49,16 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
         try:
             Adblocker.remove_ads(driver)
             time.sleep(1)
+
             foreground_screenshot = capture_screenshot(
                 driver, ScreenshotRole.POST, order.get("foreground_name")
             )
             foreground_screenshot = crop_screenshot(foreground_screenshot)
             profile_url = ScreenshotRoutines.extract_profile_url(driver)
             target_url = profile_url
-        except:
+        except Exception as e:
             print("Social URL is probably for the page, not post:", target_url)
+            print("Error encountered: ", str(e))
             two_layer = False
             foreground_screenshot = None
 

@@ -4,9 +4,7 @@ from pathlib import Path
 REGISTER_PASSPHRASE = os.environ.get("REGISTER_PASSPHRASE")
 
 IS_DOCKER = os.environ.get("IS_DOCKER", False)
-STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
-STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)
-STORAGE_UNIT_URL = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
+STORAGE_UNIT_URL = f"http://storage_unit:9010/file"
 
 SQL_SERVER = "temp.sqlite"
 SQL_CONNECT_STRING = f"sqlite:///{SQL_SERVER}"

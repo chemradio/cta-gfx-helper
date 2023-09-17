@@ -7,10 +7,10 @@ from telegram_bot.bot_instance import bot
 
 
 async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
-    user_data.update({"telegram_id": telegram_id})
+    user_data.update({"telegram_id": telegram_id, "ordered_from": "telegram"})
     user_data.pop("results_correct", None)
     user_data.pop("results_message", None)
-    print(f"{user_data=}")
+    print(f"{user_data=}", flush=True)
     r = requests.post(ADD_ORDER_ENDPOINT, json=user_data)
     return True
 
