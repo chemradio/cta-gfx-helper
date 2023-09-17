@@ -10,6 +10,7 @@ from telegram_bot.callbacks.admin_callbacks.cookie_file_uploader import (
     cookie_file_uploader,
 )
 from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
+from telegram_bot.callbacks.commands.back_button import back_callback
 from telegram_bot.callbacks.commands.exit_callback import exit_callback
 from telegram_bot.callbacks.commands.help_callback import help_callback
 from telegram_bot.callbacks.commands.start_callback import start_callback
@@ -29,6 +30,8 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             return await exit_callback(update, context)
         case "help":
             return await help_callback(update, context)
+        case "back":
+            return await back_callback(update, context)
         case "register":
             return await auth_callback(update, context)
 
