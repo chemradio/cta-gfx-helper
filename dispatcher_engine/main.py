@@ -3,9 +3,6 @@ import os
 import time
 
 import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.fastapi import register_tortoise
 
 # from api_routers.administration import db_manipulation
 from api_routers.helpers import text_processors
@@ -25,11 +22,12 @@ from api_routers.user_files import user_file_handler
 from create_volume_folders import create_volume_folders
 from db_mongo.seeding.mandatory import seed_admin
 
-# from db_tortoise.tort_config import TORTOISE_ORM
 # from generate_schemas import main as db_check_rebuild
 # from seeding import seed as seed_db
 # from seeding import seed_admin
 from db_mongo.seeding.optional import seed_users
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 create_volume_folders()
 
