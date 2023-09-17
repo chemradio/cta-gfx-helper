@@ -49,7 +49,9 @@ async def video_files_callback(
             user_data.update({"background_source": update.callback_query.data})
             match update.callback_query.data:
                 case "background_screenshot":
-                    user_data.update({"stage": "background_link"})
+                    user_data.update(
+                        {"stage": "background_link", "request_type": "video_mixed"}
+                    )
                     return await Responder.video_files.ask_background_link(user_id)
                 case "background_file":
                     user_data.update({"stage": "background_file"})

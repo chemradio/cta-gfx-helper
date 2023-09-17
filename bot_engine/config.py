@@ -27,6 +27,7 @@ class Readspeed(Enum):
 REQUEST_TYPE_TEMP_MAP = {
     "video_auto": Responses.request_options.video_auto,
     "video_files": Responses.request_options.video_files,
+    "video_mixed": Responses.request_options.video_mixed,
     "only_screenshots": Responses.request_options.only_screenshots,
     "readtime": Responses.request_options.readtime,
 }
@@ -42,14 +43,14 @@ DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
 
 # orders
 DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/orders"
-ADD_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/orders"
+ADD_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/orders"
 
 # process quote string api
 DISPATCHER_STRING_PROCESSOR_ENDPOINT = f"{DISPATCHER_NODE_URL}/helpers/text_processor"
 
 
 # users
-DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/telegram_api/users"
+DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/users"
 ADD_USER_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}"
 EDIT_USER_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/users/telegram"
 
