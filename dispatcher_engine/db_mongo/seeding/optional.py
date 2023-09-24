@@ -8,6 +8,9 @@ JSON_PATH = Path.cwd() / "db_mongo" / "seeding" / "optional_seed_data.json"
 
 
 def seed_users():
+    if not JSON_PATH.exists():
+        return
+
     with open(JSON_PATH, "rt") as f:
         data: list[dict] = json.load(f)
         print(f"{data=}")
