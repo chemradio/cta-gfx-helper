@@ -1,10 +1,9 @@
 import json
 from pathlib import Path
 
+import config
 import requests
 from selenium import webdriver
-
-import config
 
 
 class Adblocker:
@@ -60,5 +59,12 @@ class Adblocker:
             script_template = script_file.read()
 
         return (
-            script_template + "\n" + "let adsDatabase = " + str(ad_db) + "\n" + "main()"
+            script_template
+            + "\n"
+            + "let adsDatabase = "
+            + str(ad_db)
+            + "\n"
+            + "removeAdsMedium();"
+            + "\n"
+            + "main();"
         )
