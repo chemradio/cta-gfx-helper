@@ -18,9 +18,9 @@ def telegram_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebEle
         messageWidget = iframe.contentWindow.document.querySelector(".js-widget_message");
         messageWidget.style.padding = "0px";"""
     )
-    driver.execute_script(
-        """document.querySelector(".tgme_page_widget_actions").style.visibility = "hidden";"""
-    )
+    # driver.execute_script(
+    #     """document.querySelector(".tgme_page_widget_actions").style.visibility = "hidden";"""
+    # )
     post = driver.find_element(By.TAG_NAME, "iframe")
     return post
 
