@@ -100,15 +100,21 @@ services:
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
+    environment:
+      - START_XVFB=false
   video-gfx-selenium-2:
     restart: always
     hostname: video_gfx_selenium_two
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
+    environment:
+      - START_XVFB=false
   video-gfx-selenium-3:
     restart: always
     hostname: video_gfx_selenium_three
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
+    environment:
+      - START_XVFB=false
