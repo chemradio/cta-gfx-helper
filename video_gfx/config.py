@@ -12,14 +12,8 @@ ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer_orders"
 
 
 # !!!
-SELENIUM_CONTAINERS = (
-    "http://video_gfx_selenium_one:4444/wd/hub",
-    "http://video_gfx_selenium_two:4444/wd/hub",
-    "http://video_gfx_selenium_three:4444/wd/hub",
-    # "http://video_gfx_selenium_four:4444/wd/hub",
-    # "http://video_gfx_selenium_five:4444/wd/hub",
-    # "http://video_gfx_selenium_six:4444/wd/hub",
-)
+SELENIUM_CONTAINERS = ("http://video_gfx_selenium:4444/wd/hub",)
+SELENIUM_CONTAINER = "http://video_gfx_selenium:4444/wd/hub"
 
 
 USE_REMOTE_DRIVER = True

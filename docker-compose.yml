@@ -94,21 +94,14 @@ services:
     volumes:
       - ./video_gfx:/usr/src/app
     shm_size: 3g
-  video-gfx-selenium-1:
+  video-gfx-selenium:
     restart: always
-    hostname: video_gfx_selenium_one
+    hostname: video_gfx_selenium
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
-  video-gfx-selenium-2:
-    restart: always
-    hostname: video_gfx_selenium_two
-    image: seleniarm/standalone-chromium
-    privileged: true
-    shm_size: 3g
-  video-gfx-selenium-3:
-    restart: always
-    hostname: video_gfx_selenium_three
-    image: seleniarm/standalone-chromium
-    privileged: true
-    shm_size: 3g
+    environment:
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=1080
+      - SE_SCREEN_DEPTH=24
+  

@@ -11,9 +11,18 @@ function create_animation(config) {
 	const BG_SCROLLSPEED_PX = 50;
 	const BG_SCROLLAMOUNT = BG_SCROLLSPEED_PX * SCROLLDURATION;
 
+	gsap.config({
+		// autoSleep: 60,
+		force3D: true,
+		nullTargetWarn: false,
+		// trialWarn: false,
+		// units: { left: '%', top: '%', rotation: 'rad' },
+	});
+	gsap.ticker.fps(50);
+
 	timeline = gsap.timeline({ defaults: { duration: 1 } });
 
-	timeline.pause();
+	// timeline.pause();
 	timeline
 		// background scroll
 		.to(
@@ -23,8 +32,7 @@ function create_animation(config) {
 		)
 
 		// background zoom
-
-		.from('.bgZoom', { duration: SCROLLDURATION, scale: 1.2 }, 0)
+		.to('.bgZoom', { duration: SCROLLDURATION, scale: 0.9 }, 0)
 		// background only
 		.to(
 			'.bgOnly',
@@ -80,4 +88,5 @@ function create_animation(config) {
 
 	// tail
 	// .to('tail-nonexistent', {duration: TAIL, y:'1100px'}, SCROLLDURATION);
+	// requestAnimationFrame();
 }
