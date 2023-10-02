@@ -49,9 +49,9 @@ def record_selenium_xvfb(
     )
 
     ffmpeg_post_audio = [
-        "-vf",
+        # "-vf",
         # "tinterlace=interleave_top,fieldorder=tff,scale=out_color_matrix=bt709:out_range=limited",
-        "scale=out_color_matrix=bt709:out_range=limited",
+        # "scale=out_color_matrix=bt709:out_range=limited",
         "-codec:v",
         CODEC,
         "-preset",
@@ -68,10 +68,10 @@ def record_selenium_xvfb(
         # str(config.AUDIO_BITRATE_BPS),
         "-crf",
         "13",
-        "-movflags",
-        "+write_colr",
-        "-bsf:v",
-        "h264_metadata=video_full_range_flag=0",
+        # "-movflags",
+        # "+write_colr",
+        # "-bsf:v",
+        # "h264_metadata=video_full_range_flag=0",
         # "-qp",
         # "0",
         str(output_path),
