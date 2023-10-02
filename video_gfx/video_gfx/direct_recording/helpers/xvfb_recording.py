@@ -50,7 +50,8 @@ def record_selenium_xvfb(
 
     ffmpeg_post_audio = [
         "-vf",
-        "tinterlace=interleave_top,fieldorder=tff,scale=out_color_matrix=bt709:out_range=limited",
+        # "tinterlace=interleave_top,fieldorder=tff,scale=out_color_matrix=bt709:out_range=limited",
+        "scale=out_color_matrix=bt709:out_range=limited",
         "-codec:v",
         CODEC,
         "-preset",
