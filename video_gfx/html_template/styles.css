@@ -1,4 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+
+
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url("static/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf") format("woff2");
+    font-weight: 125 950;
+    font-stretch: 75% 125%;
+    font-style: normal;
+  }
+
+
+
+
 
 body {
     margin: 0;
@@ -72,6 +84,7 @@ body {
     max-height: 60%;
     padding: 30px;
     font-family: "Roboto Condensed";
+
     font-size: 40px;
     clip-path: inset(0% 0% 0% 0%);
 }
@@ -82,6 +95,7 @@ body {
 
 .quote-author-text {
     margin: 0;
+    font-family: "Roboto Condensed";
     font-weight: bold;
     text-transform: uppercase;
 }
