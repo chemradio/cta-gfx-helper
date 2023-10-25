@@ -10,41 +10,42 @@ from video_gfx.png_extractor_logic.create_driver import create_driver
 from video_gfx.png_extractor_logic.png_capture import png_capture
 
 FPS = 25
+USE_LOCAL_SELENIUM = True
 USE_REMOTE_SELENIUM = True
 
 
 def extract_png_sequence(html_assembly_name: str) -> str:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
-    if USE_REMOTE_SELENIUM:
-        html_assembly_server_url = f"{config.ASSET_SERVER_ACCESS_URL_FOR_REMOTES}/html_assemblies/{html_assembly_name}"
-        SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_REMOTE
-    else:
-        html_assembly_server_url = (
-            f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
-        )
-        SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_LOCAL
+    html_assembly_server_url_remote = f"{config.ASSET_SERVER_ACCESS_URL_FOR_REMOTES}/html_assemblies/{html_assembly_name}"
+    html_assembly_server_url_local = (
+        f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
+    )
+    SELENIUM_CONTAINERS_LOCAL = (
+        config.SELENIUM_CONTAINERS_LOCAL if USE_LOCAL_SELENIUM else []
+    )
+    SELENIUM_CONTAINERS_REMOTE = (
+        config.SELENIUM_CONTAINERS_REMOTE if USE_REMOTE_SELENIUM else []
+    )
 
-    print("creating driver", flush=True)
-    driver = create_driver(SELENIUM_CONTAINERS[0])
+    ALL_SELENIUM_CONTAINERS = [*SELENIUM_CONTAINERS_LOCAL, *SELENIUM_CONTAINERS_REMOTE]
+
+    driver = create_driver(ALL_SELENIUM_CONTAINERS[0])
     driver.implicitly_wait(5)
+    target_url_local = f"{html_assembly_server_url_local}/main.html"
+    target_url_remote = f"{html_assembly_server_url_remote}/main.html"
 
-    print("getting server url", flush=True)
-
-    print(f"{html_assembly_server_url=}", flush=True)
-
-    target_url = f"{html_assembly_server_url}/main.html"
-    print(f"{target_url=}", flush=True)
-    driver.get(target_url)
+    driver.get(target_url_remote if USE_REMOTE_SELENIUM else target_url_local)
     time.sleep(2)
     print(f"getting timeline duration", flush=True)
-
     timeline_duration = driver.execute_script("return timeline.duration()")
     driver.quit()
 
     print(f"splitting work", flush=True)
     total_frames = timeline_duration * FPS
-    ranges = split_timeline_segments(int(total_frames), pieces=len(SELENIUM_CONTAINERS))
+    ranges = split_timeline_segments(
+        int(total_frames), pieces=len(ALL_SELENIUM_CONTAINERS)
+    )
 
     print(f"generating png path", flush=True)
     # create a folder for png-sequence
@@ -57,31 +58,30 @@ def extract_png_sequence(html_assembly_name: str) -> str:
 
     # create webdriver threads / processes
     driver_threads_processes = list()
-    for index, driver_url in enumerate(SELENIUM_CONTAINERS):
-        if config.USE_THREADS:
-            driver_thread_process = threading.Thread(
-                target=png_capture,
-                args=(
-                    total_frames,
-                    ranges[index],
-                    png_path,
-                    target_url,
-                    driver_url,
-                ),
-                name="main_driver_thread",
-            )
-        else:
-            driver_thread_process = multiprocessing.Process(
-                target=png_capture,
-                args=(
-                    total_frames,
-                    ranges[index],
-                    png_path,
-                    target_url,
-                    driver_url,
-                ),
-                name="main_driver_thread",
-            )
+    for driver_url in SELENIUM_CONTAINERS_LOCAL:
+        driver_thread_process = multiprocessing.Process(
+            target=png_capture,
+            args=(
+                total_frames,
+                ranges.pop(0),
+                png_path,
+                target_url_local,
+                driver_url,
+            ),
+        )
+        driver_threads_processes.append(driver_thread_process)
+
+    for driver_url in SELENIUM_CONTAINERS_REMOTE:
+        driver_thread_process = multiprocessing.Process(
+            target=png_capture,
+            args=(
+                total_frames,
+                ranges.pop(0),
+                png_path,
+                target_url_remote,
+                driver_url,
+            ),
+        )
         driver_threads_processes.append(driver_thread_process)
 
     print("starting threads/processes", flush=True)
