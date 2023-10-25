@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
-
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url("./RobotoCondensed-VariableFont_wght.ttf") format("woff2");
+    font-weight: 125 950;
+    font-stretch: 75% 125%;
+    font-style: normal;
+  }
 body {
     margin: 0;
 }
