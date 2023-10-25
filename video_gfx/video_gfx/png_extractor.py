@@ -16,12 +16,6 @@ USE_REMOTE_SELENIUM = True
 def extract_png_sequence(html_assembly_name: str) -> str:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
-    print("creating driver", flush=True)
-    driver = create_driver(config.SELENIUM_CONTAINERS[0])
-    driver.implicitly_wait(5)
-
-    print("getting server url", flush=True)
-
     if USE_REMOTE_SELENIUM:
         html_assembly_server_url = f"{config.ASSET_SERVER_ACCESS_URL_FOR_REMOTES}/html_assemblies/{html_assembly_name}"
         SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_REMOTE
@@ -30,6 +24,12 @@ def extract_png_sequence(html_assembly_name: str) -> str:
             f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
         )
         SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_LOCAL
+
+    print("creating driver", flush=True)
+    driver = create_driver(SELENIUM_CONTAINERS[0])
+    driver.implicitly_wait(5)
+
+    print("getting server url", flush=True)
 
     print(f"{html_assembly_server_url=}", flush=True)
 
