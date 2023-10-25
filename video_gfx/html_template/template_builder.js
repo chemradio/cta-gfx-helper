@@ -118,7 +118,7 @@ function buildHTML(config) {
 			let quoteBreak = document.createElement('br');
 			let quoteAuthorText = document.createElement('div');
 			quoteAuthorText.setAttribute('class', 'quote-author-text');
-			quoteAuthorText.innerHTML = quoteAuthorText;
+			quoteAuthorText.innerHTML = config.quoteAuthorText;
 			quoteBox.append(quoteBreak);
 			quoteBox.append(quoteAuthorText);
 		}
