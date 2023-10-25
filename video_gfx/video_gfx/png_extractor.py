@@ -44,9 +44,7 @@ def extract_png_sequence(html_assembly_name: str) -> str:
 
     print(f"splitting work", flush=True)
     total_frames = timeline_duration * FPS
-    ranges = split_timeline_segments(
-        int(total_frames), pieces=len(config.SELENIUM_CONTAINERS)
-    )
+    ranges = split_timeline_segments(int(total_frames), pieces=len(SELENIUM_CONTAINERS))
 
     print(f"generating png path", flush=True)
     # create a folder for png-sequence
