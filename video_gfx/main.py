@@ -47,7 +47,7 @@ async def main():
     config = uvicorn.Config(
         "main:app",
         port=int(os.environ.get("video_gfx_port", 9004)),
-        host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
+        host="0.0.0.0",
         log_level="info",
     )
     server = uvicorn.Server(config)
