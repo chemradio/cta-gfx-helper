@@ -12,7 +12,7 @@ ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/intercontainer_orders"
 
 
 # !!!
-SELENIUM_CONTAINERS = (
+SELENIUM_CONTAINERS_LOCAL = (
     "http://video_gfx_selenium_one:4444/wd/hub",
     "http://video_gfx_selenium_two:4444/wd/hub",
     "http://video_gfx_selenium_three:4444/wd/hub",
@@ -21,6 +21,15 @@ SELENIUM_CONTAINERS = (
     # "http://video_gfx_selenium_six:4444/wd/hub",
 )
 
+SELENIUM_CONTAINERS_REMOTE = (
+    "http://10.0.0.2:4444/wd/hub",
+    "http://10.0.0.2:4443/wd/hub",
+    "http://10.0.0.2:4442/wd/hub",
+    "http://10.0.0.2:4441/wd/hub",
+    # "http://video_gfx_selenium_four:4444/wd/hub",
+    # "http://video_gfx_selenium_five:4444/wd/hub",
+    # "http://video_gfx_selenium_six:4444/wd/hub",
+)
 
 USE_REMOTE_DRIVER = True
 
@@ -46,6 +55,7 @@ USE_DOCKER = True
 ASSET_SEVER_NAME = os.getenv("video_gfx_name", "video_gfx")
 ASSET_SERVER_ACCESS_PORT = os.getenv("video_gfx_port", 9004)
 ASSET_SERVER_ACCESS_URL = f"http://{ASSET_SEVER_NAME}:{ASSET_SERVER_ACCESS_PORT}"
+ASSET_SERVER_ACCESS_URL_FOR_REMOTES = f"http://10.0.0.1:9004"
 
 STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
 STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)

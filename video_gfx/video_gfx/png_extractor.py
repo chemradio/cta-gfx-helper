@@ -4,11 +4,13 @@ import threading
 import time
 
 import config
+
 from video_gfx.helpers.timeline_splitter import split_timeline_segments
 from video_gfx.png_extractor_logic.create_driver import create_driver
 from video_gfx.png_extractor_logic.png_capture import png_capture
 
 FPS = 25
+USE_REMOTE_SELENIUM = True
 
 
 def extract_png_sequence(html_assembly_name: str) -> str:
@@ -19,9 +21,16 @@ def extract_png_sequence(html_assembly_name: str) -> str:
     driver.implicitly_wait(5)
 
     print("getting server url", flush=True)
-    html_assembly_server_url = (
-        f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
-    )
+
+    if USE_REMOTE_SELENIUM:
+        html_assembly_server_url = f"{config.ASSET_SERVER_ACCESS_URL_FOR_REMOTES}/html_assemblies/{html_assembly_name}"
+        SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_REMOTE
+    else:
+        html_assembly_server_url = (
+            f"{config.ASSET_SERVER_ACCESS_URL}/html_assemblies/{html_assembly_name}"
+        )
+        SELENIUM_CONTAINERS = config.SELENIUM_CONTAINERS_LOCAL
+
     print(f"{html_assembly_server_url=}", flush=True)
 
     target_url = f"{html_assembly_server_url}/main.html"
@@ -50,7 +59,7 @@ def extract_png_sequence(html_assembly_name: str) -> str:
 
     # create webdriver threads / processes
     driver_threads_processes = list()
-    for index, driver_url in enumerate(config.SELENIUM_CONTAINERS):
+    for index, driver_url in enumerate(SELENIUM_CONTAINERS):
         if config.USE_THREADS:
             driver_thread_process = threading.Thread(
                 target=png_capture,
