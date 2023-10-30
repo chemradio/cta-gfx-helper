@@ -11,7 +11,7 @@ from video_gfx.png_extractor_logic.png_capture import png_capture
 
 FPS = 25
 USE_LOCAL_SELENIUM = True
-USE_REMOTE_SELENIUM = True
+USE_REMOTE_SELENIUM = os.getenv("USE_REMOTE_SELENIUM", False)
 
 
 def extract_png_sequence(html_assembly_name: str) -> str:
