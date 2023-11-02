@@ -1,12 +1,13 @@
 {
-    "singleLayer": false,
-    "backgroundClass": "",
-    "backgroundPath": "",
-    "foregroundClass": "",
-    "roundCorners": true,
-    "foregroundPath": "",
-    "quoteEnabled": true,
-    "quoteTextText": "",
-    "quoteAuthorText": "",
-    "animationDuration": 1
+	"verticalResolution": 1080,
+	"singleLayer": false,
+	"backgroundClass": "",
+	"backgroundPath": "",
+	"foregroundClass": "",
+	"roundCorners": true,
+	"foregroundPath": "",
+	"quoteEnabled": true,
+	"quoteTextText": "",
+	"quoteAuthorText": "",
+	"animationDuration": 1
 }

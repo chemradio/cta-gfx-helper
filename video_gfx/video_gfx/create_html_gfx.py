@@ -31,6 +31,7 @@ def create_html(parameters: dict, html_assembly_path: str) -> str:
                 continue
 
         # edit template files
+        parameters["verticalResolution"] = os.environ.get("VERTICAL_RESOLUTION", 1080)
         config_json_path = os.path.join(html_assembly_path, "config.json")
         with open(config_json_path, "w+") as config_file:
             json.dump(parameters, config_file)

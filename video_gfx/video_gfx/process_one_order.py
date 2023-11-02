@@ -2,6 +2,7 @@ import traceback
 from time import perf_counter
 
 import config
+
 from video_gfx.animation_configurator import create_animation_parameters
 from video_gfx.create_html_gfx import create_html
 from video_gfx.get_storage import get_order_files_from_storage_unit

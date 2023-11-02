@@ -1,13 +1,13 @@
 version: '3.9'
 services:
   db:
-    restart: always
+    restart: unless-stopped
     hostname: db
     image: mongo:6.0
     volumes:
       - ./mongodata:/data/db
   dispatcher:
-    restart: always
+    restart: unless-stopped
     build: ./dispatcher_engine
     volumes:
       - ./dispatcher_engine:/usr/src/app
@@ -26,7 +26,7 @@ services:
     ports:
       - "9000:9000"
   # front-svelte:
-  #   restart: always
+  #   restart: unless-stopped
   #   build: ./front_svelte
   #   platform: linux/arm64
   #   depends_on:
@@ -35,7 +35,7 @@ services:
   #   ports:
   #     - "80:80"
   bot-engine:
-    restart: always
+    restart: unless-stopped
     build: ./bot_engine
     volumes:
       - ./bot_engine:/usr/src/app
@@ -57,13 +57,13 @@ services:
     volumes:
     - ./sender_engine:/usr/src/app
   screenshot-selenium:
-    restart: always
+    restart: unless-stopped
     hostname: screenshot_selenium
     image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 2g
   screenshoter:
-    restart: always
+    restart: unless-stopped
     build: ./screenshot_engine
     volumes:
       - ./screenshot_engine:/usr/src/app
@@ -74,7 +74,7 @@ services:
     - dispatcher
     hostname: screenshoter
   storage-unit:
-    restart: always
+    restart: unless-stopped
     build: ./storage_unit
     platform: linux/arm64
     environment:
@@ -83,11 +83,12 @@ services:
     - dispatcher
     hostname: storage_unit
   video-gfx:
-    restart: always
+    restart: unless-stopped
     build: ./video_gfx
     platform: linux/arm64
     environment:
       IS_DOCKER: 1
+      VERTICAL_RESOLUTION: ${VERTICAL_RESOLUTION}
     depends_on:
     - dispatcher
     hostname: video_gfx
@@ -97,7 +98,7 @@ services:
     ports:
       - "9004:9004"
   video-gfx-selenium-1:
-    restart: always
+    restart: unless-stopped
     hostname: video_gfx_selenium_one
     image: seleniarm/standalone-chromium
     privileged: true
@@ -105,7 +106,7 @@ services:
     environment:
       - START_XVFB=false
   video-gfx-selenium-2:
-    restart: always
+    restart: unless-stopped
     hostname: video_gfx_selenium_two
     image: seleniarm/standalone-chromium
     privileged: true
@@ -113,7 +114,7 @@ services:
     environment:
       - START_XVFB=false
   video-gfx-selenium-3:
-    restart: always
+    restart: unless-stopped
     hostname: video_gfx_selenium_three
     image: seleniarm/standalone-chromium
     privileged: true

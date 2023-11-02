@@ -10,11 +10,9 @@ body {
 }
 
 .main-container {
-    max-width: 1920px;
-    width: 1920px;
-    max-height: 1080px;
-    height: 1080px;
-    overflow: hidden;
+    /* width: 1920px;
+    height: 1080px; */
+    /* overflow: hidden; */
 }
 
 .layer {
@@ -31,10 +29,9 @@ body {
 
 .background-container {
     display: flex;
-    height: 1080px;
+    height: inherit;
     justify-content: center;
     align-items: center;
-    clip-path: inset(0% 0% 0% 0%);
 }
 
 .midnightFoil {
@@ -46,12 +43,16 @@ body {
 
 .foreground-container {
     display: flex;
-    height: 1080px;
+    height: inherit;
     justify-content: center;
     align-items: center;
     clip-path: inset(0% 0% 0% 0%);
 }
 
+.vignette-image {
+    width: 100%;
+    height: 100%;
+}
 .quote-container {
     width: inherit;
     height: inherit;
@@ -66,10 +67,10 @@ body {
     /* opacity: .9; */
     max-width: 86%;
     max-height: 60%;
-    padding: 30px;
+    /* padding: 30px; */
     font-family: "Roboto Condensed";
-    font-size: 40px;
-    clip-path: inset(0% 0% 0% 0%);
+    /* font-size: 40px; */
+    /* clip-path: inset(0% 0% 0% 0%); */
 }
 
 .quote-text-text {
@@ -95,34 +96,67 @@ body {
 /* dynamic points */
 .bgScroll {
     align-self: flex-start;
-    max-width: 100%;
     width: 100%;
 }
 
 .bgZoom { 
-    max-width: 120%;
-    width: 120%;
+    /* max-width: 120%;
+    width: 120%; */
 }
+.horizontal-background-zoom {
+    height: 100%;
+    width: auto;
+}
+
+.vertical-background-zoom  {
+    width: 100%;
+    height: auto;
+}
+
 
 .bgOnly {
     align-self: flex-start;
-    max-width: 100%;
+    width: 100%;
     transform-origin: top center;
 }
 
+.horizontal-background-scroll {
+    height: 100%;
+    width: auto;
+}
+
+.vertical-background-scroll {
+    width: 100%;
+    height: auto;
+}
 
 /* fg */
 .facebook {
     align-self: flex-start;
     margin-top: 135px;
     width:52%;
-    max-width: 52%;
 }
 
 .twitter, .document, .instagram, .photo {
-    max-width: 60%;
-    max-height: 70%;
+    /* max-width: 60%;
+    max-height: 70%; */
+    /* width:auto;
+    height:auto; */
+    /* object-fit: contain; */
 }
+
+.horizontal-foreground-zoom {
+    width: 60%;
+    height: auto;
+
+}
+
+.vertical-foreground-zoom  {
+    height: 70%;
+    width: auto;
+
+}
+
 
 /* round corners */
 .round-corners {
