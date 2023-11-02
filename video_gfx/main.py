@@ -44,6 +44,7 @@ async def start_video_gfx():
 
 
 async def main():
+    print(os.environ, flush=True)
     config = uvicorn.Config(
         "main:app",
         port=int(os.environ.get("video_gfx_port", 9004)),

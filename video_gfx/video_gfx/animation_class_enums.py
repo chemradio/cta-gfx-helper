@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 
 
@@ -44,6 +45,7 @@ class AnimationParameters:
         self.audio_path = audio_path
         self.audio_enabled = audio_enabled if self.audio_path else False
         self.animation_duration = animation_duration
+        self.vertical_resolution = os.getenv("VERTICAL_RESOLUTION")
 
     def calc_duration(self):
         pass
@@ -62,6 +64,7 @@ class AnimationParameters:
             "audioEnabled": self.audio_enabled,
             "audioPath": self.audio_path,
             "animationDuration": self.animation_duration,
+            "verticalResolution": self.vertical_resolution,
         }
 
         return output

@@ -1,3 +1,5 @@
+import os
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -12,10 +14,12 @@ def create_driver(driver_url: str) -> webdriver.Remote:
     # chrome_options.add_argument("--no-sandbox")
     # chrome_options.add_argument("-–disable-gpu")
 
+    vertical_resolution = int(os.environ.get("VERTICAL_RESOLUTION", 1080))
+    horizontal_resolution = vertical_resolution / 9 * 16
     device_emulation = {
         "deviceMetrics": {
-            "width": 1920,
-            "height": 1080,
+            "width": horizontal_resolution,
+            "height": vertical_resolution,
             "pixelRatio": 1,
         },
     }
