@@ -1,8 +1,8 @@
+import config
 import ffmpeg
 
-import config
-
 encode_settings = {
+    "s": "1920x1080",
     "video_bitrate": config.VIDEO_BITRATE_BPS,
     "audio_bitrate": config.AUDIO_BITRATE_BPS,
     "crf": 13,
