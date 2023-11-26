@@ -1,8 +1,7 @@
 import base64
 import json
+import os
 from io import BytesIO
-
-from selenium import webdriver
 
 from screenshots.logic.controllers.routines.screenshot_routines import (
     ScreenshotRoutines,
@@ -13,6 +12,7 @@ from screenshots.logic.type_classes.post_location_size import (
 )
 from screenshots.logic.type_classes.screenshot import Screenshot
 from screenshots.logic.type_classes.screenshot_role import ScreenshotRole
+from selenium import webdriver
 
 
 def capture_screenshot(
@@ -25,6 +25,12 @@ def capture_screenshot(
     elif role == ScreenshotRole.FULL_SIZE:
         target_element = ScreenshotRoutines.profile_workflow(driver)
 
+    # optional font smoothing - ON by default
+    if os.environ.get("FONT_SMOOTHING", True):
+        driver.execute_script(
+            'document.querySelector("body").style.textShadow = "0px 0px 1px rgba(0,0,0,1)"'
+        )
+
     post_coordinates = PostCoordinates(
         x=target_element.location["x"],
         y=target_element.location["y"],
@@ -33,6 +39,7 @@ def capture_screenshot(
         width=target_element.size["width"],
         height=target_element.size["height"],
     )
+
     chrome_screenshot = driver.command_executor._request(
         "POST",
         driver.command_executor._url

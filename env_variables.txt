@@ -1,9 +1,12 @@
 # Declare this environment variables for bot to function
-REGISTER_PASSPHRASE - string
-BOT_ADMIN_PASSWORD - string
-BOT_ADMIN_EMAIL - email
+REGISTER_PASSPHRASE string
+BOT_ADMIN_PASSWORD string
+BOT_ADMIN_EMAIL email
 POSTGRES_PASSWORD
 JWT_SECRET
+VERTICAL_RESOLUTION int
+HORIZONTAL_RESOLUTION int
+FONT_SMOOTHING int 0 or 1
 
 #
 JSON-design cookie file should be also provided for the bot to be able to authenticate to social networks.
