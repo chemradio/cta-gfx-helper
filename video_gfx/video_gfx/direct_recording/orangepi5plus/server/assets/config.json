@@ -1,0 +1,13 @@
+{
+	"verticalResolution": 1080,
+	"singleLayer": false,
+	"backgroundClass": "bgScroll",
+	"backgroundPath": "01_BG_original.png",
+	"foregroundClass": "facebook",
+	"roundCorners": true,
+	"foregroundPath": "02_FG_original.png",
+	"quoteEnabled": true,
+	"quoteTextText": "the scariest part of the #AppleEvent so far is that they keep comparing the new M3 chip to the M1, not the M2",
+	"quoteAuthorText": "Linus Tech Tips",
+	"animationDuration": 5
+}

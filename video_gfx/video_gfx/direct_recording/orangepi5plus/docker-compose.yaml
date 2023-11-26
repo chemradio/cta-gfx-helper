@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  server:
+    build: ./server
+    ports:
+      - "9000:9000"
+  chromium:
+    build: ./chromium
+    depends_on:
+      - server
+    ports:
+      - "9001:9001"
+    privileged: true
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      -  DISPLAY=${DISPLAY}
+    shm_size: 3g
+  recorder:
+    build: ./recorder
+    environment:
+      -  DISPLAY=${DISPLAY}
+    volumes:
+      - ./recorder:/usr/src/app
+      # - /tmp/.X11-unix:/tmp/.X11-unix
+    depends_on:
+      - chromium
+    ports:
+      - "9002:9002"
+    shm_size: 5g
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2'
+    #       # memory: 1g
+
+  controller:
+    build: ./controller
+    # depends_on:
+    #   - recorder  

@@ -1,0 +1,167 @@
+@font-face {
+    font-family: "Roboto Condensed";
+    src: url("./RobotoCondensed-VariableFont_wght.ttf") format("woff2");
+    font-weight: 125 950;
+    font-stretch: 75% 125%;
+    font-style: normal;
+  }
+body {
+    margin: 0;
+}
+
+.main-container {
+    /* width: 1920px;
+    height: 1080px; */
+    /* overflow: hidden; */
+}
+
+.layer {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    overflow: hidden;
+}
+
+.midnightBG {
+    background-color: #102C44;
+    opacity: 1;
+}
+
+.background-container {
+    display: flex;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+}
+
+.midnightFoil {
+    width: 100%;
+    height: 100%;
+    background-color: #102C44;
+    opacity: 0.8;
+}
+
+.foreground-container {
+    display: flex;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+    clip-path: inset(0% 0% 0% 0%);
+}
+
+.vignette-image {
+    width: 100%;
+    height: 100%;
+}
+.quote-container {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quote-box {
+    background-color: #0ECAE3;
+    /* backdrop-filter: blur(200px); */
+    /* opacity: .9; */
+    max-width: 86%;
+    max-height: 60%;
+    /* padding: 30px; */
+    font-family: "Roboto Condensed";
+    /* font-size: 40px; */
+    /* clip-path: inset(0% 0% 0% 0%); */
+}
+
+.quote-text-text {
+    margin: 0;
+}
+
+.quote-author-text {
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.midnight {
+    background-color: #102C44;
+    width: inherit;
+    height: inherit;
+}
+
+.singleLayerTrigger {
+    opacity: 0;
+}
+
+/* dynamic points */
+.bgScroll {
+    align-self: flex-start;
+    width: 100%;
+    will-change: transform;
+
+}
+
+.bgZoom { 
+    /* max-width: 120%;
+    width: 120%; */
+}
+.horizontal-background-zoom {
+    height: 100%;
+    width: auto;
+}
+
+.vertical-background-zoom  {
+    width: 100%;
+    height: auto;
+}
+
+
+.bgOnly {
+    align-self: flex-start;
+    width: 100%;
+    transform-origin: top center;
+}
+
+.horizontal-background-scroll {
+    height: 100%;
+    width: auto;
+}
+
+.vertical-background-scroll {
+    width: 100%;
+    height: auto;
+}
+
+/* fg */
+.facebook {
+    align-self: flex-start;
+    margin-top: 135px;
+    width:52%;
+    will-change: transform;
+}
+
+.twitter, .document, .instagram, .photo {
+    /* max-width: 60%;
+    max-height: 70%; */
+    /* width:auto;
+    height:auto; */
+    /* object-fit: contain; */
+}
+
+.horizontal-foreground-zoom {
+    width: 60%;
+    height: auto;
+
+}
+
+.vertical-foreground-zoom  {
+    height: 70%;
+    width: auto;
+
+}
+
+
+/* round corners */
+.round-corners {
+    border-radius: 25px;
+}
