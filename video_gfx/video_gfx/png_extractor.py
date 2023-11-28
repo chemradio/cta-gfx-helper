@@ -7,7 +7,7 @@ import config
 
 from video_gfx.helpers.timeline_splitter import split_timeline_segments
 from video_gfx.png_extractor_logic.create_driver import create_driver
-from video_gfx.png_extractor_logic.png_capture import png_capture
+from video_gfx.png_extractor_logic.png_capture import png_capture, png_capture_buffered
 
 FPS = 25
 USE_LOCAL_SELENIUM = True
