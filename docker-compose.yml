@@ -94,7 +94,7 @@ services:
     hostname: video_gfx
     volumes:
       - ./video_gfx:/usr/src/app
-    shm_size: 3g
+    shm_size: 2g
     ports:
       - "9004:9004"
   video-gfx-selenium-1:
@@ -102,22 +102,25 @@ services:
     hostname: video_gfx_selenium_one
     build: ./seleniarm_custom
     privileged: true
-    shm_size: 3g
+    shm_size: 2g
     environment:
       - START_XVFB=false
+      - SE_START_VNC=false
   video-gfx-selenium-2:
     restart: unless-stopped
     hostname: video_gfx_selenium_two
     build: ./seleniarm_custom
     privileged: true
-    shm_size: 3g
+    shm_size: 2g
     environment:
       - START_XVFB=false
+      - SE_START_VNC=false
   video-gfx-selenium-3:
     restart: unless-stopped
     hostname: video_gfx_selenium_three
     build: ./seleniarm_custom
     privileged: true
-    shm_size: 3g
+    shm_size: 2g
     environment:
       - START_XVFB=false
+      - SE_START_VNC=false
