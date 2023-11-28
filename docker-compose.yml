@@ -59,7 +59,7 @@ services:
   screenshot-selenium:
     restart: unless-stopped
     hostname: screenshot_selenium
-    image: seleniarm/standalone-chromium
+    build: ./seleniarm_custom
     privileged: true
     shm_size: 2g
   screenshoter:
@@ -100,7 +100,7 @@ services:
   video-gfx-selenium-1:
     restart: unless-stopped
     hostname: video_gfx_selenium_one
-    image: seleniarm/standalone-chromium
+    build: ./seleniarm_custom
     privileged: true
     shm_size: 3g
     environment:
@@ -108,7 +108,7 @@ services:
   video-gfx-selenium-2:
     restart: unless-stopped
     hostname: video_gfx_selenium_two
-    image: seleniarm/standalone-chromium
+    build: ./seleniarm_custom
     privileged: true
     shm_size: 3g
     environment:
@@ -116,7 +116,7 @@ services:
   video-gfx-selenium-3:
     restart: unless-stopped
     hostname: video_gfx_selenium_three
-    image: seleniarm/standalone-chromium
+    build: ./seleniarm_custom
     privileged: true
     shm_size: 3g
     environment:
