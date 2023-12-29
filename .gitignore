@@ -44,6 +44,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+seleniarm_custom/screenshot/config.ovpn
+seleniarm_custom/screenshot/credentials.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
