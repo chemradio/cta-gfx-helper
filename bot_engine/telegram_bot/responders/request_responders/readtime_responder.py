@@ -1,7 +1,7 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
+
 import config
-from telegram_bot.responders.bot_texts import Responses
 from telegram_bot.bot_instance import bot
-from telegram import ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 class ReadtimeResponder:
@@ -9,7 +9,7 @@ class ReadtimeResponder:
     async def ask_readtime_text(user_id):
         return await bot.send_message(
             chat_id=user_id,
-            text=Responses.readtime.send_text,
+            text="📝 Пришли сюда текст.",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -18,7 +18,7 @@ class ReadtimeResponder:
     async def bad_text(user_id):
         return await bot.send_message(
             chat_id=user_id,
-            text=Responses.readtime.bad_text,
+            text="📝 Это не текст. Скопируй текст в сообщение.",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -36,7 +36,7 @@ class ReadtimeResponder:
         )
         return await bot.send_message(
             chat_id=user_id,
-            text=Responses.readtime.set_speed,
+            text="📝 Выбери скорость чтения.",
             reply_markup=readtime_speed_keyboard,
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -46,7 +46,7 @@ class ReadtimeResponder:
         user_data = context.user_data
         speed = user_data["readtime_speed"]
         readtime = user_data["readtime_result"]
-        results_text = Responses.readtime.results.format(speed=speed, readtime=readtime)
+        results_text = f"📝 На скорости {speed} слов в минуту хрон текста - {readtime}"
 
         return await bot.send_message(
             chat_id=user_id,

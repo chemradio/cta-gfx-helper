@@ -1,12 +1,11 @@
 from telegram import Update
 from telegram.ext import ContextTypes
-from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
-from config import Readspeed
-from telegram_bot.responders.main_responder import Responder
-from telegram_bot.responders.bot_texts import Responses
 
-from telegram_bot.utils.calc_readtime import calc_readtime
+from config import Readspeed
 from container_interaction.orders_db import add_order_to_db
+from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
+from telegram_bot.responders.main_responder import Responder
+from telegram_bot.utils.calc_readtime import calc_readtime
 
 
 async def readtime_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -41,9 +40,7 @@ async def readtime_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
             }
             await update.callback_query.answer(cache_time=180)
             await update.callback_query.edit_message_text(
-                text=Responses.readtime.set_speed_responded.format(
-                    speed=trans_map[update.callback_query.data]
-                )
+                text=f"📝 Скорость чтения: {trans_map[update.callback_query.data]}."
             )
             readspeed: Readspeed = speed_map[update.callback_query.data]
             user_data.update({"readtime_speed": readspeed.value})

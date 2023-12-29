@@ -3,7 +3,6 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRe
 import config
 from container_interaction.helpers import UserPermission
 from telegram_bot.bot_instance import bot
-from telegram_bot.responders.bot_texts import Responses
 
 
 class RegisterAdminResponder:
@@ -13,13 +12,13 @@ class RegisterAdminResponder:
             [
                 [
                     InlineKeyboardButton(
-                        Responses.register.approve_inline,
+                        "✅ Одобрить",
                         callback_data=f"approve_{user_id}",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.register.block_inline,
+                        "❌ Заблокировать",
                         callback_data=f"block_{user_id}",
                     )
                 ],
@@ -27,7 +26,7 @@ class RegisterAdminResponder:
         )
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.register.register_applied_admin.format(
+            text="👤 💡 Новая заявка на регистрацию.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                 first_name=first_name, telegram_id=user_id
             ),
             reply_markup=register_markup,
@@ -38,7 +37,7 @@ class RegisterAdminResponder:
     async def register_approved(admin_id, user_id, first_name):
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.register.register_approved_admin.format(
+            text="👤 ✅ Заявка на регистрацию одобрена.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                 first_name=first_name, telegram_id=user_id
             ),
             reply_markup=ReplyKeyboardRemove(),
@@ -49,7 +48,7 @@ class RegisterAdminResponder:
     async def register_blocked(admin_id, user_id, first_name):
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.register.register_blocked_admin.format(
+            text="👤 ❌ Пользователь заблокирован.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                 first_name=first_name, telegram_id=user_id
             ),
             reply_markup=ReplyKeyboardRemove(),
@@ -60,7 +59,7 @@ class RegisterAdminResponder:
     async def register_pended(admin_id, user_id, first_name):
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.register.register_pended_admin.format(
+            text="👤 ❔ Пользователь в ожидании.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                 first_name=first_name, telegram_id=user_id
             ),
             reply_markup=ReplyKeyboardRemove(),
@@ -75,17 +74,17 @@ class RegisterAdminResponder:
     async def list_user(admin_id, user_status: UserPermission, user_id, first_name):
         match user_status:
             case UserPermission.APPROVED:
-                text = Responses.register.list_approved_user.format(
+                text = "👤 ✅ Одобренный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                     first_name=first_name, telegram_id=user_id
                 )
 
             case UserPermission.PENDING:
-                text = Responses.register.list_pending_user.format(
+                text = "👤 ❔ Неодобренный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                     first_name=first_name, telegram_id=user_id
                 )
 
             case UserPermission.BLOCKED:
-                text = Responses.register.list_blocked_user.format(
+                text = "👤 ❌ Заблокированный пользователь.\n\nИмя: {first_name}\nTelegram ID: {telegram_id}".format(
                     first_name=first_name, telegram_id=user_id
                 )
 
@@ -96,19 +95,19 @@ class RegisterAdminResponder:
             [
                 [
                     InlineKeyboardButton(
-                        Responses.register.approve_inline,
+                        "✅ Одобрить",
                         callback_data=f"approve_{user_id}",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.register.block_inline,
+                        "❌ Заблокировать",
                         callback_data=f"block_{user_id}",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.register.pend_inline,
+                        "❔ Решить позже",
                         callback_data=f"pend_{user_id}",
                     )
                 ],
@@ -126,7 +125,7 @@ class RegisterAdminResponder:
     async def empty_users_list(admin_id):
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.register.empty_users_list,
+            text="👤... Пользователи с таким критерием отсутствуют",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
