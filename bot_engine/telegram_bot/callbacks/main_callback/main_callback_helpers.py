@@ -1,7 +1,5 @@
 from telegram import Update
 
-from telegram_bot.responders.bot_texts import Responses
-
 # import callbacks
 
 

@@ -159,39 +159,7 @@ class ResultsResponses:
 
 
 @dataclass
-class AdminResponses:
-    admin_panel: str = "⌘ Панель администратора"
-
-    list_10_orders: str = "🧾 Последние 10 заказов"
-    list_active_orders: str = "⏳ Активные заказы"
-
-    list_approved_users: str = "👍 Одобренные пользователи"
-    list_blocked_users: str = "🛑 Заблокированные пользователи"
-    list_pending_users: str = "❔ Ожидающие пользователи"
-
-    cancel_order: str = "🛑 Отменить заказ"
-
-    list_single_order: str = """Заказ № {order_id}
-
-Статус: {status}
-
-Заказчик: {customer_name}
-Тип заказа: {request_type}
-Cтатус: {status}
-Время ожидания: {wait_time}
-
-Ссылка: {link}
-Цитата: {quote_text}
-Автор цитаты: {quote_author}
-Звук: {audio_enabled}"""
-
-    missing_orders = "😶 Заказы с таким критерием отсутствуют."
-    cookie_file_upload_failed: str = "Ошибка загрузки cookie-файла"
-
-
-@dataclass
 class Responses:
-    admin = AdminResponses
     error = ErrorResponses
     quote = QuoteResponses
     audio = AudioResponses

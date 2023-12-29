@@ -5,7 +5,6 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRe
 import config
 from config import REQUEST_TYPE_TEMP_MAP
 from telegram_bot.bot_instance import bot
-from telegram_bot.responders.bot_texts import Responses
 
 
 class ResultsResponder:
@@ -13,7 +12,7 @@ class ResultsResponder:
     async def results_correct(user_id: int):
         return await bot.send_message(
             chat_id=user_id,
-            text=Responses.results.results_correct,
+            text="✅ Заказ принят, ожидай. Или начни следющий - /start",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -22,7 +21,7 @@ class ResultsResponder:
     async def results_incorrect(user_id: int):
         return await bot.send_message(
             chat_id=user_id,
-            text=Responses.results.results_incorrect,
+            text="❌ Заказ отменен. Начать новый - /start",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -32,7 +31,7 @@ class ResultsResponder:
         """Prompt user the results."""
         results_message = str("РЕЗУЛЬТАТЫ:\n\n")
         request_type = REQUEST_TYPE_TEMP_MAP[user_data.get("request_type")]
-        results_message += f"{Responses.results.request_type}: {request_type}\n\n"
+        results_message += f"🍱 Тип заказа: {request_type}\n\n"
 
         if request_type == "readtime":
             readtime_text = user_data.get("readtime_text")
@@ -72,28 +71,24 @@ class ResultsResponder:
         audio_enabled: bool = user_data.get("audio_enabled")
 
         if link:
-            results_message += f"{Responses.results.link} {link}\n\n"
+            results_message += f"🔗 Ссылка для графики: {link}\n\n"
         if bg_animation:
             results_message += (
-                f"{Responses.results.bg_animation} {bg_animation.capitalize()}\n"
+                f"🎨 Анимация заднего плана: {bg_animation.capitalize()}\n"
             )
         if fg_enabled:
             results_message += (
-                f"{Responses.results.fg_animation} {fg_animation.capitalize()}\n\n"
+                f"🎨 Анимация переднего плана: {fg_animation.capitalize()}\n\n"
             )
 
         if quote_enabled:
-            results_message += (
-                f"{Responses.results.quote_text} {html.escape(quote_text)}\n"
-            )
+            results_message += f"📜 Текст цитаты: {html.escape(quote_text)}\n"
 
         if quote_author_enabled:
-            results_message += f"{Responses.results.quote_author_text} {html.escape(quote_author_text)}\n\n"
+            results_message += f"📜 Автор цитаты: {html.escape(quote_author_text)}\n\n"
 
         if audio_enabled:
-            results_message += (
-                f"{Responses.results.audio_enabled} {temp_map[audio_enabled]}\n"
-            )
+            results_message += f"🔊 Аудио-файл: {temp_map[audio_enabled]}\n"
 
         user_data.update({"results_message": results_message})
         return await bot.send_message(

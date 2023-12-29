@@ -1,7 +1,7 @@
-import config
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
+
+import config
 from telegram_bot.bot_instance import bot
-from telegram_bot.responders.bot_texts import Responses
 
 
 class AdminPanelResponder:
@@ -11,31 +11,31 @@ class AdminPanelResponder:
             [
                 [
                     InlineKeyboardButton(
-                        Responses.admin.list_10_orders,
+                        "🧾 Последние 10 заказов",
                         callback_data=f"admin_list_10_orders",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.admin.list_active_orders,
+                        "⏳ Активные заказы",
                         callback_data=f"admin_list_active_orders",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.admin.list_approved_users,
+                        "👍 Одобренные пользователи",
                         callback_data=f"admin_list_approved_users",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.admin.list_blocked_users,
+                        "🛑 Заблокированные пользователи",
                         callback_data=f"admin_list_blocked_users",
                     )
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.admin.list_pending_users,
+                        "❔ Ожидающие пользователи",
                         callback_data=f"admin_list_pending_users",
                     )
                 ],
@@ -50,7 +50,7 @@ class AdminPanelResponder:
 
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.admin.admin_panel,
+            text="⌘ Панель администратора",
             reply_markup=admin_panel_markup,
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
@@ -61,14 +61,26 @@ class AdminPanelResponder:
             [
                 [
                     InlineKeyboardButton(
-                        Responses.admin.cancel_order,
+                        "🛑 Отменить заказ",
                         callback_data=f"admin_cancel_order_{order['id']}",
                     )
                 ],
             ]
         )
 
-        message_text = Responses.admin.list_single_order.format(
+        message_text = """Заказ № {order_id}
+
+Статус: {status}
+
+Заказчик: {customer_name}
+Тип заказа: {request_type}
+Cтатус: {status}
+Время ожидания: {wait_time}
+
+Ссылка: {link}
+Цитата: {quote_text}
+Автор цитаты: {quote_author}
+Звук: {audio_enabled}""".format(
             order_id=order.get("id"),
             customer_name=order["user"].get("first_name"),
             customer_email=order["user"].get("email"),
@@ -93,9 +105,9 @@ class AdminPanelResponder:
     @staticmethod
     async def cookie_file_upload_status(admin_id, status: bool):
         if status is True:
-            text = Responses.admin.cookie_file_successfully_uploaded
+            text = "Cookie-файл успешно загружен"
         else:
-            text = Responses.admin.cookie_file_upload_failed
+            text = "Ошибка загрузки cookie-файла"
 
         return await bot.send_message(
             chat_id=admin_id,
@@ -109,7 +121,7 @@ class AdminPanelResponder:
     async def missing_orders(admin_id):
         return await bot.send_message(
             chat_id=admin_id,
-            text=Responses.admin.missing_orders,
+            text="😶 Заказы с таким критерием отсутствуют.",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
             disable_web_page_preview=True,

@@ -4,8 +4,6 @@ from pathlib import Path
 
 from telegram.constants import ParseMode
 
-from telegram_bot.responders.bot_texts import Responses
-
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
 GLOBAL_MESSAGE_PARSE_MODE = ParseMode.HTML
 VOLUME_MOUNTPOINT = Path().cwd() / "volume"
@@ -25,11 +23,11 @@ class Readspeed(Enum):
 
 
 REQUEST_TYPE_TEMP_MAP = {
-    "video_auto": Responses.request_options.video_auto,
-    "video_files": Responses.request_options.video_files,
-    "video_mixed": Responses.request_options.video_mixed,
-    "only_screenshots": Responses.request_options.only_screenshots,
-    "readtime": Responses.request_options.readtime,
+    "video_auto": "Графика из ссылки",
+    "video_files": "Графика из файлов",
+    "video_mixed": "Графика из файла + скриншот",
+    "only_screenshots": "Только скриншоты",
+    "readtime": "Хрон текста",
 }
 
 

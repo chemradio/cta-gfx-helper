@@ -2,14 +2,12 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import config
-from telegram_bot.callbacks.commands.start_callback import start_callback
 from telegram_bot.callbacks.only_screenshots.only_screenshots_callback import (
     only_screenshots_callback,
 )
 from telegram_bot.callbacks.readtime.readtime_callback import readtime_callback
 from telegram_bot.callbacks.video_auto.video_auto_callback import video_auto_callback
 from telegram_bot.callbacks.video_files.video_files_callback import video_files_callback
-from telegram_bot.responders.bot_texts import Responses
 
 
 async def request_type_callback(
@@ -26,7 +24,7 @@ async def request_type_callback(
         )
         await update.callback_query.answer(cache_time=180)
         await update.callback_query.edit_message_text(
-            text=f"{Responses.command.start_message_edited} {config.REQUEST_TYPE_TEMP_MAP[update.callback_query.data]}"
+            text=f"🍱 Тип заказа: {config.REQUEST_TYPE_TEMP_MAP[update.callback_query.data]}"
         )
     except:
         raise WrongRequestTypeResponse()
