@@ -80,3 +80,8 @@ function create_animation(config) {
 	// tail
 	// .to('tail-nonexistent', {duration: TAIL, y:'1100px'}, SCROLLDURATION);
 }
+
+document.querySelector("body").addEventListener("click", () => {
+	timeline.progress(0);
+	timeline.resume();
+});
