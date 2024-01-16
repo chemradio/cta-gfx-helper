@@ -154,19 +154,21 @@ function buildHTML(config) {
 
 		const prepText = preprocessString(config.quoteTextText);
 		const lines = splitStringParagraph(prepText);
+		let maxQuoteWidth = 0;
 		for (let i = 0; i < lines.length; i++) {
-			let quoteTextText = document.createElement('div');
+			let quoteTextText = document.createElement('p');
 			quoteTextText.setAttribute('class', 'quote-text-text');
 			quoteTextText.innerHTML = lines[i];
 			quoteBox.append(quoteTextText);
 		}
+		console.log(quoteBox.clientWidth)
 
 		if (config.quoteAuthorText) {
 			let quoteBreak = document.createElement('br');
-			let quoteAuthorText = document.createElement('div');
+			quoteBox.append(quoteBreak);
+			let quoteAuthorText = document.createElement('p');
 			quoteAuthorText.setAttribute('class', 'quote-author-text');
 			quoteAuthorText.innerHTML = config.quoteAuthorText;
-			quoteBox.append(quoteBreak);
 			quoteBox.append(quoteAuthorText);
 		}
 
@@ -178,6 +180,23 @@ function buildHTML(config) {
 	let tailPlaceholder = document.createElement('div');
 	tailPlaceholder.setAttribute('class', 'tail-nonexistent layer');
 	mainContainer.append(tailPlaceholder);
+
+	let quoteBox = document.querySelector('.quote-box');
+	let firstQuoteTextLine = document.querySelector('.quote-text-text');
+	let quoteLines = document.querySelectorAll('.quote-text-text');
+	let maxQuoteWidth = 0;
+	for (let i = 0; i < quoteLines.length; i++) {
+		if (quoteLines[i].clientWidth > maxQuoteWidth) {
+			maxQuoteWidth = quoteLines[i].clientWidth;
+		}
+	}
+	quoteBox.style.width = maxQuoteWidth +1+ 'px';
+
+	let quoteAuthorText = document.querySelector('.quote-author-text');
+	quoteAuthorText.style.fontSize =  '40px';
+
+	// let quoteAuthorText = document.querySelector('.quote-author-text');
+	// quoteAuthorText.style.width = firstQuoteTextLine.clientWidth+"px";
 }
 
 function splitStringParagraph(longString) {
@@ -220,7 +239,7 @@ function splitStringParagraph(longString) {
 
 			while (true) {
 				let lastWhite = firstString.lastIndexOf(' ');
-				if (targetIndex - lastWhite <= 4) {
+				if (targetIndex - lastWhite <= 2) {
 					let chunk = firstString.slice(lastWhite);
 					firstString = firstString.slice(0, lastWhite);
 					secondString = chunk + ' ' + secondString;
@@ -251,7 +270,7 @@ function preprocessString(text) {
 		text = text.replace('Ё', 'Е');
 		text = text.replace('«', '"');
 		text = text.replace('»', '"');
-		text = text.replace(' - ', ' – ');
+		text = text.replace(' - ', ' – ');
 	}
 	text = text.replace(/^\s+|\s+$/g, '');
 	while (text.indexOf('  ') > -1) {
