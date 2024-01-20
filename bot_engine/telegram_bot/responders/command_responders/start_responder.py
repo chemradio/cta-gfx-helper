@@ -1,7 +1,7 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+
 import config
-from telegram_bot.responders.bot_texts import Responses
 from telegram_bot.bot_instance import bot
-from telegram import ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 class StartResponder:
@@ -11,32 +11,30 @@ class StartResponder:
             [
                 [
                     InlineKeyboardButton(
-                        Responses.request_options.video_auto, callback_data="video_auto"
+                        "Графика из ссылки", callback_data="video_auto"
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.request_options.video_files,
+                        "Графика из файлов",
                         callback_data="video_files",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        Responses.request_options.only_screenshots,
+                        "Только скриншоты",
                         callback_data="only_screenshots",
                     ),
                 ],
                 [
-                    InlineKeyboardButton(
-                        Responses.request_options.readtime, callback_data="readtime"
-                    ),
+                    InlineKeyboardButton("Хрон текста", callback_data="readtime"),
                 ],
             ]
         )
 
         await bot.send_message(
             chat_id=user_id,
-            text=Responses.command.start_message,
+            text="🍱 Выбери тип заказа",
             reply_markup=order_type_markup,
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
