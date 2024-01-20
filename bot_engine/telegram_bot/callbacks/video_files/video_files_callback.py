@@ -10,7 +10,6 @@ from telegram_bot.callbacks.shared_callbacks.audio_callback import audio_callbac
 from telegram_bot.callbacks.shared_callbacks.quote_callback import quote_callback
 from telegram_bot.callbacks.shared_callbacks.results_callback import results_callback
 from telegram_bot.callbacks.video_files.formatter import format_video_files_user_data
-from telegram_bot.responders.bot_texts import Responses
 from telegram_bot.responders.main_responder import Responder
 from telegram_bot.utils.check_url import check_is_url
 
