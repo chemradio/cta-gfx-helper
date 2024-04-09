@@ -26,12 +26,14 @@ class CookieFileGenerator:
         self.chrome_options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
+        # self.chrome_options.binary_location="/Applications/Google Chrome.app"
 
     def login_to_social(self) -> bool:
         for domain in self.login_required:
             self.driver = webdriver.Chrome(
                 options=self.chrome_options,
-                service=Service(ChromeDriverManager().install()),
+                executable_path="/Users/timurtimaev/code/cta-gfx-helper/utils/cookie_file_generator/chromedriver"
+                # service=Service(ChromeDriverManager().install()),
             )
             self.driver.implicitly_wait(5)
             website_link = self.social_websites.get(domain)
