@@ -22,7 +22,7 @@ class BrowserAuthorizer:
     ):
         website_link = config.SOCIAL_WEBSITES[domain]
         driver.get(website_link)
-        CookieManager.add_domain_cookies(domain=domain, driver=driver)
+        CookieManager.add_cookies_driver(domain=domain, driver=driver)
         time.sleep(2)
         driver.refresh()
 

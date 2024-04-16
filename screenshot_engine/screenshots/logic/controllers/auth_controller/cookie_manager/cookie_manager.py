@@ -39,7 +39,7 @@ class CookieManager:
             json.dump(stored_cookies, cookie_file)
 
     @classmethod
-    def add_domain_cookies(
+    def add_cookies_driver(
         cls, domain: str, driver: webdriver.Chrome | webdriver.Remote
     ) -> None:
         """Add specific domain cookies to webdriver."""

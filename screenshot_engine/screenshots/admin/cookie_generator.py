@@ -18,7 +18,7 @@ def generate_cookies() -> None:
         driver.get(website_link)
 
         try:
-            CookieManager.add_domain_cookies(domain, driver)
+            CookieManager.add_cookies_driver(domain, driver)
             time.sleep(2)
             driver.refresh()
         except:
