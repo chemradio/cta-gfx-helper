@@ -1,40 +1,39 @@
 from fastapi import FastAPI, HTTPException, Depends, Body, BackgroundTasks
 from pydantic.networks import AnyHttpUrl
 from queue_manager.queue_manager import QueueManager
+from utils.generate_filename import generate_filename, ScreenshotFilenameType
+from utils.generate_order_id import generate_order_id
+from screenshots.logic.controllers.auth_controller.cookie_manager.cookie_manager import (
+    CookieManager,
+)
+
+CookieManager.initialize_cookie_storage()
+queue = QueueManager()
 
 app = FastAPI()
-queue = QueueManager()
 
 
 @app.post("/")
 async def capture_screenshots(
     background_tasks: BackgroundTasks,
-    screenshot_link: AnyHttpUrl=Body(...),
+    screenshot_link: AnyHttpUrl = Body(...),
 ):
     # if not secret_key:
     #     raise HTTPException(status_code=403, detail="Unauthorized request.")
 
-    queue.append(screenshot_link)
-    background_tasks.add_task(queue.start_processing, operator=...
-                            #   time.sleep
-                              )
+    order = {
+        "order_id": generate_order_id(),
+        "screenshot_link": screenshot_link,
+        "bg_filename": generate_filename(ScreenshotFilenameType.BACKGROUND),
+        "fg_filename": generate_filename(ScreenshotFilenameType.FOREGROUND),
+    }
+    queue.append(order)
+    background_tasks.add_task(queue.start_processing, operator=...)
+
+    return order
 
 
 
-
-
-
-# from screenshots.logic.controllers.auth_controller.cookie_manager.cookie_manager import (
-#     CookieManager,
-# )
-# from screenshots.screenshot_order_processor import screenshooter_thread
-
-
-# CookieManager.initialize_cookie_storage()
-
-
-# function just as previous but with anyhttp url verificcation from the request body
-# and secret key verification
 
 
 # @app.get("/")
