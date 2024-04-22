@@ -2,16 +2,16 @@ import config
 import ffmpeg
 
 encode_settings = {
-    "s": "1920x1080",
-    "video_bitrate": config.VIDEO_BITRATE_BPS,
-    "audio_bitrate": config.AUDIO_BITRATE_BPS,
-    "crf": 13,
-    "vcodec": "libx264",
     "pix_fmt": "yuv420p",
-    "color_range": 1,
-    "movflags": "+write_colr",
-    "vf": "scale=out_color_matrix=bt709:out_range=limited",
-    "bsf:v": "h264_metadata=video_full_range_flag=0",
+    "vf": "scale=in_color_matrix=bt709:out_color_matrix=bt709",
+    "c:v": "libx264",
+    "preset": "slower",
+    "colorspace": "bt709",
+    "color_primaries": "bt709",
+    "color_trc": "iec61966-2-1",
+    "c": "copy",
+    "bsf": "h264_metadata=video_full_range_flag=0",
+    "crf": 15,
 }
 
 
