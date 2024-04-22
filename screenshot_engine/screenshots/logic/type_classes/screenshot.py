@@ -24,3 +24,10 @@ class ScreenshotResults:
     background: Screenshot | None = None
     foreground: Screenshot | None = None
     two_layer: bool = False
+
+
+@dataclass
+class ScreenshotOrder:
+    screenshot_link: str
+    bg_filename: str
+    fg_filename: str
