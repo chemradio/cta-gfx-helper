@@ -13,19 +13,12 @@ from screenshots.logic.controllers.routines.screenshot_routines import (
 from screenshots.logic.custom_driver.create_driver import create_driver
 from screenshots.logic.helpers.crop_screenshot import crop_screenshot
 from screenshots.logic.helpers.parse_link_type import parse_link_type
-from screenshots.logic.type_classes.screenshot import Screenshot, ScreenshotResults
+from screenshots.logic.type_classes.screenshot import ScreenshotResults
 from screenshots.logic.type_classes.screenshot_role import ScreenshotRole
 
 
-def capture_screenshots(order: dict) -> ScreenshotResults:
-    match order.get("request_type"):
-        case "video_mixed":
-            original_url = order.get("background_link")
-            clean_url, domain, _ = parse_link_type(original_url)
-            two_layer = False
-        case _:
-            original_url = order.get("link")
-            clean_url, domain, two_layer = parse_link_type(original_url)
+def capture_screenshots(url: str) -> ScreenshotResults:
+    clean_url, domain, two_layer = parse_link_type(url)
 
     # initialize empty screenshots
     foreground_screenshot, background_screenshot = None, None
@@ -50,9 +43,7 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
             Adblocker.remove_ads(driver)
             time.sleep(1)
 
-            foreground_screenshot = capture_screenshot(
-                driver, ScreenshotRole.POST, order.get("foreground_name")
-            )
+            foreground_screenshot = capture_screenshot(driver, ScreenshotRole.POST)
             foreground_screenshot = crop_screenshot(foreground_screenshot)
             profile_url = ScreenshotRoutines.extract_profile_url(driver)
             target_url = profile_url
@@ -69,9 +60,7 @@ def capture_screenshots(order: dict) -> ScreenshotResults:
     Adblocker.remove_ads(driver)
     time.sleep(1)
 
-    background_screenshot = capture_screenshot(
-        driver, ScreenshotRole.FULL_SIZE, order.get("background_name")
-    )
+    background_screenshot = capture_screenshot(driver, ScreenshotRole.FULL_SIZE)
     background_screenshot = crop_screenshot(background_screenshot)
 
     driver.quit()
