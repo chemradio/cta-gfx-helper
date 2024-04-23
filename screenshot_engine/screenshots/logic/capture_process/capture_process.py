@@ -18,7 +18,6 @@ from selenium import webdriver
 def capture_screenshot(
     driver: webdriver.Chrome | webdriver.Remote,
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
-    filename: str = "",
 ) -> Screenshot:
     if role == ScreenshotRole.POST:
         target_element = ScreenshotRoutines.post_workflow(driver)
@@ -61,5 +60,4 @@ def capture_screenshot(
         post_dimensions=post_dimensions,
         post_coordinates=post_coordinates,
         cropped=False,
-        filename=filename,
     )

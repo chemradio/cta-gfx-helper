@@ -3,7 +3,7 @@ token.txt
 .DS_Store
 volume/user_files/
 # volume/user_files/*
-
+storage/
 cookie_file.json
 volume/
 
