@@ -39,7 +39,7 @@ def create_driver(
             },
         )
 
-    if config.IS_DOCKER:
+    if config.USE_REMOTE_DRIVER:
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("-–disable-gpu")
         chrome_options.headless = True

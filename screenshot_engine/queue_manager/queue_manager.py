@@ -14,7 +14,7 @@ class QueueManager:
     def start_processing(self, operator: callable):
         if self._processing:
             print(
-                f"Already processing queue. Continue... Queue length: {len(self._queue)}"
+                f"Already processing queue. Continue... Queue length: {len(self._queue)+1}"
             )
             return
         Thread(target=self._process_queue, args=(operator,)).start()
