@@ -10,7 +10,7 @@ encode_settings = {
     "color_primaries": "bt709",
     "color_trc": "iec61966-2-1",
     "c": "copy",
-    "bsf": "h264_metadata=video_full_range_flag=0",
+    # "bsf": "h264_metadata=video_full_range_flag=0",
     "crf": 15,
 }
 
