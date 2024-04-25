@@ -21,7 +21,7 @@ SOCIAL_WEBSITES = {
 IS_DOCKER = os.environ.get("IS_DOCKER", False)
 
 DISPATCHER_NODE_URL = f"http://dispatcher:9000"
-REMOTE_SCREENSHOT_DRIVER_URL = f"http://screenshot_selenium:4444/wd/hub"
+REMOTE_SCREENSHOT_DRIVER_URL = f"http://screenshot_selenium:4444/wd/hub" if IS_DOCKER else "http://localhost:4444/wd/hub"
 USE_REMOTE_DRIVER = True
 
 

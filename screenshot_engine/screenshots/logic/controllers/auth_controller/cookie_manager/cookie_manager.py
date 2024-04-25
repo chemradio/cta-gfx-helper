@@ -80,3 +80,6 @@ class CookieManager:
     def _force_dump_cookies_dict(cookies: dict = {}) -> None:
         with open(config.COOKIE_FILE, "w") as cookie_file:
             json.dump(cookies, cookie_file)
+
+
+CookieManager.initialize_cookie_storage()
