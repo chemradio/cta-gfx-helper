@@ -1,0 +1,46 @@
+shared parts logic:
+    queue manager:
+        - operates queue
+        - starts operator instances on queue items
+        - starts queue item finisher
+        - adds db entries
+        - switches order status from new to processing
+        - switches order status to error, adds error message
+
+    queue item finisher - depr:
+        - stores result to storage
+        - notifies the customer of the order status
+
+    database handler:
+        - stores new order for reference only
+        - stores order result for providing output on finish to the customer
+
+    operator:
+        - handles the processing screenshot or videoGFX logic
+        - returns proprietary objects with the results to the Queue manager
+
+    order status api:
+        - checks if order is OK, error, processing from the db
+        - returns order details with status, timestamp, error message, output filenames
+
+    file server api:
+        - returns files on return
+        - deletes files on request
+
+
+
+object statuses
+
+
+
+
+in comes the order
+
+queue manager handles the order, passes to operator
+
+
+operator results: {
+    success: bool
+    
+
+}

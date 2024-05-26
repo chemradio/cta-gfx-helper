@@ -3,7 +3,7 @@ from screenshots.logic.screenshooter import capture_screenshots
 from screenshots.logic.type_classes.screenshot import ScreenshotResults
 
 
-def capture_processor(url: str) -> ScreenshotResults:
+def attempt_capture(url: str) -> ScreenshotResults:
     error_message = ''
     capture_attempts = config.SCREENSHOT_ATTEMPTS
     while capture_attempts:

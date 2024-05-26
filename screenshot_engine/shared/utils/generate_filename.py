@@ -3,20 +3,16 @@ import string
 from enum import Enum
 from datetime import datetime
 
-class ScreenshotFilenameType(Enum):
-    BACKGROUND = "1_BG"
-    FOREGROUND = "2_FG"
+class FilenameType(Enum):
+    SCREENSHOT_BACKGROUND = "1_BG_{}.png"
+    SCREENSHOT_FOREGROUND = "2_FG_{}.png"
+    VIDEOGFX_OUTPUT = "VideoGFX_{}.mp4"
 
 
 def generate_filename(
-    type: ScreenshotFilenameType = ScreenshotFilenameType.BACKGROUND,
+    type: FilenameType,
 ) -> str:
     random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=16))
-
-    # generate time in HH:MM:SS format
     time = datetime.now().strftime("%H_%M_%S")
-
-
-    return f"{type.value}_{time}_{random_string}.png"
-
+    return type.value.format(f"{time}_{random_string}")
 

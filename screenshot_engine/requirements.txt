@@ -5,3 +5,4 @@ python-multipart==0.0.9
 selenium==4.19.0
 uvicorn==0.29.0
 webdriver-manager==4.0.1
+tinydb==4.8.0
