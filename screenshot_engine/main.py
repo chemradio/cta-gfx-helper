@@ -1,19 +1,19 @@
 import config
 from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile
-from fastapi.responses import FileResponse
 from queue_manager.queue_manager import QueueManager
-from screenshots.logic.type_classes.screenshot import ScreenshotOrder
+from shared.orders.screenshot_order import ScreenshotOrder
 from screenshots.order_processor import process_screenshot_order
-from utils.api_pyclasses import (
-    ScreenshotOrderIn,
-    OrderCheck,
-    FileRequest,
-)
-from utils.find_asset import find_asset
+from shared.api.file_server.api_input_classes import OrderCheck
+from shared.api.file_server  import file_server_api
+from shared.orders.screenshot_order import ScreenshotOrderIn
+from shared.db import db_handler
 
 queue = QueueManager()
 app = FastAPI()
-db_handler = ...
+app.include_router(file_server_api.router)
+
+
+
 
 
 @app.post("/")
@@ -22,6 +22,7 @@ async def capture_screenshots(
     background_tasks: BackgroundTasks,
 ) -> dict:
     order = ScreenshotOrder(screenshot_link=screenshot_order.screenshot_link.__str__())
+    db_handler.add_order(order)
     queue.append(order)
     background_tasks.add_task(queue.start_processing, operator=process_screenshot_order)
     return order.to_dict()
@@ -33,25 +34,6 @@ async def check_order_status(
 ) -> dict:
     # return db_handler.get_order(order.order_id)
     ...
-
-
-@app.get("/file")
-async def download_screenshot(file_request: FileRequest):
-    file_path = find_asset(file_request.filename)
-    if not file_path:
-        raise HTTPException(status_code=404, detail="File not found")
-
-    return FileResponse(file_path, "image/png", filename=file_path.name)
-
-
-@app.delete("/file")
-async def delete_screenshot(file_request: FileRequest):
-    file_path = find_asset(file_request.filename)
-    if not file_path:
-        raise HTTPException(status_code=404, detail="File not found")
-
-    file_path.unlink()
-    return {"status": "deleted", "filename": file_path.name}
 
 
 @app.post("/cookie_file")
