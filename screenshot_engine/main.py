@@ -6,7 +6,7 @@ from screenshots.order_processor import process_screenshot_order
 from shared.api.file_server.api_input_classes import OrderCheck
 from shared.api.file_server  import file_server_api
 from shared.orders.screenshot_order import ScreenshotOrderIn
-from shared.db import db_handler
+from shared.database.db import db_handler
 
 queue = QueueManager()
 app = FastAPI()
