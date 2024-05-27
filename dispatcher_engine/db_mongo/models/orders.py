@@ -51,7 +51,8 @@ class Order(BaseModel):
 
     send_success: bool | None = None
 
-    quote_enabled: bool | None = None
+    # quote
+    quote_enabled: bool | None = False
     quote_text: str | None = None
     quote_author_enabled: bool | None = None
     quote_author_text: str | None = None

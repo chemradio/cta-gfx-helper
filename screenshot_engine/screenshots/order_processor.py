@@ -4,7 +4,7 @@ import config
 from screenshots.logic.type_classes.screenshot import ScreenshotResults
 from shared.orders.screenshot_order import ScreenshotOrder
 from screenshots.capture_processor import attempt_capture
-from shared.db import db_handler
+from shared.database.db import db_handler
 from shared.orders.order_base import OrderStatus
 
 

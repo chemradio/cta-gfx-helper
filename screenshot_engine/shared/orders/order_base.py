@@ -7,8 +7,7 @@ from enum import Enum
 class OrderStatus(str, Enum):
     NEW = "NEW"
     PROCESSING = "PROCESSING"
-    DONE = "DONE"
-    FAILED = "FAILED"
+    FINISHED = "FINISHED"
 
 
 @dataclass
@@ -17,6 +16,7 @@ class OrderBase:
     created: int = field(default_factory=lambda: int(time.time()))
     output: list[str] = field(default_factory=list)
     status: OrderStatus = OrderStatus.NEW
+    error: bool = False
     error_message: str = ""
     
     def to_dict(self):

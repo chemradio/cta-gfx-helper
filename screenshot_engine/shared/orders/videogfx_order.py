@@ -22,11 +22,20 @@ class VideoGfxOrderIn(pydantic.BaseModel):
 
 
 class VideoGfxOrder(OrderBase):
+    quote_enabled: bool | None = False
     quote_text: str | None = None
-    quote_author: str | None = None
-    bg_filename: str | None = None
-    fg_filename: str | None = None
-    audio_filename: str | None = None
+    quote_author_enabled: bool | None = None
+    quote_author_text: str | None = None
+
+    # video description
+    is_two_layer: bool | None = None
+    background_name: str | None = None
+    foreground_name: str | None = None
+
+    # audio
+    audio_name: str | None = None
+    audio_enabled: bool | None = None
+
     template: VideoGfxTemplate = VideoGfxTemplate.CT_AUTO
 
     # output

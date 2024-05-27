@@ -1,15 +1,28 @@
+## FLOW ##
+in comes the order
+    - validate the order
+    - pass it to the queue manager - get order id in return and start it
+    - return order_id - used to check order status
+
+customer checks order_id
+    - returns order details with output filenames, order status and error message
+
+file request
+    - returns fileResponse or 404
+    - deletes the file on request if needed, or custom delete request
+
+
+
+## LOGIC ##
 shared parts logic:
     queue manager:
         - operates queue
         - starts operator instances on queue items
-        - starts queue item finisher
+        - stores result (list of items) to storage
         - adds db entries
         - switches order status from new to processing
         - switches order status to error, adds error message
-
-    queue item finisher - depr:
-        - stores result to storage
-        - notifies the customer of the order status
+        - notifies the customer on finish
 
     database handler:
         - stores new order for reference only
@@ -27,20 +40,3 @@ shared parts logic:
         - returns files on return
         - deletes files on request
 
-
-
-object statuses
-
-
-
-
-in comes the order
-
-queue manager handles the order, passes to operator
-
-
-operator results: {
-    success: bool
-    
-
-}
