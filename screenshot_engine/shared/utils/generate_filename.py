@@ -6,7 +6,7 @@ from datetime import datetime
 class FilenameType(Enum):
     SCREENSHOT_BACKGROUND = "1_BG_{}.png"
     SCREENSHOT_FOREGROUND = "2_FG_{}.png"
-    VIDEOGFX_OUTPUT = "VideoGFX_{}.mp4"
+    VIDEOGFX_VIDEO = "VideoGFX_{}.mp4"
 
 
 def generate_filename(

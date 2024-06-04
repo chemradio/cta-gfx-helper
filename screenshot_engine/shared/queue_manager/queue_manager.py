@@ -5,7 +5,7 @@ from shared.database.db import DBHandler
 import uuid
 from pathlib import Path
 from typing import Callable
-from shared.types.operator_results import OperatorResults, OutputFile
+from shared.models.operator_results import OperatorResults, OperatorOutputFile
 
 
 class QueueManager:
@@ -38,7 +38,7 @@ class QueueManager:
         queue_start = perf_counter()
         while self._queue:
             print(f"Queue length: {len(self._queue)}")
-            item = self._queue.popleft()
+            item: dict = self._queue.popleft()
             print(f"Processing queue item: {item}")
             task_start = perf_counter()
 
@@ -81,7 +81,7 @@ class QueueManager:
 
     def _store_operator_output(
         self,
-        operator_output: list[OutputFile],
+        operator_output: list[OperatorOutputFile],
         store_folder: Path = Path.cwd() / "storage",
     ) -> None:
         for output in operator_output:
