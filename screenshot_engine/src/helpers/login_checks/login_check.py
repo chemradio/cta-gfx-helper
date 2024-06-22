@@ -8,11 +8,8 @@ from .checkflows.twitter import check_twitter_login
 from .checkflows.vk import check_vk_login
 
 
-def check_domain_login(
-    driver: webdriver.Chrome | webdriver.Remote, domain: str | DomainName = ""
-) -> bool:
-    if not domain:
-        domain = parse_link_type(driver.current_url).domain
+def check_domain_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
+    domain = parse_link_type(driver.current_url).domain
 
     match domain:
         case "instagram":

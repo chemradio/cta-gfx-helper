@@ -3,8 +3,8 @@ from pathlib import Path
 
 from selenium import webdriver
 
-JS_TEMPLATE_PATH = Path(__file__).parent / "adblock_script_template.js"
-LOCAL_AD_DB_PATH = Path(__file__).parent / "ad_db.json"
+JS_TEMPLATE_PATH = Path(__file__).parent / "static" / "adblock_script_template.js"
+LOCAL_AD_DB_PATH = Path(__file__).parent / "static" / "ad_db.json"
 
 
 def remove_ads(driver: webdriver.Chrome | webdriver.Remote) -> None:

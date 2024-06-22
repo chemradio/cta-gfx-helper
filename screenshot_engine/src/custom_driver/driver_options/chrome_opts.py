@@ -17,8 +17,8 @@ def _generate_chrome_options(user_agent: UserAgent = UserAgent.DESKTOP) -> Optio
         "mobileEmulation",
         {
             "deviceMetrics": {
-                "width": config.SCREENSHOT_DIMENSIONS[0],
-                "height": config.SCREENSHOT_DIMENSIONS[1],
+                "width": 1920,
+                "height": 5760,
                 "pixelRatio": config.DPI_MULTIPLIER,
             },
             "userAgent": user_agent,
