@@ -10,7 +10,7 @@ from .types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
 
 
 def capture_single_screenshot(
-    driver: webdriver.Chrome | webdriver.Remote,
+    driver: webdriver.Remote,
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
 ) -> Screenshot:
     if role == ScreenshotRole.POST:

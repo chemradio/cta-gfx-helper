@@ -32,7 +32,7 @@ def dump_domain_cookies(
 
 
 def add_cookies_driver(
-    cookie_file: Path, domain: str, driver: webdriver.Chrome | webdriver.Remote
+    cookie_file: Path, domain: str, driver: webdriver.Remote
 ) -> None:
     """Add specific domain cookies to webdriver."""
     domain_cookies = get_stored_cookies(cookie_file).get(domain)

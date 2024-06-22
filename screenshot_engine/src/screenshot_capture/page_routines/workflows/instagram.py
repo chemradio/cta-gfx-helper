@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 
-def instagram_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
+def instagram_post_routine(driver: webdriver.Remote) -> WebElement:
     # post_role = "presentation" weird... not used later.delete if not needed
     driver.execute_script(
         """element = document.querySelector(".x1yvgwvq");
@@ -16,12 +16,12 @@ def instagram_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebEl
 
 
 def instagram_profile_routine(
-    driver: webdriver.Chrome | webdriver.Remote,
+    driver: webdriver.Remote,
 ) -> WebElement:
     driver.execute_script("document.body.style.zoom = '1'")
     return driver.find_element(By.TAG_NAME, "body")
 
 
-def extract_instagram_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
+def extract_instagram_profile_url(driver: webdriver.Remote) -> str:
     post = instagram_post_routine(driver)
     return post.find_element(By.TAG_NAME, "a").get_attribute("href")

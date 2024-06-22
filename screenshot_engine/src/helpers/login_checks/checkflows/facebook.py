@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-def check_fb_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
+def check_fb_login(driver: webdriver.Remote) -> bool:
     try:
         friends_button = driver.find_element(
             By.XPATH, '//a[@href="https://www.facebook.com/friends/"]'

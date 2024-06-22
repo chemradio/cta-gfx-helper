@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 
-def telegram_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
+def telegram_post_routine(driver: webdriver.Remote) -> WebElement:
     driver.execute_script(
         """iframe = document.querySelector("iframe");
         iframe.style.padding = "0px";
@@ -25,7 +25,7 @@ def telegram_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebEle
     return post
 
 
-def telegram_profile_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
+def telegram_profile_routine(driver: webdriver.Remote) -> WebElement:
     driver.execute_script("window.scrollTo(0, -document.body.scrollHeight)")
     driver.execute_script(
         """loadingElement = document.querySelector(".tme_messages_more js-messages_more");
@@ -37,7 +37,7 @@ def telegram_profile_routine(driver: webdriver.Chrome | webdriver.Remote) -> Web
     return driver.find_element(By.TAG_NAME, "body")
 
 
-def extract_telegram_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
+def extract_telegram_profile_url(driver: webdriver.Remote) -> str:
     try:
         effective_path = driver.current_url.split("//t.me/")[1]
         return f"https://t.me/s/{effective_path}"

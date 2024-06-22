@@ -39,27 +39,21 @@ WORKFLOW_DICT = {
 }
 
 
-def post_workflow(
-    driver: webdriver.Chrome | webdriver.Remote, domain: str
-) -> WebElement:
+def post_workflow(driver: webdriver.Remote, domain: str) -> WebElement:
     workflow: Callable | None = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
         "post"
     )
     return workflow(driver=driver)
 
 
-def profile_workflow(
-    driver: webdriver.Chrome | webdriver.Remote, domain: str
-) -> WebElement:
+def profile_workflow(driver: webdriver.Remote, domain: str) -> WebElement:
     workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
         "profile"
     )
     return workflow(driver=driver)
 
 
-def extract_profile_url(
-    driver: webdriver.Chrome | webdriver.Remote, domain: str
-) -> str:
+def extract_profile_url(driver: webdriver.Remote, domain: str) -> str:
     workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
         "extract_profile"
     )

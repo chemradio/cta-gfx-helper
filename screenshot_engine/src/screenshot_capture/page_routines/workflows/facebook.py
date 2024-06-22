@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 
-def facebook_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
+def facebook_post_routine(driver: webdriver.Remote) -> WebElement:
     post = driver.find_element(By.XPATH, "//div[@role='article']")
     # this is for anonymous session. to be deprecated user should always be logged in
     # driver.execute_script(
@@ -13,12 +13,12 @@ def facebook_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebEle
     return post
 
 
-def facebook_profile_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
+def facebook_profile_routine(driver: webdriver.Remote) -> WebElement:
     driver.execute_script("document.body.style.zoom = '1.2'")
     return driver.find_element(By.TAG_NAME, "body")
 
 
-def extract_facebook_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
+def extract_facebook_profile_url(driver: webdriver.Remote) -> str:
     url = driver.current_url
     if "/posts/" in url:
         return url[: url.index("/posts/")]
