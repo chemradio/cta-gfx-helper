@@ -3,8 +3,6 @@ from typing import Callable
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from src.helpers.link_parse import parse_link_type
-
 from . import workflows
 
 WORKFLOW_DICT = {
@@ -41,30 +39,28 @@ WORKFLOW_DICT = {
 }
 
 
-def post_workflow(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
-    domain = parse_link_type(driver.current_url).domain
-
-    workflow: Callable | None = WORKFLOW_DICT.get(domain).get("post")
-
+def post_workflow(
+    driver: webdriver.Chrome | webdriver.Remote, domain: str
+) -> WebElement:
+    workflow: Callable | None = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
+        "post"
+    )
     return workflow(driver=driver)
 
 
-def profile_workflow(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
-    domain = parse_link_type(driver.current_url).domain
-
-    workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT.get("scroll")).get(
+def profile_workflow(
+    driver: webdriver.Chrome | webdriver.Remote, domain: str
+) -> WebElement:
+    workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
         "profile"
     )
-
     return workflow(driver=driver)
 
 
-def extract_profile_url(driver: webdriver.Chrome | webdriver.Remote) -> str:
-    domain = parse_link_type(driver.current_url).domain
-
-    workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT.get("scroll")).get(
+def extract_profile_url(
+    driver: webdriver.Chrome | webdriver.Remote, domain: str
+) -> str:
+    workflow: Callable = WORKFLOW_DICT.get(domain, WORKFLOW_DICT["scroll"]).get(
         "extract_profile"
     )
-    print(workflow, flush=True)
-
     return workflow(driver=driver)

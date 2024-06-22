@@ -1,43 +1,30 @@
 import time
+from dataclasses import astuple
+from pathlib import Path
 
-import config
-from screenshots.screenshot_capture.capture_single_screenshot import (
-    capture_single_screenshot,
-)
-from screenshots.screenshot_capture.controllers.adblocker.adblocker import Adblocker
-from screenshots.screenshot_capture.controllers.auth_controller.auth_controller import (
-    BrowserAuthorizer,
-)
-from screenshots.screenshot_capture.controllers.auth_controller.login_checks import (
-    LoginChecker,
-)
-from screenshots.screenshot_capture.crop_screenshot import crop_screenshot
-from screenshots.screenshot_capture.custom_driver.create_driver import create_driver
-from screenshots.screenshot_capture.custom_types.screenshot_results import (
-    ScreenshotResults,
-)
-from screenshots.screenshot_capture.custom_types.screenshot_role import ScreenshotRole
-from screenshots.screenshot_capture.parse_link_type import parse_link_type
-from screenshots.screenshot_capture.routines.screenshot_routines import (
-    ScreenshotRoutines,
-)
+from ..custom_driver import ScreenshotRemoteDriver
+from ..helpers.link_parse import parse_link_type
+from .capture_single_screenshot import capture_single_screenshot
+from .crop_screenshot import crop_screenshot
+from .types import ScreenshotResults, ScreenshotRole
 
 
-def parse_capture_screenshots(url: str) -> ScreenshotResults:
-    clean_url, domain, two_layer = parse_link_type(url)
+def parse_capture_screenshots(
+    url: str, remote_driver_url: str, cookie_file_path: Path
+) -> ScreenshotResults:
+    clean_url, _, two_layer = astuple(parse_link_type(url))
 
     # initialize empty screenshots
     foreground_screenshot, background_screenshot = None, None
 
     # create webdriver
-    driver = create_driver(mobile_agent=False, high_resolution=True)
+    driver = ScreenshotRemoteDriver(
+        remote_driver_url=remote_driver_url,
+        cookie_file_path=cookie_file_path,
+    )
 
     # prepare driver for LOGIN REQUIRED websites
-    if domain in config.LOGIN_REQUIRED:
-        BrowserAuthorizer.login_driver_to_domain(driver, domain)
-        login_success = LoginChecker.check_domain_login(driver, domain)
-        if not login_success:
-            raise Exception()
+    driver.login_driver_to_required_domains()
 
     target_url = clean_url
 
@@ -46,7 +33,7 @@ def parse_capture_screenshots(url: str) -> ScreenshotResults:
         driver.get(target_url)
         time.sleep(3)
         try:
-            Adblocker.remove_ads(driver)
+            driver.remove_ads()
             time.sleep(1)
 
             foreground_screenshot = capture_single_screenshot(

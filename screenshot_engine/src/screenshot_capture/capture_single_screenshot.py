@@ -3,17 +3,10 @@ import json
 import os
 from io import BytesIO
 
+from page_routines import post_workflow, profile_workflow
 from selenium import webdriver
 
-from screenshots.logic.controllers.routines.screenshot_routines import (
-    ScreenshotRoutines,
-)
-from screenshots.logic.type_classes.post_location_size import (
-    PostCoordinates,
-    PostDimensions,
-)
-from screenshots.logic.type_classes.screenshot import Screenshot
-from screenshots.logic.type_classes.screenshot_role import ScreenshotRole
+from .types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
 
 
 def capture_single_screenshot(
@@ -21,9 +14,9 @@ def capture_single_screenshot(
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
 ) -> Screenshot:
     if role == ScreenshotRole.POST:
-        target_element = ScreenshotRoutines.post_workflow(driver)
+        target_element = post_workflow(driver)
     elif role == ScreenshotRole.FULL_SIZE:
-        target_element = ScreenshotRoutines.profile_workflow(driver)
+        target_element = profile_workflow(driver)
 
     # optional font smoothing - ON by default
     if os.environ.get("FONT_SMOOTHING", True):

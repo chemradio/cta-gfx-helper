@@ -2,26 +2,24 @@ from io import BytesIO
 
 from PIL import Image
 
-import config
-from screenshots.screenshot_capture.custom_types.screenshot import Screenshot
-from screenshots.screenshot_capture.custom_types.screenshot_role import ScreenshotRole
+from .types import Screenshot, ScreenshotRole
 
 Image.MAX_IMAGE_PIXELS = 933_120_000
 
 
-def crop_screenshot(screenshot: Screenshot) -> Screenshot:
+def crop_screenshot(screenshot: Screenshot, dpi_multiplier: int | float) -> Screenshot:
     im = Image.open(screenshot.content)
 
     if screenshot.role == ScreenshotRole.POST:
         # must multiply by zoom or dpi multiplier
-        left = screenshot.post_coordinates.x * config.DPI_MULTIPLIER
-        top = screenshot.post_coordinates.y * config.DPI_MULTIPLIER
+        left = screenshot.post_coordinates.x * dpi_multiplier
+        top = screenshot.post_coordinates.y * dpi_multiplier
         right = (
             screenshot.post_coordinates.x + screenshot.post_dimensions.width
-        ) * config.DPI_MULTIPLIER
+        ) * dpi_multiplier
         bottom = (
             screenshot.post_coordinates.y + screenshot.post_dimensions.height
-        ) * config.DPI_MULTIPLIER
+        ) * dpi_multiplier
 
         im = im.crop((left, top, right, bottom))
         im = im.crop((0, 0, im.width, min(5000, im.height)))
