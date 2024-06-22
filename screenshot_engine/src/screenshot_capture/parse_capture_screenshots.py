@@ -2,45 +2,49 @@ import time
 from dataclasses import astuple
 from pathlib import Path
 
-from ..custom_driver import ScreenshotRemoteDriver
+from ..custom_driver.screenshot_driver import create_remote_driver
+from ..helpers.adblock.adblocking import remove_ads
 from ..helpers.link_parse import parse_link_type
 from .capture_single_screenshot import capture_single_screenshot
 from .crop_screenshot import crop_screenshot
+from .page_routines import extract_profile_url
 from .types import ScreenshotResults, ScreenshotRole
 
 
 def parse_capture_screenshots(
-    url: str, remote_driver_url: str, cookie_file_path: Path
+    url: str,
+    remote_driver_url: str,
+    cookie_file_path: Path,
+    dpi_multiplier: int | float,
 ) -> ScreenshotResults:
-    clean_url, _, two_layer = astuple(parse_link_type(url))
+    clean_url, domain, two_layer = astuple(parse_link_type(url))
 
     # initialize empty screenshots
     foreground_screenshot, background_screenshot = None, None
 
     # create webdriver
-    driver = ScreenshotRemoteDriver(
-        remote_driver_url=remote_driver_url,
-        cookie_file_path=cookie_file_path,
-    )
-
-    # prepare driver for LOGIN REQUIRED websites
-    driver.login_driver_to_required_domains()
+    driver = create_remote_driver(remote_driver_url, dpi_multiplier)
 
     target_url = clean_url
 
-    # get POST screenshot
+    # login to required sites
+    ...
+
+    # navigate to POST screenshot
     if two_layer:
         driver.get(target_url)
-        time.sleep(3)
+        time.sleep(3)  # wait for page js to load
         try:
-            driver.remove_ads()
-            time.sleep(1)
+            remove_ads(driver)
+            time.sleep(1)  # wait for ads to be removed due to js glitches
 
             foreground_screenshot = capture_single_screenshot(
                 driver, ScreenshotRole.POST
             )
-            foreground_screenshot = crop_screenshot(foreground_screenshot)
-            profile_url = ScreenshotRoutines.extract_profile_url(driver)
+            foreground_screenshot = crop_screenshot(
+                foreground_screenshot, dpi_multiplier
+            )
+            profile_url = extract_profile_url(driver)
             target_url = profile_url
         except Exception as e:
             print("Social URL is probably for the page, not post:", target_url)
@@ -48,12 +52,12 @@ def parse_capture_screenshots(
             two_layer = False
             foreground_screenshot = None
 
-    # get PROFILE / MAIN screenshot
+    # navigate to PROFILE / MAIN screenshot
     driver.get(target_url)
-    time.sleep(3)
+    time.sleep(3)  # wait for page js to load
 
-    Adblocker.remove_ads(driver)
-    time.sleep(1)
+    remove_ads(driver)
+    time.sleep(1)  # wait for ads to be removed due to js glitches
 
     background_screenshot = capture_single_screenshot(driver, ScreenshotRole.FULL_SIZE)
     background_screenshot = crop_screenshot(background_screenshot)

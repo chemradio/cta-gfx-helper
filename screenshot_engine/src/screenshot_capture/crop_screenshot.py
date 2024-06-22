@@ -21,7 +21,10 @@ def crop_screenshot(screenshot: Screenshot, dpi_multiplier: int | float) -> Scre
             screenshot.post_coordinates.y + screenshot.post_dimensions.height
         ) * dpi_multiplier
 
+        # first crop
         im = im.crop((left, top, right, bottom))
+
+        # clamp height to 5000px
         im = im.crop((0, 0, im.width, min(5000, im.height)))
 
     elif screenshot.role == ScreenshotRole.FULL_SIZE:

@@ -7,7 +7,7 @@ JS_TEMPLATE_PATH = Path(__file__).parent / "static" / "adblock_script_template.j
 LOCAL_AD_DB_PATH = Path(__file__).parent / "static" / "ad_db.json"
 
 
-def remove_ads(driver: webdriver.Chrome | webdriver.Remote) -> None:
+def remove_ads(driver: webdriver.Remote) -> None:
     js_script = _generate_js_script()
     try:
         print("trying to remove ads", flush=True)

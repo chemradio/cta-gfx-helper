@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-def check_twitter_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
+def check_twitter_login(driver: webdriver.Remote) -> bool:
     try:
         account_menu = driver.find_element(
             By.XPATH, '//div[@aria-label="Account menu"]'

@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 
-def check_instagram_login(driver: webdriver.Chrome | webdriver.Remote) -> bool:
+def check_instagram_login(driver: webdriver.Remote) -> bool:
     # check if not already logged in
     try:
         profile_button = driver.find_element(By.XPATH, "//span[text()='Profile']")
