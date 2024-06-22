@@ -1,14 +1,13 @@
 from selenium.webdriver.chrome.options import Options
 
-import config
-
 from .user_agent import UserAgent
 
 
-def _generate_chrome_options(user_agent: UserAgent = UserAgent.DESKTOP) -> Options:
+def _generate_chrome_options(
+    dpi_multiplier: int | float, user_agent: UserAgent = UserAgent.DESKTOP
+) -> Options:
     chrome_options = Options()
     # chrome_options.add_argument("--incognito")
-    # chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
 
     chrome_options.add_argument("--window-size=1920,1080")  # just for viewing purposes
 
@@ -19,7 +18,7 @@ def _generate_chrome_options(user_agent: UserAgent = UserAgent.DESKTOP) -> Optio
             "deviceMetrics": {
                 "width": 1920,
                 "height": 5760,
-                "pixelRatio": config.DPI_MULTIPLIER,
+                "pixelRatio": dpi_multiplier,
             },
             "userAgent": user_agent,
         },

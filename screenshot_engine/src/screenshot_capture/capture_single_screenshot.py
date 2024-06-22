@@ -3,9 +3,9 @@ import json
 import os
 from io import BytesIO
 
-from page_routines import post_workflow, profile_workflow
 from selenium import webdriver
 
+from .page_routines import post_workflow, profile_workflow
 from .types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
 
 
@@ -21,13 +21,14 @@ def capture_single_screenshot(
     # optional font smoothing - ON by default
     if os.environ.get("FONT_SMOOTHING", True):
         driver.execute_script(
-            'document.querySelector("body").style.textShadow = "0px 0px 1px rgba(0,0,0,1)"'
+            'document.querySelector("body").style.textShadow = "0px 0px 1px rgba(0,0,0,.7)"'
         )
 
     post_coordinates = PostCoordinates(
         x=target_element.location["x"],
         y=target_element.location["y"],
     )
+
     post_dimensions = PostDimensions(
         width=target_element.size["width"],
         height=target_element.size["height"],
@@ -47,6 +48,7 @@ def capture_single_screenshot(
             }
         ),
     )
+
     content = BytesIO(base64.urlsafe_b64decode(chrome_screenshot["value"]["data"]))
     return Screenshot(
         content=content,

@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+DPI_MULTIPLIER = 2
+
 SCREENSHOT_FOLDER = Path().cwd() / "storage"
 COOKIE_FILE = Path().cwd() / "storage" / "cookie_file.json"
 
