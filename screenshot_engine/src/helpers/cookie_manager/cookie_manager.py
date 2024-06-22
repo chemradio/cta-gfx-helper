@@ -3,39 +3,39 @@ from pathlib import Path
 
 from selenium import webdriver
 
-from config import COOKIE_FILE
-
 from .exc import CookieLoadException, MissingCookies
 
 
-def initialize_cookie_storage() -> None:
+def initialize_cookie_storage(cookie_file: Path) -> None:
     """Create cookie file json if does not exist already."""
-    if not COOKIE_FILE.exists():
-        with open(COOKIE_FILE, "w+") as cookie_file:
+    if not cookie_file.exists():
+        with open(cookie_file, "w+") as cookie_file:
             json.dump({"domain_name": [{}]}, cookie_file)
 
 
-def get_stored_cookies() -> dict[list[dict]]:
+def get_stored_cookies(cookie_file: Path) -> dict[list[dict]]:
     """Read all cookies from stored cookie file."""
     cookies = dict()
-    with open(COOKIE_FILE, "r") as cookie_file:
-        cookies = json.load(cookie_file)
+    with open(cookie_file, "r") as c_file:
+        cookies = json.load(c_file)
     return cookies
 
 
-def dump_domain_cookies(domain: str, domain_cookies: list[dict]) -> None:
+def dump_domain_cookies(
+    cookie_file: Path, domain: str, domain_cookies: list[dict]
+) -> None:
     """Save specific domain cookies to storage."""
-    stored_cookies = get_stored_cookies()
+    stored_cookies = get_stored_cookies(cookie_file)
     stored_cookies[domain] = domain_cookies
-    with open(COOKIE_FILE, "w") as cookie_file:
-        json.dump(stored_cookies, cookie_file)
+    with open(cookie_file, "w") as c_file:
+        json.dump(stored_cookies, c_file)
 
 
 def add_cookies_driver(
-    domain: str, driver: webdriver.Chrome | webdriver.Remote
+    cookie_file: Path, domain: str, driver: webdriver.Chrome | webdriver.Remote
 ) -> None:
     """Add specific domain cookies to webdriver."""
-    domain_cookies = get_stored_cookies().get(domain)
+    domain_cookies = get_stored_cookies(cookie_file).get(domain)
     if not domain_cookies:
         raise MissingCookies(domain=domain)
 
@@ -53,6 +53,3 @@ def add_cookies_driver(
 
     if good_cookies == 0:
         raise CookieLoadException(domain=domain, failed_cookies=failed_cookies)
-
-
-initialize_cookie_storage()
