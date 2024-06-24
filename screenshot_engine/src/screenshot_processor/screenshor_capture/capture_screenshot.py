@@ -5,8 +5,8 @@ from io import BytesIO
 
 from selenium import webdriver
 
-from .page_routines import post_workflow, profile_workflow
-from .types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
+from ..page_routines import post_workflow, profile_workflow
+from ..types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
 
 
 def capture_single_screenshot(

@@ -2,7 +2,7 @@ from io import BytesIO
 
 from PIL import Image
 
-from .types import Screenshot, ScreenshotRole
+from ..types import Screenshot, ScreenshotRole
 
 Image.MAX_IMAGE_PIXELS = 933_120_000
 
