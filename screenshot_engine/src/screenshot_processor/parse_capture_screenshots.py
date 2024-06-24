@@ -4,10 +4,11 @@ from pathlib import Path
 
 from ..custom_driver.screenshot_driver import create_remote_driver
 from ..helpers.adblock.adblocking import remove_ads
+from ..helpers.driver_auth import authenticate_driver
 from ..helpers.link_parse import parse_link_type
-from .capture_single_screenshot import capture_single_screenshot
-from .crop_screenshot import crop_screenshot
 from .page_routines import extract_profile_url
+from .screenshor_capture.capture_screenshot import capture_single_screenshot
+from .screenshor_capture.crop_screenshot import crop_screenshot
 from .types import ScreenshotResults, ScreenshotRole
 
 
@@ -28,7 +29,7 @@ def parse_capture_screenshots(
     target_url = clean_url
 
     # login to required sites
-    ...
+    authenticate_driver(driver, domain, cookie_file_path)
 
     # navigate to POST screenshot
     if two_layer:
