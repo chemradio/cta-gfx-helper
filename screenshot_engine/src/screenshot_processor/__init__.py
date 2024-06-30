@@ -1,1 +1,1 @@
-from .parse_capture_screenshots import parse_capture_screenshots
+from .screenshooter import parse_capture_screenshots
