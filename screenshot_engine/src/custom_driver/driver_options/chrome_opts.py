@@ -4,7 +4,10 @@ from .user_agent import UserAgent
 
 
 def _generate_chrome_options(
-    dpi_multiplier: int | float, user_agent: UserAgent = UserAgent.DESKTOP
+    dpi_multiplier: int | float,
+    user_agent: UserAgent = UserAgent.DESKTOP,
+    verical_emulation: bool = True,
+    headless: bool = True,
 ) -> Options:
     chrome_options = Options()
     # chrome_options.add_argument("--incognito")
@@ -12,22 +15,24 @@ def _generate_chrome_options(
     chrome_options.add_argument("--window-size=1920,1080")  # just for viewing purposes
 
     # actual resolution setting
-    chrome_options.add_experimental_option(
-        "mobileEmulation",
-        {
-            "deviceMetrics": {
-                "width": 1920,
-                "height": 5760,
-                "pixelRatio": dpi_multiplier,
+    if verical_emulation:
+        chrome_options.add_experimental_option(
+            "mobileEmulation",
+            {
+                "deviceMetrics": {
+                    "width": 1920,
+                    "height": 5760,
+                    "pixelRatio": dpi_multiplier,
+                },
+                "userAgent": user_agent,
             },
-            "userAgent": user_agent,
-        },
-    )
+        )
 
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("-–disable-gpu")
 
     # to theoretically speed up the process
-    chrome_options.headless = True
+    if headless:
+        chrome_options.headless = True
 
     return chrome_options

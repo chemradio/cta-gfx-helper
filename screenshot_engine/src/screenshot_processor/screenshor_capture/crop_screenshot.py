@@ -12,13 +12,13 @@ def crop_screenshot(screenshot: Screenshot, dpi_multiplier: int | float) -> Scre
 
     if screenshot.role == ScreenshotRole.POST:
         # must multiply by zoom or dpi multiplier
-        left = screenshot.post_coordinates.x * dpi_multiplier
-        top = screenshot.post_coordinates.y * dpi_multiplier
+        left = screenshot.element_coordinates.x * dpi_multiplier
+        top = screenshot.element_coordinates.y * dpi_multiplier
         right = (
-            screenshot.post_coordinates.x + screenshot.post_dimensions.width
+            screenshot.element_coordinates.x + screenshot.element_dimensions.width
         ) * dpi_multiplier
         bottom = (
-            screenshot.post_coordinates.y + screenshot.post_dimensions.height
+            screenshot.element_coordinates.y + screenshot.element_dimensions.height
         ) * dpi_multiplier
 
         # first crop

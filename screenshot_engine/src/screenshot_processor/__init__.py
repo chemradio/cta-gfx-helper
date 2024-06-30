@@ -1,1 +1,2 @@
 from .screenshooter import parse_capture_screenshots
+from .screenshor_capture.capture_screenshot import capture_single_screenshot

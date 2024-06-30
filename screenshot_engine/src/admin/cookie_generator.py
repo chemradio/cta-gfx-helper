@@ -1,33 +1,36 @@
 import time
+from pathlib import Path
 
-import config
-from screenshots.logic.controllers.auth_controller.cookie_manager.cookie_manager import (
-    CookieManager,
+from ..custom_driver import create_remote_driver
+from ..helpers.driver_auth import HOMEPAGES, LOGIN_REQUIRED, authenticate_driver
+from ..helpers.driver_auth.cookie_management import (
+    add_cookies_driver,
+    dump_domain_cookies,
+    initialize_cookie_storage,
 )
-from screenshots.logic.controllers.auth_controller.login_checks import LoginChecker
-from screenshots.logic.custom_driver.create_driver import create_driver
 
 
-def generate_cookies() -> None:
-    CookieManager.initialize_cookie_storage()
+def generate_cookies(
+    remote_driver_url: str,
+    cookie_file_path: Path = Path.cwd() / "storage" / "cookie_file.json",
+) -> None:
+    initialize_cookie_storage(cookie_file_path)
 
-    for domain in config.LOGIN_REQUIRED:
-        driver = create_driver(high_resolution=False)
+    for domain in LOGIN_REQUIRED:
+        driver = create_remote_driver(
+            remote_driver_url,
+            dpi_multiplier=1,
+            vertical_emulation=False,
+            headless=False,
+        )
         driver.implicitly_wait(5)
-        website_link = config.SOCIAL_WEBSITES[domain]
-        driver.get(website_link)
 
-        try:
-            CookieManager.add_cookies_driver(domain, driver)
-            time.sleep(2)
-            driver.refresh()
-        except:
-            print(f"No cookies avalable for domain: {domain}")
+        login_success = authenticate_driver(driver, domain, cookie_file_path)
 
-        if LoginChecker.check_domain_login(driver, domain):
-            print(f"Already logged into domain: {domain}")
-            domain_cookies = driver.get_cookies()
-            CookieManager.dump_domain_cookies(domain, domain_cookies)
+        if login_success:
+            print(
+                f"Already logged into domain: {domain}, updated cookies successfully dumped to cookie_file."
+            )
             continue
 
         # Give user time to log in to website/social network
@@ -35,13 +38,12 @@ def generate_cookies() -> None:
             try:
                 _ = driver.window_handles
                 domain_cookies = driver.get_cookies()
-                time.sleep(1)
+                time.sleep(2)
             except:
                 break
 
         if domain_cookies:
-            CookieManager.dump_domain_cookies(domain, domain_cookies)
-
-        time.sleep(1)
+            dump_domain_cookies(cookie_file_path, domain, domain_cookies)
+            print(f"New cookies for {domain} domain added to cookie_file.")
 
         driver.quit()

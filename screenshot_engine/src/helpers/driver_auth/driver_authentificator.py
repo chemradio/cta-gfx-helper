@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 from selenium import webdriver
@@ -24,6 +25,8 @@ def authenticate_driver(
 
     try:
         add_cookies_driver(cookie_file, domain, driver)
+        time.sleep(2)
+        driver.refresh()
         if not check_domain_login(driver, domain):
             return False
 

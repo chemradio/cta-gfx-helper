@@ -4,7 +4,8 @@ from shared.models.operator_results import OperatorResults
 from shared.models.output_file import OperatorOutputFile
 
 from .screenshot_processor import parse_capture_screenshots
-from .screenshot_processor.screenshot_config import SCREENSHOT_ATTEMPTS
+
+SCREENSHOT_ATTEMPTS = 2
 
 
 def capture_screenshots(url: str, output_path: Path) -> OperatorResults: ...

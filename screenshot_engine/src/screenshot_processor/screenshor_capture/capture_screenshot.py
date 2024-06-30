@@ -4,32 +4,28 @@ import os
 from io import BytesIO
 
 from selenium import webdriver
+from selenium.webdriver.remote.webelement import WebElement
 
-from ..page_routines import post_workflow, profile_workflow
 from ..types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
 
 
 def capture_single_screenshot(
     driver: webdriver.Remote,
+    target_element: WebElement,
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
 ) -> Screenshot:
-    if role == ScreenshotRole.POST:
-        target_element = post_workflow(driver)
-    elif role == ScreenshotRole.FULL_SIZE:
-        target_element = profile_workflow(driver)
-
     # optional font smoothing - ON by default
     if os.environ.get("FONT_SMOOTHING", True):
         driver.execute_script(
             'document.querySelector("body").style.textShadow = "0px 0px 1px rgba(0,0,0,.7)"'
         )
 
-    post_coordinates = PostCoordinates(
+    element_coordinates = PostCoordinates(
         x=target_element.location["x"],
         y=target_element.location["y"],
     )
 
-    post_dimensions = PostDimensions(
+    element_dimensions = PostDimensions(
         width=target_element.size["width"],
         height=target_element.size["height"],
     )
@@ -53,7 +49,7 @@ def capture_single_screenshot(
     return Screenshot(
         content=content,
         role=role,
-        post_dimensions=post_dimensions,
-        post_coordinates=post_coordinates,
+        element_dimensions=element_dimensions,
+        element_coordinates=element_coordinates,
         cropped=False,
     )

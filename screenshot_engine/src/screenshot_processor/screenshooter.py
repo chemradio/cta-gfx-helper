@@ -6,7 +6,7 @@ from ..custom_driver.screenshot_driver import create_remote_driver
 from ..helpers.adblock.adblocking import remove_ads
 from ..helpers.driver_auth import authenticate_driver
 from ..helpers.link_parse import parse_link_type
-from .page_routines import extract_profile_url
+from .page_routines import apply_routine, extract_profile_url
 from .screenshor_capture.capture_screenshot import capture_single_screenshot
 from .screenshor_capture.crop_screenshot import crop_screenshot
 from .types import ScreenshotResults, ScreenshotRole
@@ -39,8 +39,11 @@ def parse_capture_screenshots(
             remove_ads(driver)
             time.sleep(1)  # wait for ads to be removed due to js glitches
 
+            # apply routine
+            target_element = apply_routine(driver, ScreenshotRole.POST, domain)
+
             foreground_screenshot = capture_single_screenshot(
-                driver, ScreenshotRole.POST
+                driver, target_element, ScreenshotRole.POST
             )
             foreground_screenshot = crop_screenshot(
                 foreground_screenshot, dpi_multiplier
@@ -60,8 +63,13 @@ def parse_capture_screenshots(
     remove_ads(driver)
     time.sleep(1)  # wait for ads to be removed due to js glitches
 
-    background_screenshot = capture_single_screenshot(driver, ScreenshotRole.FULL_SIZE)
-    background_screenshot = crop_screenshot(background_screenshot)
+    # apply routine
+    target_element = apply_routine(driver, ScreenshotRole.FULL_SIZE, domain)
+
+    background_screenshot = capture_single_screenshot(
+        driver, target_element, ScreenshotRole.FULL_SIZE
+    )
+    background_screenshot = crop_screenshot(background_screenshot, dpi_multiplier)
 
     driver.quit()
 
