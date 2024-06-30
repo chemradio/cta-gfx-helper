@@ -48,7 +48,7 @@ def parse_capture_screenshots(
             foreground_screenshot = crop_screenshot(
                 foreground_screenshot, dpi_multiplier
             )
-            profile_url = extract_profile_url(driver)
+            profile_url = extract_profile_url(driver, domain)
             target_url = profile_url
         except Exception as e:
             print("Social URL is probably for the page, not post:", target_url)
