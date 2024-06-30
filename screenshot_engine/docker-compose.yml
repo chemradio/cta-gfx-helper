@@ -7,18 +7,20 @@ services:
     # build: ../seleniarm_custom/screenshot
     privileged: true
     shm_size: 2g
+    ports:
+      - "4444:4444"
     # environment:
     #   PROTONVPN_EMAIL: ${PROTONVPN_EMAIL}
     #   PROTONVPN_PASSWORD: ${PROTONVPN_PASSWORD}
     # devices:
     #   - /dev/net/tun
-  screenshoter:
-    restart: unless-stopped
-    build: .
-    volumes:
-      - .:/usr/src/app
-    platform: linux/arm64
-    environment:
-      IS_DOCKER: 1
-    hostname: screenshoter
+  # screenshoter:
+  #   restart: unless-stopped
+  #   build: .
+  #   volumes:
+  #     - .:/usr/src/app
+  #   platform: linux/arm64
+  #   environment:
+  #     IS_DOCKER: 1
+  #   hostname: screenshoter
   

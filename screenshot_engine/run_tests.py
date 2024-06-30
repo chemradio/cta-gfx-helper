@@ -1,5 +1,10 @@
-from shared.tests.db_handler_tests import test_db_handler
-from shared.tests.queue_manager_tests import test_queue_manager
+from pathlib import Path
 
-test_db_handler()
-test_queue_manager()
+from src.admin.cookie_generator import generate_cookies
+
+COOKIE_FILE_PATH = Path.cwd() / "storage" / "cookie_file.json"
+REMOTE_DRIVER_URL = "http://localhost:4444/wd/hub"
+
+TARGET_URL = "https://meduza.io"
+
+generate_cookies(REMOTE_DRIVER_URL, COOKIE_FILE_PATH)

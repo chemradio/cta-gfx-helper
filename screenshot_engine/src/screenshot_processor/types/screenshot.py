@@ -9,6 +9,6 @@ from .screenshot_role import ScreenshotRole
 class Screenshot:
     content: BytesIO
     role: ScreenshotRole
-    post_dimensions: PostDimensions | None = None
-    post_coordinates: PostCoordinates | None = None
+    element_dimensions: PostDimensions | None = None
+    element_coordinates: PostCoordinates | None = None
     cropped: bool = False
