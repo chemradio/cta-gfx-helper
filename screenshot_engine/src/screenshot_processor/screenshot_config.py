@@ -1,6 +1,5 @@
-from ..config import IS_DOCKER
+from ...config import IS_DOCKER
 
-LOGIN_REQUIRED = ("facebook", "twitter", "instagram")
 TWO_LAYER_LINKS = ("facebook", "twitter", "instagram", "telegram")
 USE_REMOTE_DRIVER = True
 

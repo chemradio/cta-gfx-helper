@@ -1,13 +1,10 @@
 from pathlib import Path
 
-from screenshots.screenshot_capture.parse_capture_screenshots import (
-    parse_capture_screenshots,
-)
-
 from shared.models.operator_results import OperatorResults
 from shared.models.output_file import OperatorOutputFile
 
-from .screenshot_config import SCREENSHOT_ATTEMPTS
+from .screenshot_processor import parse_capture_screenshots
+from .screenshot_processor.screenshot_config import SCREENSHOT_ATTEMPTS
 
 
 def capture_screenshots(url: str, output_path: Path) -> OperatorResults: ...
