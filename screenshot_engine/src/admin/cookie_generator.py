@@ -31,12 +31,16 @@ def generate_cookies(
             print(
                 f"Already logged into domain: {domain}, updated cookies successfully dumped to cookie_file."
             )
+            driver.quit()
             continue
 
         # Give user time to log in to website/social network
         while True:
             try:
                 _ = driver.window_handles
+                print(
+                    "Waiting for login to dump cookies. Close the browser windows when done."
+                )
                 domain_cookies = driver.get_cookies()
                 time.sleep(2)
             except:
