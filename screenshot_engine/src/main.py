@@ -1,11 +1,8 @@
 from pathlib import Path
 
-from shared.models.operator_results import OperatorResults
-from shared.models.output_file import OperatorOutputFile
+from shared import FilenameType, OperatorOutputFile, OperatorResults, generate_filename
 
 from .screenshot_processor import parse_capture_screenshots
-
-SCREENSHOT_ATTEMPTS = 2
 
 
 def main_capture(
@@ -13,6 +10,7 @@ def main_capture(
     remote_driver_url: str,
     cookie_file_path: Path,
     dpi_multiplier: int | float,
+    attempts: int,
 ) -> OperatorResults:
 
     # attempt capture
@@ -22,7 +20,7 @@ def main_capture(
     error_message = ""
     operator_output = None
 
-    for attempt in range(SCREENSHOT_ATTEMPTS):
+    for attempt in range(attempts):
         try:
             capture_results = parse_capture_screenshots(
                 url,
@@ -42,11 +40,25 @@ def main_capture(
 
     if success:
         operator_output: list[OperatorOutputFile] = list()
-        operator_output.append(capture_results.background.content)
+        operator_output.append(
+            OperatorOutputFile(
+                content=capture_results.background.content,
+                filename=generate_filename(
+                    FilenameType.SCREENSHOT_BACKGROUND,
+                ),
+            )
+        )
         if capture_results.two_layer and capture_results.foreground:
-            operator_output.append(capture_results.foreground.content)
+            operator_output.append(
+                OperatorOutputFile(
+                    content=capture_results.foreground.content,
+                    filename=generate_filename(
+                        FilenameType.SCREENSHOT_FOREGROUND,
+                    ),
+                )
+            )
     else:
-        print(f"Screenshooting failed after {SCREENSHOT_ATTEMPTS} attempts.")
+        print(f"Screenshooting failed after {attempts} attempts.")
 
     return OperatorResults(
         success=success,

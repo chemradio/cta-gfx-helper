@@ -1,8 +1,10 @@
-from shared.orders.order_base import OrderBase
-from typing import Any
 from dataclasses import field
-from shared.utils.generate_filename import generate_filename, FilenameType
+from typing import Any
+
 import pydantic
+
+from shared.orders.order_base import OrderBase
+from shared.utils.filename_generator import FilenameType, generate_filename
 
 
 class ScreenshotOrderIn(pydantic.BaseModel):

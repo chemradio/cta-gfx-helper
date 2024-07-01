@@ -10,7 +10,14 @@ from src import main_capture
 app = FastAPI()
 app.include_router(file_server_router, prefix="/file_server")
 app.include_router(order_check_router)
-queue = QueueManager(main_capture)
+queue = QueueManager(
+    config.SCREENSHOT_FOLDER,
+    main_capture,
+    remote_driver_url=config.REMOTE_SELENIUM_URL,
+    cookie_file_path=config.COOKIE_FILE,
+    dpi_multiplier=config.DPI_MULTIPLIER,
+    attempts=config.SCREENSHOT_ATTEMPTS,
+)
 
 
 class ScreenshotOrderIn(pydantic.BaseModel):

@@ -11,10 +11,14 @@ from shared.models.operator_results import OperatorOutputFile, OperatorResults
 
 class QueueManager:
     def __init__(
-        self, operator: Callable[[dict, dict], OperatorResults], operator_kwargs: dict
+        self,
+        storage_path: Path,
+        operator: Callable[[dict, dict], OperatorResults],
+        **operator_kwargs,
     ):
         self._queue = deque()
         self._processing = False
+        self._storage_path = storage_path
         self._operator = operator
         self._operator_kwargs = operator_kwargs
 
@@ -83,10 +87,9 @@ class QueueManager:
     def _store_operator_output(
         self,
         operator_output: list[OperatorOutputFile],
-        store_folder: Path = Path.cwd() / "storage",
     ) -> None:
         for output in operator_output:
-            file_path = store_folder / output.filename
+            file_path = self._storage_path / output.filename
             with open(file_path, "wb") as file:
                 file.write(output.content.getvalue())
 
