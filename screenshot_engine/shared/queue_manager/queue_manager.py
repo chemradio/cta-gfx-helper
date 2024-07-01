@@ -1,27 +1,28 @@
+import uuid
 from collections import deque
+from pathlib import Path
 from threading import Thread
 from time import perf_counter
-from shared.database.db import DBHandler
-import uuid
-from pathlib import Path
 from typing import Callable
-from shared.models.operator_results import OperatorResults, OperatorOutputFile
+
+from shared.database.db import DBHandler
+from shared.models.operator_results import OperatorOutputFile, OperatorResults
 
 
 class QueueManager:
-    def __init__(self, operator: Callable[[dict], OperatorResults]):
+    def __init__(
+        self, operator: Callable[[dict, dict], OperatorResults], operator_kwargs: dict
+    ):
         self._queue = deque()
         self._processing = False
         self._operator = operator
+        self._operator_kwargs = operator_kwargs
 
-    def append(self, item: dict):
-        order_id = str(uuid.uuid4())
-        item.update({"order_id": order_id})
+    def append(self, item: dict) -> None:
         DBHandler.insert(item)
         self._queue.append(item)
-        return order_id
 
-    def start_processing(self):
+    def start_processing(self) -> None:
         if self._processing:
             print(
                 f"Already processing queue. Continue... Queue length: {len(self._queue)+1}"
@@ -42,7 +43,7 @@ class QueueManager:
             print(f"Processing queue item: {item}")
             task_start = perf_counter()
 
-            operator_results = self._operator(item)
+            operator_results = self._operator(item, **self._operator_kwargs)
 
             update_data = dict()
 

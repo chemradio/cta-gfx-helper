@@ -1,26 +1,34 @@
+import uuid
+
+import pydantic
 from fastapi import FastAPI, UploadFile
 
 import config
-from screenshots.screenshot_capture.attempt_screenshot_capture import (
-    attempt_screenshot_capture,
-)
-    attempt_screenshot_capture
-# shared imports / shared between screenshooter and video_gfx containers
-from shared.fastapi_routers import file_server, order_check
-from shared.models.probably_trash.screenshot_order import ScreenshotOrderIn
-from shared.queue_manager.queue_manager import QueueManager
+from shared import QueueManager, file_server_router, order_check_router
+from src import main_capture
 
 app = FastAPI()
-app.include_router(file_server.router, prefix="/file_server")
-app.include_router(order_check.router)
-queue = QueueManager(attempt_screenshot_capture)
+app.include_router(file_server_router, prefix="/file_server")
+app.include_router(order_check_router)
+queue = QueueManager(main_capture)
+
+
+class ScreenshotOrderIn(pydantic.BaseModel):
+    screenshot_link: str
+    secret_key: str | None = None
 
 
 @app.post("/")
 async def capture_screenshots(
     screenshot_order: ScreenshotOrderIn,
 ) -> str:
-    order_id = queue.append({"screenshot_link": screenshot_order.screenshot_link})
+    order_id = str(uuid.uuid4())
+    queue.append(
+        {
+            "order_id": order_id,
+            "screenshot_link": screenshot_order.screenshot_link,
+        }
+    )
     queue.start_processing()
     return order_id
 
