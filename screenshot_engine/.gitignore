@@ -4,9 +4,10 @@ token.txt
 volume/user_files/
 # volume/user_files/*
 storage/
+cookie_file/
 cookie_file.json
 volume/
-
+db.json
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
