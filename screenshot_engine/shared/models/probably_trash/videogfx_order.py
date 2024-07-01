@@ -1,8 +1,10 @@
-import pydantic
-from enum import Enum
 from dataclasses import field
+from enum import Enum
+
+import pydantic
+
 from shared.orders.order_base import OrderBase
-from shared.utils.generate_filename import generate_filename, FilenameType
+from shared.utils.filename_generator import FilenameType, generate_filename
 
 
 class VideoGfxTemplate(str, Enum):
