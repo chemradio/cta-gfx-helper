@@ -34,7 +34,6 @@ class QueueManager:
             return
         thread = Thread(target=self._process_queue)
         thread.start()
-        thread.join()
 
     def _process_queue(self):
         print("Start processing queue")
