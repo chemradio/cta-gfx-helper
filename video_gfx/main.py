@@ -1,64 +1,41 @@
-import asyncio
-import os
+import uuid
 from pathlib import Path
 
-import uvicorn
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
+import pydantic
 
-from video_gfx.order_processor import video_gfx_thread
+import config
+from shared import QueueManager, app, purge_storage
 
-volume_path = Path().cwd() / "volume"
-
-
-def create_volume_folders():
-    children = (
-        "cookie_file",
-        "html_assemblies",
-        "screenshots",
-        "user_files",
-        "video_exports",
-        "from_storage_unit",
-    )
-    children_paths = [volume_path / child for child in children]
-    for child_path in children_paths:
-        child_path.mkdir(parents=True, exist_ok=True)
+purge_storage(config.STORAGE_PATH)
 
 
-create_volume_folders()
-
-app = FastAPI()
-
-html_assemblies_path = volume_path / "html_assemblies"
-app.mount(
-    "/html_assemblies/",
-    StaticFiles(directory=html_assemblies_path.resolve()),
-    name="static",
+queue = QueueManager(
+    storage_path=config.STORAGE_PATH,
+    dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
+    operator=main_capture,
+    # remote_driver_url=config.REMOTE_DRIVER_URL,
+    # cookie_file_path=config.COOKIE_FILE,
+    # dpi_multiplier=config.DPI_MULTIPLIER,
+    # attempts=config.SCREENSHOT_ATTEMPTS,
 )
 
 
-@app.post("/start_video_gfx")
-async def start_video_gfx():
-    video_gfx_thread()
-    return True
+class VideoGFXOrderIn(pydantic.BaseModel):
+
+    screenshot_link: str
+    secret_key: str | None = None
 
 
-async def main():
-    print(os.environ, flush=True)
-    config = uvicorn.Config(
-        "main:app",
-        port=int(os.environ.get("video_gfx_port", 9004)),
-        host="0.0.0.0",
-        log_level="info",
+@app.post("/")
+async def capture_screenshots(
+    videogfx_order: VideoGFXOrderIn,
+) -> str:
+    order_id = str(uuid.uuid4())
+    queue.append(
+        {
+            "order_id": order_id,
+            "screenshot_link": screenshot_order.screenshot_link,
+        }
     )
-    server = uvicorn.Server(config)
-    await server.serve()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-
-# @app.get("/video_gfx_server/{html_assembly_name}")
-# async def serve_html_assembly(html_assembly_name: str):
-#     return "ok"
+    queue.start_processing()
+    return order_id
