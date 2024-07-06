@@ -1,6 +1,12 @@
 def split_timeline_segments(
-    total_frames: int, pieces: int = 2
+    total_frames: int, pieces: int = 3
 ) -> list[tuple[int, int]]:
+    """Given a total number of frames, split them into pieces
+    and return a list of tuples representing the ranges
+    of frames for each piece. The last piece will have the
+    remaining frames if the total number of frames is not
+    divisible by the number of pieces."""
+
     ranges = list()
     block_length = int(total_frames / pieces)
 

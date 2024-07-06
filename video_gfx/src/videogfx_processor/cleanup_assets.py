@@ -41,12 +41,3 @@ def cleanup_order(order: dict) -> None:
         except Exception as e:
             print(f"failed to cleanup. reason {str(e)}")
     return
-
-
-def remove_tree(path: Path) -> None:
-    for item in path.glob("*"):
-        if item.is_file():
-            item.unlink()
-        elif item.is_dir():
-            remove_tree(item)
-            item.rmdir()

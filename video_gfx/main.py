@@ -1,10 +1,11 @@
 import uuid
-from pathlib import Path
 
 import pydantic
+from fastapi import UploadFile
 
 import config
 from shared import QueueManager, app, purge_storage
+from src import main_videogfx
 
 purge_storage(config.STORAGE_PATH)
 
@@ -12,17 +13,21 @@ purge_storage(config.STORAGE_PATH)
 queue = QueueManager(
     storage_path=config.STORAGE_PATH,
     dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
-    operator=main_capture,
-    # remote_driver_url=config.REMOTE_DRIVER_URL,
-    # cookie_file_path=config.COOKIE_FILE,
-    # dpi_multiplier=config.DPI_MULTIPLIER,
-    # attempts=config.SCREENSHOT_ATTEMPTS,
+    operator=main_videogfx,
+    remote_driver_url_list=config.SELENIUM_CONTAINERS_LOCAL,
 )
 
 
 class VideoGFXOrderIn(pydantic.BaseModel):
+    background_file: UploadFile
+    foreground_file: UploadFile | None = None
+    audio_file: UploadFile | None = None
+    quote_enabled: bool | None = False
+    quote_text: str | None = None
+    quote_author_enabled: bool | None = None
+    quote_author_text: str | None = None
+    template: str | None = None
 
-    screenshot_link: str
     secret_key: str | None = None
 
 
@@ -34,7 +39,14 @@ async def capture_screenshots(
     queue.append(
         {
             "order_id": order_id,
-            "screenshot_link": screenshot_order.screenshot_link,
+            "background_file": videogfx_order.background_file,
+            "foreground_file": videogfx_order.foreground_file,
+            "audio_file": videogfx_order.audio_file,
+            "quote_enabled": videogfx_order.quote_enabled,
+            "quote_text": videogfx_order.quote_text,
+            "quote_author_enabled": videogfx_order.quote_author_enabled,
+            "quote_author_text": videogfx_order.quote_author_text,
+            "template": videogfx_order.template,
         }
     )
     queue.start_processing()

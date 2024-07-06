@@ -1,10 +1,7 @@
-import config
 import ffmpeg
 
 encode_settings = {
     "s": "1920x1080",
-    "video_bitrate": config.VIDEO_BITRATE_BPS,
-    "audio_bitrate": config.AUDIO_BITRATE_BPS,
     "crf": 13,
     "vcodec": "libx264",
     "pix_fmt": "yuv420p",
@@ -16,7 +13,12 @@ encode_settings = {
 
 
 def stitch_images(
-    image_folder_path: str, output_path: str = "", audio_path: str = ""
+    image_folder_path: str,
+    output_path: str = "",
+    audio_path: str = "",
+    video_bitrate: int = 10_000_000,
+    audio_bitrate: int = 256_000,
+    audio_delay: float = 0.3,
 ) -> None:
     video_input = ffmpeg.input(
         f"{image_folder_path}/*.png",
@@ -27,7 +29,17 @@ def stitch_images(
     output = ffmpeg.output(video_input, output_path, **encode_settings)
 
     if audio_path:
-        audio_input = ffmpeg.input(audio_path, itsoffset=config.AUDIO_OFFSET)
-        output = ffmpeg.output(video_input, audio_input, output_path, **encode_settings)
+        audio_input = ffmpeg.input(audio_path, itsoffset=audio_delay)
+        output = ffmpeg.output(
+            video_input,
+            audio_input,
+            output_path,
+            **encode_settings.update(
+                {
+                    "video_bitrate": video_bitrate,
+                    "audio_bitrate": audio_bitrate,
+                }
+            ),
+        )
 
     output.run()

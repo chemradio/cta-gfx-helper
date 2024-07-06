@@ -1,5 +1,6 @@
-from video_gfx.helpers.enums import ImageOrientation
 from PIL import Image
+
+from src.types import ImageOrientation
 
 
 def get_image_orientation(image_path: str) -> ImageOrientation:
