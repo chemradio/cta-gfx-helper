@@ -1,20 +1,20 @@
 import uuid
-from pathlib import Path
 
 import pydantic
-from fastapi import FastAPI, UploadFile
+from fastapi import UploadFile
 
 import config
-from shared import QueueManager, file_server_router, order_check_router
+from shared import QueueManager, app, purge_storage
 from src import main_capture
 from src.helpers.driver_auth import initialize_cookie_storage
 
-app = FastAPI()
-app.include_router(file_server_router, prefix="/file_server")
-app.include_router(order_check_router)
+purge_storage(config.SCREENSHOT_FOLDER)
+initialize_cookie_storage(config.COOKIE_FILE)
+
 queue = QueueManager(
-    config.SCREENSHOT_FOLDER,
-    main_capture,
+    storage_path=config.SCREENSHOT_FOLDER,
+    dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
+    operator=main_capture,
     remote_driver_url=config.REMOTE_DRIVER_URL,
     cookie_file_path=config.COOKIE_FILE,
     dpi_multiplier=config.DPI_MULTIPLIER,
@@ -48,28 +48,3 @@ async def create_cookie_file(upload_file: UploadFile):
     with open(config.COOKIE_FILE, "wb") as f:
         f.write(upload_file.file.read())
     return "Cookie file stored."
-
-
-def init_folders() -> None:
-    purge_storage()
-    init_cookie_storage()
-
-
-def init_cookie_storage() -> None:
-    if not config.COOKIE_FILE.exists():
-        config.COOKIE_FILE.parent.mkdir(parents=True, exist_ok=True)
-        initialize_cookie_storage(config.COOKIE_FILE)
-    else:
-        print("Cookie file already exists.")
-
-
-def purge_storage() -> None:
-    if config.SCREENSHOT_FOLDER.exists():
-        for file in config.SCREENSHOT_FOLDER.rglob("*"):
-            file.unlink()
-    else:
-        config.SCREENSHOT_FOLDER.mkdir()
-
-
-# init
-init_folders()
