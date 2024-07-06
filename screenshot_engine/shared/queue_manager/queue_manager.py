@@ -1,4 +1,3 @@
-import uuid
 from collections import deque
 from pathlib import Path
 from threading import Thread
@@ -8,17 +7,21 @@ from typing import Callable
 from shared.database.db import DBHandler
 from shared.models.operator_results import OperatorOutputFile, OperatorResults
 
+from .notification import notify_dispatcher
+
 
 class QueueManager:
     def __init__(
         self,
         storage_path: Path,
+        dispatcher_url: str,
         operator: Callable[[dict, dict], OperatorResults],
         **operator_kwargs,
     ):
         self._queue = deque()
         self._processing = False
         self._storage_path = storage_path
+        self._dispatcher_url = dispatcher_url
         self._operator = operator
         self._operator_kwargs = operator_kwargs
 
@@ -76,6 +79,9 @@ class QueueManager:
             print("Done processing item")
             print(f"Item processing took {task_stop - task_start} seconds to complete")
 
+            notify_dispatcher(
+                self._dispatcher_url, DBHandler.get_order(item["order_id"]).__dict__()
+            )
         else:
             print("Queue is empty. Stopping...")
             self._processing = False

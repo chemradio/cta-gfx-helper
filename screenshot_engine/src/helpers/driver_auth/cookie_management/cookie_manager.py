@@ -6,11 +6,14 @@ from selenium import webdriver
 from .exc import CookieLoadException, MissingCookies
 
 
-def initialize_cookie_storage(cookie_file: Path) -> None:
+def initialize_cookie_storage(cookie_file_path: Path) -> None:
     """Create cookie file json if does not exist already."""
-    if not cookie_file.exists():
-        with open(cookie_file, "w+") as cookie_file:
-            json.dump({"domain_name": [{}]}, cookie_file)
+    if not cookie_file_path.exists():
+        cookie_file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(cookie_file_path, "w+") as cookie_file_path:
+            json.dump({"domain_name": [{}]}, cookie_file_path)
+    else:
+        print("Cookie file already exists.")
 
 
 def get_stored_cookies(cookie_file: Path) -> dict[list[dict]]:
