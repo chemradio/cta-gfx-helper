@@ -2,10 +2,13 @@ from io import BytesIO
 from pathlib import Path
 
 from src.helpers import remove_tree
+from src.html_composer import compose_html
 
 
-def create_videogfx(order: dict) -> BytesIO:
-    html_path: Path = compose_html(order)
+def create_videogfx(
+    order: dict, remote_driver_url_list: list[str], audio_offset: float
+) -> BytesIO:
+    html_path: Path = compose_html(order, audio_offset=audio_offset)
 
     frame_path: Path = extract_frames(html_path)
 
