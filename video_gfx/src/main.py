@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from shared import FilenameType, OperatorOutputFile, OperatorResults, generate_filename
 
 from .videogfx_processor.videogfx_studio import create_videogfx
@@ -6,6 +8,7 @@ from .videogfx_processor.videogfx_studio import create_videogfx
 def main_videogfx(
     order: dict,
     remote_driver_url_list: list[str],
+    audio_offset: float = 0.3,
 ) -> OperatorResults:
     success = False
     error = False
@@ -13,7 +16,7 @@ def main_videogfx(
     operator_output: list[OperatorOutputFile] = list()
 
     try:
-        videogfx_bytesio = create_videogfx(order)
+        videogfx_bytesio = create_videogfx(order, remote_driver_url_list, audio_offset)
         success = True
 
     except Exception as e:

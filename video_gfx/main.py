@@ -15,6 +15,7 @@ queue = QueueManager(
     dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
     operator=main_videogfx,
     remote_driver_url_list=config.SELENIUM_CONTAINERS_LOCAL,
+    audio_offset=config.AUDIO_OFFSET,
 )
 
 
@@ -32,7 +33,7 @@ class VideoGFXOrderIn(pydantic.BaseModel):
 
 
 @app.post("/")
-async def capture_screenshots(
+async def create_video_gfx(
     videogfx_order: VideoGFXOrderIn,
 ) -> str:
     order_id = str(uuid.uuid4())
