@@ -29,7 +29,7 @@ def create_animation_parameters(order):
     if audio_path:
         audio_file = AudioSegment.from_file(str(audio_path), str(audio_path)[-3:])
         audio_duration = audio_file.duration_seconds
-        animation_duration = float(config.AUDIO_OFFSET) + float(audio_duration)
+        animation_duration = float(config.DEFAULT_AUDIO_OFFSET) + float(audio_duration)
 
     quote_text = order.get("quote_text", "")
     quote_author_enabled = order.get("quote_author_enabled", False)
