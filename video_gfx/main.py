@@ -1,7 +1,9 @@
 import uuid
+from pathlib import Path
 
 import pydantic
 from fastapi import UploadFile
+from fastapi.staticfiles import StaticFiles
 
 import config
 from shared import QueueManager, app, purge_storage
@@ -31,6 +33,14 @@ class VideoGFXOrderIn(pydantic.BaseModel):
     audio_offset: float = config.DEFAULT_AUDIO_OFFSET
     videogfx_tail: float = config.DEFAULT_VIDEOGFX_TAIL
     secret_key: str | None = None
+
+
+# videogfx server
+app.mount(
+    "/",
+    StaticFiles(directory=Path.cwd().resolve()),
+    name="static",
+)
 
 
 @app.post("/")
