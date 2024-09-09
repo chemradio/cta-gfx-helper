@@ -11,8 +11,6 @@ from fastapi import UploadFile
 def compose_html(
     order: dict,
     storage_path: Path = Path.cwd() / "temp",
-    audio_offset: float = 0.3,
-    default_animation_duration: int | float = 25,
 ) -> Path:
     # copy template files
     template_name = order.get("videogfx_template", "ct_main")
@@ -50,7 +48,7 @@ def compose_html(
         ),
         "quoteTextText": order.get("quote_text"),
         "quoteAuthorText": order.get("quote_author_text"),
-        "animationDuration": default_animation_duration,
+        "animationDuration": order["animation_duration"],
     }
 
     # get audio file duration
@@ -58,14 +56,15 @@ def compose_html(
     if audio_file:
         audio = pydub.AudioSegment.from_file(audio_file.file)
         audio_duration = audio.duration_seconds
-        parameters["animationDuration"] = audio_duration + audio_offset
+        parameters["animationDuration"] = (
+            audio_duration + order["audio_offset"] + order["videogfx_tail"]
+        )
 
     # Overrides are template specific instructions to a template.
     # These override default template animation settings
     # for certain elements like text, images, etc.
     # To be implemented in the future.
-    overrides = {}
-    parameters.update(overrides)
+    parameters.update(order.get("overrides", {}))
 
     config_json_path = os.path.join(html_assembly_path, "config.json")
     with open(config_json_path, "w+") as config_file:

@@ -1,1 +1,1 @@
-from .main import main_videogfx
+from .main_videogfx import main_videogfx

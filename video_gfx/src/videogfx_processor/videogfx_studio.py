@@ -1,24 +1,28 @@
 from io import BytesIO
 from pathlib import Path
 
+from src.frame_extractor import extract_frame_images
 from src.helpers import remove_tree
 from src.html_composer import compose_html
 
 
 def create_videogfx(
-    order: dict, remote_driver_url_list: list[str], audio_offset: float
+    order: dict,
+    remote_driver_url_list: list[str],
 ) -> BytesIO:
-    html_path: Path = compose_html(order, audio_offset=audio_offset)
+    html_path = compose_html(order=order)
 
-    frame_path: Path = extract_frames(html_path)
+    frames_path = extract_frame_images(
+        html_path, remote_driver_url_list, order["framerate"]
+    )
 
-    ready_videogfx_path: Path = stitch_frames(frame_path)
+    ready_videogfx_path: Path = stitch_frames(frames_path, order["framerate"])
 
     with open(ready_videogfx_path, "rb") as f:
         content = BytesIO(f.read())
 
     # cleanup
-    remove_tree(frame_path)
+    remove_tree(frames_path)
     remove_tree(html_path)
     remove_tree(ready_videogfx_path)
 

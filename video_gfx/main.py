@@ -15,7 +15,6 @@ queue = QueueManager(
     dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
     operator=main_videogfx,
     remote_driver_url_list=config.SELENIUM_CONTAINERS_LOCAL,
-    audio_offset=config.AUDIO_OFFSET,
 )
 
 
@@ -28,7 +27,9 @@ class VideoGFXOrderIn(pydantic.BaseModel):
     quote_author_enabled: bool | None = None
     quote_author_text: str | None = None
     template: str | None = None
-
+    framerate: int | float = config.DEFAULT_FRAMERATE
+    audio_offset: float = config.DEFAULT_AUDIO_OFFSET
+    videogfx_tail: float = config.DEFAULT_VIDEOGFX_TAIL
     secret_key: str | None = None
 
 
@@ -38,17 +39,7 @@ async def create_video_gfx(
 ) -> str:
     order_id = str(uuid.uuid4())
     queue.append(
-        {
-            "order_id": order_id,
-            "background_file": videogfx_order.background_file,
-            "foreground_file": videogfx_order.foreground_file,
-            "audio_file": videogfx_order.audio_file,
-            "quote_enabled": videogfx_order.quote_enabled,
-            "quote_text": videogfx_order.quote_text,
-            "quote_author_enabled": videogfx_order.quote_author_enabled,
-            "quote_author_text": videogfx_order.quote_author_text,
-            "template": videogfx_order.template,
-        }
+        {"order_id": order_id, **videogfx_order.model_dump(exclude=("secret_key",))}
     )
     queue.start_processing()
     return order_id

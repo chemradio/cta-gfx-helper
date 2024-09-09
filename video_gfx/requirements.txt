@@ -1,8 +1,8 @@
-fastapi==0.111.0
-pillow==10.4.0
-requests==2.32.3
-python-multipart==0.0.9
-selenium==4.22.0
-uvicorn==0.30.1
+fastapi==0.112.2
 ffmpeg-python==0.2.0
+pillow==10.4.0
 pydub==0.25.1
+python-multipart==0.0.9
+requests==2.32.3
+selenium==4.24.0
+uvicorn==0.30.6
