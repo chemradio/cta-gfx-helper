@@ -10,7 +10,7 @@ from fastapi import UploadFile
 
 def compose_html(
     order: dict,
-    storage_path: Path = Path.cwd() / "temp",
+    storage_path: Path = Path.cwd() / "storage",
 ) -> Path:
     # copy template files
     template_name = order.get("videogfx_template", "ct_main")
