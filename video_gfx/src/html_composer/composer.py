@@ -5,7 +5,8 @@ import shutil
 from pathlib import Path
 
 import pydub
-from fastapi import UploadFile
+
+from shared.utils.asset_file import AssetFile
 
 
 def compose_html(
@@ -14,7 +15,7 @@ def compose_html(
 ) -> Path:
     # copy template files
     template_name = order.get("videogfx_template", "ct_main")
-    template_path = __file__.storage_path / "html_templates" / template_name
+    template_path = Path(__file__).parent / "html_templates" / template_name
 
     if not template_path.exists():
         raise Exception(f"Template not found: {template_name}")
@@ -23,16 +24,15 @@ def compose_html(
         storage_path
         / f"ha_{template_name}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
     )
-    shutil.copytree(template_path, html_assembly_path)
 
-    # extract files from dict
+    shutil.copytree(template_path, html_assembly_path, dirs_exist_ok=True)
+
     files_to_extract = ("background_file", "foreground_file", "audio_file")
-    for file in files_to_extract:
-        dict_file = order.get(file)
-        if not dict_file:
+    for filetype in files_to_extract:
+        if filetype not in order:
             continue
-        with open(html_assembly_path / dict_file.filename, "wb") as f:
-            f.write(dict_file.file.read())
+        with open(html_assembly_path / order[filetype].filename, "wb") as f:
+            f.write(order[filetype].file.read())
 
     # edit template files
     parameters = {
@@ -52,10 +52,13 @@ def compose_html(
     }
 
     # get audio file duration
-    audio_file = order.get("audio_file")
+    audio_file: AssetFile = order.get("audio_file")
     if audio_file:
-        audio = pydub.AudioSegment.from_file(audio_file.file)
-        audio_duration = audio.duration_seconds
+        audio_file.file.seek(0)
+        audio_segment = pydub.AudioSegment.from_file(
+            audio_file.file, format=audio_file.filename.split(".")[-1].upper()
+        )
+        audio_duration = len(audio_segment) / 1000.0
         parameters["animationDuration"] = (
             audio_duration + order["audio_offset"] + order["videogfx_tail"]
         )

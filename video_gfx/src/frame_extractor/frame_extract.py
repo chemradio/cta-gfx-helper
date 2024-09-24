@@ -16,7 +16,7 @@ def extract_frame_images(
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
 
-    target_url = f"http://video_gfx:9004/{str(html_assembly_path)}/main.html"
+    target_url = f"http://video_gfx:9004/storage/{html_assembly_path.name}/main.html"
 
     # get timeline duration and vertical resolution
     with open(html_assembly_path / "config.json", "rt") as json_config_file:
@@ -47,8 +47,8 @@ def extract_frame_images(
                 png_path,
                 target_url,
                 driver_url,
-                vertical_resolution / 9 * 16,
-                vertical_resolution,
+                int(vertical_resolution) / 9 * 16,
+                int(vertical_resolution),
             ),
         )
         driver_processes.append(driver_thread_process)

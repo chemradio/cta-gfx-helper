@@ -6,3 +6,4 @@ python-multipart==0.0.9
 requests==2.32.3
 selenium==4.24.0
 uvicorn==0.30.6
+tinydb==4.8.0

@@ -1,3 +1,4 @@
+import traceback
 from pathlib import Path
 
 from shared import FilenameType, OperatorOutputFile, OperatorResults, generate_filename
@@ -26,6 +27,8 @@ def main_videogfx(
         error = True
         error_message = str(e)
         print(f"{error_message=}", flush=True)
+        full_traceback = traceback.format_exc()
+        print(full_traceback, flush=True)
 
     if success:
         operator_output.append(

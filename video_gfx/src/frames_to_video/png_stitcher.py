@@ -1,3 +1,4 @@
+from io import BytesIO
 from pathlib import Path
 
 import ffmpeg
@@ -8,8 +9,8 @@ from PIL import Image
 def stitch_images(
     image_folder_path: Path,
     framerate: int | float,
-    output_path: Path | None,
-    audio_file: UploadFile | None,
+    audio_file: UploadFile | BytesIO | None,
+    output_path: Path | None = None,
     video_bitrate: int = 10_000_000,
     audio_bitrate: int = 256_000,
     audio_delay: float = 0.3,
@@ -43,11 +44,13 @@ def stitch_images(
         audio_input = ffmpeg.input(
             audio_file.file, f=audio_extension.lower(), itsoffset=audio_delay
         )
+        output = ffmpeg.output(
+            video_input, audio_input, str(output_path), encode_settings
+        )
     else:
-        audio_input = None
+        output = ffmpeg.output(video_input, str(output_path), encode_settings)
 
     if not output_path:
         output_path = image_folder_path / "output.mp4"
 
-    output = ffmpeg.output(video_input, audio_input, str(output_path), encode_settings)
     output.run()
