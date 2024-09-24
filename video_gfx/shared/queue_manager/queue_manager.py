@@ -6,6 +6,7 @@ from typing import Callable
 
 from shared.database.db import DBHandler
 from shared.models.operator_results import OperatorOutputFile, OperatorResults
+from shared.utils.asset_file import AssetFile
 
 from .notification import notify_dispatcher
 
@@ -26,7 +27,14 @@ class QueueManager:
         self._operator_kwargs = operator_kwargs
 
     def append(self, item: dict) -> None:
-        DBHandler.insert(item)
+        DBHandler.insert(
+            {
+                # duplicate the dict except if the value is an UploadFile, then just store the filename
+                key: value if not isinstance(value, AssetFile) else value.filename
+                for key, value in item.items()
+            }
+        )
+
         self._queue.append(item)
 
     def start_processing(self) -> None:
