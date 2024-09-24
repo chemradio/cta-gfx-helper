@@ -14,9 +14,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
-EXPOSE $PORT
+EXPOSE 9004
 
-
-CMD ["python3", "main.py"]
-
-# CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", $PORT]
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "9004"]

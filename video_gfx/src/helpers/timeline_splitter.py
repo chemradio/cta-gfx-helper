@@ -7,6 +7,9 @@ def split_timeline_segments(
     remaining frames if the total number of frames is not
     divisible by the number of pieces."""
 
+    if pieces == 1:
+        return [(0, total_frames - 1)]
+
     ranges = list()
     block_length = int(total_frames / pieces)
 
