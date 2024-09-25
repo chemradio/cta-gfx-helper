@@ -81,6 +81,7 @@ body {
 .quote-text-text {
     margin: 0;
     font-weight: normal;
+    /* font-family: "Roboto Condensed"; */
     /* width:100%; */
 }
 

@@ -1,1 +1,1 @@
-from .composer import compose_html
+from .composer import compose_videogfx

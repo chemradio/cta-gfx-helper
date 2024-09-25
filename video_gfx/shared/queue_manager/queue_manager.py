@@ -88,7 +88,7 @@ class QueueManager:
             print(f"Item processing took {task_stop - task_start} seconds to complete")
 
             notify_dispatcher(
-                self._dispatcher_url, DBHandler.get_order(item["order_id"]).__dict__()
+                self._dispatcher_url, DBHandler.get_order(item["order_id"])
             )
         else:
             print("Queue is empty. Stopping...")

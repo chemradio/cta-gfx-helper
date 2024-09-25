@@ -4,7 +4,7 @@ from pathlib import Path
 from src.frame_extractor import extract_frame_images
 from src.frames_to_video import stitch_images
 from src.helpers import remove_tree
-from src.html_composer import compose_html
+from src.html_composer import compose_videogfx
 
 
 def create_videogfx(
@@ -15,7 +15,7 @@ def create_videogfx(
     print("starting create_videogfx", flush=True)
 
     print("composing html", flush=True)
-    html_path = compose_html(order)
+    html_path = compose_videogfx(order)
     print(f"html_path: {html_path}", flush=True)
 
     print("extracting frames", flush=True)
@@ -31,12 +31,12 @@ def create_videogfx(
         audio_delay=order["audio_offset"],
     )
 
-    # with open(ready_videogfx_path, "rb") as f:
-    #     content = BytesIO(f.read())
+    with open(ready_videogfx_path, "rb") as f:
+        content = BytesIO(f.read())
 
-    # # cleanup
-    # remove_tree(frames_path)
-    # remove_tree(html_path)
-    # remove_tree(ready_videogfx_path)
+    # cleanup
+    remove_tree(frames_path)
+    remove_tree(ready_videogfx_path)
+    remove_tree(html_path)
 
-    # return content
+    return content
