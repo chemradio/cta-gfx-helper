@@ -1,24 +1,25 @@
-from io import BytesIO
 from pathlib import Path
 
 import ffmpeg
-from fastapi import UploadFile
 from PIL import Image
+
+from shared.utils.asset_file import AssetFile
 
 
 def stitch_images(
     image_folder_path: Path,
     framerate: int | float,
-    audio_file: UploadFile | BytesIO | None,
+    audio_file: AssetFile | None,
     output_path: Path | None = None,
-    video_bitrate: int = 10_000_000,
-    audio_bitrate: int = 256_000,
+    # video_bitrate: int = 10_000_000,
+    # audio_bitrate: int = 256_000,
     audio_delay: float = 0.3,
 ) -> Path:
+    def get_frame_size(image_folder_path: Path) -> tuple[int, int]:
+        image = Image.open(next(image_folder_path.glob("*.png")))
+        return image.size
 
-    # determine frame size
-    image = Image.open(next(image_folder_path.glob("*.png")))
-    frame_size = image.size
+    frame_size = get_frame_size(image_folder_path)
 
     encode_settings = {
         "s": f"{frame_size[0]}x{frame_size[1]}",
@@ -38,19 +39,28 @@ def stitch_images(
         pix_fmt="rgba",
     )
 
-    # audio
-    if audio_file:
-        audio_extension = audio_file.filename.split(".")[-1]
-        audio_input = ffmpeg.input(
-            audio_file.file, f=audio_extension.lower(), itsoffset=audio_delay
-        )
-        output = ffmpeg.output(
-            video_input, audio_input, str(output_path), encode_settings
-        )
-    else:
-        output = ffmpeg.output(video_input, str(output_path), encode_settings)
-
     if not output_path:
         output_path = image_folder_path / "output.mp4"
 
+    # audio
+    audio_input = None
+    if audio_file:
+        audio_extension = audio_file.filename.split(".")[-1]
+        temp_audio_file_path = image_folder_path / f"audio_file.{audio_extension}"
+        with open(temp_audio_file_path, "wb") as f:
+            f.write(audio_file.file.read())
+
+        audio_input = ffmpeg.input(
+            str(temp_audio_file_path), f=audio_extension.lower(), itsoffset=audio_delay
+        )
+
+    if audio_input:
+        output = ffmpeg.output(
+            video_input, audio_input, str(output_path), **encode_settings
+        )
+    else:
+        output = ffmpeg.output(video_input, str(output_path), **encode_settings)
+
     output.run()
+
+    return output_path

@@ -1,280 +1,319 @@
-fetch('./config.json')
-	.then((response) => response.json())
-	.then((json) => buildHTML(json));
+window.isTemplateBuilt = false;
+
+fetch("./config.json")
+  .then((response) => response.json())
+  .then((json) => buildHTML(json));
 
 function buildHTML(config) {
-	// let mainContainer = document.getElementsByName('capture')[0];
-	let mainContainer = document.createElement('div');
-	mainContainer.setAttribute('class', 'main-container');
-	let targetHeight = config.verticalResolution || 1080;
-	let targetWidth = (targetHeight / 9) * 16;
-	mainContainer.style.width = targetWidth + 'px';
-	mainContainer.style.height = targetHeight + 'px';
-	document.body.append(mainContainer);
+  // let mainContainer = document.getElementsByName('capture')[0];
+  let mainContainer = document.createElement("div");
+  mainContainer.setAttribute("class", "main-container");
+  let targetHeight = config.verticalResolution || 1080;
+  let targetWidth = (targetHeight / 9) * 16;
+  mainContainer.style.width = targetWidth + "px";
+  mainContainer.style.height = targetHeight + "px";
+  document.body.append(mainContainer);
 
-	// create midnight bg
-	let midnightBackground = document.createElement('div');
-	midnightBackground.setAttribute('class', 'layer midnightBG');
-	mainContainer.append(midnightBackground);
+  // create midnight bg
+  let midnightBackground = document.createElement("div");
+  midnightBackground.setAttribute("class", "layer midnightBG");
+  mainContainer.append(midnightBackground);
 
-	// create background image
-	let backgroundLayer = document.createElement('div');
-	backgroundLayer.setAttribute('class', 'layer');
+  // create background image
+  let backgroundLayer = document.createElement("div");
+  backgroundLayer.setAttribute("class", "layer");
 
-	let backgroundContainer = document.createElement('div');
-	backgroundContainer.setAttribute('class', 'background-container');
+  let backgroundContainer = document.createElement("div");
+  backgroundContainer.setAttribute("class", "background-container");
 
-	let backgroundImage = document.createElement('img');
-	backgroundImage.setAttribute('class', config.backgroundClass);
-	backgroundImage.setAttribute('src', config.backgroundPath);
+  let backgroundImage = document.createElement("img");
+  //   backgroundImage.setAttribute("class", config.backgroundClass);
+  backgroundImage.setAttribute("src", config.backgroundPath);
 
-	let bgImage = new Image();
-	bgImage.src = config.backgroundPath;
-	bgImage.onload = function () {
-		let bgImageOrientation =
-			bgImage.width / bgImage.height > 16 / 9
-				? 'horizontal-background'
-				: 'vertical-background';
+  let bgImage = new Image();
+  bgImage.src = config.backgroundPath;
+  bgImage.onload = function () {
+    // get bg orientation
+    let bgImageOrientation =
+      bgImage.width / bgImage.height > 16 / 9
+        ? "horizontal-background"
+        : "vertical-background";
 
-		if (config.backgroundClass == 'bgZoom') {
-			backgroundImage.setAttribute(
-				'class',
-				backgroundImage.getAttribute('class') +
-					' ' +
-					bgImageOrientation +
-					'-zoom'
-			);
-		} else if (config.backgroundClass == 'bgOnly') {
-			backgroundImage.setAttribute(
-				'class',
-				backgroundImage.getAttribute('class') +
-					' ' +
-					bgImageOrientation +
-					'-scroll'
-			);
-		}
-	};
+    // set bg main animation class
+    if (config.singleLayer) {
+      config.backgroundClass = "bgOnly";
+    } else {
+      if (bgImageOrientation == "horizontal-background") {
+        config.backgroundClass = "bgZoom";
+      } else if (bgImageOrientation == "vertical-background") {
+        config.backgroundClass = "bgScroll";
+      }
+    }
+    backgroundImage.setAttribute("class", config.backgroundClass);
 
-	backgroundLayer.append(backgroundContainer);
-	backgroundContainer.append(backgroundImage);
-	mainContainer.append(backgroundLayer);
+    // resize background image
+    if (config.backgroundClass == "bgZoom") {
+      backgroundImage.setAttribute(
+        "class",
+        backgroundImage.getAttribute("class") +
+          " " +
+          bgImageOrientation +
+          "-zoom"
+      );
+    } else if (config.backgroundClass == "bgOnly") {
+      backgroundImage.setAttribute(
+        "class",
+        backgroundImage.getAttribute("class") +
+          " " +
+          bgImageOrientation +
+          "-scroll"
+      );
+    }
+  };
 
-	// if not single layer
-	if (!config.singleLayer) {
-		// create midnight foil
-		let foilLayer = document.createElement('div');
-		foilLayer.setAttribute('class', 'layer');
+  backgroundLayer.append(backgroundContainer);
+  backgroundContainer.append(backgroundImage);
+  mainContainer.append(backgroundLayer);
 
-		let foilContainer = document.createElement('div');
-		foilContainer.setAttribute('class', 'midnightFoil');
+  // if not single layer
+  if (!config.singleLayer) {
+    // create midnight foil
+    let foilLayer = document.createElement("div");
+    foilLayer.setAttribute("class", "layer");
 
-		foilLayer.append(foilContainer);
-		mainContainer.append(foilLayer);
+    let foilContainer = document.createElement("div");
+    foilContainer.setAttribute("class", "midnightFoil");
 
-		// create foreground
-		let foregroundLayer = document.createElement('div');
-		foregroundLayer.setAttribute('class', 'layer');
+    foilLayer.append(foilContainer);
+    mainContainer.append(foilLayer);
 
-		let foregroundContainer = document.createElement('div');
-		foregroundContainer.setAttribute('class', 'foreground-container');
+    // create foreground
+    let foregroundLayer = document.createElement("div");
+    foregroundLayer.setAttribute("class", "layer");
 
-		let foregroundImage = document.createElement('img');
-		foregroundImage.setAttribute('src', config.foregroundPath);
-		foregroundImage.setAttribute('class', config.foregroundClass);
+    let foregroundContainer = document.createElement("div");
+    foregroundContainer.setAttribute("class", "foreground-container");
 
-		if (config.roundCorners) {
-			foregroundImage.setAttribute(
-				'class',
-				foregroundImage.getAttribute('class') + ' round-corners'
-			);
-		}
+    let foregroundImage = document.createElement("img");
+    foregroundImage.setAttribute("src", config.foregroundPath);
 
-		let fgImage = new Image();
-		fgImage.src = config.foregroundPath;
-		fgImage.onload = function () {
-			if (
-				['twitter', 'document', 'instagram', 'photo'].includes(
-					config.foregroundClass
-				)
-			) {
-				let fgImageOrientation =
-					fgImage.width / fgImage.height > 4 / 3
-						? 'horizontal-foreground-zoom'
-						: 'vertical-foreground-zoom';
-				foregroundImage.setAttribute(
-					'class',
-					foregroundImage.getAttribute('class') +
-						' ' +
-						fgImageOrientation
-				);
-			}
-		};
+    //
+    let fgImage = new Image();
+    fgImage.src = config.foregroundPath;
+    fgImage.onload = function () {
+      let fgImageOrientationPrimary =
+        fgImage.height / fgImage.width > 2 / 1
+          ? "vertical-foreground"
+          : "horizontal-foreground";
 
-		foregroundLayer.append(foregroundContainer);
-		foregroundContainer.append(foregroundImage);
-		mainContainer.append(foregroundLayer);
-	}
+      // set fg main animation class
+      if (fgImageOrientationPrimary == "horizontal-foreground") {
+        config.foregroundClass = "fgZoom";
+      } else if (fgImageOrientationPrimary == "vertical-foreground") {
+        config.foregroundClass = "fgScroll";
+      }
+      foregroundImage.setAttribute(
+        "class",
+        config.foregroundClass + " round-corners"
+      );
 
-	// create vignette overlay
-	let vignetteContainer = document.createElement('div');
-	vignetteContainer.setAttribute('class', 'layer');
+      if (config.foregroundClass == "fgZoom") {
+        let fgImageOrientationZoom =
+          fgImage.width / fgImage.height > 4 / 3
+            ? "horizontal-foreground-zoom"
+            : "vertical-foreground-zoom";
+        foregroundImage.setAttribute(
+          "class",
+          foregroundImage.getAttribute("class") + " " + fgImageOrientationZoom
+        );
+      }
+    };
 
-	let vignetteImage = document.createElement('img');
-	vignetteImage.setAttribute('src', './vignette-overlay.png');
-	vignetteImage.setAttribute('class', 'vignette-image');
+    foregroundLayer.append(foregroundContainer);
+    foregroundContainer.append(foregroundImage);
+    mainContainer.append(foregroundLayer);
+  }
 
-	vignetteContainer.append(vignetteImage);
-	mainContainer.append(vignetteContainer);
+  // create vignette overlay
+  let vignetteContainer = document.createElement("div");
+  vignetteContainer.setAttribute("class", "layer");
 
-	// create quote box
-	if (config.quoteEnabled) {
-		let quoteTextLength = config.quoteTextText.length;
-		let quoteAuthorLength = config.quoteTextText.length;
+  let vignetteImage = document.createElement("img");
+  vignetteImage.setAttribute("src", "./vignette-overlay.png");
+  vignetteImage.setAttribute("class", "vignette-image");
 
-		let targetLength =
-			quoteTextLength > quoteAuthorLength
-				? quoteTextLength
-				: quoteAuthorLength;
-		let width;
+  vignetteContainer.append(vignetteImage);
+  mainContainer.append(vignetteContainer);
 
-		let quoteLayer = document.createElement('div');
-		quoteLayer.setAttribute('class', 'layer');
+  // create quote box
+  if (config.quoteEnabled) {
+    let quoteTextLength = config.quoteTextText.length;
+    let quoteAuthorLength = config.quoteTextText.length;
 
-		let quoteContainer = document.createElement('div');
-		quoteContainer.setAttribute('class', 'quote-container');
+    let targetLength =
+      quoteTextLength > quoteAuthorLength ? quoteTextLength : quoteAuthorLength;
+    let width;
 
-		let quoteBox = document.createElement('div');
-		quoteBox.setAttribute('class', 'quote-box');
+    let quoteLayer = document.createElement("div");
+    quoteLayer.setAttribute("class", "layer");
 
-		let fontRatio = 0.037;
-		quoteBox.style.fontSize = targetHeight * fontRatio + 'px';
+    let quoteContainer = document.createElement("div");
+    quoteContainer.setAttribute("class", "quote-container");
 
-		let paddingRatio = 0.0277;
-		quoteBox.style.padding = targetHeight * paddingRatio + 'px';
+    let quoteBox = document.createElement("div");
+    quoteBox.setAttribute("class", "quote-box");
 
-		const prepText = preprocessString(config.quoteTextText);
-		const lines = splitStringParagraph(prepText);
-		let maxQuoteWidth = 0;
-		for (let i = 0; i < lines.length; i++) {
-			let quoteTextText = document.createElement('p');
-			quoteTextText.setAttribute('class', 'quote-text-text');
-			quoteTextText.innerHTML = lines[i];
-			quoteBox.append(quoteTextText);
-		}
-		console.log(quoteBox.clientWidth)
+    let fontRatio = 0.037;
+    quoteBox.style.fontSize = targetHeight * fontRatio + "px";
 
-		if (config.quoteAuthorText) {
-			let quoteBreak = document.createElement('br');
-			quoteBox.append(quoteBreak);
-			let quoteAuthorText = document.createElement('p');
-			quoteAuthorText.setAttribute('class', 'quote-author-text');
-			quoteAuthorText.innerHTML = config.quoteAuthorText;
-			quoteBox.append(quoteAuthorText);
-		}
+    let paddingRatio = 0.0277;
+    quoteBox.style.padding = targetHeight * paddingRatio + "px";
 
-		mainContainer.append(quoteLayer);
-		quoteLayer.append(quoteContainer);
-		quoteContainer.append(quoteBox);
-	}
+    const prepText = preprocessString(config.quoteTextText);
+    const lines = splitStringParagraph(prepText);
+    let maxQuoteWidth = 0;
+    for (let i = 0; i < lines.length; i++) {
+      let quoteTextText = document.createElement("p");
+      quoteTextText.setAttribute("class", "quote-text-text");
+      quoteTextText.innerHTML = lines[i];
+      quoteBox.append(quoteTextText);
+    }
+    console.log(quoteBox.clientWidth);
 
-	let tailPlaceholder = document.createElement('div');
-	tailPlaceholder.setAttribute('class', 'tail-nonexistent layer');
-	mainContainer.append(tailPlaceholder);
+    if (config.quoteAuthorText) {
+      let quoteBreak = document.createElement("br");
+      quoteBox.append(quoteBreak);
+      let quoteAuthorText = document.createElement("p");
+      quoteAuthorText.setAttribute("class", "quote-author-text");
+      quoteAuthorText.innerHTML = config.quoteAuthorText;
+      quoteBox.append(quoteAuthorText);
+    }
 
-	let quoteBox = document.querySelector('.quote-box');
-	let firstQuoteTextLine = document.querySelector('.quote-text-text');
-	let quoteLines = document.querySelectorAll('.quote-text-text');
-	let maxQuoteWidth = 0;
-	for (let i = 0; i < quoteLines.length; i++) {
-		if (quoteLines[i].clientWidth > maxQuoteWidth) {
-			maxQuoteWidth = quoteLines[i].clientWidth;
-		}
-	}
-	quoteBox.style.width = maxQuoteWidth +1+ 'px';
+    mainContainer.append(quoteLayer);
+    quoteLayer.append(quoteContainer);
+    quoteContainer.append(quoteBox);
+  }
 
-	let quoteAuthorText = document.querySelector('.quote-author-text');
-	quoteAuthorText.style.fontSize =  '40px';
+  let tailPlaceholder = document.createElement("div");
+  tailPlaceholder.setAttribute("class", "tail-nonexistent layer");
+  mainContainer.append(tailPlaceholder);
 
-	// let quoteAuthorText = document.querySelector('.quote-author-text');
-	// quoteAuthorText.style.width = firstQuoteTextLine.clientWidth+"px";
+  let quoteBox = document.querySelector(".quote-box");
+  let firstQuoteTextLine = document.querySelector(".quote-text-text");
+  let quoteLines = document.querySelectorAll(".quote-text-text");
+  let maxQuoteWidth = 0;
+  for (let i = 0; i < quoteLines.length; i++) {
+    if (quoteLines[i].clientWidth > maxQuoteWidth) {
+      maxQuoteWidth = quoteLines[i].clientWidth;
+    }
+  }
+  quoteBox.style.width = maxQuoteWidth + 1 + "px";
+
+  let quoteAuthorText = document.querySelector(".quote-author-text");
+  quoteAuthorText.style.fontSize = "40px";
+
+  // let quoteAuthorText = document.querySelector('.quote-author-text');
+  // quoteAuthorText.style.width = firstQuoteTextLine.clientWidth+"px";
+
+  // Dynamically load the animation script
+  const script = document.createElement("script");
+  script.src = "./animation.js";
+  script.onload = function () {
+    console.log("Animation script loaded and executed.");
+    // You can put any additional logic here if needed after animation.js is loaded
+  };
+  document.head.appendChild(script); // Add the script to the <head> or <body> to load it
+
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "./styles.css"; // Path to your CSS file
+  link.onload = function () {
+    console.log("Stylesheet loaded successfully.");
+  };
+  link.onerror = function () {
+    console.error("Error loading the stylesheet.");
+  };
+
+  // Append the CSS to the <head> to apply the styles
+  document.head.appendChild(link);
 }
 
 function splitStringParagraph(longString) {
-	const maxCharsPerLineL0 = 50;
-	const maxCharsPerLineL1 = 60;
-	const maxCharsPerLineL2 = 70;
-	const maxCharsPerLineL3 = 75;
-	const maxCharsPerLineL4 = 80;
+  const maxCharsPerLineL0 = 50;
+  const maxCharsPerLineL1 = 60;
+  const maxCharsPerLineL2 = 70;
+  const maxCharsPerLineL3 = 75;
+  const maxCharsPerLineL4 = 80;
 
-	const textLength = longString.length;
-	let splitIndex;
+  const textLength = longString.length;
+  let splitIndex;
 
-	console.log(Math.floor(textLength / maxCharsPerLineL4));
-	switch (Math.floor(textLength / maxCharsPerLineL4)) {
-		case 0:
-			splitIndex = maxCharsPerLineL0;
-			break;
-		case 1:
-			splitIndex = maxCharsPerLineL1;
-			break;
-		case 2:
-			splitIndex = maxCharsPerLineL2;
-			break;
-		case 3:
-			splitIndex = maxCharsPerLineL3;
-			break;
-		default:
-			splitIndex = maxCharsPerLineL4;
-			break;
-	}
+  console.log(Math.floor(textLength / maxCharsPerLineL4));
+  switch (Math.floor(textLength / maxCharsPerLineL4)) {
+    case 0:
+      splitIndex = maxCharsPerLineL0;
+      break;
+    case 1:
+      splitIndex = maxCharsPerLineL1;
+      break;
+    case 2:
+      splitIndex = maxCharsPerLineL2;
+      break;
+    case 3:
+      splitIndex = maxCharsPerLineL3;
+      break;
+    default:
+      splitIndex = maxCharsPerLineL4;
+      break;
+  }
 
-	let procString = longString;
-	let output = '';
+  let procString = longString;
+  let output = "";
 
-	while (true) {
-		if (procString.length >= splitIndex) {
-			let targetIndex = procString.slice(0, splitIndex).lastIndexOf(' ');
-			let firstString = procString.slice(0, targetIndex);
-			let secondString = procString.slice(targetIndex);
+  while (true) {
+    if (procString.length >= splitIndex) {
+      let targetIndex = procString.slice(0, splitIndex).lastIndexOf(" ");
+      let firstString = procString.slice(0, targetIndex);
+      let secondString = procString.slice(targetIndex);
 
-			while (true) {
-				let lastWhite = firstString.lastIndexOf(' ');
-				if (targetIndex - lastWhite <= 2) {
-					let chunk = firstString.slice(lastWhite);
-					firstString = firstString.slice(0, lastWhite);
-					secondString = chunk + ' ' + secondString;
-				} else {
-					break;
-				}
-			}
+      while (true) {
+        let lastWhite = firstString.lastIndexOf(" ");
+        if (targetIndex - lastWhite <= 2) {
+          let chunk = firstString.slice(lastWhite);
+          firstString = firstString.slice(0, lastWhite);
+          secondString = chunk + " " + secondString;
+        } else {
+          break;
+        }
+      }
 
-			output += firstString + '\n';
-			procString = secondString;
-		} else {
-			output += procString;
-			break;
-		}
-	}
-	return output.split('\n');
+      output += firstString + "\n";
+      procString = secondString;
+    } else {
+      output += procString;
+      break;
+    }
+  }
+  return output.split("\n");
 }
 
 function preprocessString(text) {
-	while (
-		text.indexOf('ё') > -1 ||
-		text.indexOf('Ё') > -1 ||
-		text.indexOf('«') > -1 ||
-		text.indexOf('»') > -1 ||
-		text.indexOf(' - ') > -1
-	) {
-		text = text.replace('ё', 'е');
-		text = text.replace('Ё', 'Е');
-		text = text.replace('«', '"');
-		text = text.replace('»', '"');
-		text = text.replace(' - ', ' – ');
-	}
-	text = text.replace(/^\s+|\s+$/g, '');
-	while (text.indexOf('  ') > -1) {
-		text = text.replace('  ', ' ');
-	}
-	return text;
+  while (
+    text.indexOf("ё") > -1 ||
+    text.indexOf("Ё") > -1 ||
+    text.indexOf("«") > -1 ||
+    text.indexOf("»") > -1 ||
+    text.indexOf(" - ") > -1
+  ) {
+    text = text.replace("ё", "е");
+    text = text.replace("Ё", "Е");
+    text = text.replace("«", '"');
+    text = text.replace("»", '"');
+    text = text.replace(" - ", " – ");
+  }
+  text = text.replace(/^\s+|\s+$/g, "");
+  while (text.indexOf("  ") > -1) {
+    text = text.replace("  ", " ");
+  }
+  return text;
 }

@@ -10,8 +10,8 @@ USE_THREADS = False
 USER_PROCESSES = not USE_THREADS
 SELENIUM_CONTAINERS_LOCAL = (
     "http://video_gfx_selenium_one:4444/wd/hub",
-    # "http://video_gfx_selenium_two:4444/wd/hub",
-    # "http://video_gfx_selenium_three:4444/wd/hub",
+    "http://video_gfx_selenium_two:4444/wd/hub",
+    "http://video_gfx_selenium_three:4444/wd/hub",
 )
 
 DEFAULT_ANIMATION_DURATION = 5
