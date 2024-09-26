@@ -169,51 +169,31 @@ function buildHTML(config) {
     let paddingRatio = 0.0277;
     quoteBox.style.padding = targetHeight * paddingRatio + "px";
 
-    const prepText = preprocessString(config.quoteTextText);
-    const lines = splitStringParagraph(prepText);
-    let maxQuoteWidth = 0;
-    for (let i = 0; i < lines.length; i++) {
-      let quoteTextText = document.createElement("p");
-      quoteTextText.setAttribute("class", "quote-text-text");
-      quoteTextText.innerHTML = lines[i];
-      quoteBox.append(quoteTextText);
-    }
-    console.log(quoteBox.clientWidth);
+    const quoteTextText = insertUnbreakableSpaces(
+      preprocessString(config.quoteTextText)
+    );
+    const quoteAuthorText = insertUnbreakableSpaces(
+      preprocessString(config.quoteAuthorText)
+    );
 
-    if (config.quoteAuthorText) {
-      let quoteBreak = document.createElement("br");
-      quoteBox.append(quoteBreak);
-      let quoteAuthorText = document.createElement("p");
-      quoteAuthorText.setAttribute("class", "quote-author-text");
-      quoteAuthorText.innerHTML = config.quoteAuthorText;
-      quoteBox.append(quoteAuthorText);
-    }
+    let quoteTextEl = document.createElement("p");
+    quoteTextEl.setAttribute("class", "quote-text-text");
+    quoteTextEl.innerHTML = quoteTextText;
+    quoteBox.append(quoteTextEl);
 
-    mainContainer.append(quoteLayer);
-    quoteLayer.append(quoteContainer);
+    let quoteBreakEl = document.createElement("br");
+    quoteBox.append(quoteBreakEl);
+
+    let quoteAuthorEl = document.createElement("div");
+    quoteAuthorEl.setAttribute("class", "quote-author-text");
+    quoteAuthorEl.innerHTML = quoteAuthorText;
+    quoteAuthorEl.style.fontSize = "40px";
+    quoteBox.append(quoteAuthorEl);
+
     quoteContainer.append(quoteBox);
+    quoteLayer.append(quoteContainer);
+    mainContainer.append(quoteLayer);
   }
-
-  let tailPlaceholder = document.createElement("div");
-  tailPlaceholder.setAttribute("class", "tail-nonexistent layer");
-  mainContainer.append(tailPlaceholder);
-
-  let quoteBox = document.querySelector(".quote-box");
-  let firstQuoteTextLine = document.querySelector(".quote-text-text");
-  let quoteLines = document.querySelectorAll(".quote-text-text");
-  let maxQuoteWidth = 0;
-  for (let i = 0; i < quoteLines.length; i++) {
-    if (quoteLines[i].clientWidth > maxQuoteWidth) {
-      maxQuoteWidth = quoteLines[i].clientWidth;
-    }
-  }
-  quoteBox.style.width = maxQuoteWidth + 1 + "px";
-
-  let quoteAuthorText = document.querySelector(".quote-author-text");
-  quoteAuthorText.style.fontSize = "40px";
-
-  // let quoteAuthorText = document.querySelector('.quote-author-text');
-  // quoteAuthorText.style.width = firstQuoteTextLine.clientWidth+"px";
 
   // Dynamically load the animation script
   const script = document.createElement("script");
@@ -236,65 +216,60 @@ function buildHTML(config) {
 
   // Append the CSS to the <head> to apply the styles
   document.head.appendChild(link);
+
+  // Dynamically load the animation script
+  const scriptQuoteResizer = document.createElement("script");
+  scriptQuoteResizer.src = "./quoteboxResizer.js";
+  scriptQuoteResizer.onload = function () {
+    console.log("Quote script loaded and executed.");
+    // You can put any additional logic here if needed after animation.js is loaded
+  };
+  document.head.appendChild(scriptQuoteResizer);
 }
 
-function splitStringParagraph(longString) {
-  const maxCharsPerLineL0 = 50;
-  const maxCharsPerLineL1 = 60;
-  const maxCharsPerLineL2 = 70;
-  const maxCharsPerLineL3 = 75;
-  const maxCharsPerLineL4 = 80;
+function insertUnbreakableSpaces(text) {
+  //   find all words that are shorter than 4 characters or included in a special list [] and replace the space after it with and unbreakable space
+  const list = [
+    "и",
+    "в",
+    "на",
+    "с",
+    "по",
+    "к",
+    "о",
+    "за",
+    "из",
+    "от",
+    "до",
+    "у",
+    "а",
+    "не",
+    "но",
+    "или",
+    "что",
+    "как",
+    "где",
+    "кто",
+    "чей",
+    "тот",
+    "этот",
+    "сей",
+  ];
 
-  const textLength = longString.length;
-  let splitIndex;
-
-  console.log(Math.floor(textLength / maxCharsPerLineL4));
-  switch (Math.floor(textLength / maxCharsPerLineL4)) {
-    case 0:
-      splitIndex = maxCharsPerLineL0;
-      break;
-    case 1:
-      splitIndex = maxCharsPerLineL1;
-      break;
-    case 2:
-      splitIndex = maxCharsPerLineL2;
-      break;
-    case 3:
-      splitIndex = maxCharsPerLineL3;
-      break;
-    default:
-      splitIndex = maxCharsPerLineL4;
-      break;
-  }
-
-  let procString = longString;
-  let output = "";
-
-  while (true) {
-    if (procString.length >= splitIndex) {
-      let targetIndex = procString.slice(0, splitIndex).lastIndexOf(" ");
-      let firstString = procString.slice(0, targetIndex);
-      let secondString = procString.slice(targetIndex);
-
-      while (true) {
-        let lastWhite = firstString.lastIndexOf(" ");
-        if (targetIndex - lastWhite <= 2) {
-          let chunk = firstString.slice(lastWhite);
-          firstString = firstString.slice(0, lastWhite);
-          secondString = chunk + " " + secondString;
-        } else {
-          break;
-        }
-      }
-
-      output += firstString + "\n";
-      procString = secondString;
+  const words = text.split(" ");
+  console.log(words);
+  let result = "";
+  for (let word of words) {
+    if (
+      // word.length < 4 ||
+      list.includes(word)
+    ) {
+      result += word + "&nbsp;";
     } else {
-      output += procString;
-      break;
+      result += word + " ";
     }
   }
-  return output.split("\n");
+  return result;
 }
 
 function preprocessString(text) {

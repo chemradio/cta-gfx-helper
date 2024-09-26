@@ -23,6 +23,7 @@ def png_capture(
     driver.get(target_url)
     time.sleep(2)
     print("starting extraction", flush=True)
+    o1 = perf_counter()
     for frame in range(start_frame, end_frame + 1):
         progress_frame = linear_interpolation(interpolation_data, frame)
         driver.execute_script(f"timeline.progress({progress_frame})")
@@ -33,4 +34,6 @@ def png_capture(
         print(f"Selenium capture and save screenshot took: {t2-t1}", flush=True)
 
         print(f"Extracting png sequence: {progress_frame*100:.2f}% done", flush=True)
+    o2 = perf_counter()
+    print(f"Extraction in thread took: {o2-o1}", flush=True)
     driver.quit()
