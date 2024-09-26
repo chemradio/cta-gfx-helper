@@ -8,4 +8,4 @@ def remove_tree(path: Path) -> None:
         elif item.is_dir():
             remove_tree(item)
             item.rmdir()
-    path.rmdir()
+    # path.rmdir()
