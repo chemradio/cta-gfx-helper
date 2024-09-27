@@ -55,7 +55,7 @@ function create_animation(config) {
     )
 
     // foreground scroll
-    .to(".fgScroll .facebook", { duration: SCROLLDURATION, y: "-200px" }, 0.2)
+    .to(".fgScroll", { duration: SCROLLDURATION, y: "-200px" }, 0.2)
     // foreground zoom
     .to(
       ".fgZoom .twitter, .document, .instagram, .photo",

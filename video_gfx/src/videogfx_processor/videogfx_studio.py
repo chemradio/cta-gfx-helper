@@ -37,6 +37,6 @@ def create_videogfx(
     # cleanup
     remove_tree(frames_path)
     remove_tree(ready_videogfx_path)
-    # remove_tree(html_path)
+    remove_tree(html_path)
 
     return content
