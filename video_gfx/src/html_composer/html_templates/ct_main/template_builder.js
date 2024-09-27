@@ -1,5 +1,3 @@
-window.isTemplateBuilt = false;
-
 fetch("./config.json")
   .then((response) => response.json())
   .then((json) => buildHTML(json));
@@ -194,37 +192,6 @@ function buildHTML(config) {
     quoteLayer.append(quoteContainer);
     mainContainer.append(quoteLayer);
   }
-
-  // Dynamically load the animation script
-  const script = document.createElement("script");
-  script.src = "./animation.js";
-  script.onload = function () {
-    console.log("Animation script loaded and executed.");
-    // You can put any additional logic here if needed after animation.js is loaded
-  };
-  document.head.appendChild(script); // Add the script to the <head> or <body> to load it
-
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = "./styles.css"; // Path to your CSS file
-  link.onload = function () {
-    console.log("Stylesheet loaded successfully.");
-  };
-  link.onerror = function () {
-    console.error("Error loading the stylesheet.");
-  };
-
-  // Append the CSS to the <head> to apply the styles
-  document.head.appendChild(link);
-
-  // Dynamically load the animation script
-  const scriptQuoteResizer = document.createElement("script");
-  scriptQuoteResizer.src = "./quoteboxResizer.js";
-  scriptQuoteResizer.onload = function () {
-    console.log("Quote script loaded and executed.");
-    // You can put any additional logic here if needed after animation.js is loaded
-  };
-  document.head.appendChild(scriptQuoteResizer);
 }
 
 function insertUnbreakableSpaces(text) {
