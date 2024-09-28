@@ -1,6 +1,7 @@
-import threading
-import tinydb
 import functools
+import threading
+
+import tinydb
 
 db_lock = threading.RLock()
 

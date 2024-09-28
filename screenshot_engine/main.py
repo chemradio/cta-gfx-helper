@@ -1,7 +1,7 @@
 import uuid
 
 import pydantic
-from fastapi import UploadFile
+from fastapi import Form, UploadFile
 
 import config
 from shared import QueueManager, app, purge_storage
@@ -22,20 +22,18 @@ queue = QueueManager(
 )
 
 
-class ScreenshotOrderIn(pydantic.BaseModel):
-    screenshot_link: str
-    secret_key: str | None = None
-
-
 @app.post("/")
 async def capture_screenshots(
-    screenshot_order: ScreenshotOrderIn,
+    screenshot_link: str = Form(None),
+    secret_key: str | None = None,
+    callback_url: str | None = None,
 ) -> str:
     order_id = str(uuid.uuid4())
     queue.append(
         {
             "order_id": order_id,
-            "screenshot_link": screenshot_order.screenshot_link,
+            "screenshot_link": screenshot_link,
+            "callback_url": callback_url,
         }
     )
     queue.start_processing()
