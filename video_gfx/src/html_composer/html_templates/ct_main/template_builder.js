@@ -100,7 +100,7 @@ function buildHTML(config) {
     fgImage.src = config.foregroundPath;
     fgImage.onload = function () {
       let fgImageOrientationPrimary =
-        fgImage.height / fgImage.width > 2 / 1
+        fgImage.height / fgImage.width > 1.6
           ? "vertical-foreground"
           : "horizontal-foreground";
 

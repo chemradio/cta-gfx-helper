@@ -57,11 +57,7 @@ function create_animation(config) {
     // foreground scroll
     .to(".fgScroll", { duration: SCROLLDURATION, y: "-200px" }, 0.2)
     // foreground zoom
-    .to(
-      ".fgZoom .twitter, .document, .instagram, .photo",
-      { duration: SCROLLDURATION, scale: 1.1 },
-      0.2
-    )
+    .to(".fgZoom", { duration: SCROLLDURATION, scale: 1.1 }, 0.2)
 
     // quote box wipe
     .from(

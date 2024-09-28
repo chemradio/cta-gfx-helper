@@ -19,11 +19,13 @@
         });
         }
     
-        loadScript('gsap.min.js')
+        loadScript('template_builder.js')
+        .then(() => loadScript('quoteboxResizer.js'))
+
+        // load GSAP
         .then(() => loadScript('CustomEase.min.js'))
         .then(() => loadScript('EasePack.min.js'))
-        .then(() => loadScript('template_builder.js'))
-        .then(() => loadScript('quoteboxResizer.js'))
+        .then(() => loadScript('gsap.min.js'))
         .then(() => loadScript('animation.js'))
         .catch(error => console.error(error));
     </script>
