@@ -31,8 +31,10 @@ def prepare_html_template(
     shutil.copytree(template_path, html_assembly_path, dirs_exist_ok=True)
 
     files_to_extract = ("background_file", "foreground_file")
+    print(order)
     for filetype in files_to_extract:
-        if filetype not in order:
+        print(filetype)
+        if order.get(filetype) is None:
             continue
         with open(html_assembly_path / order[filetype].filename, "wb") as f:
             f.write(order[filetype].file.read())
@@ -45,7 +47,11 @@ def configure_html_comp(order: dict, html_assembly_path: Path):
     parameters = {
         "verticalResolution": os.environ.get("VERTICAL_RESOLUTION", 1080),
         "backgroundPath": f"./{order.get('background_file').filename}",
-        "foregroundPath": f"./{order.get('foreground_file').filename}",
+        "foregroundPath": (
+            f"./{order.get('foreground_file').filename}"
+            if order.get("foreground_file")
+            else ""
+        ),
         "quoteEnabled": (
             True if order.get("quote_enabled") and order.get("quote_text") else False
         ),
