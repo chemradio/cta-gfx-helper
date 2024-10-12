@@ -1,6 +1,5 @@
 import uuid
 
-import pydantic
 from fastapi import Form, UploadFile
 
 import config
@@ -22,7 +21,7 @@ queue = QueueManager(
 )
 
 
-@app.post("/")
+@app.post("/", response_model=dict)
 async def capture_screenshots(
     screenshot_link: str = Form(None),
     secret_key: str | None = None,
@@ -34,10 +33,11 @@ async def capture_screenshots(
             "order_id": order_id,
             "screenshot_link": screenshot_link,
             "callback_url": callback_url,
+            "status": "new",
         }
     )
     queue.start_processing()
-    return order_id
+    return {"order_id": str(order_id)}
 
 
 @app.post("/cookie_file")

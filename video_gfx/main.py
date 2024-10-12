@@ -1,10 +1,8 @@
 import uuid
 from pathlib import Path
 
-import pydantic
 from fastapi import File, Form, UploadFile
 from fastapi.staticfiles import StaticFiles
-from starlette.requests import Request
 
 import config
 from shared import QueueManager, app, purge_storage

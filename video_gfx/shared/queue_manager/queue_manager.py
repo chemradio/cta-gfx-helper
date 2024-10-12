@@ -8,7 +8,7 @@ from shared.database.db import DBHandler
 from shared.models.operator_results import OperatorOutputFile, OperatorResults
 from shared.utils.asset_file import AssetFile
 
-from .notification import notify_dispatcher
+# from .notification import notify_dispatcher
 
 
 class QueueManager:
@@ -54,6 +54,7 @@ class QueueManager:
         while self._queue:
             print(f"Queue length: {len(self._queue)}")
             item: dict = self._queue.popleft()
+            DBHandler.update(item["order_id"], {"status": "processing"})
             print(f"Processing queue item: {item}")
             task_start = perf_counter()
 
@@ -77,7 +78,7 @@ class QueueManager:
                         "output_filenames": [
                             output.filename
                             for output in operator_results.operator_output
-                        ]
+                        ],
                     }
                 )
 
