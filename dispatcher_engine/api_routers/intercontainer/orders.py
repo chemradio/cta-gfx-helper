@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pymongo import ReturnDocument
 
-from container_interaction.signal_sender import signal_to_services
+from container_interaction.signal_sender import dispatch_to_microservices
 from db_mongo.db_config.db_init import Orders
 from db_mongo.models.orders import Order
 from utils.order_logic.stage_increments import StageFlows
@@ -58,5 +58,5 @@ async def update_order(
         {"$set": update_data},
         return_document=ReturnDocument.AFTER,
     )
-    await signal_to_services(Order(**order))
+    await dispatch_to_microservices(Order(**order))
     return order

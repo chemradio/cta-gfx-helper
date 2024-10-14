@@ -4,7 +4,7 @@ from typing import List
 from bson.objectid import ObjectId
 from fastapi import APIRouter
 
-from container_interaction.signal_sender import signal_to_services
+from container_interaction.signal_sender import dispatch_to_microservices
 from db_mongo.db_config.db_init import Orders
 from db_mongo.helpers.user_search import find_user_by_order
 from db_mongo.models.orders import Order
@@ -45,7 +45,7 @@ async def add_new_order(
     ).inserted_id
     order = Orders.find_one({"_id": ObjectId(order_db_id)})
 
-    await signal_to_services(Order(**order))
+    await dispatch_to_microservices(Order(**order))
     return order
 
 

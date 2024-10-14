@@ -8,7 +8,7 @@ from fastapi import (
     UploadFile,
 )
 
-from container_interaction.signal_sender import signal_to_services
+from container_interaction.signal_sender import dispatch_to_microservices
 from db_tortoise.order_controller import OrderController
 from db_tortoise.orders_models import Order, Order_Pydantic, OrderIn_Pydantic
 from db_tortoise.users_models import User, User_Pydantic
@@ -36,7 +36,7 @@ async def add_order(
     await order_db.save()
     await order_db.refresh_from_db()
 
-    background_tasks.add_task(signal_to_services, order_db)
+    background_tasks.add_task(dispatch_to_microservices, order_db)
     return await Order_Pydantic.from_tortoise_orm(order_db)
 
 

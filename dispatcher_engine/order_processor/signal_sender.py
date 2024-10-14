@@ -4,7 +4,7 @@ from container_interaction.video_gfx import signal_to_video_gfx
 from db_mongo.models.orders import Order
 
 
-async def signal_to_services(order: Order):
+async def dispatch_to_microservices(order: Order):
     print(f"signalling to services, current stage is {order.current_stage}")
     match order.current_stage:
         case "ready_for_screenshots":

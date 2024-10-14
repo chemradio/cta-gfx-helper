@@ -5,7 +5,7 @@ import time
 import uvicorn
 
 # from api_routers.administration import db_manipulation
-from api_routers.helpers import text_processors
+from api_routers.support import text_processors
 
 # from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
@@ -14,7 +14,7 @@ from api_routers.intercontainer import orders as intercontainer_orders
 # from api_routers.telegram_api import users as telegram_users
 from api_routers.universal import orders as universal_orders
 from api_routers.universal import users as universal_users
-from api_routers.user_files import user_file_handler
+from api_routers.support import user_file_handler
 
 # from api_routers.web_api import direct_download
 # from api_routers.web_api import orders as web_orders
