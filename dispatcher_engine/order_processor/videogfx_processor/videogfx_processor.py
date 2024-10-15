@@ -23,39 +23,47 @@ def process_videogfx(
     screenshot_url: str | None,
     quote_text: str | None,
     quote_author: str | None,
+    background_file: BytesIO | None,
+    foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
     videogfx_type: VideoGFXType = VideoGFXType.AUTO,
     screenshot_container_url: str = CONTAINER_URLS.Screenshoter,
     videogfx_container_url: str = CONTAINER_URLS.VideoGfx,
 ):
     try:
-        screenshot_results = process_screenshots(
-            screenshot_url, screenshot_container_url
-        )
+        # process screenshots
+        if videogfx_type in [VideoGFXType.AUTO, VideoGFXType.MIXED]:
+            screenshot_results = process_screenshots(
+                screenshot_url, screenshot_container_url
+            )
+            background_file = screenshot_results.background
 
-        order_id = order_screenshots(screenshot_url, screenshot_container_url)
-        finished_order = poll_order_status_finished(order_id, screenshot_container_url)
+            if videogfx_type == VideoGFXType.AUTO:
+                if screenshot_results.two_layer:
+                    foreground_file = screenshot_results.foreground
+
+        # ordering stage
+        order_id = order_video_gfx(
+            {
+                "background_file": background_file,
+                "foreground_file": foreground_file if foreground_file else None,
+                "audio_file": audio_file if audio_file else None,
+                "quote_text": quote_text,
+                "quote_author": quote_author,
+                "videogfx_type": videogfx_type,
+            },
+            videogfx_container_url,
+        )
+        finished_order = poll_order_status_finished(order_id, videogfx_container_url)
 
         if finished_order["error"]:
             raise Exception(finished_order["error_message"])
 
-        background_image = download_order_file(
-            finished_order["output_filenames"][0], screenshot_container_url
-        )
-        delete_order_file(
-            finished_order["output_filenames"][0], screenshot_container_url
-        )
+        video_filename = finished_order["output_filenames"][0]
+        video_file = download_order_file(video_filename, videogfx_container_url)
+        delete_order_file(video_filename, videogfx_container_url)
 
-        two_layer = True if len(finished_order["output_filenames"]) > 1 else False
-        if two_layer:
-            foreground_image = download_order_file(
-                finished_order["output_filenames"][1], screenshot_container_url
-            )
-            delete_order_file(
-                finished_order["output_filenames"][1], screenshot_container_url
-            )
-
-        return VideoGFXResults(success=True, video=...)
+        return VideoGFXResults(success=True, video=video_file)
 
     except Exception as e:
         return VideoGFXResults(success=False, error_message=str(e))
