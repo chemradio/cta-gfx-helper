@@ -60,15 +60,6 @@ services:
     depends_on:
     - dispatcher
     hostname: screenshoter
-  storage-unit:
-    restart: unless-stopped
-    build: ./storage_unit
-    platform: linux/arm64
-    environment:
-      IS_DOCKER: 1
-    depends_on:
-    - dispatcher
-    hostname: storage_unit
   video-gfx:
     restart: unless-stopped
     build: ./video_gfx
