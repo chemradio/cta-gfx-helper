@@ -1,7 +1,5 @@
 from pprint import pprint
 
-from db_tortoise.orders_models import Order, Order_Pydantic
-from db_tortoise.users_models import User, User_Pydantic
 from fastapi import APIRouter, Depends, HTTPException
 from utils.request_json_parser import request_json_parser
 

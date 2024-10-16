@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-
 from utils.text.quote_preprocessor import preprocess_string
 
 
