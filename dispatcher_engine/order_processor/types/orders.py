@@ -21,7 +21,3 @@ class OrderStatus(str, Enum):
 class OrderSource(str, Enum):
     WEB = "web"
     TELEGRAM = "telegram"
-
-
-class OrderStage(str, Enum):
-    ...

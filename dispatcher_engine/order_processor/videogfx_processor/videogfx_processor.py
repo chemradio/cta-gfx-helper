@@ -9,7 +9,7 @@ from ..intercontainer_requests import (
     poll_order_status_finished,
 )
 from ..screenshots_processor.screenshots_processor import process_screenshots
-from ..types.videogfx_types import VideoGFXType
+from ..types.orders import OrderRequestType
 
 
 @dataclass
@@ -26,19 +26,19 @@ def process_videogfx(
     background_file: BytesIO | None,
     foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
-    videogfx_type: VideoGFXType = VideoGFXType.AUTO,
+    videogfx_type: OrderRequestType = OrderRequestType.VIDEO_AUTO,
     screenshot_container_url: str = CONTAINER_URLS.Screenshoter,
     videogfx_container_url: str = CONTAINER_URLS.VideoGfx,
 ):
     try:
         # process screenshots
-        if videogfx_type in [VideoGFXType.AUTO, VideoGFXType.MIXED]:
+        if videogfx_type in [OrderRequestType.VIDEO_AUTO, OrderRequestType.VIDEO_MIXED]:
             screenshot_results = process_screenshots(
                 screenshot_url, screenshot_container_url
             )
             background_file = screenshot_results.background
 
-            if videogfx_type == VideoGFXType.AUTO:
+            if videogfx_type == OrderRequestType.VIDEO_AUTO:
                 if screenshot_results.two_layer:
                     foreground_file = screenshot_results.foreground
 

@@ -1,5 +1,4 @@
 from fastapi import UploadFile
-
 from utils.assets.file_convert.workers.audio_to_wav import convert_audio_to_wav
 from utils.assets.file_convert.workers.pdf_to_png import convert_pdf_to_png
 from utils.assets.file_convert.workers.word_to_png import convert_word_to_png
@@ -26,7 +25,7 @@ async def convert_unsupported_file(upload_file: UploadFile) -> bytes:
 
         elif file_mime == "application/msword":
             raise UnconvertableFile(upload_file.filename)
-            file_bytes = convert_word_to_png(upload_file)
+            return await convert_word_to_png(upload_file)
 
-    except:
+    except Exception as e:
         raise UnconvertableFile(upload_file.filename)
