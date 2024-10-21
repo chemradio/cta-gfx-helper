@@ -75,6 +75,7 @@ services:
     shm_size: 2g
     ports:
       - "9004:9004"
+      
   video-gfx-selenium-1:
     restart: unless-stopped
     hostname: video_gfx_selenium_one
