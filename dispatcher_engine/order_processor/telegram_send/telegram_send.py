@@ -9,7 +9,12 @@ SEND_DOCUMENT_TELEGRAM_API_ENDPOINT = (
 )
 
 
-def send_file_raw(filename: str, file_bytes: BytesIO, receiver_id: int) -> None:
+def send_file_telegram(filename: str, file_bytes: BytesIO, receiver_id: int) -> dict:
+    if not check_filesize(file_bytes):
+        print(
+            f"Attention! File size exceeds 25 MB: {len(file_bytes.getvalue()) / 1024 / 1024} MB",
+        )
+
     files = {"document": (filename, file_bytes.read())}
 
     kwargs = {
@@ -21,4 +26,9 @@ def send_file_raw(filename: str, file_bytes: BytesIO, receiver_id: int) -> None:
     r = requests.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files)
     r.raise_for_status()
     result = r.json()
-    print(result)
+    return result
+
+
+# function for checking if filezise exceeds 25 mb
+def check_filesize(file_bytes: BytesIO) -> bool:
+    return len(file_bytes.getvalue()) > 25 * 1024 * 1024

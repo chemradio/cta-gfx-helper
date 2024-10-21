@@ -3,8 +3,7 @@ from io import BytesIO
 
 from ..intercontainer_requests import (
     CONTAINER_URLS,
-    delete_order_file,
-    download_order_file,
+    download_and_delete_order_file,
     order_screenshots,
     poll_order_status_finished,
 )
@@ -29,19 +28,13 @@ def process_screenshots(
         if finished_order["error"]:
             raise Exception(finished_order["error_message"])
 
-        background_image = download_order_file(
-            finished_order["output_filenames"][0], screenshot_container_url
-        )
-        delete_order_file(
+        background_image = download_and_delete_order_file(
             finished_order["output_filenames"][0], screenshot_container_url
         )
 
         two_layer = True if len(finished_order["output_filenames"]) > 1 else False
         if two_layer:
-            foreground_image = download_order_file(
-                finished_order["output_filenames"][1], screenshot_container_url
-            )
-            delete_order_file(
+            foreground_image = download_and_delete_order_file(
                 finished_order["output_filenames"][1], screenshot_container_url
             )
 
