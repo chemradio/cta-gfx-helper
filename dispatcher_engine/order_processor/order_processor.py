@@ -1,31 +1,5 @@
-
-# enum for order types
-
-# order processor
-def process_order(order_id:dict):
-    # validation
-        # get order from db
-
-        # get order stage
-
-        # check files
-
-    
+from .container_processors import process_screenshots, process_videogfx
+from .telegram_send.telegram_send import send_file_telegram
 
 
-    # modification
-        # 
-        # add order to db
-
-        # dispatch to microservices
-
-        # return
-    ...
-
-
-
-
-
-
-
-
+def process_order(order: dict): ...

@@ -1,15 +1,10 @@
 from datetime import datetime
-from typing import List
 
 from bson.objectid import ObjectId
-from container_interaction.signal_sender import dispatch_to_microservices
 from db_mongo.db_config.db_init import Orders
 from db_mongo.helpers.user_search import find_user_by_order
 from db_mongo.models.orders import Order
 from fastapi import APIRouter
-from utils.order_logic.stage_increments import StageFlows
-
-from dispatcher_engine.utils.filenames.filename_generator import assign_filenames
 
 router = APIRouter()
 
@@ -29,15 +24,11 @@ async def add_new_order(
 ):
     user = find_user_by_order(order)
     order.user_id = user.id
+    order.telegram_id = user.telegram_id
 
     # fix quote and audio fields
     order.quote_enabled = True if order.quote_text else False
-    order.quote_author_enabled = True if order.quote_author_text else False
-    order.audio_enabled = True if order.audio_name else False
-
-    # assign filenames and advance stage
-    assign_filenames(order)
-    StageFlows.advance_stage(order)
+    order.audio_enabled = True if order.audio_file else False
 
     # save order in db
     order_db_id = Orders.insert_one(
@@ -45,7 +36,7 @@ async def add_new_order(
     ).inserted_id
     order = Orders.find_one({"_id": ObjectId(order_db_id)})
 
-    await dispatch_to_microservices(Order(**order))
+    # await dispatch_to_microservices(Order(**order))
     return order
 
 
