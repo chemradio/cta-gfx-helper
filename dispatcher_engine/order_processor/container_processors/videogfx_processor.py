@@ -17,7 +17,7 @@ class VideoGFXResults:
     error_message: str | None = None
 
 
-def process_videogfx(
+async def process_videogfx(
     quote_text: str | None,
     quote_author: str | None,
     background_file: BytesIO | None,
