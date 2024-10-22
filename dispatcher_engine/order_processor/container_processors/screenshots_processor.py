@@ -18,7 +18,7 @@ class ScreenshotResults:
     error_message: str | None = None
 
 
-def process_screenshots(
+async def process_screenshots(
     screenshot_url: str, screenshot_container_url: str = CONTAINER_URLS.Screenshoter
 ) -> ScreenshotResults:
     try:
