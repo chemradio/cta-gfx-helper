@@ -1,43 +1,32 @@
-from types.orders import OrderRequestType, OrderSource, OrderStatus
+from types.orders import OrderRequestType
 
 from db_mongo.models.orders import Order
 
-from .container_processors import process_screenshots, process_videogfx
-from .telegram_send.telegram_send import send_file_telegram
+from .request_processors import (
+    process_only_screenshots,
+    process_readtime,
+    process_video_auto,
+    process_video_files,
+    process_video_mixed,
+)
 
 
 async def process_order(order: Order):
+    # general order processing
     # fix quote and audio fields
     order.quote_enabled = True if order.quote_text else False
     order.audio_enabled = True if order.audio_file else False
 
-    # process lightweight order types
-    if order.request_type in [
-        OrderRequestType.READTIME,
-    ]:
-        ...
-        return
+    match order.request_type:
+        case OrderRequestType.READTIME:
+            return await process_readtime(order)
+        case OrderRequestType.ONLY_SCREENSHOTS:
+            return await process_only_screenshots(order)
+        case OrderRequestType.VIDEO_AUTO:
+            return await process_video_auto(order)
+        case OrderRequestType.VIDEO_MIXED:
+            return await process_video_mixed(order)
+        case OrderRequestType.VIDEO_FILES:
+            return await process_video_files(order)
 
-    # process screenshots
-    if order.request_type in [
-        OrderRequestType.ONLY_SCREENSHOTS,
-        OrderRequestType.VIDEO_AUTO,
-        OrderRequestType.VIDEO_MIXED,
-    ]:
-        screenshots = await process_screenshots(order)
-
-        # exit if only screenshots requested
-        if order.request_type == OrderRequestType.ONLY_SCREENSHOTS:
-            await send_file_telegram(order, screenshots.background, "1_background")
-            await send_file_telegram(order, screenshots.foreground, "2_foreground")
-            return
-
-        order.background_file = screenshots.background
-        if order.request_type == OrderRequestType.VIDEO_AUTO:
-            order.foreground_file = (
-                screenshots.foreground if screenshots.foreground else None
-            )
-
-    # process video
-    videogfx = await process_videogfx(order.__dict__())
-    await send_file_telegram(order, videogfx.video_file, "3_video")
+    # send file to telegram

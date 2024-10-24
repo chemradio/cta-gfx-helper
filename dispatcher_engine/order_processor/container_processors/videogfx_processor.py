@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from io import BytesIO
 
+from ...types.orders import OrderRequestType
 from ..intercontainer_requests import (
     CONTAINER_URLS,
     download_and_delete_order_file,
     order_video_gfx,
     poll_order_status_finished,
 )
-from ..types.orders import OrderRequestType
 
 
 @dataclass
@@ -51,4 +51,5 @@ async def process_videogfx(
         return VideoGFXResults(success=True, video=video_file)
 
     except Exception as e:
+        return VideoGFXResults(success=False, error_message=str(e))
         return VideoGFXResults(success=False, error_message=str(e))
