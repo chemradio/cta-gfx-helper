@@ -2,10 +2,11 @@ from io import BytesIO
 from types.orders import OrderRequestType, OrderSource, OrderStatus
 
 from bson import ObjectId
-from db_mongo.models.types.objectID import PyObjectId
-from db_mongo.models.users import User
 from pydantic import BaseModel, EmailStr
 from pydantic import Field as PydanticField
+
+from db_mongo.models.types.objectID import PyObjectId
+from db_mongo.models.users import User
 
 
 class Order(BaseModel):
