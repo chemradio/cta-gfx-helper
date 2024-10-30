@@ -2,10 +2,11 @@ import asyncio
 from datetime import datetime
 
 from bson.objectid import ObjectId
+from fastapi import APIRouter
+
 from db_mongo.db_config.db_init import Orders
 from db_mongo.helpers.user_search import find_user_by_order
 from db_mongo.models.orders import Order
-from fastapi import APIRouter
 from order_processor.order_processor import process_order
 
 router = APIRouter()
@@ -34,7 +35,7 @@ async def add_new_order(
     ).inserted_id
     order = Orders.find_one({"_id": ObjectId(order_db_id)})
 
-    asyncio.create_task(process_order(order))
+    asyncio.create_task(process_order(order.dict()))
     return order
 
 

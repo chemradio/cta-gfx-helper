@@ -1,6 +1,4 @@
-from types.orders import OrderRequestType
-
-from db_mongo.models.orders import Order
+from custom_types.orders import OrderRequestType
 
 from .request_processors import (
     process_only_screenshots,
@@ -11,7 +9,7 @@ from .request_processors import (
 )
 
 
-async def process_order(order: Order):
+async def process_order(order: dict):
     # general order processing
     # fix quote and audio fields
     order.quote_enabled = True if order.quote_text else False

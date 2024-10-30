@@ -1,13 +1,21 @@
-from db_mongo.models.orders import Order
+from custom_types import ContainerOutputFile, FileType
 
 from ..container_processors import process_screenshots
-from ..telegram_send.telegram_send import send_file_telegram
 
 
-async def process_only_screenshots(order: Order):
-    screenshots = await process_screenshots(screenshot_url=order.link)
-    await send_file_telegram(order.telegram_id, screenshots.background, "1_background")
+async def process_only_screenshots(order: dict) -> list[ContainerOutputFile]:
+    output = list()
+
+    screenshots = await process_screenshots(screenshot_url=order["link"])
+    output.append(
+        ContainerOutputFile(file_type=FileType.IMAGE, bytes_io=screenshots.background)
+    )
+
     if screenshots.foreground:
-        await send_file_telegram(
-            order.telegram_id, screenshots.foreground, "2_foreground"
+        output.append(
+            ContainerOutputFile(
+                file_type=FileType.IMAGE, bytes_io=screenshots.foreground
+            )
         )
+
+    return output

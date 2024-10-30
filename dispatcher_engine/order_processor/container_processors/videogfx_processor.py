@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from io import BytesIO
 
-from ...types.orders import OrderRequestType
+from custom_types.orders import OrderRequestType
+
 from ..intercontainer_requests import (
     CONTAINER_URLS,
     download_and_delete_order_file,
