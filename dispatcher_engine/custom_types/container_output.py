@@ -12,6 +12,7 @@ class FileType(str, Enum):
 
 @dataclass
 class ContainerOutputFile:
-    filename: str | None = None
     file_type: FileType
-    bytes_io: BytesIO
+    bytes_io: BytesIO | None
+    filename: str | None = None
+    text: str | None = None
