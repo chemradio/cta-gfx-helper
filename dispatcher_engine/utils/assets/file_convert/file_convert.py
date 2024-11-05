@@ -1,4 +1,7 @@
+from io import BytesIO
+
 from fastapi import UploadFile
+
 from utils.assets.file_convert.workers.audio_to_wav import convert_audio_to_wav
 from utils.assets.file_convert.workers.pdf_to_png import convert_pdf_to_png
 from utils.assets.file_convert.workers.word_to_png import convert_word_to_png
@@ -13,7 +16,7 @@ class UnconvertableFile(Exception):
         return f"Unable to convert file: {self.filename}"
 
 
-async def convert_unsupported_file(upload_file: UploadFile) -> bytes:
+async def convert_unsupported_file(upload_file: UploadFile) -> BytesIO:
     try:
         file_mime = upload_file.content_type
         if "audio" in file_mime:
@@ -28,4 +31,5 @@ async def convert_unsupported_file(upload_file: UploadFile) -> bytes:
             return await convert_word_to_png(upload_file)
 
     except Exception as e:
+        raise UnconvertableFile(upload_file.filename)
         raise UnconvertableFile(upload_file.filename)

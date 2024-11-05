@@ -9,7 +9,7 @@ def preprocess_string(string: str) -> str:
         .replace("\t\t", "\t")
         .replace("\n\t", "\n")
         .replace("\t", "\n")
-        .replace("\n", " <...> ")
+        # .replace("\n", " <...> ")
         .replace(" <...> <...> ", " <...> ")
         .replace(" <...> <...> ", " <...> ")
         .replace("Ë", "Е")
@@ -20,7 +20,6 @@ def preprocess_string(string: str) -> str:
     )
 
     if "  " in string:
-        while "  " in string:
-            string = string.replace("  ", " ")
+        string = string.replace("  ", " ")
 
     return string
