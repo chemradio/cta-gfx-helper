@@ -3,18 +3,19 @@ import os
 import time
 
 import uvicorn
-
-# from api_routers.administration import db_manipulation
-from api_routers.support import text_processors
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # from api_routers.intercontainer import files
 from api_routers.intercontainer import orders as intercontainer_orders
+
+# from api_routers.administration import db_manipulation
+from api_routers.support import text_processors, user_file_handler
 
 # from api_routers.telegram_api import orders as telegram_orders
 # from api_routers.telegram_api import users as telegram_users
 from api_routers.universal import orders as universal_orders
 from api_routers.universal import users as universal_users
-from api_routers.support import user_file_handler
 
 # from api_routers.web_api import direct_download
 # from api_routers.web_api import orders as web_orders
@@ -26,8 +27,6 @@ from db_mongo.seeding.mandatory import seed_admin
 # from seeding import seed as seed_db
 # from seeding import seed_admin
 from db_mongo.seeding.optional import seed_users
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 create_volume_folders()
 
@@ -72,8 +71,6 @@ app.include_router(universal_orders.router, prefix="/universal/orders")
 # user file receptor
 app.include_router(user_file_handler.router, prefix="/user_files")
 
-# intercontainer
-app.include_router(intercontainer_orders.router, prefix="/intercontainer_orders")
 
 # helpers
 app.include_router(text_processors.router, prefix="/helpers/text_processor")
