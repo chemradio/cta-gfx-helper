@@ -6,9 +6,6 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# from api_routers.intercontainer import files
-from api_routers.intercontainer import orders as intercontainer_orders
-
 # from api_routers.administration import db_manipulation
 from api_routers.support import text_processors, user_file_handler
 
@@ -27,6 +24,9 @@ from db_mongo.seeding.mandatory import seed_admin
 # from seeding import seed as seed_db
 # from seeding import seed_admin
 from db_mongo.seeding.optional import seed_users
+
+# from api_routers.intercontainer import files
+
 
 create_volume_folders()
 

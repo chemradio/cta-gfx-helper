@@ -2,9 +2,9 @@ import os
 
 from bson.objectid import ObjectId
 
+from custom_types_enums import NormalUserPermission, UserRole
 from db_mongo.db_config.db_init import Users
 from utils.auth.password_hashing import generate_password_hash
-from utils.helper_enums.users import NormalUserPermission, UserRole
 
 
 def seed_admin() -> bool:

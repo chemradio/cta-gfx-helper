@@ -1,6 +1,4 @@
-from custom_types import FileType
-from custom_types.orders import OrderRequestType
-from utils.filenames.filename_generator import FilenameType, generate_filename
+from custom_types_enums.orders import OrderRequestType
 
 from .request_processors import (
     process_only_screenshots,
@@ -9,7 +7,7 @@ from .request_processors import (
     process_video_files,
     process_video_mixed,
 )
-from .telegram_send.telegram_send import send_file_telegram, send_text_telegram
+from .telegram_send import return_result_telegram
 
 
 async def process_order(order: dict) -> None:
@@ -30,24 +28,8 @@ async def process_order(order: dict) -> None:
         case OrderRequestType.VIDEO_FILES:
             container_output = await process_video_files(order)
 
-    # send file to telegram
-    for file_index, result_file in enumerate(container_output):
-        match result_file.file_type:
-            case FileType.TEXT:
-                await send_text_telegram(
-                    text=result_file.text,
-                    receiver_id=order["telegram_id"],
-                )
-            case FileType.VIDEO:
-                await send_file_telegram(
-                    filename=generate_filename(FilenameType.VIDEOGFX_VIDEO),
-                    file_bytes=result_file.bytes_io,
-                    receiver_id=order["telegram_id"],
-                )
-            case FileType.IMAGE:
-                await send_file_telegram(
-                    filename=file_index
-                    + generate_filename(FilenameType.SCREENSHOT_IMAGE),
-                    file_bytes=result_file.bytes_io,
-                    receiver_id=order["telegram_id"],
-                )
+    if order["telegram_id"]:
+        await return_result_telegram(
+            telegram_id=order["telegram_id"],
+            container_output=container_output,
+        )
