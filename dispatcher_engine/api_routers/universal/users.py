@@ -4,10 +4,10 @@ from bson.objectid import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo import ReturnDocument
 
+from custom_types_enums import NormalUserPermission
 from db_mongo.db_config.db_init import Users
 from db_mongo.helpers.user_search import find_user
 from db_mongo.models.users import User
-from utils.helper_enums.users import NormalUserPermission
 
 router = APIRouter()
 

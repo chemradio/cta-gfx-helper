@@ -1,4 +1,4 @@
-from custom_types import ContainerOutputFile, FileType
+from custom_types_enums import ContainerOutputFile, FileType
 
 from ..container_processors import process_screenshots
 

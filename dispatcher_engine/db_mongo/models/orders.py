@@ -4,7 +4,7 @@ from bson import ObjectId
 from pydantic import BaseModel, EmailStr
 from pydantic import Field as PydanticField
 
-from custom_types.orders import OrderRequestType, OrderSource, OrderStatus
+from custom_types_enums.orders import OrderRequestType, OrderSource, OrderStatus
 from db_mongo.models.types.objectID import PyObjectId
 from db_mongo.models.users import User
 
@@ -54,14 +54,6 @@ class Order(BaseModel):
 
     # readtime
     readtime_result: str | None = None
-    readtime_speed: int | None = None
-    readtime_text: str | None = None
-
-    class Config:
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True  # required for the _id
-        json_encoders = {ObjectId: str, PyObjectId: str}
-
     readtime_speed: int | None = None
     readtime_text: str | None = None
 

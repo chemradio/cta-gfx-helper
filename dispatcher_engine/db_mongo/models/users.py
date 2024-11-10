@@ -2,8 +2,8 @@ from bson.objectid import ObjectId
 from pydantic import BaseModel, EmailStr
 from pydantic import Field as PydanticField
 
+from custom_types_enums.users import NormalUserPermission, UserRole
 from db_mongo.models.types.objectID import PyObjectId
-from utils.helper_enums.users import NormalUserPermission, UserRole
 
 
 class User(BaseModel):

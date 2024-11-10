@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from io import BytesIO
 
-from custom_types.orders import OrderRequestType
-
-from ..intercontainer_requests import (
+from .intercontainer_requests import (
     CONTAINER_URLS,
     download_and_delete_order_file,
     order_video_gfx,
@@ -24,7 +22,6 @@ async def process_videogfx(
     background_file: BytesIO | None,
     foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
-    videogfx_type: OrderRequestType = OrderRequestType.VIDEO_AUTO,
     videogfx_container_url: str = CONTAINER_URLS.VideoGfx,
 ):
     try:
@@ -35,11 +32,12 @@ async def process_videogfx(
                 "audio_file": audio_file if audio_file else None,
                 "quote_text": quote_text,
                 "quote_author": quote_author,
-                "videogfx_type": videogfx_type,
             },
             videogfx_container_url,
         )
-        finished_order = poll_order_status_finished(order_id, videogfx_container_url)
+        finished_order = poll_order_status_finished(
+            order_id, videogfx_container_url + "/file_server/"
+        )
 
         if finished_order["error"]:
             raise Exception(finished_order["error_message"])

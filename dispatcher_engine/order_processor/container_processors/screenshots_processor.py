@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from io import BytesIO
 
-from ..intercontainer_requests import (
+from .intercontainer_requests import (
     CONTAINER_URLS,
     download_and_delete_order_file,
     order_screenshots,
@@ -22,19 +22,21 @@ async def process_screenshots(
     screenshot_url: str, screenshot_container_url: str = CONTAINER_URLS.Screenshoter
 ) -> ScreenshotResults:
     try:
-        order_id = order_screenshots(screenshot_url, screenshot_container_url)
-        finished_order = poll_order_status_finished(order_id, screenshot_container_url)
+        order_id = await order_screenshots(screenshot_url, screenshot_container_url)
+        finished_order = await poll_order_status_finished(
+            order_id, screenshot_container_url + "/file_server/"
+        )
 
         if finished_order["error"]:
             raise Exception(finished_order["error_message"])
 
-        background_image = download_and_delete_order_file(
+        background_image = await download_and_delete_order_file(
             finished_order["output_filenames"][0], screenshot_container_url
         )
 
         two_layer = True if len(finished_order["output_filenames"]) > 1 else False
         if two_layer:
-            foreground_image = download_and_delete_order_file(
+            foreground_image = await download_and_delete_order_file(
                 finished_order["output_filenames"][1], screenshot_container_url
             )
 
