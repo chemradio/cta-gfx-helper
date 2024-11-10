@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   db:
     restart: unless-stopped
@@ -44,9 +43,6 @@ services:
     build: ./seleniarm_custom/screenshot
     privileged: true
     shm_size: 2g
-    environment:
-      PROTONVPN_EMAIL: ${PROTONVPN_EMAIL}
-      PROTONVPN_PASSWORD: ${PROTONVPN_PASSWORD}
     devices:
       - /dev/net/tun
   screenshoter:
@@ -60,6 +56,8 @@ services:
     depends_on:
     - dispatcher
     hostname: screenshoter
+    ports:
+      - "9002:9002"
   video-gfx:
     restart: unless-stopped
     build: ./video_gfx

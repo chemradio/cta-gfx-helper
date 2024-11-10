@@ -1,14 +1,8 @@
-import fastapi
-import pydantic
 from pathlib import Path
 
+import fastapi
 
 router = fastapi.APIRouter()
-
-
-class FileRequest(pydantic.BaseModel):
-    filename: str
-    secret_key: str | None = None
 
 
 def find_asset(filename: str, search_path: Path = Path.cwd() / "storage") -> Path:
@@ -16,8 +10,8 @@ def find_asset(filename: str, search_path: Path = Path.cwd() / "storage") -> Pat
 
 
 @router.get("/")
-async def download_file(file_request: FileRequest):
-    file_path = find_asset(file_request.filename)
+async def download_file(filename: str, secret_key: str | None = None):
+    file_path = find_asset(filename)
     if not file_path:
         raise fastapi.HTTPException(status_code=404, detail="File not found")
 
@@ -25,8 +19,8 @@ async def download_file(file_request: FileRequest):
 
 
 @router.delete("/")
-async def delete_file(file_request: FileRequest):
-    file_path = find_asset(file_request.filename)
+async def delete_file(filename: str, secret_key: str | None = None):
+    file_path = find_asset(filename)
     if not file_path:
         raise fastapi.HTTPException(status_code=404, detail="File not found")
 

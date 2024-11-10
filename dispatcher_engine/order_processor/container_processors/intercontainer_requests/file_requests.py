@@ -5,13 +5,13 @@ import httpx
 
 async def download_order_file(filename: str, container_url: str) -> BytesIO:
     async with httpx.AsyncClient() as client:
-        r = await client.get(container_url, json={"filename": filename})
+        r = await client.get(container_url, params={"filename": filename})
         return BytesIO(r.content)
 
 
 async def delete_order_file(filename: str, container_url: str) -> None:
     async with httpx.AsyncClient() as client:
-        r = await client.delete(container_url, json={"filename": filename})
+        r = await client.delete(container_url, params={"filename": filename})
         assert r.status_code == 200
 
 

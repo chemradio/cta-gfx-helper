@@ -3,8 +3,6 @@ import os
 import time
 
 import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 # from api_routers.administration import db_manipulation
 from api_routers.support import text_processors, user_file_handler
@@ -24,6 +22,8 @@ from db_mongo.seeding.mandatory import seed_admin
 # from seeding import seed as seed_db
 # from seeding import seed_admin
 from db_mongo.seeding.optional import seed_users
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # from api_routers.intercontainer import files
 
@@ -93,13 +93,14 @@ def main():
         port=os.environ.get("dispatcher_port", 9000),
         host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
         log_level="info",
+        reload=True,
     )
     server = uvicorn.Server(config)
     asyncio.run(server.serve())
 
 
-if __name__ == "__main__":
-    import time
+# if __name__ == "__main__":
+# import time
 
-    time.sleep(3)
-    main()
+# time.sleep(3)
+# main()

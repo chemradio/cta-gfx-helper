@@ -6,7 +6,7 @@ from ..container_processors import process_screenshots
 async def process_only_screenshots(order: dict) -> list[ContainerOutputFile]:
     output = list()
 
-    screenshots = await process_screenshots(screenshot_url=order["link"])
+    screenshots = await process_screenshots(screenshot_url=order["screenshot_link"])
     output.append(
         ContainerOutputFile(file_type=FileType.IMAGE, bytes_io=screenshots.background)
     )

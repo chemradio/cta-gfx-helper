@@ -25,7 +25,7 @@ async def process_videogfx(
     videogfx_container_url: str = CONTAINER_URLS.VideoGfx,
 ):
     try:
-        order_id = order_video_gfx(
+        order_id = await order_video_gfx(
             {
                 "background_file": background_file,
                 "foreground_file": foreground_file if foreground_file else None,
@@ -35,8 +35,8 @@ async def process_videogfx(
             },
             videogfx_container_url,
         )
-        finished_order = poll_order_status_finished(
-            order_id, videogfx_container_url + "/file_server/"
+        finished_order = await poll_order_status_finished(
+            order_id, videogfx_container_url
         )
 
         if finished_order["error"]:
@@ -44,11 +44,10 @@ async def process_videogfx(
 
         video_filename = finished_order["output_filenames"][0]
         video_file = download_and_delete_order_file(
-            video_filename, videogfx_container_url
+            video_filename, videogfx_container_url + "/file_server/"
         )
 
         return VideoGFXResults(success=True, video=video_file)
 
     except Exception as e:
-        return VideoGFXResults(success=False, error_message=str(e))
         return VideoGFXResults(success=False, error_message=str(e))
