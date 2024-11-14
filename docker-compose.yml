@@ -24,6 +24,17 @@ services:
     hostname: dispatcher
     ports:
       - "9000:9000"
+  file_converter:
+    restart: unless-stopped
+    build: ./file_converter
+    volumes:
+      - ./file_converter:/usr/src/app
+    platform: linux/arm64
+    environment:
+      IS_DOCKER: 1
+    depends_on:
+    - dispatcher
+    hostname: file_converter
   bot-engine:
     restart: unless-stopped
     build: ./bot_engine

@@ -1,7 +1,8 @@
 import random
 import string
-from enum import Enum
 from datetime import datetime
+from enum import Enum
+
 
 class FilenameType(Enum):
     SCREENSHOT_BACKGROUND = "1_BG_{}.png"
@@ -12,7 +13,8 @@ class FilenameType(Enum):
 def generate_filename(
     type: FilenameType,
 ) -> str:
-    random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=16))
+    random_string = "".join(
+        random.choices(string.ascii_lowercase + string.digits, k=16)
+    )
     time = datetime.now().strftime("%H_%M_%S")
     return type.value.format(f"{time}_{random_string}")
-
