@@ -2,6 +2,8 @@ bcrypt==4.1.3
 fastapi==0.111.0
 pillow==10.4.0
 python-multipart==0.0.9
+pydub==0.25.1
+pypdfium2==4.18.0
 uvicorn==0.30.1
 tinydb==4.8.0
 requests==2.32.3
