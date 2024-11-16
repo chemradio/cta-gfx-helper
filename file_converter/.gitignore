@@ -1,1 +1,4 @@
-test/
+test/converted/
+test/store/
+test/to_convert/
+.vscode/

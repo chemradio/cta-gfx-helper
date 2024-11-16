@@ -1,6 +1,6 @@
 from io import BytesIO
 
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.responses import Response, FileResponse
 from workflows.helper_types import FileExtension
 
@@ -14,14 +14,17 @@ async def convert_file(
     file: UploadFile = File(...),
     secret_key: str | None = Form(None),
 ):
-    original_extension = file.filename.split(".")[-1]
-    file_bytesio = BytesIO(file.file.read())
+    try:
+        original_extension = file.filename.split(".")[-1]
+        file_bytesio = BytesIO(file.file.read())
 
-    converted_file = await convert_unsupported_file(
-        file_bytesio, FileExtension(original_extension)
-    )
+        converted_file = await convert_unsupported_file(
+            file_bytesio, FileExtension(original_extension)
+        )
 
-    return Response(
-        content=converted_file.bytesio.getvalue(),
-        media_type=converted_file.mime_type.value,
-    )
+        return Response(
+            content=converted_file.bytesio.getvalue(),
+            media_type=converted_file.mime_type.value,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
