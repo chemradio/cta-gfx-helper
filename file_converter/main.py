@@ -1,8 +1,7 @@
-from enum import Enum
 from io import BytesIO
 
 from fastapi import FastAPI, File, Form, UploadFile
-from fastapi.responses import Response
+from fastapi.responses import Response, FileResponse
 from workflows.helper_types import FileExtension
 
 from workflows.file_convert import convert_unsupported_file
@@ -23,6 +22,6 @@ async def convert_file(
     )
 
     return Response(
-        content=converted_file.file_bytesio.getvalue(),
-        media_type=convert_file.mime_type.value,
+        content=converted_file.bytesio.getvalue(),
+        media_type=converted_file.mime_type.value,
     )

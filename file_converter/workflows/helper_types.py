@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from io import BytesIO
 
-mime_map = {
+ext_map = {
     "pdf": "application/pdf",
     "png": "image/png",
     "jpg": "image/jpeg",
@@ -11,6 +11,16 @@ mime_map = {
     "mp3": "audio/mpeg",
     "doc": "application/msword",
     "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+}
+
+mime_map = {
+    "application/pdf": "pdf",
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "audio/wav": "wav",
+    "audio/mpeg": "mp3",
+    "application/msword": "doc",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
 }
 
 
