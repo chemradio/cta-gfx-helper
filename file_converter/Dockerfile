@@ -6,6 +6,7 @@ RUN apt -y upgrade
 
 RUN apt-get install -y build-essential libssl-dev libffi-dev
 RUN apt-get install -y libreoffice
+RUN apt-get install -y ffmpeg
 
 WORKDIR /usr/src/app
 COPY requirements.txt requirements.txt
@@ -16,6 +17,6 @@ ENV LANG=C.UTF-8
 
 COPY . .
 
-EXPOSE 9002
+EXPOSE 9005
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9005", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9005"]
