@@ -2,7 +2,7 @@ from io import BytesIO
 from PIL import Image
 
 
-def convert_image_to_png(file_bytesio: BytesIO) -> BytesIO:
+async def convert_image_to_png(file_bytesio: BytesIO) -> BytesIO:
     image = Image.open(file_bytesio)
     png_bytesio = BytesIO()
     image.save(png_bytesio, format="PNG")
