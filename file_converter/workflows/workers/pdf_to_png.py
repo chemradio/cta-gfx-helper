@@ -1,8 +1,4 @@
-import secrets
-from pathlib import Path
-
 import pypdfium2 as pdfium
-from fastapi import UploadFile
 from PIL.Image import Image
 from io import BytesIO
 
