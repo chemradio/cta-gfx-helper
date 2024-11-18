@@ -17,8 +17,8 @@ async def convert_word_to_png(file_bytesio: BytesIO) -> BytesIO:
 
     # convert word to pdf
     await convert_word_to_pdf(
-        str(Path.cwd().absolute()),
-        str(docx_path.absolute()),
+        Path.cwd(),
+        docx_path,
     )
     docx_path.unlink()
 
@@ -30,11 +30,18 @@ async def convert_word_to_png(file_bytesio: BytesIO) -> BytesIO:
     return await convert_pdf_to_png(pdf_bytesio)
 
 
-async def convert_word_to_pdf(output_folder: str, source_file_path: str, timeout=None):
+async def convert_word_to_pdf(
+    output_folder: str | Path, source_file_path: str | Path, timeout=None
+):
     def libreoffice_exec():
         if sys.platform == "darwin":
             return "/Applications/LibreOffice.app/Contents/MacOS/soffice"
         return "libreoffice"
+
+    if isinstance(output_folder, Path):
+        output_folder = str(output_folder.absolute())
+    if isinstance(source_file_path, Path):
+        source_file_path = str(source_file_path.absolute())
 
     args = [
         libreoffice_exec(),
