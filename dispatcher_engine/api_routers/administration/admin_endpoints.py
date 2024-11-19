@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from db_mongo import Users, Orders, find_user
 from pymongo import ReturnDocument
 

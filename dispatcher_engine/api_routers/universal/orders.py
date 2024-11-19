@@ -52,7 +52,7 @@ async def add_new_order(
         "audio_file": BytesIO(audio_file.file.read()) if audio_file else None,
     }
 
-    order_db_id = Orders.insert_one(order).inserted_id
+    Orders.insert_one(order)
 
     asyncio.create_task(process_order(order))
-    return order
+    return Orders.find_one({"id": order["id"]})
