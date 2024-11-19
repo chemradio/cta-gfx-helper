@@ -49,7 +49,7 @@ async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         case "readtime":
             return await readtime_callback(update, context)
         case _:
-            raise WrongRequestTypeResponse
+            raise WrongRequestTypeResponse()
         # else:
         #     return await start_callback(update, context)
 

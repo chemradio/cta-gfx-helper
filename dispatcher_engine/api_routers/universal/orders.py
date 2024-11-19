@@ -1,9 +1,8 @@
 import asyncio
 from io import BytesIO
-from typing import Optional
-
+from uuid import uuid4
 from fastapi import APIRouter, File, Form, UploadFile
-
+from db_mongo import Orders
 from custom_types_enums import OrderRequestType
 from order_processor.order_processor import process_order
 
@@ -12,27 +11,28 @@ router = APIRouter()
 
 @router.post("/")
 async def add_new_order(
-    # feedback
-    telegram_id: Optional[int] = Form(None),
-    email: Optional[str] = Form(None),
-    # order meta
     request_type: str = Form(...),
-    ordered_from: Optional[str] = Form(None),
-    created: Optional[str] = Form(None),
+    # feedback
+    telegram_id: int | None = Form(None),
+    email: str | None = Form(None),
+    # order meta
+    ordered_from: str | None = Form(None),
+    created: str | None = Form(None),
     # screenshots
-    screenshot_link: Optional[str] = Form(None),
+    screenshot_link: str | None = Form(None),
     # quote
-    quote_text: Optional[str] = Form(None),
-    quote_author_text: Optional[str] = Form(None),
+    quote_text: str | None = Form(None),
+    quote_author_text: str | None = Form(None),
     # readtime
-    readtime_text: Optional[str] = Form(None),
-    readtime_speed: Optional[int | float] = Form(None),
+    readtime_text: str | None = Form(None),
+    readtime_speed: int | float | None = Form(None),
     # files
-    background_file: Optional[UploadFile] = File(None),
-    foreground_file: Optional[UploadFile] = File(None),
-    audio_file: Optional[UploadFile] = File(None),
+    background_file: UploadFile | None = File(None),
+    foreground_file: UploadFile | None = File(None),
+    audio_file: UploadFile | None = File(None),
 ):
     order = {
+        "id": str(uuid4()),
         "telegram_id": telegram_id,
         "email": email,
         "request_type": OrderRequestType(request_type),
@@ -52,10 +52,7 @@ async def add_new_order(
         "audio_file": BytesIO(audio_file.file.read()) if audio_file else None,
     }
 
-    # # save order in db
-    # order_db_id = Orders.insert_one(order).inserted_id
-    # order = Orders.find_one({"_id": ObjectId(order_db_id)})
-    # print(order.dict())
+    order_db_id = Orders.insert_one(order).inserted_id
 
     asyncio.create_task(process_order(order))
     return order

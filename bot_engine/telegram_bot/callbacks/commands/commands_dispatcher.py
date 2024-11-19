@@ -1,7 +1,7 @@
 from telegram import ForceReply, Update
 from telegram.ext import ContextTypes
 
-from container_interaction.helpers import UserPermission
+from telegram_bot.custom_types.user_permission_role import UserPermission
 from telegram_bot.callbacks.admin_callbacks.backup_restore_db import (
     backup_db_callback,
     restore_db_callback,

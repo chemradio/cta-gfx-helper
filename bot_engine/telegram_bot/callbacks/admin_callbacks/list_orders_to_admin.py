@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 
 from config import BOT_ADMIN
-from container_interaction.helpers import UserPermission
+from telegram_bot.custom_types.user_permission_role import UserPermission
 from container_interaction.orders_db import fetch_orders
 from container_interaction.users_db import get_user_data
 from telegram_bot.responders.main_responder import Responder
