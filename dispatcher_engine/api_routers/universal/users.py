@@ -1,53 +1,82 @@
 from datetime import datetime
-
+from uuid import uuid4
 from bson.objectid import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo import ReturnDocument
 
 from custom_types_enums import NormalUserPermission
-from db_mongo.db_config.db_init import Users
-from db_mongo.helpers.user_search import find_user
-from db_mongo.models.users import User
+from db_mongo import find_user, Users
 
 router = APIRouter()
 
 
-@router.get("/", response_model=User)
-async def check_user_in_db(user: User):
-    user_db = find_user(user)
+@router.get("/")
+async def check_user_in_db(
+    user_id: str | None = None,
+    email: str | None = None,
+    telegram_id: int | None = None,
+):
+    user_db = find_user(
+        user_id=user_id,
+        email=email,
+        telegram_id=telegram_id,
+    )
     if user_db is None:
         raise HTTPException(404, "User is not registered")
     return user_db
 
 
-@router.get("/list/", response_model=list[User])
-async def list_users(permission: NormalUserPermission | None = None):
-    users = Users.find({"permission": permission} if permission else None)
-    return list(users)
-
-
-@router.post("/", response_model=User)
-async def register(user: User):
-    existing_user = find_user(user)
+@router.post("/")
+async def register(
+    email: str | None = None,
+    telegram_id: int | None = None,
+    first_name: str | None = None,
+    last_name: str | None = None,
+    description: str | None = None,
+):
+    existing_user = find_user(email=email, telegram_id=telegram_id)
     if existing_user is not None:
         raise HTTPException(401, "User is already registered")
 
     user_db_id = Users.insert_one(
-        {**dict(user), "created": datetime.now().replace(microsecond=0).isoformat()}
-    ).inserted_id
+        {
+            "id": str(uuid4()),
+            "email": email,
+            "telegram_id": telegram_id,
+            "first_name": first_name,
+            "last_name": last_name,
+            "description": description,
+            "permission": NormalUserPermission.PENDING,
+            "created": datetime.now().replace(microsecond=0).isoformat(),
+        }
+    )
     return Users.find_one({"_id": ObjectId(user_db_id)})
 
 
-@router.put("/", response_model=User)
-async def edit_user(user: User):
-    existing_user = find_user(user)
-    if user is None:
+@router.put("/")
+async def edit_user(
+    user_id: str | None = None,
+    email: str | None = None,
+    telegram_id: int | None = None,
+    update_data: dict = None,
+):
+    user_db = find_user(
+        user_id=user_id,
+        email=email,
+        telegram_id=telegram_id,
+    )
+    if user_db is None:
         raise HTTPException(404, "User is not registered")
 
-    update = {k: v for k, v in dict(user).items() if v is not None}
     updated_user = Users.find_one_and_update(
-        {"_id": ObjectId(existing_user.id)},
-        {"$set": update},
+        {"id": user_db["id"]},
+        {"$set": update_data},
         return_document=ReturnDocument.AFTER,
     )
     return updated_user
+
+
+@router.get("/list/")
+async def list_users_by_permission(permission: NormalUserPermission | None = None):
+    users = Users.find({"permission": permission} if permission else None)
+    return list(users)

@@ -3,7 +3,7 @@ import os
 import requests
 
 from config import DISPATCHER_USERS_ENDPOINT, EDIT_USER_ENDPOINT, LIST_USERS_ENDPOINT
-from container_interaction.helpers import UserPermission, UserRole
+from telegram_bot.custom_types.user_permission_role import UserPermission, UserRole
 
 
 async def add_pending_user(user_dict: dict):

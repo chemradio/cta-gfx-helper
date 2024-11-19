@@ -1,36 +1,23 @@
-from bson.objectid import ObjectId
 from db_mongo.db_config.db_init import Users
-from db_mongo.models.orders import Order
-from db_mongo.models.users import User
 
 
-def find_user(user: User | dict) -> User | None:
-    if isinstance(user, dict):
-        user = User(**user)
-    if user.email:
-        query = {"email": user.email}
-    elif user.telegram_id:
-        query = {"telegram_id": user.telegram_id}
-    elif user.id:
-        print(user.id)
-        query = {"_id": user.id}
+def find_user(
+    user_id: str | None = None,
+    email: str | None = None,
+    telegram_id: int | None = None,
+    order: dict | None = None,
+) -> dict | None:
+    if user_id:
+        query = {"id": user_id}
+    elif email:
+        query = {"email": email}
+    elif telegram_id:
+        query = {"telegram_id": telegram_id}
+    elif order:
+        return find_user(
+            user_id=order.get("user_id"),
+            email=order.get("email"),
+            telegram_id=order.get("telegram_id"),
+        )
 
-    user_db = Users.find_one(query)
-    if not user_db:
-        return None
-    return User(**user_db)
-
-
-def find_user_by_order(order: Order | dict) -> User | None:
-    if isinstance(order, dict):
-        order = Order(**order)
-    if order.email:
-        query = {"email": order.email}
-    elif order.telegram_id:
-        query = {"telegram_id": order.telegram_id}
-
-    user_db = Users.find_one(query)
-    if not user_db:
-        return None
-
-    return User(**user_db)
+    return Users.find_one(query)
