@@ -6,7 +6,7 @@ class UserRole(str, Enum):
     NORMAL = "NORMAL"
 
 
-class NormalUserPermission(str, Enum):
+class UserPermission(str, Enum):
     APPROVED = "APPROVED"
     PENDING = "PENDING"
     BLOCKED = "BLOCKED"

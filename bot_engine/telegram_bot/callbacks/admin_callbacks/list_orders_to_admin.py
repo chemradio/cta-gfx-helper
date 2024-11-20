@@ -3,8 +3,8 @@ from datetime import datetime
 
 from config import BOT_ADMIN
 from telegram_bot.custom_types.user_permission_role import UserPermission
-from container_interaction.orders_db import fetch_orders
-from container_interaction.users_db import get_user_data
+from container_interaction.orders import fetch_orders
+from container_interaction.users import get_user_data
 from telegram_bot.responders.main_responder import Responder
 
 

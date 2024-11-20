@@ -1,21 +1,13 @@
-import os
 import httpx
-import requests
 
-from config import ADD_ORDER_ENDPOINT, DISPATCHER_ORDERS_ENDPOINT
-from telegram_bot.bot_instance import bot
+from config import ORDERS_ENDPOINT
 
 
 async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
-
-    # background_file = user_data.pop("background_file", None)
-    # foreground_file = user_data.pop("foreground_file", None)
-    # audio_file = user_data.pop("audio_file", None)
-
     files = {
         k: v
         for k in ("background_file", "foreground_file", "audio_file")
-        if (v := user_data.pop(k, None)) is not None
+        if (v := user_data.pop(k)) is not None
     }
 
     user_data.update({"telegram_id": telegram_id, "ordered_from": "telegram"})
@@ -26,7 +18,7 @@ async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
     print(f"{user_data=}", flush=True)
 
     async with httpx.AsyncClient() as client:
-        r = await client.post(ADD_ORDER_ENDPOINT, data=user_data, files=files)
+        r = await client.post(ORDERS_ENDPOINT, data=user_data, files=files)
         return r.json()
 
 
