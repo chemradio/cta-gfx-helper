@@ -5,16 +5,7 @@ from pymongo import ReturnDocument
 router = APIRouter()
 
 
-@router.delete("/orders/{order_id}")
-async def delete_order(order_id: str):
-    order = Orders.find_one({"id": order_id})
-    if not order:
-        raise HTTPException(404, f"Ordder id {order_id} not found.")
-
-    Orders.find_one_and_delete({"id": order_id})
-
-
-@router.delete("/users/{user_id}")
+@router.delete("/users")
 async def delete_user(user_id: int):
     user = Users.find_one({"id": user_id})
     if not user:
@@ -23,7 +14,7 @@ async def delete_user(user_id: int):
     Users.find_one_and_delete({"id": user_id})
 
 
-@router.put("/users/{user_id}")
+@router.put("/users")
 async def edit_user(user_id: int, fields: dict):
     user = Users.find_one({"id": user_id})
     if not user:
@@ -35,7 +26,16 @@ async def edit_user(user_id: int, fields: dict):
     return updated_user
 
 
-@router.put("/orders/{order_id}")
+@router.delete("/orders}")
+async def delete_order(order_id: str):
+    order = Orders.find_one({"id": order_id})
+    if not order:
+        raise HTTPException(404, f"Ordder id {order_id} not found.")
+
+    Orders.find_one_and_delete({"id": order_id})
+
+
+@router.put("/orders")
 async def edit_order(order_id: int, fields: dict):
     order = Orders.find_one({"id": order_id})
     if not order:

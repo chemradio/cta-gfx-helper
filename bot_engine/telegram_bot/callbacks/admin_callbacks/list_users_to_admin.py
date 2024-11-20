@@ -2,7 +2,7 @@ import json
 
 from config import BOT_ADMIN
 from telegram_bot.custom_types.user_permission_role import UserPermission
-from container_interaction.users_db import fetch_users
+from container_interaction.users import fetch_users
 from telegram_bot.bot_instance import bot
 from telegram_bot.responders.main_responder import Responder
 

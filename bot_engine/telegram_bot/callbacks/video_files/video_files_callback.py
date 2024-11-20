@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from container_interaction.orders_db import add_order_to_db
+from container_interaction.orders import add_order_to_db
 from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
     attachment_downloader,
 )

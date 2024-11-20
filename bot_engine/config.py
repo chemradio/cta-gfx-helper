@@ -32,40 +32,17 @@ REQUEST_TYPE_TEMP_MAP = {
 
 
 # containers
-DISPATCHER_NAME = (
-    os.getenv("dispatcher_name", "dispatcher") if IS_DOCKER else "localhost"
-)
-DISPATCHER_NODE_PORT = os.getenv("dispatcher_port", 9000)
-DISPATCHER_NODE_URL = f"http://{DISPATCHER_NAME}:{DISPATCHER_NODE_PORT}"
+DISPATCHER_URL = f"http://dispatcher:9000"
+USERS_ENDPOINT = f"{DISPATCHER_URL}/users"
+ADMIN_USERS_ENDPOINT = f"{DISPATCHER_URL}/admin/users"
+ORDERS_ENDPOINT = f"{DISPATCHER_URL}/orders"
+TEXT_PROCESSOR_ENDPOINT = f"{DISPATCHER_URL}/helpers/text_processor"
 
-
-# orders
-DISPATCHER_ORDERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/orders"
-ADD_ORDER_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/orders"
-
-# process quote string api
-DISPATCHER_STRING_PROCESSOR_ENDPOINT = f"{DISPATCHER_NODE_URL}/helpers/text_processor"
-
-
-# users
-DISPATCHER_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/universal/users"
-ADD_USER_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}"
-EDIT_USER_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/users/telegram"
-
-LIST_USERS_ENDPOINT = f"{DISPATCHER_NODE_URL}/admin/db_manipulation/users"
-
-ALLOWED_USERS_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/allowed"
-BLOCKED_USERS_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/blocked"
-PENDING_USERS_ENDPOINT = f"{DISPATCHER_USERS_ENDPOINT}/pending"
-
-BACKUP_DB_ENDPONT = f"{DISPATCHER_NODE_URL}/database/backup"
-RESTORE_DB_ENDPONT = f"{DISPATCHER_NODE_URL}/database/restore"
+# db backup restore
+BACKUP_DB_ENDPONT = f"{DISPATCHER_URL}/database/backup"
+RESTORE_DB_ENDPONT = f"{DISPATCHER_URL}/database/restore"
 
 DB_BACKUP_FILE_PATH = "./db_backup.json"
 DB_BACKUP_FILE_TEMP_PATH = "./db_backup_temp"
-
-STORAGE_UNIT_NAME = os.getenv("storage_unit_name", "storage_unit")
-STORAGE_UNIT_PORT = os.getenv("storage_unit_port", 9010)
-STORAGE_UNIT_URL = f"http://{STORAGE_UNIT_NAME}:{STORAGE_UNIT_PORT}/file"
 
 MAX_ATTACHMENT_SIZE = 100000000000

@@ -2,7 +2,7 @@ import os
 
 from bson.objectid import ObjectId
 
-from custom_types_enums import NormalUserPermission, UserRole
+from custom_types_enums import UserPermission, UserRole
 from db_mongo.db_config.db_init import Users
 from utils.auth.password_hashing import generate_password_hash
 
@@ -13,7 +13,7 @@ def seed_admin() -> bool:
     BOT_ADMIN = int(os.getenv("BOT_ADMIN"))
     update = {
         "role": UserRole.ADMIN,
-        "permission": NormalUserPermission.APPROVED,
+        "permission": UserPermission.APPROVED,
         "telegram_id": BOT_ADMIN,
         "email": BOT_ADMIN_EMAIL,
         "password_hash": generate_password_hash(BOT_ADMIN_PASSWORD),

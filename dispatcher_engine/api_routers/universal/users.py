@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo import ReturnDocument
 
-from custom_types_enums import NormalUserPermission
+from custom_types_enums import UserPermission, UserRole
 from db_mongo import find_user, Users
 
 router = APIRouter()
@@ -30,6 +30,8 @@ async def check_user_in_db(
 async def register(
     email: str | None = None,
     telegram_id: int | None = None,
+    permission: UserPermission = UserPermission.PENDING,
+    role: UserRole = UserRole.NORMAL,
     first_name: str | None = None,
     last_name: str | None = None,
     description: str | None = None,
@@ -46,7 +48,8 @@ async def register(
             "first_name": first_name,
             "last_name": last_name,
             "description": description,
-            "permission": NormalUserPermission.PENDING,
+            "permission": permission,
+            "role": role,
             "created": datetime.now().replace(microsecond=0).isoformat(),
         }
     )
@@ -77,6 +80,6 @@ async def edit_user(
 
 
 @router.get("/list/")
-async def list_users_by_permission(permission: NormalUserPermission | None = None):
-    users = Users.find({"permission": permission} if permission else None)
+async def list_users_by_permission(permission: UserPermission | None = None):
+    users = Users.find({"permission": permission} if permission else {})
     return list(users)

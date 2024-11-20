@@ -2,9 +2,9 @@ import asyncio
 import os
 
 import uvicorn
-from api_routers.helpers import text_processors
-from api_routers.universal import orders as universal_orders
-from api_routers.universal import users as universal_users
+import api_routers
+import api_routers.administration
+import api_routers.administration.admin_endpoints
 from create_volume_folders import create_volume_folders
 from db_mongo.seeding.mandatory import seed_admin
 from db_mongo.seeding.optional import seed_users
@@ -39,15 +39,17 @@ async def home(name: str):
 
 
 # admin
-# app.include_router(db_manipulation.router, prefix="/admin/db_manipulation")
+app.include_router(api_routers.administration.admin_endpoints.router, prefix="/admin")
 
 # universal api
-app.include_router(universal_users.router, prefix="/universal/users")
-app.include_router(universal_orders.router, prefix="/universal/orders")
+app.include_router(api_routers.universal.users.router, prefix="/users")
+app.include_router(api_routers.universal.orders.router, prefix="/orders")
 
 
 # helpers
-app.include_router(text_processors.router, prefix="/helpers/text_processor")
+app.include_router(
+    api_routers.helpers.text_processors.router, prefix="/helpers/text_processor"
+)
 
 
 def main():

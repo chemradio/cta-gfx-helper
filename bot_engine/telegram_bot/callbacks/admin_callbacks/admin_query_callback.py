@@ -1,8 +1,8 @@
 import traceback
 
 from telegram_bot.custom_types.user_permission_role import UserPermission
-from container_interaction.orders_db import cancel_order
-from container_interaction.users_db import allow_user, block_user, pend_user
+from container_interaction.orders import cancel_order
+from container_interaction.users import allow_user, block_user, pend_user
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import ContextTypes
 from telegram_bot.callbacks.admin_callbacks.list_orders_to_admin import (

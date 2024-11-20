@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes
 
 import config
 from telegram_bot.custom_types.user_permission_role import UserPermission, UserRole
-from container_interaction.users_db import (
+from container_interaction.users import (
     add_pending_user,
     check_user_role,
     check_user_status,
