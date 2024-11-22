@@ -1,5 +1,5 @@
 from typing import Callable
-
+from io import BytesIO
 import requests
 from telegram import File, Update
 from telegram.ext import ContextTypes
@@ -16,13 +16,14 @@ from telegram_bot.callbacks.attachment_callbacks.document_handler import (
 from telegram_bot.callbacks.attachment_callbacks.photo_handler import photo_handler
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.responders.main_responder import Responder
+from custom_types import AssetFile
 
 
 async def attachment_downloader(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     caller: Callable = None,
-) -> str:
+) -> AssetFile:
     bald_message = await reply_to_message_parser(update)
     available_attachments = await attachment_finder(bald_message)
 
@@ -65,24 +66,9 @@ async def attachment_downloader(
         await Responder.errors.max_attachment_size_exceeded(user_id)
         raise Exception()
 
-    stored_file_filename = await store_file_in_storage_unit(
-        filename=telegram_file.file_id,
-        file_bytes=await telegram_file.download_as_bytearray(),
+    downloaded_file = BytesIO()
+    await telegram_file.download_to_memory(downloaded_file)
+    return AssetFile(
+        bytes=downloaded_file,
         mime_type=mime_type,
     )
-
-    return stored_file_filename
-
-
-async def store_file_in_storage_unit(
-    filename: str, file_bytes: bytes, mime_type: str
-) -> str:
-    """Send a HTTP Post request to the central dispatcher node
-    for further processing. On success dispatcher node returns
-    filename with which the file was stored in storage unit."""
-    response = requests.post(
-        f"{config.DISPATCHER_NODE_URL}/user_files/",
-        files={"upload_file": (filename, file_bytes, mime_type)},
-    )
-    response.raise_for_status()
-    return response.json()["filename"]
