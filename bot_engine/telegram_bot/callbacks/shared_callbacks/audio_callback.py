@@ -23,9 +23,6 @@ async def audio_callback(
                 raise Exception()
 
             await update.callback_query.answer(cache_time=180)
-            # await update.callback_query.edit_message_text(
-            #     text=update.callback_query.message.text
-            # )
 
             if update.callback_query.data == "audio_enabled":
                 user_data.update({"audio_enabled": True, "stage": "audio_file"})
@@ -36,7 +33,7 @@ async def audio_callback(
 
         if stage == "audio_file":
             downloaded_file = await attachment_downloader(update, context)
-            user_data.update({"audio_name": downloaded_file, "stage": "audio_passed"})
+            user_data.update({"audio_file": downloaded_file, "stage": "audio_passed"})
             return await caller(update, context)
 
     except Exception as e:

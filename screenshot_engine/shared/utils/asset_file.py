@@ -16,3 +16,6 @@ class AssetFile:
         else:
             self.filename = filename
             self.file = file
+
+
+BytesIO()
