@@ -4,7 +4,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 def facebook_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
-    post = driver.find_element(By.CSS_SELECTOR, "div[role='dialog']").find_element(
+    post = driver.find_elements(By.CSS_SELECTOR, "div[role='dialog']")[1].find_element(
         By.CSS_SELECTOR, "div[role='article']"
     )
 
