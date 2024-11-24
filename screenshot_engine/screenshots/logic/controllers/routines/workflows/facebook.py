@@ -4,9 +4,8 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 def facebook_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
-    post = driver.execute_script(
-        """let allDialogs = document.querySelectorAll("div[role='dialog']");
-return allDialogs[1].querySelector("div[role='article']");"""
+    post = driver.find_element(By.CSS_SELECTOR, "div[role='dialog']").find_element(
+        By.CSS_SELECTOR, "div[role='article']"
     )
 
     return post
