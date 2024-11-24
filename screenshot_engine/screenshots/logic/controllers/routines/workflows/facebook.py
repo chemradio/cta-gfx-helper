@@ -4,12 +4,11 @@ from selenium.webdriver.remote.webelement import WebElement
 
 
 def facebook_post_routine(driver: webdriver.Chrome | webdriver.Remote) -> WebElement:
-    post = driver.find_element(By.XPATH, "//div[@role='article']")
-    # this is for anonymous session. to be deprecated user should always be logged in
-    # driver.execute_script(
-    #     """el = document.querySelectorAll('[role="feed"]')[0];
-    # el.style.width = '500px';"""
-    # )
+    post = driver.execute_script(
+        """let allDialogs = document.querySelectorAll("div[role='dialog']");
+return allDialogs[1].querySelector("div[role='article']");"""
+    )
+
     return post
 
 
