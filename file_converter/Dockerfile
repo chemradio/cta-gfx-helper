@@ -1,5 +1,5 @@
 # FROM --platform=linux/amd64 python:3.9
-FROM python:3.10
+FROM python:3.12
 
 RUN apt update
 RUN apt -y upgrade
