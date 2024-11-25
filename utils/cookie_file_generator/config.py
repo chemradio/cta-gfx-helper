@@ -1,16 +1,16 @@
 from pathlib import Path
 
 logged_in_to_social_websites = False
-LOGIN_REQUIRED = ("facebook", "twitter", "instagram")
+LOGIN_REQUIRED = ("facebook", "x", "instagram")
 
 SOCIAL_WEBSITES = {
     "facebook": "https://facebook.com",
-    "twitter": "https://twitter.com",
+    "x": "https://x.com",
     "instagram": "https://instagram.com",
 }
 
 COOKIE_FILE_PATH = Path().cwd() / "cookie_file.json"
-COPY_COOKIE_TO_DEV = True
+COPY_COOKIE_TO_DEV = False
 
 DEV_COOKIE_FILE_PATH = (
     Path().cwd().parent.parent

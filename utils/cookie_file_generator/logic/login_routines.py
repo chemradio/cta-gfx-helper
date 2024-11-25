@@ -8,7 +8,7 @@ class LoginRoutines:
         self.login_checks = {
             "instagram": self.check_instagram_login,
             "facebook": self.check_fb_login,
-            "twitter": self.check_twitter_login,
+            "x": self.check_twitter_login,
         }
 
     def check_instagram_login(self, driver: webdriver.Chrome) -> bool:

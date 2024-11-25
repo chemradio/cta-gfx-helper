@@ -1,0 +1,10 @@
+services:
+  utility_selenium:
+    image: seleniarm/standalone-chromium
+    restart: unless-stopped
+    hostname: utility_selenium
+    privileged: true
+    shm_size: 2g
+    ports:
+      - "4444:4444"
+      - "7900:7900"

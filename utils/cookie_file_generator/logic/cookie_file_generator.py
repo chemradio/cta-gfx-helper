@@ -1,10 +1,10 @@
 import time
 from pathlib import Path
 
+import selenium
 from selenium import webdriver
+import selenium.webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 
 from logic.cookie_manager import CookieManager
 from logic.login_routines import LoginRoutines
@@ -13,6 +13,7 @@ from logic.login_routines import LoginRoutines
 class CookieFileGenerator:
     def __init__(
         self,
+        remote_driver_url: str = "",
         login_required: tuple = tuple(),
         social_websites: dict = dict(),
         cookie_file_path: Path = Path(),
@@ -26,43 +27,43 @@ class CookieFileGenerator:
         self.chrome_options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
+        self.remote_driver_url = remote_driver_url
 
     def login_to_social(self) -> bool:
         for domain in self.login_required:
-            self.driver = webdriver.Chrome(
-                options=self.chrome_options,
-                service=Service(ChromeDriverManager().install()),
+            driver = selenium.webdriver.Remote(
+                self.remote_driver_url, options=self.chrome_options
             )
-            self.driver.implicitly_wait(5)
+            driver.implicitly_wait(5)
             website_link = self.social_websites.get(domain)
             if not website_link:
                 print(f"Could not load a website: {domain}")
 
-            self.driver.get(website_link)
+            driver.get(website_link)
 
             # add pre-existing cookies
             try:
-                self.cookie_manager.add_domain_cookies(domain, self.driver)
+                self.cookie_manager.add_domain_cookies(domain, driver)
                 time.sleep(2)
-                self.driver.refresh()
+                driver.refresh()
             except:
                 print(f"No cookies avalable for domain: {domain}")
 
             # check if user is successfully logged in using pre-existing cookies &
             # dump new cookies
-            if self.login_routines.login_checks[domain](self.driver):
+            if self.login_routines.login_checks[domain](driver):
                 print(f"Already logged into domain: {domain}")
-                domain_cookies = self.driver.get_cookies()
+                domain_cookies = driver.get_cookies()
                 self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
-                self.driver.quit()
+                driver.quit()
                 continue
 
             # Give user infinite time to log in to website/social network
             while True:
                 try:
                     # check if user has closed the window after logging in
-                    _ = self.driver.window_handles
-                    domain_cookies = self.driver.get_cookies()
+                    _ = driver.window_handles
+                    domain_cookies = driver.get_cookies()
                     time.sleep(1)
                 except:
                     break
@@ -71,5 +72,5 @@ class CookieFileGenerator:
                 self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
 
             time.sleep(1)
-            self.driver.quit()
+            driver.quit()
             time.sleep(1)

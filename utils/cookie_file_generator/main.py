@@ -12,6 +12,7 @@ def copy_cookie_file_to_dev_volume(main_path: Path, dev_path: Path) -> None:
 
 def main():
     cookie_file_generator = CookieFileGenerator(
+        remote_driver_url="http://127.0.0.1:4444/wd/hub",
         login_required=config.LOGIN_REQUIRED,
         social_websites=config.SOCIAL_WEBSITES,
         cookie_file_path=config.COOKIE_FILE_PATH,

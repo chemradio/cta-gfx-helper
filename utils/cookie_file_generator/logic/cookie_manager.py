@@ -32,7 +32,7 @@ class CookieManager:
         with open(f"{self.cookie_file}", "w") as cookie_file:
             json.dump(stored_cookies, cookie_file)
 
-    def add_domain_cookies(self, domain: str, driver: webdriver.Chrome) -> None:
+    def add_domain_cookies(self, domain: str, driver: webdriver.Remote) -> None:
         """Add specific domain cookies to webdriver."""
         domain_cookies = self.get_stored_cookies().get(domain)
         if not domain_cookies:
