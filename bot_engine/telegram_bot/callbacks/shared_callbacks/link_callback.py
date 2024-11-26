@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
-from telegram_bot.utils.check_url import check_is_url
+from support_lib.misc.check_url import check_is_url
 
 
 async def link_callback(

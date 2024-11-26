@@ -5,7 +5,7 @@ from config import Readspeed
 from container_interaction.orders import add_order_to_db
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.responders.main_responder import Responder
-from telegram_bot.utils.calc_readtime import calc_readtime
+from support_lib.readtime.calc_readtime import calc_readtime
 
 
 async def readtime_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

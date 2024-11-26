@@ -30,7 +30,6 @@ def add_order():
         # "framerate": 12,
         # "audio_offset": 1.5,
         # "videogfx_tail": 2.0,
-        # "secret_key": "your_secret_key_here",
     }
 
     # Make the POST request

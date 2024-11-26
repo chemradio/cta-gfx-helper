@@ -24,7 +24,6 @@ queue = QueueManager(
 @app.post("/", response_model=dict)
 async def capture_screenshots(
     screenshot_link: str = Form(None),
-    secret_key: str | None = None,
     callback_url: str | None = None,
 ) -> str:
     order_id = str(uuid.uuid4())
