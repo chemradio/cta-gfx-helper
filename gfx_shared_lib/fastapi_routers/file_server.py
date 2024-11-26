@@ -11,7 +11,7 @@ def find_asset(filename: str, search_path: Path = Path.cwd() / "storage") -> Pat
 
 
 @router.get("/file_server/")
-async def download_file(filename: str, secret_key: str | None = None):
+async def download_file(filename: str):
     file_path = find_asset(filename)
     if not file_path:
         raise HTTPException(status_code=404, detail="File not found")
@@ -20,7 +20,7 @@ async def download_file(filename: str, secret_key: str | None = None):
 
 
 @router.delete("/file_server/")
-async def delete_file(filename: str, secret_key: str | None = None):
+async def delete_file(filename: str):
     file_path = find_asset(filename)
     if not file_path:
         raise HTTPException(status_code=404, detail="File not found")

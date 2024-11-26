@@ -1,12 +1,4 @@
 from io import BytesIO
-from .helper_types import (
-    ConvertedFile,
-    FileExtension,
-    FileMimeType,
-    AUDIO_EXTENSIONS,
-    WORD_EXTENSIONS,
-    IMAGE_EXTENSIONS,
-)
 from .workers import (
     convert_audio_to_wav,
     convert_pdf_to_png,
@@ -16,22 +8,26 @@ from .workers import (
 
 
 async def convert_unsupported_file(
-    file_bytesio: BytesIO, original_extension: FileExtension
-) -> ConvertedFile:
+    file_bytesio: BytesIO, original_extension: str
+) -> AssetFile:
+    AUDIO_EXTENSIONS = ("wav", "mp3", "ogg")
+    IMAGE_EXTENSIONS = ("png", "jpg", "jpeg")
+    WORD_EXTENSIONS = ("doc", "docx")
+
     if original_extension in AUDIO_EXTENSIONS:
         converted_bytesio = await convert_audio_to_wav(file_bytesio)
-        converted_mime_type = FileMimeType.WAV
+        converted_mime_type = "audio/wav"
 
     if original_extension in IMAGE_EXTENSIONS:
         converted_bytesio = await convert_image_to_png(file_bytesio)
-        converted_mime_type = FileMimeType.PNG
+        converted_mime_type = "image/png"
 
     if original_extension in WORD_EXTENSIONS:
         converted_bytesio = await convert_word_to_png(file_bytesio)
-        converted_mime_type = FileMimeType.PNG
+        converted_mime_type = "image/png"
 
-    if original_extension == FileExtension.PDF:
+    if original_extension == "pdf":
         converted_bytesio = await convert_pdf_to_png(file_bytesio)
-        converted_mime_type = FileMimeType.PNG
+        converted_mime_type = "image/png"
 
-    return ConvertedFile(bytesio=converted_bytesio, mime_type=converted_mime_type)
+    return AssetFile(bytesio=converted_bytesio, mime_type=converted_mime_type)

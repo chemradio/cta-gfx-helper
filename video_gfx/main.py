@@ -34,7 +34,6 @@ def create_video_gfx(
     audio_offset: float = Form(config.DEFAULT_AUDIO_OFFSET),
     videogfx_tail: float = Form(config.DEFAULT_VIDEOGFX_TAIL),
     animation_duration: float | int = Form(config.DEFAULT_ANIMATION_DURATION),
-    secret_key: str | None = Form(None),
 ) -> str:
     order_id = str(uuid.uuid4())
 

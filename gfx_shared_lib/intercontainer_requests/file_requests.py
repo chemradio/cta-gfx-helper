@@ -1,5 +1,5 @@
 from io import BytesIO
-
+from ..files.asset_file import AssetFile
 import httpx
 
 
@@ -26,3 +26,18 @@ async def download_and_delete_order_file(container_url: str, filename: str) -> B
             download_tries -= 1
     else:
         raise Exception("Failed to download file. Deletion aborted.")
+
+
+async def convert_file(asset_file: AssetFile) -> AssetFile:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "http://127.0.0.1:9005",
+            files={"file": (asset_file.filename, asset_file.bytesio)},
+        )
+
+        converted_mime = response.headers["Content-Type"]
+
+        return AssetFile(
+            bytes=BytesIO(response.content),
+            mime_type=converted_mime,
+        )

@@ -1,10 +1,12 @@
 from pathlib import Path
 from typing import Optional
 
-import config
 
+def find_files(
+    *filenames: list[str],
+    search_folders: list[Path],
+) -> list[Optional[Path]]:
 
-def find_files(*filenames: list[str]) -> list[Optional[Path]]:
     def find_file(file_name: str, search_folders: list[Path]) -> list[Optional[Path]]:
         output = list()
         for folder in search_folders:
@@ -26,17 +28,12 @@ def find_files(*filenames: list[str]) -> list[Optional[Path]]:
         return output
 
     output_paths = list()
-    folders = (
-        config.SCREENSHOTS_FOLDER,
-        config.USER_FILES_FOLDER,
-        config.RENDER_OUTPUT_PATH,
-    )
 
     for filename in filenames:
         if not filename:
             continue
 
-        files_to_remove = find_file(filename, folders)
+        files_to_remove = find_file(filename, search_folders)
         if files_to_remove:
             output_paths.extend(files_to_remove)
     return output_paths

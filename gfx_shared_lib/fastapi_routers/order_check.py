@@ -13,7 +13,6 @@ def get_db_handler():
 @router.get("/")
 async def order_detail_check(
     order_id: str,
-    secret_key: str | None = None,
     db_handler: DBHandler = Depends(get_db_handler),
 ):
     order = db_handler.get_order(order_id)

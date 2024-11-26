@@ -1,7 +1,4 @@
 from io import BytesIO
-import secrets
-from pathlib import Path
-
 from pydub import AudioSegment
 
 

@@ -16,12 +16,6 @@ MAX_AUDIO_LENGTH = 40
 IS_DOCKER = os.getenv("IS_DOCKER")
 
 
-class Readspeed(Enum):
-    SLOW = 140
-    MEDIUM = 160
-    FAST = 180
-
-
 REQUEST_TYPE_TEMP_MAP = {
     "video_auto": "Графика из ссылки",
     "video_files": "Графика из файлов",
