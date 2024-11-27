@@ -1,22 +1,19 @@
 from pathlib import Path
-from typing import Optional
 
 
 def find_files(
     *filenames: list[str],
     search_folders: list[Path],
-) -> list[Optional[Path]]:
+) -> list[Path | None]:
 
-    def find_file(file_name: str, search_folders: list[Path]) -> list[Optional[Path]]:
+    def find_file(file_name: str, search_folders: list[Path]) -> list[Path | None]:
         output = list()
         for folder in search_folders:
             if (folder / str(file_name)).exists():
                 output.append(folder / file_name)
         return output
 
-    def find_file_glob(
-        file_name: str, search_folders: list[Path]
-    ) -> list[Optional[Path]]:
+    def find_file_glob(file_name: str, search_folders: list[Path]) -> list[Path | None]:
         output = list()
         for folder in search_folders:
             glob_list = list(folder.glob(f"*{file_name}*"))

@@ -5,8 +5,8 @@ from time import perf_counter
 from typing import Callable
 
 from ..tiny_database.db import DBHandler
-from .models.operator_results import OperatorOutputFile, OperatorResults
 from ..files.asset_file import AssetFile
+from ..files.operator_results import OperatorResults
 
 
 class QueueManager:
@@ -22,7 +22,7 @@ class QueueManager:
         self._processing = False
         self._storage_path = storage_path
         self._dispatcher_url = dispatcher_url
-        self._operator = operator
+        self._operator: Callable[[dict, dict], OperatorResults] = operator
         self._operator_kwargs = operator_kwargs
         self._db_handler = db_handler
 
@@ -107,12 +107,12 @@ class QueueManager:
 
     def _store_operator_output(
         self,
-        operator_output: list[OperatorOutputFile],
+        operator_output: list[AssetFile],
     ) -> None:
         for output in operator_output:
             file_path = self._storage_path / output.filename
             with open(file_path, "wb") as file:
-                file.write(output.content.getvalue())
+                file.write(output.bytesio.getvalue())
 
     def __str__(self) -> str:
         return str(self._queue)
