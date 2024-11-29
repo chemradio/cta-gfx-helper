@@ -16,8 +16,10 @@ def thread_safe(function):
 
 
 class DBHandler:
-    db = tinydb.TinyDB("db.json")
-    db.truncate()
+    @classmethod
+    def init(cls):
+        cls.db = tinydb.TinyDB("db.json")
+        cls.db.truncate()
 
     @classmethod
     @thread_safe
