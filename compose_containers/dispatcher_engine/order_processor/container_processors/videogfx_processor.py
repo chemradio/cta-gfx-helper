@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from io import BytesIO
 
-from .intercontainer_requests import (
-    CONTAINER_URLS,
+
+from py_gfxhelper_lib.constants import ContainerUrls
+from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_file,
-    order_video_gfx,
     poll_order_status_finished,
 )
+from .intercontainer_requests.order_video_gfx import order_video_gfx
 
 
 @dataclass
@@ -22,7 +23,7 @@ async def process_videogfx(
     background_file: BytesIO | None,
     foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
-    videogfx_container_url: str = CONTAINER_URLS.VideoGfx,
+    videogfx_container_url: str = ContainerUrls.VIDEOGFX,
 ):
     try:
         order_id = await order_video_gfx(
@@ -36,7 +37,7 @@ async def process_videogfx(
             videogfx_container_url,
         )
         finished_order = await poll_order_status_finished(
-            order_id, videogfx_container_url
+            videogfx_container_url, order_id
         )
 
         if finished_order["error"]:
@@ -44,7 +45,7 @@ async def process_videogfx(
 
         video_filename = finished_order["output_filenames"][0]
         video_file = download_and_delete_order_file(
-            video_filename, videogfx_container_url + "/file_server/"
+            videogfx_container_url + "/file_server/", video_filename
         )
 
         return VideoGFXResults(success=True, video=video_file)

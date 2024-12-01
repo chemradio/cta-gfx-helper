@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from io import BytesIO
 
-from .intercontainer_requests import (
-    CONTAINER_URLS,
+from py_gfxhelper_lib.constants import ContainerUrls
+from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_file,
-    order_screenshots,
     poll_order_status_finished,
 )
+from .intercontainer_requests.order_screenshots import order_screenshots
 
 
 @dataclass
@@ -19,7 +19,7 @@ class ScreenshotResults:
 
 
 async def process_screenshots(
-    screenshot_url: str, screenshot_container_url: str = CONTAINER_URLS.Screenshoter
+    screenshot_url: str, screenshot_container_url: str = ContainerUrls.SCREENSHOOTER
 ) -> ScreenshotResults:
     try:
         print(__file__, "ordering screenshots")
@@ -28,22 +28,22 @@ async def process_screenshots(
 
         print(__file__, "polling order status")
         finished_order = await poll_order_status_finished(
-            order_id, screenshot_container_url
+            screenshot_container_url, order_id
         )
         print(__file__, f"{finished_order=}")
 
         print("downloading files")
         print("downloading and deleting background image")
         background_image = await download_and_delete_order_file(
-            finished_order["output_filenames"][0],
             screenshot_container_url + "/file_server/",
+            finished_order["output_filenames"][0],
         )
 
         two_layer = True if len(finished_order["output_filenames"]) > 1 else False
         if two_layer:
             foreground_image = await download_and_delete_order_file(
-                finished_order["output_filenames"][1],
                 screenshot_container_url + "/file_server/",
+                finished_order["output_filenames"][1],
             )
 
         return ScreenshotResults(

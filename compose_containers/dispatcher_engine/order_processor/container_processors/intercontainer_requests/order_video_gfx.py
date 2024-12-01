@@ -2,14 +2,13 @@ from io import BytesIO
 from typing import Any
 
 import httpx
-
-from . import CONTAINER_URLS
+from py_gfxhelper_lib.constants import ContainerUrls
 
 
 # same func just in async with httpx
 async def order_video_gfx(
     videogfx_data: dict[str, Any],
-    container_url: str = CONTAINER_URLS.VideoGfx,
+    container_url: str = ContainerUrls.VIDEOGFX,
 ) -> str:
     files = dict()
     background_file: BytesIO = videogfx_data.pop("background_file")
