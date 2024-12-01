@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from shared import FilenameType, OperatorOutputFile, OperatorResults, generate_filename
 
 from .screenshot_processor import parse_capture_screenshots
+from py_gfxhelper_lib.files import OperatorResults, AssetFile
 
 
 def main_capture(

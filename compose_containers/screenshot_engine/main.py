@@ -1,11 +1,13 @@
 import uuid
 
-from fastapi import Form, UploadFile
+from fastapi import FastAPI, Form, UploadFile
 
 import config
-from shared import QueueManager, app, purge_storage
 from src import main_capture
 from src.helpers.driver_auth import initialize_cookie_storage
+from py_gfxhelper_lib.startup import purge_storage
+from py_gfxhelper_lib import QueueManager
+from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
 
 purge_storage(config.SCREENSHOT_FOLDER)
 initialize_cookie_storage(config.COOKIE_FILE)
@@ -19,6 +21,10 @@ queue = QueueManager(
     dpi_multiplier=config.DPI_MULTIPLIER,
     attempts=config.SCREENSHOT_ATTEMPTS,
 )
+
+app = FastAPI()
+app.include_router(file_server_router)
+app.include_router(order_check_router)
 
 
 @app.post("/", response_model=dict)
