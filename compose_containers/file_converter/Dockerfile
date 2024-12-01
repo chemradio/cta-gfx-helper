@@ -9,7 +9,9 @@ RUN apt-get install -y libreoffice
 RUN apt-get install -y ffmpeg
 
 WORKDIR /usr/src/app
+
 COPY requirements.txt requirements.txt
+COPY libs /libs
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 ENV LC_ALL=C.UTF-8

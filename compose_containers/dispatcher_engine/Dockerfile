@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.12
 
 ARG PORT=9000
 ENV PORT=$dispatcher_port
@@ -8,6 +8,7 @@ RUN apt -y upgrade
 
 WORKDIR /usr/src/app
 COPY requirements.txt requirements.txt
+COPY libs /libs
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .

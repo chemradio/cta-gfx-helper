@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.12
 
 ARG PORT=9001
 
@@ -6,8 +6,11 @@ RUN apt update
 RUN apt -y upgrade
 
 WORKDIR /usr/src/app
+
 COPY requirements.txt requirements.txt
+COPY libs /libs
 RUN pip install -r requirements.txt
+
 
 COPY . .
 

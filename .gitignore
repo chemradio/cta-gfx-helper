@@ -46,7 +46,7 @@ share/python-wheels/
 MANIFEST
 seleniarm_custom/screenshot/config.ovpn
 seleniarm_custom/screenshot/credentials.txt
-
+/compose_containers/*/libs/
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.

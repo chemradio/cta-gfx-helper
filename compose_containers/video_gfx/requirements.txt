@@ -1,4 +1,4 @@
-fastapi==0.112.2
+fastapi==0.115.5
 ffmpeg-python==0.2.0
 pillow==10.4.0
 pydub==0.25.1
@@ -7,3 +7,4 @@ requests==2.32.3
 selenium==4.24.0
 uvicorn==0.30.6
 tinydb==4.8.0
+./libs/py_gfxhelper_lib
