@@ -4,3 +4,11 @@ from .filename_generator import generate_filename, FilenameType
 from .mime_extension_mapping import MIME_TO_EXTENSION, EXTENSION_TO_MIME
 from .operator_results import OperatorResults
 from .file_type import FileType
+from .screenshot import (
+    Screenshot,
+    ScreenshotRole,
+    PostDimensions,
+    PostCoordinates,
+)
+from .screenshot_results import ScreenshotResults
+from .videogfx_results import VideoGFXResults

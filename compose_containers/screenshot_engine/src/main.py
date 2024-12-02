@@ -39,22 +39,16 @@ def main_capture(
             print(f"{error_message=}", flush=True)
 
     if success:
-        operator_output: list[OperatorOutputFile] = list()
+        operator_output: list[AssetFile] = list()
         operator_output.append(
-            OperatorOutputFile(
-                content=capture_results.background.content,
-                filename=generate_filename(
-                    FilenameType.SCREENSHOT_BACKGROUND,
-                ),
+            AssetFile(
+                bytes_or_bytesio=capture_results.background.content, extension="png"
             )
         )
         if capture_results.two_layer and capture_results.foreground:
             operator_output.append(
-                OperatorOutputFile(
-                    content=capture_results.foreground.content,
-                    filename=generate_filename(
-                        FilenameType.SCREENSHOT_FOREGROUND,
-                    ),
+                AssetFile(
+                    bytes_or_bytesio=capture_results.foreground.content, extension="png"
                 )
             )
     else:

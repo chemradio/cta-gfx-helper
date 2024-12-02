@@ -8,7 +8,7 @@ async def process_only_screenshots(order: dict) -> list[AssetFile]:
     screenshots = await process_screenshots(screenshot_url=order["screenshot_link"])
     output.append(
         AssetFile(
-            bytes_or_bytesio=screenshots.background,
+            bytes_or_bytesio=screenshots.background.content,
             extension="png",
             file_type=FileType.IMAGE,
         )
@@ -17,7 +17,7 @@ async def process_only_screenshots(order: dict) -> list[AssetFile]:
     if screenshots.foreground:
         output.append(
             AssetFile(
-                bytes_or_bytesio=screenshots.foreground,
+                bytes_or_bytesio=screenshots.foreground.content,
                 extension="png",
                 file_type=FileType.IMAGE,
             )

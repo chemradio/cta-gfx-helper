@@ -1,21 +1,10 @@
-from dataclasses import dataclass
-from io import BytesIO
-
 from py_gfxhelper_lib.constants import ContainerUrls
 from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_file,
     poll_order_status_finished,
 )
 from .intercontainer_requests.order_screenshots import order_screenshots
-
-
-@dataclass
-class ScreenshotResults:
-    success: bool = False
-    background: BytesIO | None = None
-    foreground: BytesIO | None = None
-    two_layer: bool | None = False
-    error_message: str | None = None
+from py_gfxhelper_lib.files import ScreenshotResults, Screenshot, ScreenshotRole
 
 
 async def process_screenshots(
@@ -48,8 +37,18 @@ async def process_screenshots(
 
         return ScreenshotResults(
             success=True,
-            background=background_image,
-            foreground=foreground_image if two_layer else None,
+            background=Screenshot(
+                content=background_image,
+                role=ScreenshotRole.FULL_SIZE,
+            ),
+            foreground=(
+                Screenshot(
+                    content=foreground_image,
+                    role=ScreenshotRole.POST,
+                )
+                if two_layer
+                else None
+            ),
             two_layer=two_layer,
         )
 
