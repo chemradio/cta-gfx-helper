@@ -8,13 +8,7 @@ from py_gfxhelper_lib.intercontainer_requests import (
     poll_order_status_finished,
 )
 from .intercontainer_requests.order_video_gfx import order_video_gfx
-
-
-@dataclass
-class VideoGFXResults:
-    success: bool = False
-    video: BytesIO | None = None
-    error_message: str | None = None
+from py_gfxhelper_lib.files import VideoGFXResults
 
 
 async def process_videogfx(
@@ -24,7 +18,7 @@ async def process_videogfx(
     foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
     videogfx_container_url: str = ContainerUrls.VIDEOGFX,
-):
+) -> VideoGFXResults:
     try:
         order_id = await order_video_gfx(
             {
@@ -44,7 +38,7 @@ async def process_videogfx(
             raise Exception(finished_order["error_message"])
 
         video_filename = finished_order["output_filenames"][0]
-        video_file = download_and_delete_order_file(
+        video_file = await download_and_delete_order_file(
             videogfx_container_url + "/file_server/", video_filename
         )
 
