@@ -9,7 +9,7 @@ from ..helpers.link_parse import parse_link_type
 from .page_routines import apply_routine, extract_profile_url
 from .screenshor_capture.capture_screenshot import capture_single_screenshot
 from .screenshor_capture.crop_screenshot import crop_screenshot
-from py_gfxhelper_lib.files import ScreenshotRole, ScreenshotResults
+from py_gfxhelper_lib.custom_types import ScreenshotRole, ScreenshotResults
 
 
 def parse_capture_screenshots(

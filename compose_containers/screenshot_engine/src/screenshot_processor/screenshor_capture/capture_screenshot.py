@@ -6,7 +6,12 @@ from io import BytesIO
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from ..types import PostCoordinates, PostDimensions, Screenshot, ScreenshotRole
+from py_gfxhelper_lib.custom_types import (
+    Screenshot,
+    ScreenshotRole,
+    PostCoordinates,
+    PostDimensions,
+)
 
 
 def capture_single_screenshot(

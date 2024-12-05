@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from .asset_file import AssetFile
+from ..files.asset_file import AssetFile
 
 
 @dataclass

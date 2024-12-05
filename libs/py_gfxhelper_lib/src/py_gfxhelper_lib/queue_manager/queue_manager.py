@@ -6,7 +6,7 @@ from typing import Callable
 
 from ..tiny_database.db import DBHandler
 from ..files.asset_file import AssetFile
-from ..files.operator_results import OperatorResults
+from ..custom_types.operator_results import OperatorResults
 
 
 class QueueManager:
