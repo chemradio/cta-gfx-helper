@@ -8,7 +8,7 @@ RUN apt -y upgrade
 WORKDIR /usr/src/app
 
 COPY requirements.txt requirements.txt
-COPY libs /libs
+COPY libs libs
 RUN pip install -r requirements.txt
 
 

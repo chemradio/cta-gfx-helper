@@ -3,7 +3,7 @@ from pathlib import Path
 import ffmpeg
 from PIL import Image
 
-from shared.utils.asset_file import AssetFile
+from py_gfxhelper_lib.files import AssetFile
 
 
 def stitch_images(
@@ -48,7 +48,7 @@ def stitch_images(
         audio_extension = audio_file.filename.split(".")[-1]
         temp_audio_file_path = image_folder_path / f"audio_file.{audio_extension}"
         with open(temp_audio_file_path, "wb") as f:
-            f.write(audio_file.file.read())
+            f.write(audio_file.bytesio.read())
 
         audio_input = ffmpeg.input(
             str(temp_audio_file_path), f=audio_extension.lower(), itsoffset=audio_delay

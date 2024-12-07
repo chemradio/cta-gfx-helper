@@ -1,8 +1,8 @@
 import traceback
-from pathlib import Path
 
-from shared import FilenameType, OperatorOutputFile, OperatorResults, generate_filename
 
+from py_gfxhelper_lib.custom_types import OperatorResults
+from py_gfxhelper_lib.files import AssetFile
 from .videogfx_processor.videogfx_studio import create_videogfx
 
 
@@ -13,7 +13,7 @@ def main_videogfx(
     success = False
     error = False
     error_message = ""
-    operator_output: list[OperatorOutputFile] = list()
+    operator_output: list[AssetFile] = list()
 
     try:
         videogfx_bytesio = create_videogfx(
@@ -32,10 +32,7 @@ def main_videogfx(
 
     if success:
         operator_output.append(
-            OperatorOutputFile(
-                content=videogfx_bytesio,
-                filename=generate_filename(FilenameType.VIDEOGFX_VIDEO),
-            )
+            AssetFile(bytes_or_bytesio=videogfx_bytesio, extension="mp4")
         )
     else:
         print(f"VideoGFX failed.")

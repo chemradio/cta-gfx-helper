@@ -5,6 +5,7 @@ from .workers import (
     convert_word_to_png,
     convert_image_to_png,
 )
+from py_gfxhelper_lib.files import AssetFile
 
 
 async def convert_unsupported_file(
@@ -30,4 +31,4 @@ async def convert_unsupported_file(
         converted_bytesio = await convert_pdf_to_png(file_bytesio)
         converted_mime_type = "image/png"
 
-    return AssetFile(bytesio=converted_bytesio, mime_type=converted_mime_type)
+    return AssetFile(bytes_or_bytesio=converted_bytesio, mime_type=converted_mime_type)

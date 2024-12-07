@@ -5,12 +5,19 @@ from fastapi import File, Form, UploadFile
 from fastapi.staticfiles import StaticFiles
 
 import config
-from shared import QueueManager, app, purge_storage
-from shared.utils.asset_file import AssetFile
+from py_gfxhelper_lib import QueueManager
+from py_gfxhelper_lib.files import AssetFile
+from fastapi import FastAPI
+from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
+from py_gfxhelper_lib.startup import purge_storage
+
 from src import main_videogfx
 
 purge_storage(config.STORAGE_PATH)
 
+app = FastAPI()
+app.include_router(file_server_router)
+app.include_router(order_check_router)
 
 queue = QueueManager(
     storage_path=config.STORAGE_PATH,
