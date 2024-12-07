@@ -1,5 +1,4 @@
 from io import BytesIO
-from pathlib import Path
 
 from src.frame_extractor import extract_frame_images
 from src.frames_to_video import stitch_images
