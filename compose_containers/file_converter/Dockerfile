@@ -11,8 +11,10 @@ RUN apt-get install -y ffmpeg
 WORKDIR /usr/src/app
 
 COPY requirements.txt requirements.txt
-COPY libs libs
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY libs libs
+RUN pip install --no-cache-dir ./libs/py_gfxhelper_lib
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8

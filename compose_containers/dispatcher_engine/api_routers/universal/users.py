@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from fastapi import APIRouter, HTTPException
 from pymongo import ReturnDocument
 
-from custom_types_enums import UserPermission, UserRole
+from py_gfxhelper_lib.user_enums import UserPermission, UserRole
 from db_mongo import find_user, Users
 
 router = APIRouter()

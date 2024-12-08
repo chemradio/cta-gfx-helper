@@ -2,7 +2,8 @@ from pathlib import Path
 
 
 from .screenshot_processor import parse_capture_screenshots
-from py_gfxhelper_lib.files import OperatorResults, AssetFile
+from py_gfxhelper_lib.files import AssetFile
+from py_gfxhelper_lib.custom_types import OperatorResults
 
 
 def main_capture(

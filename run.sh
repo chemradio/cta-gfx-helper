@@ -5,4 +5,5 @@
 
 # Start Docker Compose services
 cd compose_containers
+docker compose down
 docker compose up --build

@@ -10,11 +10,6 @@ services:
       - "4444:4444"
       - "5900:5900"
       - "7900:7900"
-    # environment:
-    #   PROTONVPN_EMAIL: ${PROTONVPN_EMAIL}
-    #   PROTONVPN_PASSWORD: ${PROTONVPN_PASSWORD}
-    # devices:
-    #   - /dev/net/tun
   screenshoter:
     restart: unless-stopped
     build: .

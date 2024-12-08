@@ -6,6 +6,9 @@ SOURCE_DIR="$(dirname "$0")/../libs"
 # Define the target directory relative to the script location
 TARGET_DIR="$(dirname "$0")/../compose_containers"
 
+# Define the tests directory relative to the script location
+TESTS_DIR="$(dirname "$0")/../tests"
+
 # Check if the source directory exists
 if [ ! -d "$SOURCE_DIR" ]; then
   echo "Source directory $SOURCE_DIR does not exist."
@@ -24,5 +27,14 @@ for CONTAINER_DIR in "$TARGET_DIR"/*; do
     echo "Copied $SOURCE_DIR to $CONTAINER_DIR"
   fi
 done
+
+# Copy the libs directory to the tests directory
+if [ -d "$TESTS_DIR" ]; then
+  if [ -d "$TESTS_DIR/libs" ]; then
+    rm -rf "$TESTS_DIR/libs"
+  fi
+  cp -r "$SOURCE_DIR" "$TESTS_DIR"
+  echo "Copied $SOURCE_DIR to $TESTS_DIR"
+fi
 
 echo "Done."

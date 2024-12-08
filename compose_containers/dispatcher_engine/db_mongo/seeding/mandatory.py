@@ -2,7 +2,7 @@ import os
 
 from bson.objectid import ObjectId
 
-from custom_types_enums import UserPermission, UserRole
+from py_gfxhelper_lib.user_enums import UserPermission, UserRole
 from db_mongo.db_config.db_init import Users
 from utils.auth.password_hashing import generate_password_hash
 
