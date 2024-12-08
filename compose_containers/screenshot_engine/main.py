@@ -10,6 +10,8 @@ from py_gfxhelper_lib import QueueManager
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
 from py_gfxhelper_lib import DBHandler
 
+DBHandler.init()
+
 purge_storage(config.SCREENSHOT_FOLDER)
 initialize_cookie_storage(config.COOKIE_FILE)
 
@@ -28,12 +30,17 @@ app = FastAPI()
 app.include_router(file_server_router)
 app.include_router(order_check_router)
 
+from py_gfxhelper_lib.fastapi_routers.order_check import get_db_handler
+
+app.dependency_overrides[get_db_handler] = lambda: DBHandler
+
 
 @app.post("/", response_model=dict)
 async def capture_screenshots(
     screenshot_link: str = Form(None),
     callback_url: str | None = None,
 ) -> str:
+    print(f"NEW REQUEST: screenshot_link - {screenshot_link}")
     order_id = str(uuid.uuid4())
     queue.append(
         {

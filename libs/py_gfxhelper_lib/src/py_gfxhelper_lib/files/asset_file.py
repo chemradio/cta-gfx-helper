@@ -8,11 +8,11 @@ from .file_type import FileType
 class AssetFile:
     def __init__(
         self,
-        bytes_or_bytesio: bytes | BytesIO | None,
-        extension: str | None,
-        mime_type: str | None,
-        text: str | None,
-        file_type: FileType | str | None,
+        bytes_or_bytesio: bytes | BytesIO | None = None,
+        extension: str | None = None,
+        mime_type: str | None = None,
+        text: str | None = None,
+        file_type: FileType | str | None = None,
         mime_to_ext_map: dict[str, str] = MIME_TO_EXTENSION,
         ext_to_mime_map: dict[str, str] = EXTENSION_TO_MIME,
     ):
@@ -31,18 +31,18 @@ class AssetFile:
                 self.mime_type = mime_type
                 self.extension = mime_to_ext_map[mime_type]
 
-            if isinstance(bytes_or_bytesio, bytes_or_bytesio):
+            if isinstance(bytes_or_bytesio, bytes):
                 self.bytesio = BytesIO(bytes_or_bytesio)
             elif isinstance(bytes_or_bytesio, BytesIO):
                 self.bytesio = bytes_or_bytesio
 
-    @property
-    def filename(self) -> str:
+            self.filename = self._generate_filename(self.extension)
+
+    @staticmethod
+    def _generate_filename(extension) -> str:
         """Return random filename of letters and numbers
         with a length of 8 characters with extension"""
-        if not self.extension:
-            raise ValueError("Extension not set")
         return (
             "".join(random.choices(string.ascii_letters + string.digits, k=8))
-            + f".{self.extension}"
+            + f".{extension}"
         )

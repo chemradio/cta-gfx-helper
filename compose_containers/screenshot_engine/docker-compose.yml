@@ -10,14 +10,14 @@ services:
       - "4444:4444"
       - "5900:5900"
       - "7900:7900"
-  screenshoter:
-    restart: unless-stopped
-    build: .
-    volumes:
-      - .:/usr/src/app
-    platform: linux/arm64
-    environment:
-      IS_DOCKER: 1
-    hostname: screenshoter
-    ports:
-      - "9002:9002"
+  # screenshoter:
+  #   restart: unless-stopped
+  #   build: .
+  #   volumes:
+  #     - .:/usr/src/app
+  #   platform: linux/arm64
+  #   environment:
+  #     IS_DOCKER: 1
+  #   hostname: screenshoter
+  #   ports:
+  #     - "9002:9002"
