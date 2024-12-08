@@ -8,6 +8,7 @@ from src.helpers.driver_auth import initialize_cookie_storage
 from py_gfxhelper_lib.startup import purge_storage
 from py_gfxhelper_lib import QueueManager
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
+from py_gfxhelper_lib import DBHandler
 
 purge_storage(config.SCREENSHOT_FOLDER)
 initialize_cookie_storage(config.COOKIE_FILE)
@@ -20,6 +21,7 @@ queue = QueueManager(
     cookie_file_path=config.COOKIE_FILE,
     dpi_multiplier=config.DPI_MULTIPLIER,
     attempts=config.SCREENSHOT_ATTEMPTS,
+    db_handler=DBHandler,
 )
 
 app = FastAPI()

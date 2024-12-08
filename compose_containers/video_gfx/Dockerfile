@@ -11,8 +11,10 @@ RUN apt -y install ffmpeg
 WORKDIR /usr/src/app
 
 COPY requirements.txt requirements.txt
-COPY libs libs
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+COPY libs libs
+RUN pip install --no-cache-dir ./libs/py_gfxhelper_lib
 
 COPY . .
 

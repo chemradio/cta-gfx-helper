@@ -8,7 +8,7 @@ from py_gfxhelper_lib.intercontainer_requests import (
     poll_order_status_finished,
 )
 from .intercontainer_requests.order_video_gfx import order_video_gfx
-from py_gfxhelper_lib.files import VideoGFXResults
+from py_gfxhelper_lib.custom_types import VideoGFXResults
 
 
 async def process_videogfx(

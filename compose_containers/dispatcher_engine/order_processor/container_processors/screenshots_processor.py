@@ -4,7 +4,7 @@ from py_gfxhelper_lib.intercontainer_requests import (
     poll_order_status_finished,
 )
 from .intercontainer_requests.order_screenshots import order_screenshots
-from py_gfxhelper_lib.files import ScreenshotResults, Screenshot, ScreenshotRole
+from py_gfxhelper_lib.custom_types import Screenshot, ScreenshotResults, ScreenshotRole
 
 
 async def process_screenshots(

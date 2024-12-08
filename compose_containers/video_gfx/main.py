@@ -10,7 +10,7 @@ from py_gfxhelper_lib.files import AssetFile
 from fastapi import FastAPI
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
 from py_gfxhelper_lib.startup import purge_storage
-
+from py_gfxhelper_lib import DBHandler
 from src import main_videogfx
 
 purge_storage(config.STORAGE_PATH)
@@ -24,6 +24,7 @@ queue = QueueManager(
     dispatcher_url=config.DISPATCHER_NOIFICATION_URL,
     operator=main_videogfx,
     remote_driver_url_list=config.SELENIUM_CONTAINERS_LOCAL,
+    db_handler=DBHandler,
 )
 
 

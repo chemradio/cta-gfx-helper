@@ -8,9 +8,10 @@ RUN apt -y upgrade
 WORKDIR /usr/src/app
 
 COPY requirements.txt requirements.txt
-COPY libs libs
 RUN pip install -r requirements.txt
 
+COPY libs libs
+RUN pip install --no-cache-dir ./libs/py_gfxhelper_lib
 
 COPY . .
 

@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from .screenshot_routines import post_workflow, profile_workflow
-from py_gfxhelper_lib.files.screenshot import ScreenshotRole
+from py_gfxhelper_lib.custom_types import ScreenshotRole
 
 
 def apply_routine(
