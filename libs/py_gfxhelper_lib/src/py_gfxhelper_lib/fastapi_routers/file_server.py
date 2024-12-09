@@ -10,7 +10,7 @@ def find_asset(filename: str, search_path: Path = Path.cwd() / "storage") -> Pat
     return next(search_path.rglob(filename), None)
 
 
-@router.get("/file_server/")
+@router.get("/file_server")
 async def download_file(filename: str):
     file_path = find_asset(filename)
     if not file_path:
@@ -19,7 +19,7 @@ async def download_file(filename: str):
     return FileResponse(file_path, filename=file_path.name)
 
 
-@router.delete("/file_server/")
+@router.delete("/file_server")
 async def delete_file(filename: str):
     file_path = find_asset(filename)
     if not file_path:
