@@ -1,17 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
+from pathlib import Path
 
 
 def instagram_post_routine(driver: webdriver.Remote) -> WebElement:
-    # post_role = "presentation" weird... not used later.delete if not needed
-    driver.execute_script(
-        """element = document.querySelector(".x1yvgwvq");
-        element.style.border = "0";
-        element.style.margin = "0px";"""
-    )
-
-    post = driver.find_element(By.CLASS_NAME, "x1yvgwvq")
+    script_path = Path(__file__).parent.parent / "js_scripts" / "igPost.js"
+    with open(script_path, "r") as file:
+        script = file.read()
+    post = driver.execute_script(script)
     return post
 
 

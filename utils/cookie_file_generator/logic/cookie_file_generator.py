@@ -5,7 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
 from logic.cookie_manager import CookieManager
 from logic.login_routines import LoginRoutines
 
@@ -15,11 +14,13 @@ class CookieFileGenerator:
         self,
         login_required: tuple = tuple(),
         social_websites: dict = dict(),
-        cookie_file_path: Path = Path(),
+        remote_webdriver_url: str = "http://localhost:4444/wd/hub",
+        cookie_manager: CookieManager = None,
+        login_routines: LoginRoutines = None,
     ) -> None:
-        self.cookie_manager = CookieManager(cookie_file_path)
-        self.login_routines = LoginRoutines()
-
+        self.cookie_manager = cookie_manager
+        self.login_routines = login_routines
+        self.remote_webdriver_url = remote_webdriver_url
         self.login_required = login_required
         self.social_websites = social_websites
         self.chrome_options = Options()
@@ -30,10 +31,8 @@ class CookieFileGenerator:
 
     def login_to_social(self) -> bool:
         for domain in self.login_required:
-            self.driver = webdriver.Chrome(
-                options=self.chrome_options,
-                executable_path="/Users/timurtimaev/code/cta-gfx-helper/utils/cookie_file_generator/chromedriver"
-                # service=Service(ChromeDriverManager().install()),
+            self.driver = webdriver.Remote(
+                self.remote_webdriver_url, options=self.chrome_options
             )
             self.driver.implicitly_wait(5)
             website_link = self.social_websites.get(domain)

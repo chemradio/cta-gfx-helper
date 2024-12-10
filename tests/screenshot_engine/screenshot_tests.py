@@ -6,7 +6,7 @@ from py_gfxhelper_lib.intercontainer_requests import (
     check_order_status,
 )
 from pathlib import Path
-
+import secrets
 
 SCREENSHOOTER_URL = "http://127.0.0.1:9002"
 
@@ -33,7 +33,9 @@ async def process_tests(screenshot_links: list[str]):
             if result.get("status") == "finished":
                 files = await download_and_delete_order_files(SCREENSHOOTER_URL, result)
                 for file_bytesio in files:
-                    with open(f"{result['order_id']}.png", "wb") as f:
+                    with open(
+                        f"{result['order_id']}_{secrets.token_hex(8)}.png", "wb"
+                    ) as f:
                         f.write(file_bytesio.getvalue())
                 orders.remove(result["order_id"])
         if not orders:
@@ -46,7 +48,16 @@ def main():
     with open(Path(__file__).parent / "screenshot_links.json", "r") as f:
         screenshot_links = json.load(f)
 
-    asyncio.run(process_tests([screenshot_links.get("singleLayer")[0]]))
+    asyncio.run(
+        process_tests(
+            [
+                "https://www.facebook.com/zuck/posts/10115976683809371?__cft__[0]=AZXUqiHawZL8qgYoSbqfnTBecxJQJMekvot-XIgw9N1KhSqDhytg3gShCOh6T-R46jz_uEk3SRPpmUE647KU3V45ZAq28V27MOMb1jWufB7VrSrVKqWhprVupmYHJ_yX_BIMlJLtBD81tzttxap0tWcZACjNhY-5BM_-Zz7pOUau9CE3AL9dNR6MgoGGRRKpnRU&__tn__=%2CO%2CP-R",
+                # "https://www.instagram.com/p/DCutYY5ToWM/?hl=en",
+                "https://t.me/durov/342",
+                "https://x.com/elonmusk/status/1865457111783637448",
+            ]
+        )
+    )
 
 
 if __name__ == "__main__":

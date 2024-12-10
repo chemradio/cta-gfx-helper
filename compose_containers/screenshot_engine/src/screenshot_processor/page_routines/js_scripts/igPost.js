@@ -14,4 +14,4 @@ for (const el of firstClass) {
   }
 }
 
-target;
+return target;

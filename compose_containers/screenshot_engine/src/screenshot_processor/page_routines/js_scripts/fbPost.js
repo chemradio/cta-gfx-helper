@@ -1,6 +1,5 @@
 let dialogs = document.querySelectorAll('[role="dialog"]');
 
-// find role="article" in the dialog
 let target;
 dialogs.forEach((dialog) => {
   let article = dialog.querySelector('[role="article"]');
@@ -9,6 +8,4 @@ dialogs.forEach((dialog) => {
   }
 });
 
-target;
-
-// of fail - switch to singleLayer workflow
+return target;

@@ -1,27 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
+from pathlib import Path
 
 
 def telegram_post_routine(driver: webdriver.Remote) -> WebElement:
-    driver.execute_script(
-        """iframe = document.querySelector("iframe");
-        iframe.style.padding = "0px";
-        element = iframe.contentWindow.document.querySelector(".tgme_widget_message_bubble");
-        element.style.border = "0";
-        element.style.margin = "0px";
-
-        bubbleTail = iframe.contentWindow.document.querySelector(".tgme_widget_message_bubble_tail");
-        if (bubbleTail)
-            bubbleTail.parentNode.removeChild(bubbleTail);
-
-        messageWidget = iframe.contentWindow.document.querySelector(".js-widget_message");
-        messageWidget.style.padding = "0px";"""
-    )
-    # driver.execute_script(
-    #     """document.querySelector(".tgme_page_widget_actions").style.visibility = "hidden";"""
-    # )
-    post = driver.find_element(By.TAG_NAME, "iframe")
+    script_path = Path(__file__).parent.parent / "js_scripts" / "telegramPost.js"
+    with open(script_path, "r") as file:
+        script = file.read()
+    post = driver.execute_script(script)
     return post
 
 
