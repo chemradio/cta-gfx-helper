@@ -19,4 +19,4 @@ messageWidget =
   iframe.contentWindow.document.querySelector(".js-widget_message");
 messageWidget.style.padding = "0px";
 
-iframe;
+return iframe;
