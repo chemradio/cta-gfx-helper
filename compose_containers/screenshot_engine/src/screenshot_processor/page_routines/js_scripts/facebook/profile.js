@@ -6,6 +6,8 @@ if (banner) banner.remove();
 
 // role="main"
 let main = document.querySelector('[role="main"]');
-let mainContainer =
-  main.parentElement.parentElement.parentElement.parentElement;
-if (mainContainer) mainContainer.style.position = "0px";
+
+// in chrome dev tools i see padding 0, border 0, margin 0, but position is 56 on the top side
+// i will try to remove it
+main.style.position = "relative";
+main.style.top = "0px";
