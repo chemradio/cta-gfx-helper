@@ -5,9 +5,3 @@ if (myImages.length > 0) {
     image.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
   });
 }
-
-//
-let topRightProfileImage = document.querySelector('[aria-label="Ваш профиль"]');
-if (topRightProfileImage) {
-  topRightProfileImage.remove();
-}
