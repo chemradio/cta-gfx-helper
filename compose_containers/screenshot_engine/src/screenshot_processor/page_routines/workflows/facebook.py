@@ -3,24 +3,25 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from pathlib import Path
 
+from ..js_scripts.js_scripts import parse_post, parse_profile, extract_profile_url
+
+with open(
+    Path(__file__).parent.parent / "js_scripts" / "facebook" / "common.js", "r"
+) as file:
+    FACEBOOK_COMMON_SCRIPT = file.read()
+
 
 def facebook_post_routine(driver: webdriver.Remote) -> WebElement:
-    script_path = Path(__file__).parent.parent / "js_scripts" / "fbPost.js"
-    with open(script_path, "r") as file:
-        script = file.read()
-    post = driver.execute_script(script)
+    post = driver.execute_script(parse_post(FACEBOOK_COMMON_SCRIPT))
+    if not post:
+        raise Exception("Post/VideoPost not found")
     return post
 
 
 def facebook_profile_routine(driver: webdriver.Remote) -> WebElement:
-    driver.execute_script("document.body.style.zoom = '1.2'")
-    return driver.find_element(By.TAG_NAME, "body")
+    body = driver.execute_script(parse_profile(FACEBOOK_COMMON_SCRIPT))
+    return body
 
 
 def extract_facebook_profile_url(driver: webdriver.Remote) -> str:
-    url = driver.current_url
-    if "/posts/" in url:
-        return url[: url.index("/posts/")]
-    else:
-        post = facebook_post_routine(driver)
-        return post.find_element(By.TAG_NAME, "a").get_attribute("href")
+    return extract_facebook_profile_url(FACEBOOK_COMMON_SCRIPT)
