@@ -24,7 +24,7 @@ const getVideoPost = () => {
   return watchPerm.parentElement.parentElement;
 };
 
-const parsePost = () => {
+const parsePost = async () => {
   removeCommentAs();
 
   let dialogs = document.querySelectorAll('[role="dialog"]');
@@ -57,14 +57,14 @@ const removeBanner = () => {
   secondary.style.top = "0px";
 };
 
-const parseProfile = () => {
+const parseProfile = async () => {
   removeBanner();
   removeCommentAs();
   return document.body;
 };
 
 // EXTRACT PROFILE URL
-const extractProfileURL = () => {
+const extractProfileURL = async () => {
   let post = parsePost();
   let profileURL = post.parentElement.parentElement.getAttribute("href");
   return profileURL;
