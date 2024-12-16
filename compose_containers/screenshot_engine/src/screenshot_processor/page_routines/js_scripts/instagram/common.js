@@ -21,7 +21,7 @@ const getPageType = () => {
     for (const selector of category) {
       const element = document.querySelector(selector);
       if (element) {
-        console.log(element);
+        // console.log(element);
         return true;
       }
     }
@@ -29,22 +29,40 @@ const getPageType = () => {
   };
 
   if (isInCategory(postDetectors)) {
+    console.log("Page type: POST");
     return "post";
   }
   if (isInCategory(storyDetectors)) {
+    console.log("Page type: STORY");
     return "story";
   }
   if (isInCategory(profileDetectors)) {
+    console.log("Page type: PROFILE");
     return "profile";
   }
+  console.log("Page type: UNKNOWN");
   return "unknown";
 };
 
 const parsePost = async () => {
   const getPost = () => {
-    return document.querySelector("article");
+    console.log("Extracting POST");
+    const postDetectors = [
+      "article",
+      ".x6s0dn4.x78zum5.xdt5ytf.xdj266r.xkrivgy.xat24cr.x1gryazu.x1n2onr6.xh8yej3",
+      ".x1yvgwvq .x1dqoszc .x1ixjvfu .xhk4uv .x13fuv20 .xu3j5b3 .x1q0q8m5 .x26u7qi .x178xt8z .xm81vs4 .xso031l .xy80clv .x78zum5 .x1q0g3np .xh8yej3",
+    ];
+
+    for (const selector of postDetectors) {
+      const post = document.querySelector(selector);
+      if (post) {
+        console.log("POST: ", post);
+        return post;
+      }
+    }
   };
   async function getStory() {
+    console.log("Extracting STORY");
     function delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
@@ -71,9 +89,18 @@ const parsePost = async () => {
       storyPause.click();
     }
 
-    return document.querySelector(
-      '[referrerpolicy="origin-when-cross-origin"]'
-    );
+    const storySelectors = [
+      ".x5yr21d .x1n2onr6 .xh8yej3",
+      '[referrerpolicy="origin-when-cross-origin"]',
+    ];
+
+    for (const selector of storySelectors) {
+      const story = document.querySelector(selector);
+      if (story) {
+        console.log("STORY: ", story);
+        return story;
+      }
+    }
   }
 
   const pageType = getPageType();
@@ -113,5 +140,19 @@ const parseProfile = async () => {
 };
 
 const extractProfileURL = async () => {
-  // const post = await parsePost();
+  console.log("extracting profile URL");
+  const pageType = getPageType();
+  if (pageType === "profile") return window.location.href;
+  if (pageType === "post") {
+    const post = await parsePost();
+    const anchorTag = post.querySelector("a");
+    return anchorTag.href;
+  }
+  if (pageType === "story") {
+    const story = await parsePost();
+    const anchorTag = story.querySelector("a");
+    return anchorTag.href;
+  }
 };
+
+await extractProfileURL();
