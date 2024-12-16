@@ -80,9 +80,10 @@ const parsePost = async () => {
     await delay(1000);
 
     // stop story playback - aria-label="Pause"
+    // may not exist.
     let storyPause = document.querySelector(
       '[aria-label="Pause"]'
-    ).parentElement;
+    )?.parentElement;
     if (storyPause) {
       console.log("pause button found");
 
