@@ -92,23 +92,24 @@ const parsePost = async () => {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
-        const viewStoryButton = document.querySelector(
-            '[class="x1i10hfl xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k xh8yej3"]'
-        );
+        const viewStoryButton = document
+            .querySelector('[data-pagelet="StoriesContentPane"]')
+            .querySelector(
+                '[class="x1i10hfl xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k xh8yej3"]'
+            );
         if (viewStoryButton) viewStoryButton.click();
 
         // wait until story is loaded. it's about half a second. but it WILL load
         await delay(1000);
 
-        let storyPause = document.querySelector(
-            '[class="x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1n2onr6 x87ps6o x1lku1pv x1a2a7pz"]'
-        );
+        let storyPause = document
+            .querySelector('[data-pagelet="StoriesContentPane"]')
+            .querySelector(
+                '[class="x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1n2onr6 x87ps6o x1lku1pv x1a2a7pz"]'
+            );
         if (storyPause) storyPause.click();
 
-        const storySelectors = [
-            '[data-pagelet="StoriesContentPane"]',
-            '[data-pagelet="StoriesCardMedia"]',
-        ];
+        const storySelectors = ['[data-pagelet="StoriesCardMedia"]'];
 
         for (const selector of storySelectors) {
             const story = document.querySelector(selector);
@@ -178,9 +179,20 @@ const parseProfile = async () => {
 
 // EXTRACT PROFILE URL
 const extractProfileURL = async () => {
-    let post = parsePost();
-    let profileURL = post.parentElement.parentElement.getAttribute("href");
-    return profileURL;
+    console.log("extracting profile URL");
+    const pageType = getPageType();
+    if (pageType === "profile") return window.location.href;
+    if (pageType === "post") {
+        const post = await parsePost();
+        const anchorTag = post.querySelector("a");
+        return anchorTag.href;
+    }
+    if (pageType === "story") {
+        const story = await parsePost();
+        // const anchorTag = story.querySelector("a");
+        let aTag = document.querySelector(
+            '[class="x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1q0g3np x87ps6o x1lku1pv x1rg5ohu x1a2a7pz x193iq5w"]'
+        );
+        return aTag.href;
+    }
 };
-
-await parsePost();
