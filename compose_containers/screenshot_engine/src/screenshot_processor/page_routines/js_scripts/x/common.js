@@ -32,6 +32,22 @@ const getPageType = () => {
     return "unknown";
 };
 
+const removePersonal = () => {
+    selectors = [
+        'a[href="/chemradio"]',
+        '[aria-label="Trending"]',
+        '[aria-label="Account menu"]',
+        '[class="css-175oi2r r-1h8ys4a r-1mmae3n"]',
+    ];
+
+    for (const selector of selectors) {
+        const elements = document.querySelectorAll(selector);
+        for (const element of elements) {
+            if (element) element.remove();
+        }
+    }
+};
+
 const parsePost = async () => {
     const pageType = getPageType();
     if (pageType !== "post") return null;
@@ -58,4 +74,4 @@ const extractProfileURL = async () => {
     }
 };
 
-await parseProfile();
+// await parseProfile();
