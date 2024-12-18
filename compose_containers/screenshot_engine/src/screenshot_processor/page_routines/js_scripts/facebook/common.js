@@ -162,6 +162,8 @@ const parsePost = async () => {
 };
 
 const parseProfile = async () => {
+    if (getPageType() !== "profile") return null;
+
     const removeBanner = () => {
         let banner = document.querySelector('[role="banner"]');
         if (banner) banner.remove();
