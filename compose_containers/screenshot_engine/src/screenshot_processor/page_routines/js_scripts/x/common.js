@@ -33,11 +33,13 @@ const getPageType = () => {
 };
 
 const removePersonal = () => {
-    selectors = [
+    const selectors = [
         'a[href="/chemradio"]',
         '[aria-label="Trending"]',
         '[aria-label="Account menu"]',
         '[class="css-175oi2r r-1h8ys4a r-1mmae3n"]',
+        '[class="css-175oi2r r-1bimlpy r-f8sm7e r-m5arl1 r-16y2uox r-14gqq1x"]',
+        '[class="css-175oi2r r-1bimlpy r-f8sm7e r-m5arl1 r-1p0dtai r-1d2f490 r-u8s1d r-zchlnj r-ipm5af"]',
     ];
 
     for (const selector of selectors) {
@@ -51,10 +53,23 @@ const removePersonal = () => {
 const parsePost = async () => {
     const pageType = getPageType();
     if (pageType !== "post") return null;
+    removePersonal();
+
+    let post;
+    const selectors = [
+        "article[tabindex='-1']",
+        'article[role="article"]',
+        '[data-testid="tweet"]',
+    ];
+    for (const selector of selectors) {
+        post = document.querySelector(selector);
+        if (post) return post;
+    }
 };
 
 const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
+    removePersonal();
     return document.body;
 };
 
@@ -74,4 +89,4 @@ const extractProfileURL = async () => {
     }
 };
 
-// await parseProfile();
+await parsePost();
