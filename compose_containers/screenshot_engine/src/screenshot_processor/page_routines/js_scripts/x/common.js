@@ -78,15 +78,15 @@ const extractProfileURL = async () => {
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;
     if (pageType === "post") {
+        const post = await parsePost();
+
         const linkSelectors = [
             '[class="css-175oi2r r-1pi2tsx r-13qz1uu r-o7ynqc r-6416eg r-1ny4l3l r-1loqt21"]',
             '[class="css-175oi2r r-1wbh5a2 r-dnmrzs r-1ny4l3l r-1loqt21"]',
         ];
         for (const selector of linkSelectors) {
-            const link = document.querySelector(selector);
+            const link = post.querySelector(selector);
             if (link) return link.href;
         }
     }
 };
-
-await parsePost();
