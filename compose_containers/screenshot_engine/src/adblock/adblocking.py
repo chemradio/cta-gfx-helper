@@ -7,18 +7,7 @@ JS_TEMPLATE_PATH = Path(__file__).parent / "static" / "adblock_script_template.j
 LOCAL_AD_DB_PATH = Path(__file__).parent / "static" / "ad_db.json"
 
 
-def remove_ads(driver: webdriver.Remote) -> None:
-    js_script = _generate_js_script()
-    try:
-        print("trying to remove ads", flush=True)
-        driver.execute_script(js_script)
-        print("Success in removing ads", flush=True)
-    except Exception as e:
-        print(f"Failed to remove ads from URL: {driver.current_url}", flush=True)
-        print(str(e), flush=True)
-
-
-def _generate_js_script() -> str:
+def generate_adblock_js_script() -> str:
     with open(LOCAL_AD_DB_PATH, "r") as f:
         ad_db = json.load(f)
     with open(JS_TEMPLATE_PATH, "r") as script_file:
@@ -32,5 +21,9 @@ def _generate_js_script() -> str:
         + "\n"
         + "removeAdsMedium();"
         + "\n"
+        + "try {"
         + "main();"
+        + "} catch (e) {"
+        + "console.log('Error in main function:', e);"
+        + "}"
     )

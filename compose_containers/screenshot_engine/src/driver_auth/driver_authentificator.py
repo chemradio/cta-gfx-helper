@@ -6,11 +6,11 @@ from selenium import webdriver
 from .cookie_management import add_cookies_driver, dump_domain_cookies
 from .login_checks.login_check import check_domain_login
 
-LOGIN_REQUIRED = ("facebook", "instagram", "twitter", "vk")
+LOGIN_REQUIRED = ("facebook", "instagram", "x")
 HOMEPAGES = {
     "facebook": "https://www.facebook.com/",
     "instagram": "https://www.instagram.com/",
-    "twitter": "https://twitter.com/",
+    "x": "https://x.com/",
     "vk": "https://vk.com/",
 }
 

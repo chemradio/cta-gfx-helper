@@ -4,7 +4,7 @@ from fastapi import FastAPI, Form, UploadFile
 
 import config
 from src import main_capture
-from src.helpers.driver_auth import initialize_cookie_storage
+from src.driver_auth import initialize_cookie_storage
 from py_gfxhelper_lib.startup import purge_storage
 from py_gfxhelper_lib import QueueManager
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router

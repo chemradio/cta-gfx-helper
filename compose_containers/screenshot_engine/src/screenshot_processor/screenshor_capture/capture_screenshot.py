@@ -12,12 +12,14 @@ from py_gfxhelper_lib.custom_types import (
     PostCoordinates,
     PostDimensions,
 )
+from .crop_screenshot import crop_screenshot
 
 
 def capture_single_screenshot(
     driver: webdriver.Remote,
     target_element: WebElement,
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
+    dpi_multiplier: int | float = 2,
 ) -> Screenshot:
     # optional font smoothing - ON by default
     if os.environ.get("FONT_SMOOTHING", True):
@@ -51,10 +53,11 @@ def capture_single_screenshot(
     )
 
     content = BytesIO(base64.urlsafe_b64decode(chrome_screenshot["value"]["data"]))
-    return Screenshot(
+    screenshot = Screenshot(
         content=content,
         role=role,
         element_dimensions=element_dimensions,
         element_coordinates=element_coordinates,
         cropped=False,
     )
+    return crop_screenshot(screenshot, dpi_multiplier)
