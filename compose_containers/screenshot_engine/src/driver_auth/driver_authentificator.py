@@ -6,22 +6,20 @@ from selenium import webdriver
 from .cookie_management import add_cookies_driver, dump_domain_cookies
 from .login_checks.login_check import check_domain_login
 
-LOGIN_REQUIRED = ("facebook", "instagram", "x")
-HOMEPAGES = {
+LOGIN_REQUIRED_HOMEPAGES = {
     "facebook": "https://www.facebook.com/",
     "instagram": "https://www.instagram.com/",
     "x": "https://x.com/",
-    "vk": "https://vk.com/",
 }
 
 
 def authenticate_driver(
     driver: webdriver.Remote, domain: str, cookie_file: Path
 ) -> bool:
-    if domain not in LOGIN_REQUIRED:
+    if domain not in LOGIN_REQUIRED_HOMEPAGES:
         return True
 
-    driver.get(HOMEPAGES[domain])
+    driver.get(LOGIN_REQUIRED_HOMEPAGES[domain])
 
     try:
         add_cookies_driver(cookie_file, domain, driver)

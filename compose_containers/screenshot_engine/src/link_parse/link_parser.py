@@ -15,22 +15,21 @@ def _parse_netloc_to_domain(netloc: str) -> str:
         return "facebook"
     if "instagr" in netloc:
         return "instagram"
-    if "t.co" in netloc or "twitter" in netloc:
+    if netloc == "t.co" or "twitter" in netloc:
         return "x"
-    if "t.me" in netloc:
+    if netloc == "t.me":
         return "telegram"
     return parts[-2]
 
 
 def _cleanup_netloc(netloc: str) -> str:
     common_prefixes = {"m", "mobile", "www"}  # Add more prefixes if needed
-    parsed_url = urlparse(netloc)
-    netloc = parsed_url.netloc
     parts = netloc.split(".")
     if parts[0] in common_prefixes:
         parts = parts[1:]
     clean_netloc = ".".join(parts)
-    return _cleanup_netloc
+    print(clean_netloc)
+    return clean_netloc
 
 
 def parse_link_type(url: str) -> LinkParse:
@@ -43,6 +42,10 @@ def parse_link_type(url: str) -> LinkParse:
     else:
         two_layer = False
 
+    print(up)
+    print(netloc)
+    print(domain)
+    print(two_layer)
     return LinkParse(
         clean_url=urlunparse(
             [up.scheme, netloc, up.path, up.params, up.query, up.fragment]

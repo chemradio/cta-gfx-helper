@@ -2,9 +2,8 @@ import time
 from dataclasses import astuple
 from pathlib import Path
 
-from .screenshor_capture.capture_screenshot import capture_crop_single_screenshot
-from .screenshor_capture.crop_screenshot import crop_screenshot
 from py_gfxhelper_lib.custom_types import ScreenshotRole, ScreenshotResults
+from .screenshor_capture.capture_screenshot import capture_crop_single_screenshot
 from ..custom_driver import create_remote_driver
 from ..link_parse.link_parser import parse_link_type
 from ..driver_auth import authenticate_driver
@@ -22,12 +21,16 @@ def parse_capture_screenshots(
     cookie_file_path: Path,
     dpi_multiplier: int | float,
 ) -> ScreenshotResults:
+    error_message = ""
     clean_url, domain, two_layer = astuple(parse_link_type(url))
     foreground_screenshot, background_screenshot = None, None
     driver = create_remote_driver(remote_driver_url, dpi_multiplier)
     target_url = clean_url
 
-    authenticate_driver(driver, domain, cookie_file_path)
+    # try to auth the driver. if fails - try to proceed without auth
+    auth_success = authenticate_driver(driver, domain, cookie_file_path)
+    if not auth_success:
+        error_message = "Failed to authenticate driver"
 
     # navigate to POST screenshot
     if two_layer:
@@ -56,7 +59,7 @@ def parse_capture_screenshots(
     driver.execute_script(generate_adblock_js_script())
     time.sleep(1)
 
-    target_element = apply_profile_routine(driver, ScreenshotRole.FULL_SIZE, domain)
+    target_element = apply_profile_routine(driver, domain)
     background_screenshot = capture_crop_single_screenshot(
         driver, target_element, ScreenshotRole.FULL_SIZE, dpi_multiplier
     )
@@ -68,4 +71,5 @@ def parse_capture_screenshots(
         background=background_screenshot,
         success=True,
         two_layer=two_layer,
+        error_message=error_message,
     )
