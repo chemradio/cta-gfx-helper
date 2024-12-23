@@ -2,7 +2,7 @@ import time
 from dataclasses import astuple
 from pathlib import Path
 
-from .screenshor_capture.capture_screenshot import capture_single_screenshot
+from .screenshor_capture.capture_screenshot import capture_crop_single_screenshot
 from .screenshor_capture.crop_screenshot import crop_screenshot
 from py_gfxhelper_lib.custom_types import ScreenshotRole, ScreenshotResults
 from ..custom_driver import create_remote_driver
@@ -38,7 +38,7 @@ def parse_capture_screenshots(
             time.sleep(1)  # wait for ads to be removed due to js glitches
 
             target_element = apply_post_routine(driver, domain)
-            foreground_screenshot = capture_single_screenshot(
+            foreground_screenshot = capture_crop_single_screenshot(
                 driver, target_element, ScreenshotRole.POST, dpi_multiplier
             )
 
@@ -57,7 +57,7 @@ def parse_capture_screenshots(
     time.sleep(1)
 
     target_element = apply_profile_routine(driver, ScreenshotRole.FULL_SIZE, domain)
-    background_screenshot = capture_single_screenshot(
+    background_screenshot = capture_crop_single_screenshot(
         driver, target_element, ScreenshotRole.FULL_SIZE, dpi_multiplier
     )
 

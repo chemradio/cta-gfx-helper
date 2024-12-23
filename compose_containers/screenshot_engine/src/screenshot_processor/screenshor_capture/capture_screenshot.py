@@ -15,7 +15,7 @@ from py_gfxhelper_lib.custom_types import (
 from .crop_screenshot import crop_screenshot
 
 
-def capture_single_screenshot(
+def capture_crop_single_screenshot(
     driver: webdriver.Remote,
     target_element: WebElement,
     role: ScreenshotRole = ScreenshotRole.FULL_SIZE,
