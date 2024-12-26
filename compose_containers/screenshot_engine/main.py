@@ -39,7 +39,7 @@ app.dependency_overrides[get_db_handler] = lambda: DBHandler
 async def capture_screenshots(
     screenshot_link: str = Form(None),
     callback_url: str | None = None,
-) -> str:
+) -> dict:
     print(f"NEW REQUEST: screenshot_link - {screenshot_link}")
     order_id = str(uuid.uuid4())
     queue.append(

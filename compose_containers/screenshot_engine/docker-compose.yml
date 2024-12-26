@@ -3,7 +3,6 @@ services:
     restart: unless-stopped
     hostname: screenshot_selenium
     image: seleniarm/standalone-chromium
-    # build: ../seleniarm_custom/screenshot
     privileged: true
     shm_size: 2g
     ports:

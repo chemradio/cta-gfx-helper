@@ -37,7 +37,7 @@ def prepare_html_template(
         if order.get(filetype) is None:
             continue
         with open(html_assembly_path / order[filetype].filename, "wb") as f:
-            f.write(order[filetype].file.read())
+            f.write(order[filetype].bytesio.read())
 
     return html_assembly_path
 

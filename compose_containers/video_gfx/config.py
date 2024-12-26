@@ -14,6 +14,20 @@ SELENIUM_CONTAINERS_LOCAL = (
     "http://video_gfx_selenium_three:4444/wd/hub",
 )
 
+SELENIUM_CONTAINERS_TEST = (
+    "http://127.0.0.1:4444/wd/hub",
+    "http://127.0.0.1:4445/wd/hub",
+    "http://127.0.0.1:4446/wd/hub",
+)
+SELENIUM_CONTAINERS = (
+    SELENIUM_CONTAINERS_LOCAL if IS_DOCKER else SELENIUM_CONTAINERS_TEST
+)
+
+ASSEMBLY_SERVER_URL = (
+    "http://video_gfx:9004" if IS_DOCKER else "http://host.docker.internal:9004"
+)
+
+
 DEFAULT_ANIMATION_DURATION = 15
 DEFAULT_AUDIO_OFFSET = 0.3
 VIDEO_BITRATE_BPS = 15_000_000

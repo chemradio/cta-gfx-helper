@@ -9,6 +9,7 @@ from src.html_composer import compose_videogfx
 def create_videogfx(
     order: dict,
     remote_driver_url_list: list[str],
+    assembly_server_url: str = "http://video_gfx:9004/storage",
 ) -> BytesIO:
 
     print("starting create_videogfx", flush=True)
@@ -19,7 +20,7 @@ def create_videogfx(
 
     print("extracting frames", flush=True)
     frames_path = extract_frame_images(
-        html_path, remote_driver_url_list, order["framerate"]
+        html_path, remote_driver_url_list, order["framerate"], assembly_server_url
     )
     print(f"frames_path: {frames_path}", flush=True)
 

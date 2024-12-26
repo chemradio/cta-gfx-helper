@@ -11,12 +11,15 @@ FPS = 25
 
 
 def extract_frame_images(
-    html_assembly_path: Path, remote_driver_url_list: list[str], framerate: int | float
+    html_assembly_path: Path,
+    remote_driver_url_list: list[str],
+    framerate: int | float,
+    assembly_server_url: str,
 ) -> Path:
     """Extracts PNG-sequence from html gsap animation.
     Returns path to a folder containing the sequence"""
 
-    target_url = f"http://video_gfx:9004/storage/{html_assembly_path.name}/main.html"
+    target_url = f"{assembly_server_url}/storage/{html_assembly_path.name}/main.html"
 
     # get timeline duration and vertical resolution
     with open(html_assembly_path / "config.json", "rt") as json_config_file:

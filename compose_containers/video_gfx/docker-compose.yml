@@ -1,45 +1,31 @@
 services:
-  video-gfx:
-    restart: unless-stopped
-    build: ./
-    platform: linux/arm64
-    environment:
-      IS_DOCKER: 1
-      VERTICAL_RESOLUTION: 1080
-    hostname: video_gfx
-    volumes:
-      - .:/usr/src/app
-    shm_size: 2g
-    ports:
-      - "9004:9004"
   video-gfx-selenium-1:
     restart: unless-stopped
     hostname: video_gfx_selenium_one
-    build: ./seleniarm_custom/video_gfx
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
-    # environment:
-    #   - START_XVFB=false
-    #   - SE_START_VNC=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "5900:5900"
-      - "7900:7900"
       - "4444:4444"
   video-gfx-selenium-2:
     restart: unless-stopped
     hostname: video_gfx_selenium_two
-    build: ./seleniarm_custom/video_gfx
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
-    # environment:
-    #   - START_XVFB=false
-    #   - SE_START_VNC=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "4445:4444"
   video-gfx-selenium-3:
     restart: unless-stopped
     hostname: video_gfx_selenium_three
-    build: ./seleniarm_custom/video_gfx
+    image: seleniarm/standalone-chromium
     privileged: true
     shm_size: 3g
-    # environment:
-    #   - START_XVFB=false
-    #   - SE_START_VNC=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "4446:4444"

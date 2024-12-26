@@ -1,5 +1,4 @@
 token.txt
-.vscode/
 .DS_Store
 seed.json
 assets_storage/
@@ -48,7 +47,8 @@ seleniarm_custom/screenshot/config.ovpn
 seleniarm_custom/screenshot/credentials.txt
 /compose_containers/*/libs/
 /tests/libs/
-
+*/*.png
+*/*.mp4
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
