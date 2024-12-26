@@ -52,9 +52,9 @@ def main():
         process_tests(
             [
                 "https://www.facebook.com/zuck/posts/10115976683809371?__cft__[0]=AZXUqiHawZL8qgYoSbqfnTBecxJQJMekvot-XIgw9N1KhSqDhytg3gShCOh6T-R46jz_uEk3SRPpmUE647KU3V45ZAq28V27MOMb1jWufB7VrSrVKqWhprVupmYHJ_yX_BIMlJLtBD81tzttxap0tWcZACjNhY-5BM_-Zz7pOUau9CE3AL9dNR6MgoGGRRKpnRU&__tn__=%2CO%2CP-R",
-                # "https://vk.com/wall141291173_32879",
-                # "https://t.me/durov/342",
-                # "https://x.com/elonmusk/status/1865457111783637448",
+                "https://vk.com/wall141291173_32879",
+                "https://t.me/durov/342",
+                "https://x.com/elonmusk/status/1865457111783637448",
             ]
             # screenshot_links.get("singleLayer"),
         )
