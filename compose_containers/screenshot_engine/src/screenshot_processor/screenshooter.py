@@ -1,6 +1,7 @@
 import time
 from dataclasses import astuple
 from pathlib import Path
+from selenium.webdriver.common.by import By
 
 from py_gfxhelper_lib.custom_types import ScreenshotRole, ScreenshotResults
 from .screenshor_capture.capture_screenshot import capture_crop_single_screenshot
@@ -60,6 +61,8 @@ def parse_capture_screenshots(
     time.sleep(1)
 
     target_element = apply_profile_routine(driver, domain)
+    if not target_element:
+        target_element = driver.find_element(By.TAG_NAME, "body")
     background_screenshot = capture_crop_single_screenshot(
         driver, target_element, ScreenshotRole.FULL_SIZE, dpi_multiplier
     )
