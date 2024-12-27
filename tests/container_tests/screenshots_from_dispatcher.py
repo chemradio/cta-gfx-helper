@@ -2,13 +2,29 @@ from py_gfxhelper_lib.constants import ContainerUrls
 from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_files,
     poll_order_status_finished,
+    check_order_status,
 )
-from .intercontainer_requests.order_screenshots import order_screenshots
 from py_gfxhelper_lib.custom_types import Screenshot, ScreenshotResults, ScreenshotRole
+import httpx
+
+from py_gfxhelper_lib.constants import ContainerUrls
+
+
+async def order_screenshots(
+    screenshot_url: str,
+    container_url: str = "http://127.0.0.1:9002",
+) -> str:
+    async with httpx.AsyncClient() as client:
+        print(
+            f"Sending screenshot order to container={container_url}, screenshot_url={screenshot_url}",
+            flush=True,
+        )
+        r = await client.post(container_url, data={"screenshot_link": screenshot_url})
+        return r.json()["order_id"]
 
 
 async def process_screenshots(
-    screenshot_url: str, screenshot_container_url: str = ContainerUrls.SCREENSHOOTER
+    screenshot_url: str, screenshot_container_url: str = "http://127.0.0.1:9002"
 ) -> ScreenshotResults:
     try:
         print(__file__, "ordering screenshots", flush=True)
@@ -20,6 +36,8 @@ async def process_screenshots(
             f"polling order status. container = {screenshot_container_url} orderid={order_id}",
             flush=True,
         )
+        print(await check_order_status(screenshot_container_url, order_id))
+
         finished_order = await poll_order_status_finished(
             screenshot_container_url, order_id
         )
@@ -57,3 +75,8 @@ async def process_screenshots(
 
     except Exception as e:
         return ScreenshotResults(success=False, error_message=str(e))
+
+
+import asyncio
+
+asyncio.run(process_screenshots("https://meduza.io"))

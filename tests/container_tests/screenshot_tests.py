@@ -51,7 +51,8 @@ def main():
     asyncio.run(
         process_tests(
             [
-                "https://x.com/elonmusk/status/1865457111783637448",
+                "https://meduza.io",
+                # "https://x.com/elonmusk/status/1865457111783637448",
                 # *screenshot_links.get("singleLayer"),
                 # *screenshot_links.get("posts"),
                 # *screenshot_links.get("onlyProfile"),

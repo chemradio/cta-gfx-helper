@@ -8,5 +8,9 @@ async def order_screenshots(
     container_url: str = ContainerUrls.SCREENSHOOTER,
 ) -> str:
     async with httpx.AsyncClient() as client:
+        print(
+            f"Sending screenshot order to container={container_url}, screenshot_url={screenshot_url}",
+            flush=True,
+        )
         r = await client.post(container_url, data={"screenshot_link": screenshot_url})
         return r.json()["order_id"]

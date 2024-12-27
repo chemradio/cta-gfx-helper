@@ -32,7 +32,7 @@ async def add_new_order(
     audio_file: UploadFile | None = File(None),
 ):
     order = {
-        "id": str(uuid4()),
+        "order_id": str(uuid4()),
         "telegram_id": telegram_id,
         "email": email,
         "request_type": OrderRequestType(request_type),
@@ -52,8 +52,8 @@ async def add_new_order(
         "audio_file": BytesIO(audio_file.file.read()) if audio_file else None,
     }
 
-    print(order)
     Orders.insert_one(order)
-
+    order = Orders.find_one({"order_id": order["order_id"]})
+    order.pop("_id")
     asyncio.create_task(process_order(order))
-    return dict(Orders.find_one({"id": order["id"]}))
+    return order

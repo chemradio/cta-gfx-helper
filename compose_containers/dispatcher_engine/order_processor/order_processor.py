@@ -45,7 +45,7 @@ async def process_order(order: dict) -> None:
             )
             print("sent to telegram", flush=True)
     except Exception as e:
-        print(f"Error while processing order: {e}")
-        print(str(e))
-        pprint(order)
+        print(f"Error while processing order: {e}", flush=True)
+        print(str(e), flush=True)
+        pprint(order, flush=True)
         # send error message to telegram

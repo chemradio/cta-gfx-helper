@@ -41,7 +41,7 @@ async def process_videogfx(
         )
         video_file = files[0]
 
-        return VideoGFXResults(success=True, video=video_file)
+        return VideoGFXResults(video=video_file, success=True, video=video_file)
 
     except Exception as e:
         return VideoGFXResults(success=False, error_message=str(e))
