@@ -9,9 +9,9 @@ from order_processor.order_processor import process_order
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/", response_model=dict)
 async def add_new_order(
-    request_type: str = Form(...),
+    request_type: str = Form(None),
     # feedback
     telegram_id: int | None = Form(None),
     email: str | None = Form(None),
@@ -52,7 +52,8 @@ async def add_new_order(
         "audio_file": BytesIO(audio_file.file.read()) if audio_file else None,
     }
 
+    print(order)
     Orders.insert_one(order)
 
     asyncio.create_task(process_order(order))
-    return Orders.find_one({"id": order["id"]})
+    return dict(Orders.find_one({"id": order["id"]}))

@@ -1,7 +1,6 @@
 import os
 from io import BytesIO
-
-import requests
+import httpx
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 SEND_DOCUMENT_TELEGRAM_API_ENDPOINT = (
@@ -25,10 +24,13 @@ async def send_file_telegram(
         "disable_content_type_detection": True,
         "allow_sending_without_reply": True,
     }
-    r = requests.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files)
-    r.raise_for_status()
-    result = r.json()
-    return result
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
+            SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
+        )
+        r.raise_for_status()
+        result = r.json()
+        return result
 
 
 async def send_text_telegram(text: str, receiver_id: int) -> dict:
@@ -36,10 +38,11 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
         "chat_id": receiver_id,
         "text": text,
     }
-    r = requests.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
-    r.raise_for_status()
-    result = r.json()
-    return result
+    async with httpx.AsyncClient() as client:
+        r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
+        r.raise_for_status()
+        result = r.json()
+        return result
 
 
 # function for checking if filezise exceeds 25 mb

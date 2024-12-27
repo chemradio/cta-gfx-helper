@@ -1,6 +1,6 @@
 from py_gfxhelper_lib.constants import ContainerUrls
 from py_gfxhelper_lib.intercontainer_requests import (
-    download_and_delete_order_file,
+    download_and_delete_order_files,
     poll_order_status_finished,
 )
 from .intercontainer_requests.order_screenshots import order_screenshots
@@ -23,17 +23,16 @@ async def process_screenshots(
 
         print("downloading files")
         print("downloading and deleting background image")
-        background_image = await download_and_delete_order_file(
-            screenshot_container_url + "/file_server/",
-            finished_order["output_filenames"][0],
+        files = await download_and_delete_order_files(
+            screenshot_container_url, finished_order
         )
 
         two_layer = True if len(finished_order["output_filenames"]) > 1 else False
+
         if two_layer:
-            foreground_image = await download_and_delete_order_file(
-                screenshot_container_url + "/file_server/",
-                finished_order["output_filenames"][1],
-            )
+            background_image, foreground_image = files
+        else:
+            background_image = files[0]
 
         return ScreenshotResults(
             success=True,

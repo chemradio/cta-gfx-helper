@@ -1,0 +1,75 @@
+services:
+  db:
+    restart: unless-stopped
+    hostname: db
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+  # file_converter:
+  #   restart: unless-stopped
+  #   build: ./file_converter
+  #   volumes:
+  #     - ./file_converter:/usr/src/app
+  #   platform: linux/arm64
+  #   environment:
+  #     IS_DOCKER: 1
+  #   depends_on:
+  #   - dispatcher
+  #   hostname: file_converter
+  #   ports:
+  #     - "9005:9005"
+  # screenshot-selenium:
+  #   restart: unless-stopped
+  #   hostname: screenshot_selenium
+  #   build: ./seleniarm_custom/screenshot
+  #   privileged: true
+  #   shm_size: 2g
+  #   devices:
+  #     - /dev/net/tun
+  # screenshoter:
+  #   restart: unless-stopped
+  #   build: ./screenshot_engine
+  #   volumes:
+  #     - ./screenshot_engine:/usr/src/app
+  #   platform: linux/arm64
+  #   environment:
+  #     IS_DOCKER: 1
+  #   depends_on:
+  #   - dispatcher
+  #   hostname: screenshoter
+  #   ports:
+  #     - "9002:9002"
+  # video-gfx:
+  #   restart: unless-stopped
+  #   build: ./video_gfx
+  #   platform: linux/arm64
+  #   environment:
+  #     IS_DOCKER: 1
+  #     VERTICAL_RESOLUTION: ${VERTICAL_RESOLUTION}
+  #   depends_on:
+  #   - dispatcher
+  #   hostname: video_gfx
+  #   volumes:
+  #     - ./video_gfx:/usr/src/app
+  #   shm_size: 2g
+  #   ports:
+  #     - "9004:9004"
+      
+  # video-gfx-selenium-1:
+  #   restart: unless-stopped
+  #   hostname: video_gfx_selenium_one
+  #   build: ./seleniarm_custom/video_gfx
+  #   privileged: true
+  #   shm_size: 2g
+  # video-gfx-selenium-2:
+  #   restart: unless-stopped
+  #   hostname: video_gfx_selenium_two
+  #   build: ./seleniarm_custom/video_gfx
+  #   privileged: true
+  #   shm_size: 2g
+  # video-gfx-selenium-3:
+  #   restart: unless-stopped
+  #   hostname: video_gfx_selenium_three
+  #   build: ./seleniarm_custom/video_gfx
+  #   privileged: true
+  #   shm_size: 2g
