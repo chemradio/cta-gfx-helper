@@ -17,7 +17,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # from api_routers.intercontainer import files
-
+seed_admin()
+seed_users()
 
 create_volume_folders()
 
@@ -53,20 +54,3 @@ app.include_router(orders_router, prefix="/orders")
 
 # helpers
 app.include_router(text_processors_router, prefix="/helpers/text_processor")
-
-
-def main():
-    # seed admin and users
-    seed_admin()
-    seed_users()
-
-    print("Starting the server")
-    config = uvicorn.Config(
-        "main:app",
-        port=os.environ.get("dispatcher_port", 9000),
-        host="0.0.0.0" if os.environ.get("IS_DOCKER", True) else "127.0.0.1",
-        log_level="info",
-        reload=True,
-    )
-    server = uvicorn.Server(config)
-    asyncio.run(server.serve())

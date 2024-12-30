@@ -4,6 +4,8 @@ from .send_functions import send_file_telegram, send_text_telegram
 
 
 async def return_result_telegram(telegram_id: int, container_output: list[AssetFile]):
+    print("returning results to telegram", flush=True)
+    print(f"{container_output=}", flush=True)
     # send file to telegram
     for file_index, result_file in enumerate(container_output):
         match result_file.file_type:

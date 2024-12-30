@@ -19,6 +19,8 @@ class AssetFile:
         """Usable fields are: extension, bytesio, mime_type"""
         self.file_type = file_type
         self.text = text
+        self._unbound_filename = ""
+        self.extension = extension if extension else ""
 
         if bytes_or_bytesio:
             if extension is None and mime_type is None:
@@ -36,13 +38,11 @@ class AssetFile:
             elif isinstance(bytes_or_bytesio, BytesIO):
                 self.bytesio = bytes_or_bytesio
 
-            self.filename = self._generate_filename(self.extension)
-
-    @staticmethod
-    def _generate_filename(extension) -> str:
-        """Return random filename of letters and numbers
-        with a length of 8 characters with extension"""
-        return (
-            "".join(random.choices(string.ascii_letters + string.digits, k=8))
-            + f".{extension}"
-        )
+    @property
+    def filename(self) -> str:
+        if not self._unbound_filename:
+            self._unbound_filename = (
+                "".join(random.choices(string.ascii_letters + string.digits, k=8))
+                + f".{self.extension}"
+            )
+        return self._unbound_filename

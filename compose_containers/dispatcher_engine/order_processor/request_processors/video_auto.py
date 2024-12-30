@@ -22,6 +22,12 @@ async def process_video_auto(order: dict) -> list[AssetFile]:
         audio_file=order["audio_file"],
     )
     print("videogfx completed")
+    print(f"{videogfx.success=}", flush=True)
+    print(f"{videogfx.error_message=}", flush=True)
+    print(f"{videogfx.video=}", flush=True)
+    print(f"{type(videogfx.video)=}", flush=True)
+
+    print("returning results", flush=True)
 
     return [
         AssetFile(
