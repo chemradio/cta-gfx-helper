@@ -29,8 +29,8 @@ async def send_file_telegram(
             SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
         )
         r.raise_for_status()
-        result = r.json()
-        return result
+        # result = r.json()
+        # return result
 
 
 async def send_text_telegram(text: str, receiver_id: int) -> dict:
@@ -41,8 +41,8 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
     async with httpx.AsyncClient() as client:
         r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
         r.raise_for_status()
-        result = r.json()
-        return result
+        # result = r.json()
+        # return result
 
 
 # function for checking if filezise exceeds 25 mb

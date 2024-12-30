@@ -36,7 +36,7 @@ queue = QueueManager(
 
 
 @app.post("/", response_model=dict)
-def create_video_gfx(
+async def create_video_gfx(
     background_file: UploadFile = File(...),
     foreground_file: UploadFile | None = File(None),
     audio_file: UploadFile | None = File(None),
