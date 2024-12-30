@@ -30,9 +30,6 @@ async def process_videogfx(
     )
     finished_order = await poll_order_status_finished(videogfx_container_url, order_id)
 
-    if finished_order["error"]:
-        raise Exception(finished_order["error_message"])
-
     files = await download_and_delete_order_files(
         videogfx_container_url, finished_order
     )

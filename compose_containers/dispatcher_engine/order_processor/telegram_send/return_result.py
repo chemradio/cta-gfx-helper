@@ -22,7 +22,7 @@ async def return_result_telegram(telegram_id: int, container_output: list[AssetF
                 )
             case FileType.IMAGE:
                 await send_file_telegram(
-                    filename=file_index + result_file.filename,
+                    filename=f"{file_index}_{result_file.filename}",
                     file_bytes=result_file.bytesio,
                     receiver_id=telegram_id,
                 )

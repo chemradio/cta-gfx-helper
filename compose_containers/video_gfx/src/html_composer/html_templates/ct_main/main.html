@@ -8,28 +8,11 @@
     <link rel="stylesheet" href="./styles.css">
     <title>GFX-renderer</title>
     <script>var timeline = 1;</script>
-    
-    <script>
-        function loadScript(src) {
-        return new Promise(function (resolve, reject) {
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Script load error for ${src}`));
-            document.head.append(script);
-        });
-        }
-    
-        loadScript('template_builder.js')
-        .then(() => loadScript('quoteboxResizer.js'))
-
-        // load GSAP
-        .then(() => loadScript('CustomEase.min.js'))
-        .then(() => loadScript('EasePack.min.js'))
-        .then(() => loadScript('gsap.min.js'))
-        .then(() => loadScript('animation.js'))
-        .catch(error => console.error(error));
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/CustomEase.min.js"></script>
+    <script src="./template_builder.js"></script>
+    <script src="./animation.js"></script>
+    <script src="./quoteboxResizer.js"></script>
 </head>
 <body>
 </body>

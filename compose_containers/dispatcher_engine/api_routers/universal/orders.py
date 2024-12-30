@@ -52,7 +52,13 @@ async def add_new_order(
         "audio_file": BytesIO(audio_file.file.read()) if audio_file else None,
     }
 
-    Orders.insert_one(order)
+    Orders.insert_one(
+        {
+            k: "BytesIO placeholder" if isinstance(v, BytesIO) else v
+            for k, v in order.items()
+        }
+    )
+
     order = Orders.find_one({"order_id": order["order_id"]})
     order.pop("_id")
     asyncio.create_task(process_order(order))

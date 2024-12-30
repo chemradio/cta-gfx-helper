@@ -11,7 +11,7 @@ SEND_DOCUMENT_TELEGRAM_API_ENDPOINT = (
 async def send_file_telegram(
     filename: str, file_bytes: BytesIO, receiver_id: int
 ) -> dict:
-    if not await check_filesize(file_bytes):
+    if not check_filesize(file_bytes):
         print(
             f"Attention! File size exceeds 25 MB: {len(file_bytes.getvalue()) / 1024 / 1024} MB",
         )
@@ -46,5 +46,5 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
 
 
 # function for checking if filezise exceeds 25 mb
-async def check_filesize(file_bytes: BytesIO) -> bool:
-    return len(file_bytes.getvalue()) > 25 * 1024 * 1024
+def check_filesize(file_bytes: BytesIO) -> bool:
+    return len(file_bytes.getvalue()) < 25 * 1024 * 1024
