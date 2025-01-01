@@ -31,10 +31,8 @@ async def request_type_callback(
 
 
 async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("Routing request", flush=True)
     user_data = context.user_data
     user_request_type = user_data.get("request_type")
-    print(f"{user_request_type=}", flush=True)
 
     # route to appropriate callbacks
     match user_request_type:

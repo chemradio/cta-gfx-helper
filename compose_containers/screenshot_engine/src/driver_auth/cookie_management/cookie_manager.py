@@ -12,8 +12,6 @@ def initialize_cookie_storage(cookie_file_path: Path) -> None:
         cookie_file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(cookie_file_path, "w+") as cookie_file_path:
             json.dump({"domain_name": [{}]}, cookie_file_path)
-    else:
-        print("Cookie file already exists.")
 
 
 def get_stored_cookies(cookie_file: Path) -> dict[list[dict]]:

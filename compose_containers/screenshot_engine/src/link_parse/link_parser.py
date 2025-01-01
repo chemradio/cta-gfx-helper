@@ -28,7 +28,6 @@ def _cleanup_netloc(netloc: str) -> str:
     if parts[0] in common_prefixes:
         parts = parts[1:]
     clean_netloc = ".".join(parts)
-    print(clean_netloc)
     return clean_netloc
 
 
@@ -42,10 +41,6 @@ def parse_link_type(url: str) -> LinkParse:
     else:
         two_layer = False
 
-    print(up)
-    print(netloc)
-    print(domain)
-    print(two_layer)
     return LinkParse(
         clean_url=urlunparse(
             [up.scheme, netloc, up.path, up.params, up.query, up.fragment]

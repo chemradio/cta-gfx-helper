@@ -61,7 +61,5 @@ async def video_auto_callback(
     # finish order creation
     if stage == "results_confirmed":
         await add_order_to_db(user_id, user_data)
-        print("Added this order:")
-        pprint(user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)

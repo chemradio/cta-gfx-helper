@@ -60,7 +60,6 @@ async def attachment_downloader(
     telegram_file: File
     mime_type: str
     telegram_file, mime_type = await target_function(bald_message)
-    print(f"Telegram File Size: {telegram_file.file_size=}")
 
     if telegram_file.file_size > config.MAX_ATTACHMENT_SIZE:
         await Responder.errors.max_attachment_size_exceeded(user_id)

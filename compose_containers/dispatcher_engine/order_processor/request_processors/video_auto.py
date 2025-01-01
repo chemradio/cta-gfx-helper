@@ -4,14 +4,7 @@ from ..container_processors import process_screenshots, process_videogfx
 
 
 async def process_video_auto(order: dict) -> list[AssetFile]:
-    print("processing video auto", flush=True)
-    print("ordering screenshots", flush=True)
     screenshots = await process_screenshots(screenshot_url=order["screenshot_link"])
-    print("screenshots completed", flush=True)
-    print(f"{screenshots.success=}", flush=True)
-    print(f"{screenshots.error_message=}", flush=True)
-
-    print("ordering videogfx")
     videogfx = await process_videogfx(
         quote_text=order["quote_text"],
         quote_author=order["quote_author_text"],
@@ -21,13 +14,6 @@ async def process_video_auto(order: dict) -> list[AssetFile]:
         ),
         audio_file=order["audio_file"],
     )
-    print("videogfx completed")
-    print(f"{videogfx.success=}", flush=True)
-    print(f"{videogfx.error_message=}", flush=True)
-    print(f"{videogfx.video=}", flush=True)
-    print(f"{type(videogfx.video)=}", flush=True)
-
-    print("returning results", flush=True)
 
     return [
         AssetFile(

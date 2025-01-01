@@ -29,9 +29,6 @@ def main():
     create_volume_folders()
     while True:
         try:
-            print("starting the bot")
-            print(f"{BOT_TOKEN}")
-
             application = Application.builder().token(BOT_TOKEN).build()
             application.add_handler(AllHandler(dispatcher_callback))
             application.run_polling()

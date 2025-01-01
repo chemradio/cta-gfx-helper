@@ -60,7 +60,6 @@ async def dispatcher_callback(
         print(e)
         return
     except Exception as e:
-        print("Not a command")
         print(e)
 
     # set request type

@@ -27,16 +27,13 @@ def extract_frame_images(
         timeline_duration = animation_config["animationDuration"]
         vertical_resolution = animation_config["verticalResolution"]
 
-    print(f"splitting work", flush=True)
     total_frames = timeline_duration * framerate
     ranges = split_timeline_segments(
         int(total_frames), pieces=len(remote_driver_url_list)
     )
 
     # create a folder for png-sequence
-    print(f"generating png path", flush=True)
     png_path = html_assembly_path / "png_sequence"
-    print(f"{png_path=}", flush=True)
     os.mkdir(png_path)
 
     # create webdriver threads / processes
@@ -56,13 +53,10 @@ def extract_frame_images(
         )
         driver_processes.append(driver_thread_process)
 
-    print("starting processes", flush=True)
     for thread_process in driver_processes:
         thread_process.start()
-    print("processes started", flush=True)
 
     for thread_process in driver_processes:
         thread_process.join()
-    print("processes finished", flush=True)
 
     return png_path

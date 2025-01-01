@@ -6,16 +6,11 @@ def split_timeline_segments(
     of frames for each piece. The last piece will have the
     remaining frames if the total number of frames is not
     divisible by the number of pieces."""
-    print(f"splitting frames to pieces")
-    print(f"total_frames: {total_frames}")
-    print(f"pieces: {pieces}")
-
     if pieces == 1:
         return [(0, total_frames - 1)]
 
     ranges = list()
     block_length = int(total_frames / pieces)
-    print(f"block_length: {block_length}")
 
     start_index = 0
 
@@ -27,8 +22,6 @@ def split_timeline_segments(
         if start_index < total_frames:
             ranges[-1] = (ranges[-1][0], total_frames - 1)
 
-    print(f"ranges: {ranges}")
-    print(f"max variation: {test_frame_split_variation(ranges)}")
     return ranges
 
 

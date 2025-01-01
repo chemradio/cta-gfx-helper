@@ -24,7 +24,6 @@ def store_result(order: dict):
 
 
 def store_file(filepath: str | Path) -> None:
-    print("storing file:", filepath)
     response = requests.post(
         STORAGE_UNIT_URL,
         files={"upload_file": open(filepath, "rb")},

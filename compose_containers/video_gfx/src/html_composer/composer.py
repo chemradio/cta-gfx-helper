@@ -31,9 +31,7 @@ def prepare_html_template(
     shutil.copytree(template_path, html_assembly_path, dirs_exist_ok=True)
 
     files_to_extract = ("background_file", "foreground_file")
-    print(order)
     for filetype in files_to_extract:
-        print(filetype)
         if order.get(filetype) is None:
             continue
         with open(html_assembly_path / order[filetype].filename, "wb") as f:

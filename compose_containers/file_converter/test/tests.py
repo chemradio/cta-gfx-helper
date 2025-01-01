@@ -24,12 +24,8 @@ async def submit_file_conversion(file_path: Path):
 async def seq_test_file_conversion():
     # iterate over each file in test/to_convert
     for file_path in Path("test/to_convert").iterdir():
-        print("converting file:", file_path)
         result = await submit_file_conversion(file_path)
         # print result file mime type
-        print(result)
-        print(result.headers["Content-Type"])
-
         converted_extension = mime_map[result.headers["Content-Type"]]
         with open(f"test/converted/{file_path.stem}.{converted_extension}", "wb") as f:
             f.write(result.content)
@@ -41,7 +37,6 @@ async def main():
     start = perf_counter()
     await seq_test_file_conversion()
     end = perf_counter()
-    print("Sequential time:", end - start)
 
 
 if __name__ == "__main__":

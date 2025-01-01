@@ -15,8 +15,6 @@ async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
     user_data.pop("results_correct", None)
     user_data.pop("results_message", None)
 
-    print(f"{user_data=}", flush=True)
-
     async with httpx.AsyncClient() as client:
         r = await client.post(ORDERS_ENDPOINT, data=user_data, files=files)
         return r.json()

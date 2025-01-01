@@ -11,19 +11,10 @@ def create_videogfx(
     remote_driver_url_list: list[str],
     assembly_server_url: str = "http://video_gfx:9004/storage",
 ) -> BytesIO:
-
-    print("starting create_videogfx", flush=True)
-
-    print("composing html", flush=True)
     html_path = compose_videogfx(order)
-    print(f"html_path: {html_path}", flush=True)
-
-    print("extracting frames", flush=True)
     frames_path = extract_frame_images(
         html_path, remote_driver_url_list, order["framerate"], assembly_server_url
     )
-    print(f"frames_path: {frames_path}", flush=True)
-
     ready_videogfx_path = stitch_images(
         image_folder_path=frames_path,
         framerate=order["framerate"],

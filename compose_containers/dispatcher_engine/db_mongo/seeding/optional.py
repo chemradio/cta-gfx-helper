@@ -13,7 +13,6 @@ def seed_users():
 
     with open(JSON_PATH, "rt") as f:
         data: list[dict] = json.load(f)
-        print(f"{data=}")
 
     for user in data:
         telegram_user = Users.find_one({"telegram_id": user["telegram_id"]})

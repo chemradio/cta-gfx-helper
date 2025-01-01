@@ -26,7 +26,6 @@ from telegram_bot.responders.main_responder import Responder
 async def cookie_file_uploader(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> bool:
-    print("entered cookie_file_uploader")
     user_id = parse_user_id(update)
     is_admin = await ensure_admin(user_id)
     if not is_admin:
@@ -37,7 +36,6 @@ async def cookie_file_uploader(
     available_attachments = await attachment_finder(bald_message)
     if not available_attachments:
         print(bald_message)
-        print("No available attachments")
         return False
 
     file = await bald_message.document.get_file()

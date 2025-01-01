@@ -35,10 +35,6 @@ def add_order():
     # Make the POST request
     response = requests.post(url, files=files, data=data)
 
-    # Print the response
-    print(response.status_code)
-    print(response.text)
-
     # Close the file handlers after the request is done
     for f in files.values():
         f.close()

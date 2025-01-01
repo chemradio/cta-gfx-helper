@@ -10,22 +10,11 @@ from py_gfxhelper_lib.custom_types import Screenshot, ScreenshotResults, Screens
 async def process_screenshots(
     screenshot_url: str, screenshot_container_url: str = ContainerUrls.SCREENSHOOTER
 ) -> ScreenshotResults:
-    print(__file__, "ordering screenshots", flush=True)
     order_id = await order_screenshots(screenshot_url, screenshot_container_url)
-    print(__file__, f"{order_id=}")
 
-    print(
-        __file__,
-        f"polling order status. container = {screenshot_container_url} orderid={order_id}",
-        flush=True,
-    )
     finished_order = await poll_order_status_finished(
         screenshot_container_url, order_id
     )
-    print(__file__, f"{finished_order=}")
-
-    print("downloading files")
-    print("downloading and deleting background image")
     files = await download_and_delete_order_files(
         screenshot_container_url, finished_order
     )

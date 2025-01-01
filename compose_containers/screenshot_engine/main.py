@@ -40,7 +40,6 @@ async def capture_screenshots(
     screenshot_link: str = Form(None),
     callback_url: str | None = None,
 ) -> dict:
-    print(f"NEW REQUEST: screenshot_link - {screenshot_link}")
     order_id = str(uuid.uuid4())
     queue.append(
         {
@@ -56,7 +55,6 @@ async def capture_screenshots(
 
 @app.post("/cookie_file")
 async def create_cookie_file(upload_file: UploadFile):
-    print("Request for storing cookie file.")
     with open(config.COOKIE_FILE, "wb") as f:
         f.write(upload_file.file.read())
     return "Cookie file stored."

@@ -25,7 +25,6 @@ from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_use
 async def backup_db_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> None:
-    print("entered backup callback")
     user_id = parse_user_id(update)
     is_admin = await ensure_admin(user_id)
     if not is_admin:
@@ -41,7 +40,6 @@ async def backup_db_callback(
     with ZipFile(f"{DB_BACKUP_FILE_PATH}.zip", "w") as zip:
         zip.write(DB_BACKUP_FILE_PATH)
 
-    print("sending backup to admin...")
     with open(f"{DB_BACKUP_FILE_PATH}.zip", "rb") as binarified_file:
         await bot.send_document(
             chat_id=user_id,
@@ -60,7 +58,6 @@ async def backup_db_callback(
 async def restore_db_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> bool:
-    print("entered restore db callback")
     user_id = parse_user_id(update)
     is_admin = await ensure_admin(user_id)
     if not is_admin:
@@ -70,8 +67,6 @@ async def restore_db_callback(
     bald_message = await reply_to_message_parser(update)
     available_attachments = await attachment_finder(bald_message)
     if not available_attachments:
-        print(bald_message)
-        print("No available attachments")
         return False
 
     file = await bald_message.document.get_file()
