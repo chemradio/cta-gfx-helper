@@ -39,23 +39,17 @@ class QueueManager:
 
     def start_processing(self) -> None:
         if self._processing:
-            print(
-                f"Already processing queue. Continue... Queue length: {len(self._queue)+1}"
-            )
             return
         thread = Thread(target=self._process_queue)
         thread.start()
 
     def _process_queue(self):
-        print("Start processing queue")
         self._processing = True
 
         queue_start = perf_counter()
         while self._queue:
-            print(f"Queue length: {len(self._queue)}")
             item: dict = self._queue.popleft()
             self._db_handler.update(item["order_id"], {"status": "processing"})
-            print(f"Processing queue item: {item}")
             task_start = perf_counter()
 
             operator_results = self._operator(item, **self._operator_kwargs)
@@ -63,7 +57,6 @@ class QueueManager:
             update_data = dict()
 
             if operator_results.error:
-                print(f"Error processing item: {operator_results.error_message}")
                 update_data.update(
                     {
                         "error": True,
@@ -87,23 +80,11 @@ class QueueManager:
             )
 
             task_stop = perf_counter()
-            print("Done processing item")
-            print(f"Item processing took {task_stop - task_start} seconds to complete")
-
-            # try:
-            #     notify_dispatcher(
-            #         self._dispatcher_url, self._db_handler.get_order(item["order_id"])
-            #     )
-            # except Exception as e:
-            #     print(f"Error notifying dispatcher: {e}")
-            #     self._db_handler.update(item["order_id"], {"queue_error": str(e)})
 
         else:
-            print("Queue is empty. Stopping...")
             self._processing = False
 
         queue_stop = perf_counter()
-        print(f"Queue processing took {queue_stop - queue_start} seconds to complete")
 
     def _store_operator_output(
         self,

@@ -1,11 +1,9 @@
-import json
 import httpx
 import asyncio
 from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_files,
     check_order_status,
 )
-from pathlib import Path
 import secrets
 
 VIDEOGFX_URL = "http://127.0.0.1:9004"
@@ -90,7 +88,40 @@ def main():
                     "audio_file": open(audio_file, "rb") if audio_file else None,
                     "quote_text": quote_text,
                     "quote_author_text": quote_author,
-                }
+                },
+                {
+                    "background_file": (
+                        open(background_file, "rb") if background_file else None
+                    ),
+                    "foreground_file": (
+                        open(foreground_file, "rb") if foreground_file else None
+                    ),
+                    "audio_file": open(audio_file, "rb") if audio_file else None,
+                    "quote_text": quote_text,
+                    "quote_author_text": quote_author,
+                },
+                {
+                    "background_file": (
+                        open(background_file, "rb") if background_file else None
+                    ),
+                    "foreground_file": (
+                        open(foreground_file, "rb") if foreground_file else None
+                    ),
+                    "audio_file": open(audio_file, "rb") if audio_file else None,
+                    "quote_text": quote_text,
+                    "quote_author_text": quote_author,
+                },
+                {
+                    "background_file": (
+                        open(background_file, "rb") if background_file else None
+                    ),
+                    "foreground_file": (
+                        open(foreground_file, "rb") if foreground_file else None
+                    ),
+                    "audio_file": open(audio_file, "rb") if audio_file else None,
+                    "quote_text": quote_text,
+                    "quote_author_text": quote_author,
+                },
             ],
         )
     )

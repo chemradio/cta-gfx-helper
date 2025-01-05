@@ -2,10 +2,7 @@ from typing import Callable
 
 from telegram import Update
 from telegram.ext import ContextTypes
-
-from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
-    attachment_downloader,
-)
+from ..attachment_callbacks.attachment_handler import attachment_downloader
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.responders.main_responder import Responder
 
@@ -20,7 +17,7 @@ async def audio_callback(
     try:
         if stage == "audio_enabled":
             if update.callback_query.data not in ["audio_enabled", "audio_disabled"]:
-                raise Exception()
+                raise Exception("Invalid callback data for audio_callback")
 
             await update.callback_query.answer(cache_time=180)
 

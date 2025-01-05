@@ -2,7 +2,8 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import config
-from telegram_bot.custom_types.user_permission_role import UserPermission, UserRole
+from py_gfxhelper_lib.user_enums.user_permission import UserPermission
+from py_gfxhelper_lib.user_enums.user_role import UserRole
 from container_interaction.users import (
     add_pending_user,
     check_user_role,

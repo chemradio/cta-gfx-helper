@@ -1,7 +1,7 @@
 from py_gfxhelper_lib import fastapi_routers
 from py_gfxhelper_lib import files
 from py_gfxhelper_lib import intercontainer_requests
-from py_gfxhelper_lib import miscellaneous as misc
+from py_gfxhelper_lib import miscellaneous
 from py_gfxhelper_lib import readtime
 from py_gfxhelper_lib import startup
 from py_gfxhelper_lib.tiny_database import DBHandler

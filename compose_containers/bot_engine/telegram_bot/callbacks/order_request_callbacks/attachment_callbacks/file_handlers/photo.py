@@ -1,12 +1,7 @@
-import secrets
-
 from telegram import File, Message
-
-import config
-from telegram_bot.callbacks.attachment_callbacks.utils.image_converter import (
-    convert_image_file,
-)
-
+from io import BytesIO
+from container_interaction.file_conversion import convert_file
+from py_gfxhelper_lib.files.asset_file import AssetFile
 
 async def photo_handler(message: Message) -> tuple[File, str]:
     # find the best quality photo

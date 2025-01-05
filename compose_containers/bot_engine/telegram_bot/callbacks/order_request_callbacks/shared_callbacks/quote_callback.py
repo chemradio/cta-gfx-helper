@@ -1,14 +1,12 @@
 import json
 from typing import Callable
 
-from requests.exceptions import RequestException
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from container_interaction.process_string_api import process_quote_string
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.responders.main_responder import Responder
-
+from py_gfxhelper_lib.miscellaneous.string_cleaner import cleanup_string
 
 async def quote_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE, caller: Callable = None
@@ -39,14 +37,13 @@ async def quote_callback(
             try:
                 user_data.update(
                     {
-                        "quote_text": await process_quote_string(message_text),
+                        "quote_text": cleanup_string(message_text),
                         "stage": "quote_author_enabled",
                     }
                 )
                 return await Responder.quote.ask_quote_author_enabled(user_id)
-            except RequestException as base_exception:
-                exception_text = json.loads(base_exception.response.text)["detail"]
-                return await Responder.errors.custom_error(user_id, exception_text)
+            except Exception as e:
+                return await Responder.errors.custom_error(user_id, str(e))
 
         if stage == "quote_author_enabled":
             if update.callback_query.data not in [
@@ -78,14 +75,13 @@ async def quote_callback(
             try:
                 user_data.update(
                     {
-                        "quote_author_text": await process_quote_string(message_text),
+                        "quote_author_text": cleanup_string(message_text),
                         "stage": "quote_passed",
                     }
                 )
                 return await caller(update, context)
-            except RequestException as base_exception:
-                exception_text = json.loads(base_exception.response.text)["detail"]
-                return await Responder.errors.custom_error(user_id, exception_text)
+            except Exception as e:
+                return await Responder.errors.custom_error(user_id, str(e))
 
     except Exception as e:
         print(str(e), flush=True)

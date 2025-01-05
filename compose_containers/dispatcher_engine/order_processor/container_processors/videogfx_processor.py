@@ -29,7 +29,6 @@ async def process_videogfx(
         videogfx_container_url,
     )
     finished_order = await poll_order_status_finished(videogfx_container_url, order_id)
-
     files = await download_and_delete_order_files(
         videogfx_container_url, finished_order
     )

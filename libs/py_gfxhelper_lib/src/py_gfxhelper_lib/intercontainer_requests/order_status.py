@@ -10,11 +10,8 @@ async def check_order_status(container_url: str, order_id: str) -> dict:
 
 
 async def poll_order_status_finished(container_url: str, order_id: str) -> dict:
-    print("polling order status")
     while True:
         order_data = await check_order_status(container_url, order_id)
-        print(f"order status: {order_data['status']}")
-        if order_data["status"] == "finished":
-            print("returning poll order status finished", order_data)
+        if order_data.get("status") == "finished":
             return order_data
         await asyncio.sleep(3)

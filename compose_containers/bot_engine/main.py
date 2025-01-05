@@ -26,7 +26,6 @@ def create_volume_folders():
 
 
 def main():
-    create_volume_folders()
     while True:
         try:
             application = Application.builder().token(BOT_TOKEN).build()

@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
 
 import config
-from telegram_bot.custom_types.user_permission_role import UserPermission
+from py_gfxhelper_lib.user_enums.user_permission import UserPermission
 from telegram_bot.bot_instance import bot
 
 

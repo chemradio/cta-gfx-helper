@@ -1,10 +1,11 @@
-from typing import List, Set
+from typing import Set
 from telegram import Update, Message
 
 
-async def attachment_finder(message: Message) -> Set[str]:
-    target_keys = ["photo", "document", "audio"]
-    return {key for key in target_keys if message.to_dict().get(key)}
+async def attachment_finder(message: Message) -> list[str]:
+    target_keys = ["document", "photo", "audio"]
+    message_dict = message.to_dict()
+    return [key for key in target_keys if message_dict.get(key)]
 
 
 async def reply_to_message_parser(update: Update) -> Message:
@@ -17,5 +18,4 @@ async def reply_to_message_parser(update: Update) -> Message:
         if isinstance(update, Update):
             return update.message
         elif isinstance(update, Message):
-            message = update
-            return message
+            return update

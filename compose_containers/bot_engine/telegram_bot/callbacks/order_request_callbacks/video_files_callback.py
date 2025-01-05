@@ -1,17 +1,17 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from container_interaction.orders import add_order_to_db
+from container_interaction.orders import send_order_to_dispatcher
 from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
     attachment_downloader,
 )
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
-from telegram_bot.callbacks.shared_callbacks.audio_callback import audio_callback
-from telegram_bot.callbacks.shared_callbacks.quote_callback import quote_callback
-from telegram_bot.callbacks.shared_callbacks.results_callback import results_callback
+from .shared_callbacks import results_callback, quote_callback, audio_callback
+
 from telegram_bot.callbacks.video_files.formatter import format_video_files_user_data
 from telegram_bot.responders.main_responder import Responder
-from support_lib.misc.check_url import check_is_url
+from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
+
 
 
 async def video_files_callback(
@@ -107,7 +107,7 @@ async def video_files_callback(
     # finish order creation
     if stage == "results_confirmed":
         user_data = format_video_files_user_data(user_data)
-        await add_order_to_db(user_id, user_data)
+        await send_order_to_dispatcher(user_id, user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)
 

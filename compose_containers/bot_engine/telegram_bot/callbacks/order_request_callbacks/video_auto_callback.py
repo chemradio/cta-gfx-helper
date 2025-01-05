@@ -1,11 +1,8 @@
 from pprint import pprint
 from telegram import Update
 from telegram.ext import ContextTypes
-from container_interaction.orders import add_order_to_db
-from telegram_bot.callbacks.shared_callbacks.audio_callback import audio_callback
-from telegram_bot.callbacks.shared_callbacks.link_callback import link_callback
-from telegram_bot.callbacks.shared_callbacks.quote_callback import quote_callback
-from telegram_bot.callbacks.shared_callbacks.results_callback import results_callback
+from container_interaction.orders import send_order_to_dispatcher
+from .shared_callbacks import link_callback, results_callback, quote_callback, audio_callback
 from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 
@@ -60,6 +57,6 @@ async def video_auto_callback(
 
     # finish order creation
     if stage == "results_confirmed":
-        await add_order_to_db(user_id, user_data)
+        await send_order_to_dispatcher(user_id, user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)

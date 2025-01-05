@@ -2,12 +2,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import config
-from telegram_bot.callbacks.only_screenshots.only_screenshots_callback import (
-    only_screenshots_callback,
-)
-from telegram_bot.callbacks.readtime.readtime_callback import readtime_callback
-from telegram_bot.callbacks.video_auto.video_auto_callback import video_auto_callback
-from telegram_bot.callbacks.video_files.video_files_callback import video_files_callback
+from ..order_request_callbacks import only_screenshots_callback, readtime_callback, video_auto_callback, video_files_callback
 
 
 async def request_type_callback(

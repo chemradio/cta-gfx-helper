@@ -1,7 +1,8 @@
 import json
 
 from config import BOT_ADMIN
-from telegram_bot.custom_types.user_permission_role import UserPermission
+from py_gfxhelper_lib.user_enums.user_permission import UserPermission
+from py_gfxhelper_lib.user_enums.user_role import UserRole
 from container_interaction.users import fetch_users
 from telegram_bot.bot_instance import bot
 from telegram_bot.responders.main_responder import Responder

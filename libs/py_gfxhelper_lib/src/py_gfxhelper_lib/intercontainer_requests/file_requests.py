@@ -22,7 +22,6 @@ async def download_and_delete_order_files(
                 output.append(file)
                 break
             except Exception as e:
-                print(f"Failed to download file: {e}")
                 error_message = str(e)
                 download_tries -= 1
         else:
@@ -33,13 +32,9 @@ async def download_and_delete_order_files(
 
 async def download_container_file(base_container_url: str, filename: str) -> BytesIO:
     async with httpx.AsyncClient() as client:
-        print(f"Downloading file: {filename}")
-        print(f"Base container url: {base_container_url}")
         r = await client.get(
             base_container_url + "/file_server", params={"filename": filename}
         )
-        print(r.status_code)
-
         return BytesIO(r.content)
 
 

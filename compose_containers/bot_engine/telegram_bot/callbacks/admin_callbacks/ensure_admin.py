@@ -1,4 +1,4 @@
-from telegram_bot.custom_types.user_permission_role import UserRole
+from py_gfxhelper_lib.user_enums.user_role import UserRole
 from container_interaction.users import check_user_role_admin
 
 

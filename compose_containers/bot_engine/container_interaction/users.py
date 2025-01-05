@@ -2,8 +2,8 @@ import os
 import httpx
 
 from config import USERS_ENDPOINT, ADMIN_USERS_ENDPOINT
-from telegram_bot.custom_types.user_permission_role import UserPermission, UserRole
-
+from py_gfxhelper_lib.user_enums.user_permission import UserPermission
+from py_gfxhelper_lib.user_enums.user_role import UserRole
 
 async def add_pending_user(user_data: dict) -> dict:
     async with httpx.AsyncClient() as client:

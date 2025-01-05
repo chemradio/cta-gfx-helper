@@ -3,7 +3,7 @@ import httpx
 from config import ORDERS_ENDPOINT
 
 
-async def add_order_to_db(telegram_id: int, user_data: dict) -> bool:
+async def send_order_to_dispatcher(telegram_id: int, user_data: dict) -> bool:
     files = {
         k: v
         for k in ("background_file", "foreground_file", "audio_file")
