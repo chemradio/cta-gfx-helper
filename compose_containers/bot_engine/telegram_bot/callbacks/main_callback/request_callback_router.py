@@ -22,7 +22,7 @@ async def request_type_callback(
             text=f"🍱 Тип заказа: {config.REQUEST_TYPE_TEMP_MAP[update.callback_query.data]}"
         )
     except:
-        raise WrongRequestTypeResponse()
+        raise Exception(f"Request type response is wrong. Callback query result is missing or invalid.")
 
 
 async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -42,14 +42,6 @@ async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         case "readtime":
             return await readtime_callback(update, context)
         case _:
-            raise WrongRequestTypeResponse()
+            raise Exception(f"Request type response is wrong. Callback query result is missing or invalid.")
         # else:
         #     return await start_callback(update, context)
-
-
-class WrongRequestTypeResponse(Exception):
-    def __init__(self):
-        super().__init__()
-
-    def __str__(self):
-        return f"Request type response is wrong. Callback query result is missing or invalid."

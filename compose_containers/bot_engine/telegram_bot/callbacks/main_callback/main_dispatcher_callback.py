@@ -29,13 +29,14 @@ async def dispatcher_callback(
 
     # if user is admin check if commands, callback_queries contain admin specific elements
     # user approval/blocking, listing orders, etc.
-    if user_id == config.BOT_ADMIN:
-        try:
-            admin_actions = await admin_query_callback(update, context)
-            if admin_actions:
-                return
-        except:
-            pass
+    # if user_id == config.BOT_ADMIN:
+    #     try:
+    #         admin_actions = await admin_query_callback(update, context)
+    #         if admin_actions:
+    #             return
+    #     except:
+    #         pass
+
 
     # check user allowance. If user is allowed returns without any issues.
     try:

@@ -13,11 +13,6 @@ from telegram_bot.callbacks.main_callback.main_callback_helpers import (
     parse_user_first_name,
     parse_user_id,
 )
-from telegram_bot.callbacks.register.auth_exceptions import (
-    BlockedUser,
-    PendingUser,
-    UnregisteredUser,
-)
 from telegram_bot.responders.main_responder import Responder
 
 
@@ -35,11 +30,11 @@ async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     user_status = await check_user_status(telegram_id=user_id)
 
     if user_status == UserPermission.BLOCKED:
-        raise BlockedUser(first_name, user_id)
+        raise Exception(f"Blocked user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
 
     elif user_status == UserPermission.PENDING:
         await Responder.register_user.register_already_applied(user_id)
-        raise PendingUser(first_name, user_id)
+        raise Exception(f"Pending user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
 
     elif user_status == UserPermission.UNREGISTERED:
         if update.message.text == "/register":
@@ -50,6 +45,6 @@ async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             )
         else:
             await Responder.register_user.register_not_applied(user_id)
-        raise UnregisteredUser(first_name, user_id)
+        raise Exception(f"Unregistered user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
     else:
         return True
