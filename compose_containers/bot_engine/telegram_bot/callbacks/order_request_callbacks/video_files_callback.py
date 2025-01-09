@@ -2,13 +2,10 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from container_interaction.orders import send_order_to_dispatcher
-from telegram_bot.callbacks.attachment_callbacks.attachment_handler import (
-    attachment_downloader,
-)
+from .attachment_callbacks.attachment_handler import attachment_downloader
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from .shared_callbacks import results_callback, quote_callback, audio_callback
-
-from telegram_bot.callbacks.video_files.formatter import format_video_files_user_data
+from telegram_bot.exceptions.attachments import AttachmentTypeMismatch, AttachmentNotFound, AttachmentNotNeeded, AttachmentSizeExceeded
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
 
@@ -32,6 +29,7 @@ async def video_files_callback(
         downloaded_file = await attachment_downloader(update, context)
         user_data.update({"main_file": downloaded_file, "stage": "background_source"})
         return await Responder.video_files.ask_background_source(user_id)
+
 
     # handle background source choice
     if stage == "background_source":
@@ -112,3 +110,24 @@ async def video_files_callback(
         return await Responder.results.results_correct(user_id)
 
     return await Responder.errors.gp_error(user_id)
+
+
+
+def format_video_files_user_data(user_data: dict) -> dict:
+    main_file = user_data.pop("main_file")
+    match user_data.pop("background_source"):
+        case "no_background":
+            user_data["background_name"] = main_file
+            user_data["background_screenshot"] = False
+            user_data["is_two_layer"] = False
+        case "background_file":
+            user_data["foreground_name"] = main_file
+            user_data["background_name"] = user_data.pop("background_file")
+            user_data["background_screenshot"] = False
+            user_data["is_two_layer"] = True
+        case "background_screenshot":
+            user_data["foreground_name"] = main_file
+            user_data["background_screenshot"] = True
+            user_data["is_two_layer"] = True
+
+    return user_data

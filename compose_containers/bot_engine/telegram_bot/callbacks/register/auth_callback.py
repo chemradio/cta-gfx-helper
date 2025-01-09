@@ -7,7 +7,7 @@ from py_gfxhelper_lib.user_enums.user_role import UserRole
 from container_interaction.users import (
     add_pending_user,
     check_user_role,
-    check_user_status,
+    get_user_permission,
 )
 from telegram_bot.callbacks.main_callback.main_callback_helpers import (
     parse_user_first_name,
@@ -16,27 +16,35 @@ from telegram_bot.callbacks.main_callback.main_callback_helpers import (
 from telegram_bot.responders.main_responder import Responder
 
 
-async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def auth_register_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
     user_id = parse_user_id(update)
+    first_name = parse_user_first_name(update)
+
+    # auto allow admin
     if user_id == config.BOT_ADMIN:
         return True
 
-    first_name = parse_user_first_name(update)
-
+    # auto allow admin
     user_role = await check_user_role(telegram_id=user_id)
     if user_role == UserRole.ADMIN:
         return True
 
-    user_status = await check_user_status(telegram_id=user_id)
 
-    if user_status == UserPermission.BLOCKED:
-        raise Exception(f"Blocked user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
+    user_permission = await get_user_permission(telegram_id=user_id)
 
-    elif user_status == UserPermission.PENDING:
+    if user_permission == UserPermission.APPROVED:
+        return True
+    
+    elif user_permission == UserPermission.BLOCKED:
+        print(f"Blocked user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
+        return False
+
+    elif user_permission == UserPermission.PENDING:
         await Responder.register_user.register_already_applied(user_id)
-        raise Exception(f"Pending user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
+        print(f"Pending user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
+        return False
 
-    elif user_status == UserPermission.UNREGISTERED:
+    elif user_permission == UserPermission.UNREGISTERED:
         if update.message.text == "/register":
             await add_pending_user({"telegram_id": user_id, "first_name": first_name})
             await Responder.register_user.register_applied(user_id)
@@ -45,6 +53,7 @@ async def auth_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
             )
         else:
             await Responder.register_user.register_not_applied(user_id)
-        raise Exception(f"Unregistered user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
-    else:
-        return True
+        print(f"Unregistered user accessed the bot. First name: {first_name}, Telegram ID: {user_id}")
+        return False
+
+    return False

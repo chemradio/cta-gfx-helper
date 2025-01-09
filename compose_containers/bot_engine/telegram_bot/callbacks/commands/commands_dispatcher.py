@@ -15,14 +15,11 @@ from telegram_bot.callbacks.commands.back_button import back_callback
 from telegram_bot.callbacks.commands.exit_callback import exit_callback
 from telegram_bot.callbacks.commands.help_callback import help_callback
 from telegram_bot.callbacks.commands.start_callback import start_callback
-from telegram_bot.callbacks.register.auth_callback import auth_callback
+from telegram_bot.callbacks.register.auth_callback import auth_register_callback
 
 
 async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message.text:
-        command = update.message.text[1:]
-    else:
-        command = update.message.caption[1:]
+    command = update.message.text[1:]
 
     match command:
         case "start":
@@ -34,7 +31,7 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         case "back":
             return await back_callback(update, context)
         case "register":
-            return await auth_callback(update, context)
+            return await auth_register_callback(update, context)
 
         # admin commands
         case "backup":
@@ -47,13 +44,6 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         case "admin":
             return await admin_panel_callback(update, context)
         case _:
-            raise WrongCommand(command=command)
+            raise Exception(f"Wrong command detected: {command}")
 
 
-class WrongCommand(Exception):
-    def __init__(self, command):
-        self.command = command
-        super().__init__()
-
-    def __str__(self):
-        return f"Wrong command detected: {self.command}"

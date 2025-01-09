@@ -13,11 +13,11 @@ async def link_callback(
 
     try:
         link = check_is_url(update.message.text)[0]
-        if not link:
-            raise Exception()
-    except:
-        await Responder.link.bad_link(user_id)
-        return
+        user_data.update({"link": link, "stage": "link_passed"})
+        return await caller(update, context)
 
-    user_data.update({"link": link, "stage": "link_passed"})
-    return await caller(update, context)
+    except Exception as e:
+        print(e)
+        return await Responder.link.bad_link(user_id)
+
+    

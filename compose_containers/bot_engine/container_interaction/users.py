@@ -64,7 +64,7 @@ async def block_user(telegram_id: int):
         return r.json()
 
 
-async def check_user_status(telegram_id: int) -> UserPermission:
+async def get_user_permission(telegram_id: int) -> UserPermission:
     try:
         user_data = await get_user_data(telegram_id)
         return UserPermission(user_data.get("permission"))
