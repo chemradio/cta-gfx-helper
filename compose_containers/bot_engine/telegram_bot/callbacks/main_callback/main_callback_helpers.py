@@ -4,34 +4,14 @@ from telegram import Update
 
 
 def parse_user_id(update: Update) -> int:
-    user_id = None
-    try:
-        return update.message.from_user.id
-    except:
-        # user id is not in message
-        pass
-
-    try:
-        return update.callback_query.from_user.id
-    except:
-        # user id not in callback query
-        pass
-
-    return user_id
+    update_dict = update.to_dict()
+    message_user_id  = update_dict.get("message", {}).get("from", {}).get("id")
+    callback_query_user_id = update_dict.get("callback_query", {}).get("from", {}).get("id")
+    return message_user_id or callback_query_user_id or None
 
 
 def parse_user_first_name(update: Update) -> str:
-    first_name = None
-    try:
-        return update.message.from_user.first_name
-    except:
-        # user id is not in message
-        pass
-
-    try:
-        return update.callback_query.from_user.first_name
-    except:
-        # user id not in callback query
-        pass
-
-    return first_name
+    update_dict = update.to_dict()
+    message_user_first_name = update_dict.get("message", {}).get("from", {}).get("first_name")
+    callback_query_user_first_name = update_dict.get("callback_query", {}).get("from", {}).get("first_name")
+    return message_user_first_name or callback_query_user_first_name or None

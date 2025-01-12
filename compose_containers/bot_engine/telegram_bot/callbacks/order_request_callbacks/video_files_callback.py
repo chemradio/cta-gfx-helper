@@ -27,7 +27,7 @@ async def video_files_callback(
     # choose background file vs background screenshot
     if stage == "main_file":
         downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"main_file": downloaded_file, "stage": "background_source"})
+        user_data.update({"foreground_file": downloaded_file, "stage": "background_source"})
         return await Responder.video_files.ask_background_source(user_id)
 
 
@@ -54,7 +54,8 @@ async def video_files_callback(
                     user_data.update({"stage": "background_file"})
                     return await Responder.video_files.ask_background_file(user_id)
                 case "no_background":
-                    user_data.update({"stage": "quote_enabled"})
+                    main_file = user_data.pop("foreground_file")
+                    user_data.update({"background_file":main_file, "stage": "quote_enabled"})
                     return await Responder.quote.ask_quote_enabled(user_id)
 
         except:
@@ -66,7 +67,7 @@ async def video_files_callback(
             link_list = check_is_url(update.message.text)
             if not link_list:
                 return await Responder.link.bad_link(user_id)
-            user_data.update({"background_link": link_list[0]})
+            user_data.update({"screenshot_link": link_list[0]})
 
         elif stage == "background_file":
             downloaded_file = await attachment_downloader(update, context)
@@ -104,7 +105,6 @@ async def video_files_callback(
 
     # finish order creation
     if stage == "results_confirmed":
-        user_data = format_video_files_user_data(user_data)
         await send_order_to_dispatcher(user_id, user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)
@@ -112,22 +112,3 @@ async def video_files_callback(
     return await Responder.errors.gp_error(user_id)
 
 
-
-def format_video_files_user_data(user_data: dict) -> dict:
-    main_file = user_data.pop("main_file")
-    match user_data.pop("background_source"):
-        case "no_background":
-            user_data["background_name"] = main_file
-            user_data["background_screenshot"] = False
-            user_data["is_two_layer"] = False
-        case "background_file":
-            user_data["foreground_name"] = main_file
-            user_data["background_name"] = user_data.pop("background_file")
-            user_data["background_screenshot"] = False
-            user_data["is_two_layer"] = True
-        case "background_screenshot":
-            user_data["foreground_name"] = main_file
-            user_data["background_screenshot"] = True
-            user_data["is_two_layer"] = True
-
-    return user_data

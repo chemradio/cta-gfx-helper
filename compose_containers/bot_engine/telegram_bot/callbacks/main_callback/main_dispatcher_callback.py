@@ -7,12 +7,10 @@ from telegram_bot.callbacks.admin_callbacks.admin_query_callback import (
 )
 from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
 from telegram_bot.callbacks.commands.commands_dispatcher import (
-    WrongCommand,
     commands_callback,
 )
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.callbacks.main_callback.request_callback_router import (
-    WrongRequestTypeResponse,
     request_router,
     request_type_callback,
 )
@@ -26,9 +24,9 @@ async def dispatcher_callback(
     user_id = parse_user_id(update)
 
     # check user allowance and or handle register and auth
-    user_allowed = await auth_register_callback(update, context)
-    if not user_allowed:
-        return
+    # user_allowed = await auth_register_callback(update, context)
+    # if not user_allowed:
+    #     return
     
 
 
@@ -56,17 +54,19 @@ async def dispatcher_callback(
         if order_status == "init":
             try:
                 await request_type_callback(update, context)
-            except WrongRequestTypeResponse as e:
+            except Exception as e:
                 print(str(e))
                 return
 
-            # route to appropriate order workflow
-            try:
-                return await request_router(update, context)
-            except:
-                user_data.clear()
-                await Responder.errors.no_active_session(user_id)
-                return 
+        # route to appropriate order workflow
+        try:
+            from pprint import pprint
+            pprint(user_data)
+            return await request_router(update, context)
+        except:
+            user_data.clear()
+            await Responder.errors.no_active_session(user_id)
+            return 
             
     except Exception as e:
         print(e)
