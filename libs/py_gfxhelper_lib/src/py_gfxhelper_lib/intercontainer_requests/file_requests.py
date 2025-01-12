@@ -46,16 +46,16 @@ async def delete_container_file(container_url: str, filename: str) -> None:
         assert r.status_code == 200
 
 
-async def convert_file(asset_file: AssetFile) -> AssetFile:
+async def convert_file(asset_file: AssetFile, file_converter_url:str = "http://file_converter:9005") -> AssetFile:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            "http://127.0.0.1:9005",
+            file_converter_url,
             files={"file": (asset_file.filename, asset_file.bytesio)},
         )
 
         converted_mime = response.headers["Content-Type"]
 
         return AssetFile(
-            bytes=BytesIO(response.content),
+            bytes_or_bytesio=BytesIO(response.content),
             mime_type=converted_mime,
         )

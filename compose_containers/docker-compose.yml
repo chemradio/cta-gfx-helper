@@ -37,19 +37,19 @@ services:
     hostname: file_converter
     ports:
       - "9005:9005"
-  # bot-engine:
-  #   restart: unless-stopped
-  #   build: ./bot_engine
-  #   volumes:
-  #     - ./bot_engine:/usr/src/app
-  #   platform: linux/arm64
-  #   environment:
-  #     IS_DOCKER: 1
-  #     BOT_ADMIN: ${BOT_ADMIN}
-  #     BOT_TOKEN: ${BOT_TOKEN}
-  #   depends_on:
-  #   - dispatcher
-  #   hostname: bot_engine
+  bot-engine:
+    restart: unless-stopped
+    build: ./bot_engine
+    volumes:
+      - ./bot_engine:/usr/src/app
+    platform: linux/arm64
+    environment:
+      IS_DOCKER: 1
+      BOT_ADMIN: ${BOT_ADMIN}
+      BOT_TOKEN: ${BOT_TOKEN}
+    depends_on:
+    - dispatcher
+    hostname: bot_engine
   screenshot-selenium:
     restart: unless-stopped
     hostname: screenshot_selenium

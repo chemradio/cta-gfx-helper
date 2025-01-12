@@ -32,7 +32,7 @@ def main():
             application.add_handler(AllHandler(dispatcher_callback))
             application.run_polling()
         except Exception as e:
-            print(e)
+            print(e, flush=True)
             time.sleep(5)
 
 

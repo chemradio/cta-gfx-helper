@@ -1,7 +1,5 @@
 from telegram import File, Message
-from io import BytesIO
-from container_interaction.file_conversion import convert_file
-from py_gfxhelper_lib.files.asset_file import AssetFile
+
 
 async def photo_handler(message: Message) -> tuple[File, str]:
     # find the best quality photo

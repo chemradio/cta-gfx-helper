@@ -7,7 +7,7 @@ from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_use
 from .shared_callbacks import results_callback, quote_callback, audio_callback
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
-from container_interaction.file_conversion import convert_user_file
+from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
 
 
 
@@ -28,7 +28,7 @@ async def video_files_callback(
     if stage == "main_file":
         await Responder.common.wait_for_download(user_id)
         downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"foreground_file": await convert_user_file(downloaded_file), "stage": "background_source"})
+        user_data.update({"foreground_file": await convert_file(downloaded_file), "stage": "background_source"})
         return await Responder.video_files.ask_background_source(user_id)
 
 
@@ -73,7 +73,7 @@ async def video_files_callback(
         elif stage == "background_file":
             await Responder.common.wait_for_download(user_id)
             downloaded_file = await attachment_downloader(update, context)
-            user_data.update({"background_file": await convert_user_file(downloaded_file)})
+            user_data.update({"background_file": await convert_file(downloaded_file)})
 
         user_data.update({"stage": "quote_enabled"})
         return await Responder.quote.ask_quote_enabled(user_id)
