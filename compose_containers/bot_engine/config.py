@@ -29,7 +29,7 @@ REQUEST_TYPE_TEMP_MAP = {
 DISPATCHER_URL = f"http://dispatcher:9000"
 USERS_ENDPOINT = f"{DISPATCHER_URL}/users"
 ADMIN_USERS_ENDPOINT = f"{DISPATCHER_URL}/admin/users"
-ORDERS_ENDPOINT = f"{DISPATCHER_URL}/orders"
+ORDERS_ENDPOINT = f"{DISPATCHER_URL}/orders/"
 TEXT_PROCESSOR_ENDPOINT = f"{DISPATCHER_URL}/helpers/text_processor"
 
 # db backup restore

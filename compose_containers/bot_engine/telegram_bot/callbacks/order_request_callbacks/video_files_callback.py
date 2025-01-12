@@ -110,6 +110,5 @@ async def video_files_callback(
         user_data.clear()
         return await Responder.results.results_correct(user_id)
 
-    return await Responder.errors.gp_error(user_id)
 
 

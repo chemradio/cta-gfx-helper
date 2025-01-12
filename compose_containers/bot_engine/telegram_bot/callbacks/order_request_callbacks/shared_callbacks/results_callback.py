@@ -15,32 +15,27 @@ async def results_callback(
     user_data = context.user_data
     stage = user_data.get("stage")
 
+    if update.callback_query.data not in ["results_correct", "results_incorrect"]:
+        raise Exception()
+
+    await update.callback_query.answer(cache_time=180)
     try:
-        if update.callback_query.data not in ["results_correct", "results_incorrect"]:
-            raise Exception()
+        await update.callback_query.edit_message_text(
+            text=update.callback_query.message.text,
+            reply_markup=ReplyKeyboardRemove(),
+        )
+    except:
+        pass
 
-        await update.callback_query.answer(cache_time=180)
-        try:
-            await update.callback_query.edit_message_text(
-                text=update.callback_query.message.text,
-                reply_markup=ReplyKeyboardRemove(),
-            )
-        except:
-            pass
-
-        if update.callback_query.data == "results_correct":
-            user_data.update(
-                {
-                    "results_correct": True,
-                    "stage": "results_confirmed",
-                    "created": str(int(time.time())),
-                }
-            )
-            return await caller(update, context)
-        else:
-            user_data.clear()
-            return await Responder.results.results_incorrect(user_id)
-
-    except Exception as e:
-        print(str(e))
-        return await Responder.errors.gp_error(user_id)
+    if update.callback_query.data == "results_correct":
+        user_data.update(
+            {
+                "results_correct": True,
+                "stage": "results_confirmed",
+                "created": str(int(time.time())),
+            }
+        )
+        return await caller(update, context)
+    else:
+        user_data.clear()
+        return await Responder.results.results_incorrect(user_id)

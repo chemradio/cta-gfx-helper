@@ -67,5 +67,6 @@ async def dispatcher_callback(
             return 
             
     except Exception as e:
-        print(e)
+        print(str(e))
+        await Responder.errors.custom_error(user_id=user_id, error_text=str(e))
         return await Responder.errors.gp_error(user_id)

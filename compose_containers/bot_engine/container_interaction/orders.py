@@ -7,16 +7,14 @@ async def send_order_to_dispatcher(telegram_id: int, user_data: dict) -> bool:
     files = {
         k: v
         for k in ("background_file", "foreground_file", "audio_file")
-        if (v := user_data.pop(k)) is not None
+        if (v := user_data.pop(k, None)) is not None
     }
-
     user_data.update({"telegram_id": telegram_id, "ordered_from": "telegram"})
-
     user_data.pop("results_correct", None)
     user_data.pop("results_message", None)
 
     async with httpx.AsyncClient() as client:
-        r = await client.post(ORDERS_ENDPOINT, data=user_data, files=files)
+        r = await client.post(ORDERS_ENDPOINT, data=user_data, files=files if files else None)
         return r.json()
 
 
