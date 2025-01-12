@@ -21,12 +21,12 @@ async def results_callback(
     await update.callback_query.answer(cache_time=180)
     try:
         await update.callback_query.edit_message_text(
-            text=update.callback_query.message.text,
+            text="Подтверждено",
             reply_markup=ReplyKeyboardRemove(),
         )
     except:
         pass
-
+    
     if update.callback_query.data == "results_correct":
         user_data.update(
             {
@@ -36,6 +36,7 @@ async def results_callback(
             }
         )
         return await caller(update, context)
+    
     else:
         user_data.clear()
         return await Responder.results.results_incorrect(user_id)

@@ -10,6 +10,12 @@ from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (
 )
 from telegram import Update
 
+import logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
 
 def create_volume_folders():
     volume_path = Path().cwd() / "volume"
