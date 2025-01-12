@@ -5,9 +5,9 @@ from container_interaction.orders import send_order_to_dispatcher
 from .attachment_callbacks.attachment_handler import attachment_downloader
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from .shared_callbacks import results_callback, quote_callback, audio_callback
-from telegram_bot.exceptions.attachments import AttachmentTypeMismatch, AttachmentNotFound, AttachmentNotNeeded, AttachmentSizeExceeded
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
+from container_interaction.file_conversion import convert_user_file
 
 
 
@@ -26,8 +26,9 @@ async def video_files_callback(
     # handle main file
     # choose background file vs background screenshot
     if stage == "main_file":
+        await Responder.common.wait_for_download(user_id)
         downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"foreground_file": downloaded_file, "stage": "background_source"})
+        user_data.update({"foreground_file": await convert_user_file(downloaded_file), "stage": "background_source"})
         return await Responder.video_files.ask_background_source(user_id)
 
 
@@ -70,8 +71,9 @@ async def video_files_callback(
             user_data.update({"screenshot_link": link_list[0]})
 
         elif stage == "background_file":
+            await Responder.common.wait_for_download(user_id)
             downloaded_file = await attachment_downloader(update, context)
-            user_data.update({"background_file": downloaded_file})
+            user_data.update({"background_file": await convert_user_file(downloaded_file)})
 
         user_data.update({"stage": "quote_enabled"})
         return await Responder.quote.ask_quote_enabled(user_id)

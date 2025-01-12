@@ -60,8 +60,6 @@ async def dispatcher_callback(
 
         # route to appropriate order workflow
         try:
-            from pprint import pprint
-            pprint(user_data)
             return await request_router(update, context)
         except:
             user_data.clear()
