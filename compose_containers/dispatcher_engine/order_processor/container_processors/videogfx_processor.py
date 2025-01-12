@@ -12,7 +12,7 @@ from py_gfxhelper_lib.custom_types import VideoGFXResults
 
 async def process_videogfx(
     quote_text: str | None,
-    quote_author: str | None,
+    quote_author_text: str | None,
     background_file: BytesIO | None,
     foreground_file: BytesIO | None,
     audio_file: BytesIO | None,
@@ -24,7 +24,7 @@ async def process_videogfx(
             "foreground_file": foreground_file if foreground_file else None,
             "audio_file": audio_file if audio_file else None,
             "quote_text": quote_text,
-            "quote_author": quote_author,
+            "quote_author_text": quote_author_text,
         },
         videogfx_container_url,
     )

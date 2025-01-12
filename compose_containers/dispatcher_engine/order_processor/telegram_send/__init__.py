@@ -1,1 +1,1 @@
-from .return_result import return_result_telegram
+from .return_result import return_result_telegram, report_error_telegram

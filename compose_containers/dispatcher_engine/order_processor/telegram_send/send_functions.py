@@ -16,7 +16,7 @@ async def send_file_telegram(
             f"Attention! File size exceeds 25 MB: {len(file_bytes.getvalue()) / 1024 / 1024} MB",
         )
 
-    files = {"document": (filename, file_bytes.read())}
+    files = {"document": (filename, file_bytes)}
 
     kwargs = {
         "chat_id": receiver_id,
@@ -28,10 +28,7 @@ async def send_file_telegram(
         r = await client.post(
             SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
         )
-        r.raise_for_status()
-        # result = r.json()
-        # return result
-
+    r.raise_for_status()
 
 async def send_text_telegram(text: str, receiver_id: int) -> dict:
     kwargs = {
@@ -40,11 +37,11 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
     }
     async with httpx.AsyncClient() as client:
         r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
-        r.raise_for_status()
-        # result = r.json()
-        # return result
+    r.raise_for_status()
 
 
 # function for checking if filezise exceeds 25 mb
 def check_filesize(file_bytes: BytesIO) -> bool:
-    return len(file_bytes.getvalue()) < 25 * 1024 * 1024
+    file_size = len(file_bytes.getvalue())
+    file_bytes.seek(0)
+    return file_size < 25 * 1024 * 1024

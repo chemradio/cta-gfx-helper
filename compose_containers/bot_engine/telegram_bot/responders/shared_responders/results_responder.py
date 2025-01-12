@@ -31,7 +31,7 @@ class ResultsResponder:
         """Prompt user the results."""
         results_message = str("РЕЗУЛЬТАТЫ:\n\n")
         request_type = REQUEST_TYPE_TEMP_MAP[user_data.get("request_type")]
-        results_message += f"🍱 Тип заказа: {request_type}\n\n"
+        results_message += f"🍱 Тип заказа: {request_type}\n"
 
         if request_type == "readtime":
             readtime_text = user_data.get("readtime_text")
@@ -60,32 +60,19 @@ class ResultsResponder:
             False: "Нет",
         }
 
-        link = user_data.get("link")
-        bg_animation: str = user_data.get("bg_animation")
-        fg_enabled: bool = user_data.get("fg_enabled")
-        fg_animation: str = user_data.get("fg_animation")
-        quote_enabled: bool = user_data.get("quote_enabled")
+        link = user_data.get("screenshot_link")
         quote_text: str = user_data.get("quote_text")
-        quote_author_enabled: bool = user_data.get("quote_author_enabled")
         quote_author_text: str = user_data.get("quote_author_text")
         audio_enabled: bool = user_data.get("audio_enabled")
 
         if link:
-            results_message += f"🔗 Ссылка для графики: {link}\n\n"
-        if bg_animation:
-            results_message += (
-                f"🎨 Анимация заднего плана: {bg_animation.capitalize()}\n"
-            )
-        if fg_enabled:
-            results_message += (
-                f"🎨 Анимация переднего плана: {fg_animation.capitalize()}\n\n"
-            )
-
-        if quote_enabled:
+            results_message += f"🔗 Ссылка для графики: {link}\n"
+        
+        if quote_text:
             results_message += f"📜 Текст цитаты: {html.escape(quote_text)}\n"
 
-        if quote_author_enabled:
-            results_message += f"📜 Автор цитаты: {html.escape(quote_author_text)}\n\n"
+        if quote_author_text:
+            results_message += f"📜 Автор цитаты: {html.escape(quote_author_text)}\n"
 
         if audio_enabled:
             results_message += f"🔊 Аудио-файл: {temp_map[audio_enabled]}\n"

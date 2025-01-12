@@ -1,6 +1,6 @@
 import uuid
 from pathlib import Path
-
+from pprint import pprint
 from fastapi import File, Form, UploadFile
 from fastapi.staticfiles import StaticFiles
 
@@ -40,9 +40,7 @@ async def create_video_gfx(
     background_file: UploadFile = File(...),
     foreground_file: UploadFile | None = File(None),
     audio_file: UploadFile | None = File(None),
-    quote_enabled: bool = Form(False),
     quote_text: str | None = Form(None),
-    quote_author_enabled: bool = Form(None),
     quote_author_text: str | None = Form(None),
     template: str | None = Form(None),
     framerate: int | float = Form(config.DEFAULT_FRAMERATE),
@@ -51,9 +49,7 @@ async def create_video_gfx(
     animation_duration: float | int = Form(config.DEFAULT_ANIMATION_DURATION),
 ) -> dict:
     order_id = str(uuid.uuid4())
-
-    queue.append(
-        {
+    order = {
             "order_id": order_id,
             "background_file": AssetFile(
                 background_file.file.read(), background_file.filename.split(".")[-1]
@@ -80,7 +76,8 @@ async def create_video_gfx(
             "videogfx_tail": videogfx_tail,
             "animation_duration": animation_duration,
         }
-    )
+    pprint(order)
+    queue.append(order)
     queue.start_processing()
     return {"order_id": str(order_id)}
 

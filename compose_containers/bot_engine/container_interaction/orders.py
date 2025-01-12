@@ -1,5 +1,5 @@
 import httpx
-
+from pprint import pprint
 from config import ORDERS_ENDPOINT
 
 
@@ -12,6 +12,7 @@ async def send_order_to_dispatcher(telegram_id: int, user_data: dict) -> bool:
     user_data.update({"telegram_id": telegram_id, "ordered_from": "telegram"})
     user_data.pop("results_correct", None)
     user_data.pop("results_message", None)
+    print(f"{user_data=}")
 
     async with httpx.AsyncClient() as client:
         r = await client.post(ORDERS_ENDPOINT, data=user_data, files=files if files else None)

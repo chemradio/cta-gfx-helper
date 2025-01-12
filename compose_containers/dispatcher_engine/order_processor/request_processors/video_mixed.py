@@ -7,7 +7,7 @@ async def process_video_mixed(order: dict) -> list[AssetFile]:
     screenshots = await process_screenshots(screenshot_url=order["screenshot_link"])
     videogfx = await process_videogfx(
         quote_text=order["quote_text"],
-        quote_author=order["quote_author_text"],
+        quote_author_text=order["quote_author_text"],
         background_file=screenshots.background.content,
         foreground_file=order["foreground_file"],
         audio_file=order["audio_file"],

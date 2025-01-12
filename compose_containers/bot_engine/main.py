@@ -8,6 +8,7 @@ from telegram_bot.bot_instance import BOT_TOKEN
 from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (
     dispatcher_callback,
 )
+from telegram import Update
 
 
 def create_volume_folders():
@@ -30,7 +31,7 @@ def main():
         try:
             application = Application.builder().token(BOT_TOKEN).build()
             application.add_handler(AllHandler(dispatcher_callback))
-            application.run_polling()
+            application.run_polling(allowed_updates=Update.ALL_TYPES)
         except Exception as e:
             print(e, flush=True)
             time.sleep(5)
@@ -38,3 +39,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
