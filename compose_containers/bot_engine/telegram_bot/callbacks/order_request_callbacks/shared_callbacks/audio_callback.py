@@ -22,10 +22,10 @@ async def audio_callback(
         await update.callback_query.answer(cache_time=180)
 
         if update.callback_query.data == "audio_enabled":
-            user_data.update({"audio_enabled": True, "stage": "audio_file"})
+            user_data.update({"stage": "audio_file"})
             return await Responder.audio.ask_send_audio(user_id)
         else:
-            user_data.update({"audio_enabled": False, "stage": "audio_passed"})
+            user_data.update({"stage": "audio_passed"})
             return await caller(update, context)
 
     if stage == "audio_file":

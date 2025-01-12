@@ -13,7 +13,7 @@ async def link_callback(
 
     try:
         link = check_is_url(update.message.text)[0]
-        user_data.update({"link": link, "stage": "link_passed"})
+        user_data.update({"screenshot_link": link, "stage": "link_passed"})
         return await caller(update, context)
 
     except Exception as e:

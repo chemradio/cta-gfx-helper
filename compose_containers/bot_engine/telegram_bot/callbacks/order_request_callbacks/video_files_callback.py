@@ -55,8 +55,7 @@ async def video_files_callback(
                     user_data.update({"stage": "background_file"})
                     return await Responder.video_files.ask_background_file(user_id)
                 case "no_background":
-                    main_file = user_data.pop("foreground_file")
-                    user_data.update({"background_file":main_file, "stage": "quote_enabled"})
+                    user_data.update({"background_file": user_data.pop("foreground_file"), "stage": "quote_enabled"})
                     return await Responder.quote.ask_quote_enabled(user_id)
 
         except:

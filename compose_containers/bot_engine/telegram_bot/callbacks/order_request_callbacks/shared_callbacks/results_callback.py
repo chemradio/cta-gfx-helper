@@ -33,7 +33,7 @@ async def results_callback(
                 {
                     "results_correct": True,
                     "stage": "results_confirmed",
-                    "order_creation_end_timestamp": int(time.time()),
+                    "created": str(int(time.time())),
                 }
             )
             return await caller(update, context)

@@ -23,10 +23,10 @@ async def quote_callback(
             await update.callback_query.answer(cache_time=180)
 
             if update.callback_query.data == "quote_enabled":
-                user_data.update({"quote_enabled": True, "stage": "quote_text"})
+                user_data.update({"stage": "quote_text"})
                 return await Responder.quote.ask_quote_text(user_id)
             else:
-                user_data.update({"quote_enabled": False, "stage": "quote_passed"})
+                user_data.update({"stage": "quote_passed"})
                 return await caller(update, context)
 
         if stage == "quote_text":
@@ -59,12 +59,12 @@ async def quote_callback(
 
             if update.callback_query.data == "quote_author_enabled":
                 user_data.update(
-                    {"quote_author_enabled": True, "stage": "quote_author_text"}
+                    {"stage": "quote_author_text"}
                 )
                 return await Responder.quote.ask_quote_author_text(user_id)
             else:
                 user_data.update(
-                    {"quote_author_enabled": False, "stage": "quote_passed"}
+                    { "stage": "quote_passed"}
                 )
                 return await caller(update, context)
 
