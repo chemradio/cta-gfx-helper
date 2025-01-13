@@ -8,11 +8,9 @@ async def process_video_auto(order: dict) -> list[AssetFile]:
     videogfx = await process_videogfx(
         quote_text=order.get("quote_text"),
         quote_author_text=order.get("quote_author_text"),
-        background_file=screenshots.background.content,
-        foreground_file=(
-            screenshots.foreground.content if screenshots.foreground else None
-        ),
-        audio_file=order.get("audio_file"),
+        background_file=AssetFile(bytes_or_bytesio=screenshots.background.content, extension="png"),
+        foreground_file=AssetFile(bytes_or_bytesio=screenshots.foreground.content, extension="png") if screenshots.foreground else None,
+        audio_file=order.get("audio_file", None),
     )
 
     return [

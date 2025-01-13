@@ -38,6 +38,8 @@ def main_videogfx(
         )
     else:
         print(f"VideoGFX failed.")
+        # print full traceback
+        full_traceback = traceback.format_exc()
 
     return OperatorResults(
         success=success,

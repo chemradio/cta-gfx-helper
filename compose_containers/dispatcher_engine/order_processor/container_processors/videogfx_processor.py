@@ -1,6 +1,6 @@
 from io import BytesIO
 
-
+from py_gfxhelper_lib.files.asset_file import AssetFile
 from py_gfxhelper_lib.constants import ContainerUrls
 from py_gfxhelper_lib.intercontainer_requests import (
     download_and_delete_order_files,
@@ -13,9 +13,9 @@ from py_gfxhelper_lib.custom_types import VideoGFXResults
 async def process_videogfx(
     quote_text: str | None,
     quote_author_text: str | None,
-    background_file: BytesIO | None,
-    foreground_file: BytesIO | None,
-    audio_file: BytesIO | None,
+    background_file: AssetFile | None,
+    foreground_file: AssetFile | None,
+    audio_file: AssetFile | None,
     videogfx_container_url: str = ContainerUrls.VIDEOGFX,
 ) -> VideoGFXResults:
     order_id = await order_video_gfx(

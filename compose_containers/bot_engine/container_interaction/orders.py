@@ -5,9 +5,9 @@ from config import ORDERS_ENDPOINT
 
 async def send_order_to_dispatcher(telegram_id: int, user_data: dict) -> bool:
     files = {
-        k: v
+        k: (asset_file.filename, asset_file.bytesio)
         for k in ("background_file", "foreground_file", "audio_file")
-        if (v := user_data.pop(k, None)) is not None
+        if (asset_file := user_data.pop(k, None)) is not None
     }
     user_data.update({"telegram_id": telegram_id, "ordered_from": "telegram"})
     user_data.pop("results_correct", None)

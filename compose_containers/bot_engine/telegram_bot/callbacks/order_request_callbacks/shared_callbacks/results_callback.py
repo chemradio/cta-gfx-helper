@@ -18,14 +18,11 @@ async def results_callback(
     if update.callback_query.data not in ["results_correct", "results_incorrect"]:
         raise Exception()
 
-    await update.callback_query.answer(cache_time=180)
-    try:
-        await update.callback_query.edit_message_text(
-            text="Подтверждено",
-            reply_markup=ReplyKeyboardRemove(),
-        )
-    except:
-        pass
+    # await update.callback_query.answer(cache_time=180)
+    # await update.callback_query.edit_message_text(
+    #     text="Подтверждено",
+    #     reply_markup=ReplyKeyboardRemove(),
+    # )
     
     if update.callback_query.data == "results_correct":
         user_data.update(

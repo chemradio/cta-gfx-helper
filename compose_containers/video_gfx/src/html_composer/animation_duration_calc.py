@@ -13,7 +13,7 @@ def calculate_animation_duration(order: dict) -> float:
             audio_file.bytesio, format=audio_file.filename.split(".")[-1].upper()
         )
         audio_duration = len(audio_segment) / 1000.0
-        audio_file.file.seek(0)
+        audio_file.bytesio.seek(0)
 
         animation_duration = (
             audio_duration + order["audio_offset"] + order["videogfx_tail"]

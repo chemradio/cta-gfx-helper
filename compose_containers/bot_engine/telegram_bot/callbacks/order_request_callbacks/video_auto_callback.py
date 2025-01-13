@@ -57,6 +57,8 @@ async def video_auto_callback(
 
     # finish order creation
     if stage == "results_confirmed":
+        print("back to video_auto_callback")
+        print(f"{user_data=}", flush=True)
         await send_order_to_dispatcher(user_id, user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)

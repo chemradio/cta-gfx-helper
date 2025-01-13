@@ -1,4 +1,5 @@
 from pprint import pprint
+import traceback
 
 from custom_types_enums.orders import OrderRequestType
 
@@ -40,9 +41,15 @@ async def process_order(order: dict) -> None:
                 container_output=container_output,
             )
     except Exception as e:
+
+
+
         print(f"Error while processing order: {str(e)}", flush=True)
         print(str(e), flush=True)
         pprint(order)
+        # print full traceback
+        traceback.print_exc()
+        
         if order.get("telegram_id"):
             try:
                 return await report_error_telegram(telegram_id=order["telegram_id"],error_message=str(e), order=order)
