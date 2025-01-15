@@ -7,6 +7,7 @@ def find_user(
     telegram_id: int | None = None,
     order: dict | None = None,
 ) -> dict | None:
+    query = None
     if user_id:
         query = {"id": user_id}
     elif email:
@@ -20,4 +21,6 @@ def find_user(
             telegram_id=order.get("telegram_id"),
         )
 
+    if not query:
+        return None
     return Users.find_one(query)

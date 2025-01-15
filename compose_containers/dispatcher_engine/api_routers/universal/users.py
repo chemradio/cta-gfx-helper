@@ -1,7 +1,5 @@
-from datetime import datetime
 from uuid import uuid4
-from bson.objectid import ObjectId
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 from pymongo import ReturnDocument
 
 from py_gfxhelper_lib.user_enums import UserPermission, UserRole
@@ -24,26 +22,35 @@ async def check_user_in_db(
     )
     if user_db is None:
         raise HTTPException(404, "User is not registered")
+    user_db.pop("_id")
     return user_db
 
 
 @router.post("/")
 async def register(
-    email: str | None = None,
-    telegram_id: int | None = None,
-    permission: UserPermission = UserPermission.PENDING,
-    role: UserRole = UserRole.NORMAL,
-    first_name: str | None = None,
-    last_name: str | None = None,
-    description: str | None = None,
+    email: str | None = Body(None),
+    telegram_id: int | None = Body(None),
+    permission: UserPermission = Body(UserPermission.PENDING.value),
+    role: UserRole = Body(UserRole.NORMAL.value),
+    first_name: str | None = Body(None),
+    last_name: str | None = Body(None),
+    description: str | None = Body(None),
 ):
+    print("register accessed")
+    print(
+        f"{email=}, {telegram_id=}, {permission=}, {role=}, {first_name=}, {last_name=}, {description=}"
+    )
+
+    print("searching for existing user")
     existing_user = find_user(email=email, telegram_id=telegram_id)
+    print("existing_user", existing_user)
     if existing_user is not None:
         raise HTTPException(401, "User is already registered")
 
+    user_id = str(uuid4())
     user_db_id = Users.insert_one(
         {
-            "id": str(uuid4()),
+            "id": user_id,
             "email": email,
             "telegram_id": telegram_id,
             "first_name": first_name,
@@ -54,17 +61,17 @@ async def register(
             "created": str(int(time.time())),
         }
     )
-    user_db = Users.find_one({"_id": ObjectId(user_db_id)})
+    user_db = Users.find_one({"id": user_id})
     user_db.pop("_id")
     return user_db
 
 
 @router.put("/")
 async def edit_user(
-    user_id: str | None = None,
-    email: str | None = None,
-    telegram_id: int | None = None,
-    update_data: dict = None,
+    user_id: str | None = Body(None),
+    email: str | None = Body(None),
+    telegram_id: int | None = Body(None),
+    update_data: dict = Body(None),
 ):
     user_db = find_user(
         user_id=user_id,

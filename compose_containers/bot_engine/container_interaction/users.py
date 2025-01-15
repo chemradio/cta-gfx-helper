@@ -6,7 +6,7 @@ from py_gfxhelper_lib.user_enums import UserPermission, UserRole
 
 async def get_user_data(telegram_id: int) -> dict:
     async with httpx.AsyncClient() as client:
-        r = await client.get(f"{USERS_ENDPOINT}", json={"telegram_id": telegram_id})
+        r = await client.get(f"{USERS_ENDPOINT}", params={"telegram_id": telegram_id})
         if r.status_code == 404:
             return {}
         return r.json()
@@ -26,7 +26,7 @@ async def register_user(telegram_id: int, user_data: dict = {}) -> dict:
         return r.json()
 
 
-async def change_user_permission(telegram_id: int, permission: UserPermission):
+async def change_user_permission(telegram_id: int, permission: UserPermission) -> dict:
     async with httpx.AsyncClient() as client:
         r = await client.put(
             USERS_ENDPOINT,
@@ -40,15 +40,15 @@ async def change_user_permission(telegram_id: int, permission: UserPermission):
 
 
 async def approve_user(telegram_id: int):
-    return change_user_permission(telegram_id, UserPermission.APPROVED)
+    return await change_user_permission(telegram_id, UserPermission.APPROVED)
 
 
 async def pend_user(telegram_id: int):
-    return change_user_permission(telegram_id, UserPermission.PENDING)
+    return await change_user_permission(telegram_id, UserPermission.PENDING)
 
 
 async def block_user(telegram_id: int):
-    return change_user_permission(telegram_id, UserPermission.BLOCKED)
+    return await change_user_permission(telegram_id, UserPermission.BLOCKED)
 
 
 async def get_user_permission(telegram_id: int) -> UserPermission:
@@ -69,6 +69,6 @@ async def fetch_users(permission: UserPermission | None = None) -> list:
     async with httpx.AsyncClient() as client:
         r = await client.get(
             f"{USERS_ENDPOINT}/list/",
-            json={"permission": permission.value} if permission else {},
+            params={"permission": permission.value} if permission else {},
         )
     return r.json()
