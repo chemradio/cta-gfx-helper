@@ -93,4 +93,6 @@ async def edit_user(
 @router.get("/list/")
 async def list_users_by_permission(permission: UserPermission | None = None):
     users = Users.find({"permission": permission} if permission else {})
-    return list(users)
+    if not users:
+        return []
+    return [{k: v for k, v in user.items() if k != "_id"} for user in users]

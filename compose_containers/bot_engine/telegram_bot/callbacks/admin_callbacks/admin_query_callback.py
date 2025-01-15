@@ -77,17 +77,17 @@ async def admin_query_callback(
         #     await list_active_orders_to_admin()
         #     return True
 
-        # if data == "admin_list_approved_users":
-        #     await list_users_to_admin(UserPermission.APPROVED)
-        #     return True
+        if data == "admin_list_approved_users":
+            await list_users_to_admin(UserPermission.APPROVED)
+            return True
 
-        # if data == "admin_list_blocked_users":
-        #     await list_users_to_admin(UserPermission.BLOCKED)
-        #     return True
+        if data == "admin_list_blocked_users":
+            await list_users_to_admin(UserPermission.BLOCKED)
+            return True
 
-        # if data == "admin_list_pending_users":
-        #     await list_users_to_admin(UserPermission.PENDING)
-        #     return True
+        if data == "admin_list_pending_users":
+            await list_users_to_admin(UserPermission.PENDING)
+            return True
 
         # if data == "dump_users":
         #     try:

@@ -68,7 +68,7 @@ async def get_user_role(telegram_id: int) -> UserRole | None:
 async def fetch_users(permission: UserPermission | None = None) -> list:
     async with httpx.AsyncClient() as client:
         r = await client.get(
-            f"{USERS_ENDPOINT}/list/",
+            f"{USERS_ENDPOINT}list/",
             params={"permission": permission.value} if permission else {},
         )
     return r.json()

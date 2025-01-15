@@ -11,7 +11,7 @@ from py_gfxhelper_lib.user_enums.user_role import UserRole
 # from telegram_bot.callbacks.admin_callbacks.cookie_file_uploader import (
 #     cookie_file_uploader,
 # )
-# from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
+from telegram_bot.callbacks.commands.admin_command import admin_panel_callback
 from telegram_bot.callbacks.commands.back_button import back_callback
 from telegram_bot.callbacks.commands.exit_callback import exit_callback
 from telegram_bot.callbacks.commands.help_callback import help_callback
@@ -42,7 +42,7 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         # case "cookie_file":
         #     return await cookie_file_uploader(update, context)
 
-        # case "admin":
-        #     return await admin_panel_callback(update, context)
+        case "admin":
+            return await admin_panel_callback(update, context)
         case _:
             raise Exception(f"Wrong command detected: {command}")
