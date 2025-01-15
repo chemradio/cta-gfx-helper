@@ -89,13 +89,13 @@ async def admin_query_callback(
             await list_users_to_admin(UserPermission.PENDING)
             return True
 
-        # if data == "dump_users":
-        #     try:
-        #         await list_users_to_admin_raw()
-        #     except Exception as e:
-        #         print(str(e))
-        #         traceback.print_exc()
-        #     finally:
-        #         return True
+        if data == "dump_users":
+            try:
+                await list_users_to_admin_raw()
+            except Exception as e:
+                print(str(e))
+                traceback.print_exc()
+            finally:
+                return True
 
         return False
