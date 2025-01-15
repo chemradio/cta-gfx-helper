@@ -3,6 +3,7 @@ from telegram.ext import ContextTypes
 
 from py_gfxhelper_lib.user_enums.user_permission import UserPermission
 from py_gfxhelper_lib.user_enums.user_role import UserRole
+
 # from telegram_bot.callbacks.admin_callbacks.backup_restore_db import (
 #     backup_db_callback,
 #     restore_db_callback,
@@ -45,5 +46,3 @@ async def commands_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         #     return await admin_panel_callback(update, context)
         case _:
             raise Exception(f"Wrong command detected: {command}")
-
-

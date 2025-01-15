@@ -2,7 +2,12 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import config
-from ..order_request_callbacks import only_screenshots_callback, readtime_callback, video_auto_callback, video_files_callback
+from ..order_request_callbacks import (
+    only_screenshots_callback,
+    readtime_callback,
+    video_auto_callback,
+    video_files_callback,
+)
 from telegram_bot.responders.main_responder import Responder
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 
@@ -25,7 +30,9 @@ async def request_type_callback(
             text=f"🍱 Тип заказа: {config.REQUEST_TYPE_TEMP_MAP[update.callback_query.data]}"
         )
     except:
-        print(f"Request type response is wrong. Callback query result is missing or invalid.")
+        print(
+            f"Request type response is wrong. Callback query result is missing or invalid."
+        )
         return await Responder.errors.gp_error(user_id)
 
 
@@ -46,6 +53,10 @@ async def request_router(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         case "readtime":
             return await readtime_callback(update, context)
         case _:
-            await Responder.errors.custom_error(user_id=user_id, error_text="🆘 Неверная команда. Попробуй /start")
-            print(f"Request type response is wrong. Callback query result is missing or invalid.")
-            return 
+            await Responder.errors.custom_error(
+                user_id=user_id, error_text="🆘 Неверная команда. Попробуй /start"
+            )
+            print(
+                f"Request type response is wrong. Callback query result is missing or invalid."
+            )
+            return

@@ -6,6 +6,7 @@ from pymongo import ReturnDocument
 
 from py_gfxhelper_lib.user_enums import UserPermission, UserRole
 from db_mongo import find_user, Users
+import time
 
 router = APIRouter()
 
@@ -50,10 +51,12 @@ async def register(
             "description": description,
             "permission": permission,
             "role": role,
-            "created": datetime.now().replace(microsecond=0).isoformat(),
+            "created": str(int(time.time())),
         }
     )
-    return Users.find_one({"_id": ObjectId(user_db_id)})
+    user_db = Users.find_one({"_id": ObjectId(user_db_id)})
+    user_db.pop("_id")
+    return user_db
 
 
 @router.put("/")
@@ -76,6 +79,7 @@ async def edit_user(
         {"$set": update_data},
         return_document=ReturnDocument.AFTER,
     )
+    updated_user.pop("_id")
     return updated_user
 
 

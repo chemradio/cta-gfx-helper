@@ -2,8 +2,9 @@ import traceback
 
 from py_gfxhelper_lib.user_enums.user_permission import UserPermission
 from py_gfxhelper_lib.user_enums.user_role import UserRole
+
 # from container_interaction.orders import cancel_order
-from container_interaction.users import allow_user, block_user, pend_user
+from container_interaction.users import approve_user, block_user, pend_user
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import ContextTypes
 from telegram_bot.callbacks.admin_callbacks.list_orders_to_admin import (
@@ -29,7 +30,7 @@ async def admin_query_callback(
 
         if "approve_" in data:
             applicant_id = int(data.split("approve_")[1])
-            await allow_user(applicant_id)
+            await approve_user(applicant_id)
             await update.callback_query.edit_message_text(
                 text=update.callback_query.message.text.split("\n")[2] + "\nApproved"
             )

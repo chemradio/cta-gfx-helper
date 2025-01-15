@@ -24,11 +24,9 @@ async def dispatcher_callback(
     user_id = parse_user_id(update)
 
     # check user allowance and or handle register and auth
-    # user_allowed = await auth_register_callback(update, context)
-    # if not user_allowed:
-    #     return
-    
-
+    user_allowed = await auth_register_callback(update, context)
+    if not user_allowed:
+        return
 
     # if user is admin check if commands, callback_queries contain admin specific elements
     # user approval/blocking, listing orders, etc.
@@ -40,11 +38,9 @@ async def dispatcher_callback(
     #     except:
     #         pass
 
-
-
     user_data: dict = context.user_data
     update_dict = update.to_dict()
-    update_message_text = update_dict.get("message", {}).get("text", '')
+    update_message_text = update_dict.get("message", {}).get("text", "")
     order_status = user_data.get("status")
 
     if update_message_text.startswith("/"):
@@ -64,8 +60,8 @@ async def dispatcher_callback(
         except:
             user_data.clear()
             await Responder.errors.no_active_session(user_id)
-            return 
-            
+            return
+
     except Exception as e:
         print(str(e))
         await Responder.errors.custom_error(user_id=user_id, error_text=str(e))
