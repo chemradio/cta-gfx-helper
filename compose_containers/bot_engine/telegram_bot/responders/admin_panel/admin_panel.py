@@ -62,7 +62,7 @@ class AdminPanelResponder:
                 [
                     InlineKeyboardButton(
                         "🛑 Отменить заказ",
-                        callback_data=f"admin_cancel_order_{order['id']}",
+                        callback_data=f"admin_cancel_order_{order['order_id']}",
                     )
                 ],
             ]
@@ -81,16 +81,17 @@ Cтатус: {status}
 Цитата: {quote_text}
 Автор цитаты: {quote_author}
 Звук: {audio_enabled}""".format(
-            order_id=order.get("id"),
-            customer_name=order["user"].get("first_name"),
-            customer_email=order["user"].get("email"),
+            order_id=order.get("order_id"),
+            customer_name=order.get("first_name"),
+            telegram_id=order.get("telegram_id"),
+            customer_email=order.get("email"),
             request_type=order.get("request_type"),
             status=order.get("status"),
             wait_time=order.get("wait_time"),
-            link=order.get("link"),
+            link=order.get("screenshot_link"),
             quote_text=order.get("quote_text"),
             quote_author=order.get("quote_author_text"),
-            audio_enabled="Да" if order.get("audio_enabled") else "Нет",
+            audio_enabled="Да" if order.get("audio_file") else "Нет",
         )
 
         return await bot.send_message(

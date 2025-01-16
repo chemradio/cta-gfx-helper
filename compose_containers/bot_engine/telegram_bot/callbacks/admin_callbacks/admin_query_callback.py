@@ -69,13 +69,13 @@ async def admin_query_callback(
         #     # )
         #     # return True
 
-        # if data == "admin_list_10_orders":
-        #     await list_10_orders_to_admin()
-        #     return True
+        if data == "admin_list_10_orders":
+            await list_10_orders_to_admin()
+            return True
 
-        # if data == "admin_list_active_orders":
-        #     await list_active_orders_to_admin()
-        #     return True
+        if data == "admin_list_active_orders":
+            await list_active_orders_to_admin()
+            return True
 
         if data == "admin_list_approved_users":
             await list_users_to_admin(UserPermission.APPROVED)

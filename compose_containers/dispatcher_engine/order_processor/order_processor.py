@@ -1,7 +1,6 @@
-from pprint import pprint
 import traceback
 
-from custom_types_enums.orders import OrderRequestType
+from py_gfxhelper_lib.order_enums import OrderRequestType
 
 from .request_processors import (
     process_only_screenshots,
@@ -21,8 +20,9 @@ async def process_order(order: dict) -> None:
         order["audio_enabled"] = True if order["audio_file"] else False
 
         from pprint import pprint
+
         pprint(order)
-        print(order,flush=True)
+        print(order, flush=True)
         match order["request_type"]:
             case OrderRequestType.READTIME:
                 container_output = await process_readtime(order)
@@ -42,17 +42,17 @@ async def process_order(order: dict) -> None:
             )
     except Exception as e:
 
-
-
         print(f"Error while processing order: {str(e)}", flush=True)
         print(str(e), flush=True)
         pprint(order)
         # print full traceback
         traceback.print_exc()
-        
+
         if order.get("telegram_id"):
             try:
-                return await report_error_telegram(telegram_id=order["telegram_id"],error_message=str(e), order=order)
+                return await report_error_telegram(
+                    telegram_id=order["telegram_id"], error_message=str(e), order=order
+                )
             except Exception as e:
                 print(str(e))
                 pass

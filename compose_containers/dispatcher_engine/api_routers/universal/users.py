@@ -1,6 +1,6 @@
 from uuid import uuid4
 from fastapi import APIRouter, HTTPException, Body
-from pymongo import ReturnDocument
+import pymongo
 
 from py_gfxhelper_lib.user_enums import UserPermission, UserRole
 from db_mongo import find_user, Users
@@ -58,7 +58,7 @@ async def register(
             "description": description,
             "permission": permission,
             "role": role,
-            "created": str(int(time.time())),
+            "created": int(time.time()),
         }
     )
     user_db = Users.find_one({"id": user_id})
@@ -84,7 +84,7 @@ async def edit_user(
     updated_user = Users.find_one_and_update(
         {"id": user_db["id"]},
         {"$set": update_data},
-        return_document=ReturnDocument.AFTER,
+        return_document=pymongo.ReturnDocument.AFTER,
     )
     updated_user.pop("_id")
     return updated_user
@@ -92,7 +92,9 @@ async def edit_user(
 
 @router.get("/list/")
 async def list_users_by_permission(permission: UserPermission | None = None):
-    users = Users.find({"permission": permission} if permission else {})
+    users = Users.find({"permission": permission} if permission else {}).sort(
+        "created", pymongo.DESCENDING
+    )
     if not users:
         return []
     return [{k: v for k, v in user.items() if k != "_id"} for user in users]
