@@ -19,10 +19,6 @@ async def process_order(order: dict) -> None:
         order["quote_enabled"] = True if order["quote_text"] else False
         order["audio_enabled"] = True if order["audio_file"] else False
 
-        from pprint import pprint
-
-        pprint(order)
-        print(order, flush=True)
         match order["request_type"]:
             case OrderRequestType.READTIME:
                 container_output = await process_readtime(order)
@@ -41,13 +37,10 @@ async def process_order(order: dict) -> None:
                 container_output=container_output,
             )
     except Exception as e:
-
         print(f"Error while processing order: {str(e)}", flush=True)
         print(str(e), flush=True)
-        pprint(order)
         # print full traceback
         traceback.print_exc()
-
         if order.get("telegram_id"):
             try:
                 return await report_error_telegram(
