@@ -76,6 +76,7 @@ async def add_new_order(
             else None
         ),
         "status": OrderStatus.NEW.value,
+        "error": False,
     }
 
     Orders.insert_one(
@@ -99,9 +100,17 @@ async def get_orders(
     status: OrderStatus | None = None,
     ordered_from: OrderSource | None = None,
 ):
-    orders = Orders.find(
-        {"telegram_id": telegram_id, "email": email, "status": status}
-    ).sort("created", pymongo.DESCENDING)
+    params = {
+        "telegram_id": telegram_id,
+        "email": email,
+        "status": status.value if status else None,
+        "ordered_from": ordered_from.value if ordered_from else None,
+    }
+    filtered_params = {k: v for k, v in params.items() if v is not None}
+    orders = Orders.find(filtered_params)
     if not orders:
         return []
-    return [{k: v for k, v in order.items() if k != "_id"} for order in orders]
+    return [
+        {k: v for k, v in order.items() if k != "_id"}
+        for order in orders.sort("created", pymongo.DESCENDING)
+    ]

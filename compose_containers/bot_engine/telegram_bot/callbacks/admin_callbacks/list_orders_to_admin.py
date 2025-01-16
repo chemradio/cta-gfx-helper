@@ -21,6 +21,12 @@ async def list_10_orders_to_admin() -> None:
 
 async def list_active_orders_to_admin() -> None:
     active_orders = await fetch_orders(status=OrderStatus.PROCESSING)
+    new_orders = await fetch_orders(status=OrderStatus.NEW)
+    active_orders.extend(new_orders)
+
+    # sort from oldest to newest by created time
+    active_orders.sort(key=lambda x: x.get("created"))
+
     if not active_orders:
         return await Responder.admin_panel.missing_orders(BOT_ADMIN)
 

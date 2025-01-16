@@ -1,7 +1,7 @@
 import traceback
 
-from py_gfxhelper_lib.order_enums import OrderRequestType
-
+from py_gfxhelper_lib.order_enums import OrderRequestType, OrderStatus
+from db_mongo import Orders
 from .request_processors import (
     process_only_screenshots,
     process_readtime,
@@ -14,6 +14,7 @@ from .telegram_send import return_result_telegram, report_error_telegram
 
 async def process_order(order: dict) -> None:
     try:
+        change_db_order_status(order["order_id"], OrderStatus.PROCESSING)
         # general order processing
         # fix quote and audio fields
         order["quote_enabled"] = True if order["quote_text"] else False
@@ -37,10 +38,11 @@ async def process_order(order: dict) -> None:
                 container_output=container_output,
             )
     except Exception as e:
+        log_db_order_error(order["order_id"], str(e))
         print(f"Error while processing order: {str(e)}", flush=True)
         print(str(e), flush=True)
-        # print full traceback
         traceback.print_exc()
+
         if order.get("telegram_id"):
             try:
                 return await report_error_telegram(
@@ -49,3 +51,19 @@ async def process_order(order: dict) -> None:
             except Exception as e:
                 print(str(e))
                 pass
+    finally:
+        change_db_order_status(order["order_id"], OrderStatus.FINISHED)
+
+
+def change_db_order_status(order_id: str, status: OrderStatus) -> None:
+    Orders.find_one_and_update(
+        {"order_id": order_id},
+        {"$set": {"status": status.value}},
+    )
+
+
+def log_db_order_error(order_id: str, error_message: str) -> None:
+    Orders.find_one_and_update(
+        {"order_id": order_id},
+        {"$set": {"error": True, "error_message": error_message}},
+    )

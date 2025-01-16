@@ -28,15 +28,17 @@ async def fetch_orders(
     status: OrderStatus | None = None,
     ordered_from: OrderSource | None = None,
 ) -> list[dict | None]:
+    params = {
+        "telegram_id": telegram_id,
+        "email": email,
+        "status": status.value if status else None,
+        "ordered_from": ordered_from.value if ordered_from else None,
+    }
+    filtered_params = {key: value for key, value in params.items() if value is not None}
     async with httpx.AsyncClient() as client:
         r = await client.get(
             f"{ORDERS_ENDPOINT}list/",
-            params={
-                "telegram_id": telegram_id,
-                "email": email,
-                "status": status,
-                "ordered_from": ordered_from,
-            },
+            params=filtered_params if filtered_params else None,
         )
     return r.json()
 
