@@ -1,7 +1,6 @@
 from collections import deque
 from pathlib import Path
 from threading import Thread
-from time import perf_counter
 from typing import Callable
 
 from ..tiny_database.db import DBHandler
@@ -46,11 +45,9 @@ class QueueManager:
     def _process_queue(self):
         self._processing = True
 
-        queue_start = perf_counter()
         while self._queue:
             item: dict = self._queue.popleft()
             self._db_handler.update(item["order_id"], {"status": "processing"})
-            task_start = perf_counter()
 
             operator_results = self._operator(item, **self._operator_kwargs)
 
@@ -65,26 +62,23 @@ class QueueManager:
                 )
 
             if operator_results.success and operator_results.operator_output:
-                self._store_operator_output(operator_results.operator_output)
-                update_data.update(
-                    {
-                        "output_filenames": [
-                            output.filename
-                            for output in operator_results.operator_output
-                        ],
-                    }
-                )
+                if not item.get("no_store_output"):
+                    self._store_operator_output(operator_results.operator_output)
+                    update_data.update(
+                        {
+                            "output_filenames": [
+                                output.filename
+                                for output in operator_results.operator_output
+                            ],
+                        }
+                    )
 
             self._db_handler.update(
                 item["order_id"], {"status": "finished", **update_data}
             )
 
-            task_stop = perf_counter()
-
         else:
             self._processing = False
-
-        queue_stop = perf_counter()
 
     def _store_operator_output(
         self,

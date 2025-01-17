@@ -1,4 +1,4 @@
-from .telegram_reporter import report_error_telegram
+from .telegram_reporter.error_report import report_error_telegram
 
 
 async def report_error_to_user(order: dict, error_message: str) -> bool:

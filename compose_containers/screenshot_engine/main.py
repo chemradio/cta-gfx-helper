@@ -1,10 +1,11 @@
 import uuid
 
 from fastapi import FastAPI, Form, UploadFile
-
+from contextlib import asynccontextmanager
 import config
 from src import main_capture
 from src.driver_auth import initialize_cookie_storage
+from src.cookie_updater.main import schedule_cookie_update
 from py_gfxhelper_lib.startup import purge_storage
 from py_gfxhelper_lib import QueueManager
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
@@ -26,7 +27,14 @@ queue = QueueManager(
     db_handler=DBHandler,
 )
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    schedule_cookie_update(queue)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 app.include_router(file_server_router)
 app.include_router(order_check_router)
 

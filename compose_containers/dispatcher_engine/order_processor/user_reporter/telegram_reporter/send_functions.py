@@ -41,13 +41,6 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
     r.raise_for_status()
 
 
-async def report_error_telegram(telegram_id: int, error_message: str, order: dict):
-    return await send_text_telegram(
-        text=f"Произошла ошибка при обработке заказа.\n{error_message}\nПожалуйста, перешли это сообщение админу бота\n\n.{str(order)}",
-        receiver_id=telegram_id,
-    )
-
-
 # function for checking if filezise exceeds 25 mb
 def check_filesize(file_bytes: BytesIO) -> bool:
     file_size = len(file_bytes.getvalue())

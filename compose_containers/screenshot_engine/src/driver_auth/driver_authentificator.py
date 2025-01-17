@@ -25,10 +25,11 @@ def authenticate_driver(
         add_cookies_driver(cookie_file, domain, driver)
         time.sleep(2)
         driver.refresh()
+        time.sleep(1)
+        dump_domain_cookies(cookie_file, domain, driver.get_cookies())
+
         if not check_domain_login(driver, domain):
             return False
-
-        dump_domain_cookies(cookie_file, domain, driver.get_cookies())
         return True
 
     except Exception as e:
