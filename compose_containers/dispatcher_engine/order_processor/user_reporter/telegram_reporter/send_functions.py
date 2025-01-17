@@ -30,6 +30,7 @@ async def send_file_telegram(
         )
     r.raise_for_status()
 
+
 async def send_text_telegram(text: str, receiver_id: int) -> dict:
     kwargs = {
         "chat_id": receiver_id,
@@ -38,6 +39,13 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
     async with httpx.AsyncClient() as client:
         r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
     r.raise_for_status()
+
+
+async def report_error_telegram(telegram_id: int, error_message: str, order: dict):
+    return await send_text_telegram(
+        text=f"Произошла ошибка при обработке заказа.\n{error_message}\nПожалуйста, перешли это сообщение админу бота\n\n.{str(order)}",
+        receiver_id=telegram_id,
+    )
 
 
 # function for checking if filezise exceeds 25 mb

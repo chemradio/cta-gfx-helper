@@ -23,11 +23,3 @@ async def return_result_telegram(telegram_id: int, container_output: list[AssetF
                     file_bytes=result_file.bytesio,
                     receiver_id=telegram_id,
                 )
-
-
-
-async def report_error_telegram(telegram_id: int, error_message: str, order: dict):
-    return await send_text_telegram(
-        text=f"Произошла ошибка при обработке заказа.\n{error_message}\nПожалуйста, перешли это сообщение админу бота\n\n.{order}",
-        receiver_id=telegram_id,
-    )

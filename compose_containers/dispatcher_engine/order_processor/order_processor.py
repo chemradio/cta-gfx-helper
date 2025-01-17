@@ -1,5 +1,5 @@
 import traceback
-
+import config
 from py_gfxhelper_lib.order_enums import OrderRequestType, OrderStatus
 from db_mongo import Orders
 from .request_processors import (
@@ -9,16 +9,18 @@ from .request_processors import (
     process_video_files,
     process_video_mixed,
 )
-from .telegram_send import return_result_telegram, report_error_telegram
+from .signals.admin_termination import AdminTerminatedException
+from .user_reporter import (
+    return_order_result_to_user,
+    report_error_to_user,
+    report_error_to_admin,
+)
 
 
 async def process_order(order: dict) -> None:
     try:
+        error_message = None
         change_db_order_status(order["order_id"], OrderStatus.PROCESSING)
-        # general order processing
-        # fix quote and audio fields
-        order["quote_enabled"] = True if order["quote_text"] else False
-        order["audio_enabled"] = True if order["audio_file"] else False
 
         match order["request_type"]:
             case OrderRequestType.READTIME:
@@ -32,27 +34,26 @@ async def process_order(order: dict) -> None:
             case OrderRequestType.VIDEO_FILES:
                 container_output = await process_video_files(order)
 
-        if order.get("telegram_id"):
-            return await return_result_telegram(
-                telegram_id=order["telegram_id"],
-                container_output=container_output,
-            )
-    except Exception as e:
-        log_db_order_error(order["order_id"], str(e))
-        print(f"Error while processing order: {str(e)}", flush=True)
-        print(str(e), flush=True)
-        traceback.print_exc()
+        await return_order_result_to_user(order, container_output)
 
-        if order.get("telegram_id"):
-            try:
-                return await report_error_telegram(
-                    telegram_id=order["telegram_id"], error_message=str(e), order=order
-                )
-            except Exception as e:
-                print(str(e))
-                pass
+    except AdminTerminatedException as e:
+        error_message = str(e)
+        print(f"Admin terminated order: {str(e)}", flush=True)
+        await report_error_to_user(order, str(e))
+        await report_error_to_admin(order, str(e), config.BOT_ADMIN)
+
+    except Exception as e:
+        error_message = str(e)
+        print(f"Error while processing order: {str(e)}", flush=True)
+        traceback.print_exc()
+        await report_error_to_user(order, str(e))
+        await report_error_to_admin(order, str(e), config.BOT_ADMIN)
+
     finally:
+        if error_message:
+            log_db_order_error(order["order_id"], error_message)
         change_db_order_status(order["order_id"], OrderStatus.FINISHED)
+        return None
 
 
 def change_db_order_status(order_id: str, status: OrderStatus) -> None:
