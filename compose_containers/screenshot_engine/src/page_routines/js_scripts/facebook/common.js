@@ -69,6 +69,7 @@ const fallbackSingleLayerError = () => {
 };
 
 const parsePost = async () => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
     const getGroupPost = () => {};
     const getDialogPost = () => {
         let dialogs = document.querySelectorAll('[role="dialog"]');
@@ -162,6 +163,7 @@ const parsePost = async () => {
 };
 
 const parseProfile = async () => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
     if (getPageType() !== "profile") return null;
 
     const removeBanner = () => {

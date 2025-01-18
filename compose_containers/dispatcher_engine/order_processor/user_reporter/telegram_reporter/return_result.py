@@ -7,18 +7,18 @@ async def return_result_telegram(telegram_id: int, container_output: list[AssetF
     for file_index, result_file in enumerate(container_output):
         match result_file.file_type:
             case FileType.TEXT:
-                return await send_text_telegram(
+                await send_text_telegram(
                     text=result_file.text,
                     receiver_id=telegram_id,
                 )
             case FileType.VIDEO:
-                return await send_file_telegram(
+                await send_file_telegram(
                     filename=result_file.filename,
                     file_bytes=result_file.bytesio,
                     receiver_id=telegram_id,
                 )
             case FileType.IMAGE:
-                return await send_file_telegram(
+                await send_file_telegram(
                     filename=f"{file_index}_{result_file.filename}",
                     file_bytes=result_file.bytesio,
                     receiver_id=telegram_id,

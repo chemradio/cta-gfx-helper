@@ -24,7 +24,7 @@ async def send_file_telegram(
         "disable_content_type_detection": True,
         "allow_sending_without_reply": True,
     }
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         r = await client.post(
             SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
         )
@@ -36,7 +36,7 @@ async def send_text_telegram(text: str, receiver_id: int) -> dict:
         "chat_id": receiver_id,
         "text": text,
     }
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
     r.raise_for_status()
 

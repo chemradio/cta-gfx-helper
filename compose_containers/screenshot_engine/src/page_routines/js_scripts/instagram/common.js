@@ -54,6 +54,7 @@ const removeObscuringElements = () => {
     }
 };
 const parsePost = async () => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
     const getPost = () => {
         console.log("Extracting POST");
         const postDetectors = [
@@ -131,6 +132,7 @@ const parsePost = async () => {
 };
 
 const parseProfile = async () => {
+    document.body.style.fontFamily = "'Roboto', sans-serif";
     if (getPageType() !== "profile") return null;
 
     // remove the side panel

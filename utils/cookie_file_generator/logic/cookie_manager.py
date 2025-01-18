@@ -27,6 +27,7 @@ class CookieManager:
 
     def dump_domain_cookies(self, domain: str, domain_cookies: list[dict]) -> None:
         """Save specific domain cookies to storage."""
+        print("Dumping cookies to file")
         stored_cookies = self.get_stored_cookies()
         stored_cookies[domain] = domain_cookies
         with open(f"{self.cookie_file}", "w") as cookie_file:

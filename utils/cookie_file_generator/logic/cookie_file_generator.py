@@ -61,14 +61,17 @@ class CookieFileGenerator:
             # Give user infinite time to log in to website/social network
             while True:
                 try:
+                    print("window exists")
                     # check if user has closed the window after logging in
                     _ = self.driver.window_handles
+                    print("grabbing cookies")
                     domain_cookies = self.driver.get_cookies()
                     time.sleep(1)
                 except:
                     break
 
             if domain_cookies:
+                print("Dumping updated cookies to file")
                 self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
 
             time.sleep(1)
