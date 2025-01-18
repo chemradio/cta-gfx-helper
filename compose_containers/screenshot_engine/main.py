@@ -1,11 +1,11 @@
 import uuid
-
+import asyncio
 from fastapi import FastAPI, Form, UploadFile
 from contextlib import asynccontextmanager
 import config
 from src import main_capture
 from src.driver_auth import initialize_cookie_storage
-from src.cookie_updater.main import schedule_cookie_update
+from src.cookie_updater.updater import schedule_cookie_update
 from py_gfxhelper_lib.startup import purge_storage
 from py_gfxhelper_lib import QueueManager
 from py_gfxhelper_lib.fastapi_routers import order_check_router, file_server_router
@@ -30,7 +30,7 @@ queue = QueueManager(
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    schedule_cookie_update(queue)
+    asyncio.create_task(schedule_cookie_update(queue))
     yield
 
 

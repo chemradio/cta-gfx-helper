@@ -25,7 +25,9 @@ async def update_cookies(queue: QueueManager) -> None:
 
 
 async def schedule_cookie_update(queue: QueueManager):
+    print("cookie updater scheduler started")
     while True:
+        print("cookie updater main loop")
         now = datetime.now()
         target_time = datetime.combine(now.date(), datetime.min.time()) + timedelta(
             seconds=random.randint(0, 8 * 3600)
@@ -36,6 +38,7 @@ async def schedule_cookie_update(queue: QueueManager):
         print(f"Task scheduled at {target_time}")
 
         # Wait until the scheduled time
+        print(f"Waiting for {delay} seconds")
         await asyncio.sleep(delay)
         await update_cookies(queue)
         await asyncio.sleep(5 * 60)
