@@ -84,7 +84,7 @@ const parsePost = async () => {
                 target = article;
             }
         });
-
+        target.querySelector("div").scrollIntoView();
         return target;
     };
     const getStory = async () => {
