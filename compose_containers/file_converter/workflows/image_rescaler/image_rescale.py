@@ -45,28 +45,29 @@ async def image_rescale(
 
 def rescale_image(image_file: AssetFile, max_width:int|float|None=None, max_height:int|float|None=None):
     with Image.open(image_file.bytesio) as original_image:
-        original_width, original_height = img.size
+        original_width, original_height = original_image.size
         output_bytesio = io.BytesIO()
         
         # Check if resizing is necessary
         if max_width and max_height:
-            if max_width >= original_width and max_height >= original_height:
-                img.save(output_bytesio, format=original_image.format)
-                return
-            img.thumbnail((max_width, max_height))
+            if max_width < original_width and max_height < original_height:
+                original_image.thumbnail((max_width, max_height))
+            original_image.save(output_bytesio, format=original_image.format)
+
         elif max_width:
-            if max_width >= original_width:
-                img.save(output_bytesio, format=original_image.format)
-                return
-            scale_factor = max_width / original_width
-            new_height = int(original_height * scale_factor)
-            img = img.resize((max_width, new_height), Image.ANTIALIAS)
+            if max_width < original_width:
+                scale_factor = max_width / original_width
+                new_height = int(original_height * scale_factor)
+                original_image = original_image.resize((max_width, new_height), Image.ANTIALIAS)
+            original_image.save(output_bytesio, format=original_image.format)
+
         elif max_height:
             if max_height >= original_height:
-                img.save(output_bytesio, format=original_image.format)
+                original_image.save(output_bytesio, format=original_image.format)
                 return
             scale_factor = max_height / original_height
             new_width = int(original_width * scale_factor)
-            img = img.resize((new_width, max_height), Image.ANTIALIAS)
+            original_image = original_image.resize((new_width, max_height), Image.ANTIALIAS)
         
-        img.save(output_path)
+        original_image.thumbnail((max_width, max_height))
+        original_image.save(output_path)
