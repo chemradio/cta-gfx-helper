@@ -1,3 +1,4 @@
+from io import BytesIO
 import httpx
 import asyncio
 from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
@@ -14,18 +15,44 @@ mime_map = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
 }
 
+
 async def test_file_conversion():
     # iterate over each file in test/to_convert
     audio_path = Path.cwd() / "test.mp3"
-    with open(audio_path, 'rb') as f:
+    with open(audio_path, "rb") as f:
         file_bytes = f.read()
-    orig_file = AssetFile(bytes_or_bytesio=file_bytes, extension='mp3')
-    result = await convert_file(orig_file, file_converter_url="http://127.0.0.1:9005")
+    orig_file = AssetFile(bytes_or_bytesio=file_bytes, extension="mp3")
+    result = await convert_file(orig_file, file_converter_url="http://127.0.0.1:8000")
     print(result)
     print(result.filename)
     print(result.mime_type)
     print(result.extension)
-    with open(Path.cwd() /result.filename, "wb") as f:
+    with open(Path.cwd() / result.filename, "wb") as f:
+        f.write(result.bytesio.getvalue())
+
+
+async def test_image_rescale():
+    # iterate over each file in test/to_convert
+    image_path = Path.cwd() / "0_UrhFGjFu.png"
+    with open(image_path, "rb") as f:
+        file_bytes = f.read()
+    orig_file = AssetFile(bytes_or_bytesio=file_bytes, extension="png")
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "http://127.0.0.1:8000/rescale_image/",
+            files={"file": (orig_file.filename, orig_file.bytesio)},
+        )
+        converted_mime = response.headers["Content-Type"]
+        result = AssetFile(
+            bytes_or_bytesio=BytesIO(response.content),
+            mime_type=converted_mime,
+        )
+    print(result)
+    print(result.filename)
+    print(result.mime_type)
+    print(result.extension)
+    with open(Path.cwd() / result.filename, "wb") as f:
         f.write(result.bytesio.getvalue())
 
 
@@ -46,10 +73,10 @@ async def test_file_conversion():
 #             f.write(result.content)
 
 
-
 async def main():
     # from time import perf_counter
-    await test_file_conversion()
+    # await test_file_conversion()
+    await test_image_rescale()
     # start = perf_counter()
     # await seq_test_file_conversion()
     # end = perf_counter()

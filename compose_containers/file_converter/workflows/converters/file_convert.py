@@ -1,4 +1,3 @@
-from io import BytesIO
 from .workers import (
     convert_audio_to_wav,
     convert_pdf_to_png,
@@ -9,13 +8,12 @@ from py_gfxhelper_lib.files import AssetFile
 
 
 async def convert_unsupported_file(
-    file:AssetFile,
+    file: AssetFile,
 ) -> AssetFile:
     AUDIO_EXTENSIONS = ("wav", "mp3", "ogg")
     IMAGE_EXTENSIONS = ("png", "jpg", "jpeg")
     WORD_EXTENSIONS = ("doc", "docx")
 
-    
     if file.extension in AUDIO_EXTENSIONS:
         converted_bytesio = await convert_audio_to_wav(file.bytesio)
         converted_mime_type = "audio/wav"
