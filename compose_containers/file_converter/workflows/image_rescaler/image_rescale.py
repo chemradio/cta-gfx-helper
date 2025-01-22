@@ -3,7 +3,7 @@ import PIL
 import io
 
 
-def rescale_image(
+async def rescale_image(
     image_file: AssetFile,
     max_width: int | float | None = None,
     max_height: int | float | None = None,
@@ -19,7 +19,7 @@ def rescale_image(
         if not max_height:
             max_height = original_height
 
-        original_image.thumbnail((max_width, max_height), PIL.Image.ANTIALIAS)
+        original_image.thumbnail((max_width, max_height))
 
         output_bytesio = io.BytesIO()
         original_image.save(output_bytesio, format="PNG")

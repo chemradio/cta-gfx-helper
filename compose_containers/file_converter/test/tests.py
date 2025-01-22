@@ -40,18 +40,15 @@ async def test_image_rescale():
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            "http://127.0.0.1:8000/rescale_image/",
-            files={"file": (orig_file.filename, orig_file.bytesio)},
+            "http://127.0.0.1:8000/reduce_image/",
+            files={"original_image": (orig_file.filename, orig_file.bytesio)},
+            data={"max_width": 1920},
         )
         converted_mime = response.headers["Content-Type"]
         result = AssetFile(
             bytes_or_bytesio=BytesIO(response.content),
             mime_type=converted_mime,
         )
-    print(result)
-    print(result.filename)
-    print(result.mime_type)
-    print(result.extension)
     with open(Path.cwd() / result.filename, "wb") as f:
         f.write(result.bytesio.getvalue())
 

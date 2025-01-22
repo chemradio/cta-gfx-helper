@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.responses import Response
 from py_gfxhelper_lib.files.asset_file import AssetFile
 from workflows.converters.file_convert import convert_unsupported_file
-from workflows.image_rescaler.image_rescale import image_rescale
+from workflows.image_rescaler.image_rescale import rescale_image
 
 app = FastAPI()
 
@@ -12,7 +12,7 @@ async def convert_file(
     file: UploadFile = File(...),
 ):
     try:
-        converted_file = await convert_unsupported_file(
+        converted_file = convert_unsupported_file(
             AssetFile(
                 bytes_or_bytesio=file.file.read(),
                 extension=file.filename.split(".")[-1],
@@ -28,14 +28,14 @@ async def convert_file(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/rescale_image/")
-async def rescale_image(
-    original_image: UploadFile = File(...),
+@app.post("/reduce_image/")
+async def reduce_image(
+    original_image: UploadFile = File(None),
     max_width: int | None = Form(None),
     max_height: int | None = Form(None),
 ):
     try:
-        rescaled_image = await image_rescale(
+        rescaled_image = await rescale_image(
             AssetFile(
                 bytes_or_bytesio=original_image.file.read(),
                 extension=original_image.filename.split(".")[-1],
