@@ -3,18 +3,22 @@ import json
 import os
 import shutil
 from pathlib import Path
-
+import anyio
+import anyio.to_thread
 from .animation_duration_calc import calculate_animation_duration
+from py_gfxhelper_lib.intercontainer_requests.file_requests import rescale_image
 
 
-def compose_videogfx(order: dict, storage_path: Path = Path.cwd() / "storage") -> Path:
-    html_assembly_path = prepare_html_template(order, storage_path)
+def compose_videogfx(
+    order: dict, reduce_images: bool, storage_path: Path = Path.cwd() / "storage"
+) -> Path:
+    html_assembly_path = prepare_html_template(order, reduce_images, storage_path)
     configure_html_comp(order, html_assembly_path)
     return html_assembly_path
 
 
 def prepare_html_template(
-    order: dict, storage_path: Path = Path.cwd() / "storage"
+    order: dict, reduce_images: bool, storage_path: Path = Path.cwd() / "storage"
 ) -> Path:
     # copy template files
     template_name = order.get("videogfx_template", "ct_main")
@@ -34,6 +38,14 @@ def prepare_html_template(
     for filetype in files_to_extract:
         if order.get(filetype) is None:
             continue
+
+        if reduce_images:
+            order[filetype] = anyio.to_thread.run_sync(
+                rescale_image,
+                order[filetype],
+                os.environ.get("VERTICAL_RESOLUTION", 1080) / 9 * 16 * 1.1,
+            )
+
         with open(html_assembly_path / order[filetype].filename, "wb") as f:
             f.write(order[filetype].bytesio.read())
 

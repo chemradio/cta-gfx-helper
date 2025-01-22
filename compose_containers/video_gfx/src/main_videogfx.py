@@ -9,7 +9,8 @@ from .videogfx_processor.videogfx_studio import create_videogfx
 def main_videogfx(
     order: dict,
     remote_driver_url_list: list[str],
-    assembly_server_url: str,
+    assembly_server_url: str = "http://video_gfx:9004/storage",
+    reduce_images: bool = False,
 ) -> OperatorResults:
     success = False
     error = False
@@ -18,9 +19,7 @@ def main_videogfx(
 
     try:
         videogfx_bytesio = create_videogfx(
-            order,
-            remote_driver_url_list,
-            assembly_server_url,
+            order, remote_driver_url_list, assembly_server_url, reduce_images
         )
         success = True
 

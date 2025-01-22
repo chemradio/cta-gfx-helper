@@ -30,15 +30,15 @@ async def convert_file(
 
 @app.post("/rescale_image/")
 async def rescale_image(
-    file: UploadFile = File(...),
-    max_width: int | float = Form(None),
-    max_height: int | float = Form(None),
+    original_image: UploadFile = File(...),
+    max_width: int | None = Form(None),
+    max_height: int | None = Form(None),
 ):
     try:
         rescaled_image = await image_rescale(
             AssetFile(
-                bytes_or_bytesio=file.file.read(),
-                extension=file.filename.split(".")[-1],
+                bytes_or_bytesio=original_image.file.read(),
+                extension=original_image.filename.split(".")[-1],
             ),
             max_width=max_width,
             max_height=max_height,

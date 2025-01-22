@@ -31,6 +31,7 @@ queue = QueueManager(
     operator=main_videogfx,
     remote_driver_url_list=config.SELENIUM_CONTAINERS,
     assembly_server_url=config.ASSEMBLY_SERVER_URL,
+    reduce_images=config.REDUCE_IMAGES,
     db_handler=DBHandler,
 )
 
@@ -50,32 +51,32 @@ async def create_video_gfx(
 ) -> dict:
     order_id = str(uuid.uuid4())
     order = {
-            "order_id": order_id,
-            "background_file": AssetFile(
-                background_file.file.read(), background_file.filename.split(".")[-1]
-            ),
-            "foreground_file": (
-                AssetFile(
-                    foreground_file.file.read(), foreground_file.filename.split(".")[-1]
-                )
-                if foreground_file
-                else None
-            ),
-            "audio_file": (
-                AssetFile(audio_file.file.read(), audio_file.filename.split(".")[-1])
-                if audio_file
-                else None
-            ),
-            "quote_enabled": True if quote_text else False,
-            "quote_text": quote_text,
-            "quote_author_enabled": True if quote_author_text else False,
-            "quote_author_text": quote_author_text,
-            "template": template,
-            "framerate": framerate,
-            "audio_offset": audio_offset,
-            "videogfx_tail": videogfx_tail,
-            "animation_duration": animation_duration,
-        }
+        "order_id": order_id,
+        "background_file": AssetFile(
+            background_file.file.read(), background_file.filename.split(".")[-1]
+        ),
+        "foreground_file": (
+            AssetFile(
+                foreground_file.file.read(), foreground_file.filename.split(".")[-1]
+            )
+            if foreground_file
+            else None
+        ),
+        "audio_file": (
+            AssetFile(audio_file.file.read(), audio_file.filename.split(".")[-1])
+            if audio_file
+            else None
+        ),
+        "quote_enabled": True if quote_text else False,
+        "quote_text": quote_text,
+        "quote_author_enabled": True if quote_author_text else False,
+        "quote_author_text": quote_author_text,
+        "template": template,
+        "framerate": framerate,
+        "audio_offset": audio_offset,
+        "videogfx_tail": videogfx_tail,
+        "animation_duration": animation_duration,
+    }
     pprint(order)
     queue.append(order)
     queue.start_processing()

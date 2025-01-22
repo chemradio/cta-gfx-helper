@@ -5,7 +5,7 @@ DISPATCHER_NOIFICATION_URL = f"http://dispatcher:9000"
 IS_DOCKER = os.environ.get("IS_DOCKER", False)
 STORAGE_PATH = Path.cwd() / "storage"
 
-
+REDUCE_IMAGES = True
 USE_THREADS = False
 USER_PROCESSES = not USE_THREADS
 SELENIUM_CONTAINERS_LOCAL = (

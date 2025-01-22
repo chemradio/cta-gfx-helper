@@ -46,13 +46,39 @@ async def delete_container_file(container_url: str, filename: str) -> None:
         assert r.status_code == 200
 
 
-async def convert_file(asset_file: AssetFile, file_converter_url:str = "http://file_converter:9005") -> AssetFile:
+async def convert_file(
+    asset_file: AssetFile, file_converter_url: str = "http://file_converter:9005"
+) -> AssetFile:
     async with httpx.AsyncClient() as client:
         response = await client.post(
             file_converter_url,
             files={"file": (asset_file.filename, asset_file.bytesio)},
         )
 
+        converted_mime = response.headers["Content-Type"]
+
+        return AssetFile(
+            bytes_or_bytesio=BytesIO(response.content),
+            mime_type=converted_mime,
+        )
+
+
+async def rescale_image(
+    asset_file: AssetFile,
+    max_width: int | float | None = None,
+    max_height: int | float | None = None,
+    file_converter_url: str = "http://file_converter:9005",
+) -> AssetFile:
+    async with httpx.AsyncClient() as client:
+
+        response = await client.post(
+            f"{file_converter_url}/rescale_image/",
+            files={"original_image": (asset_file.filename, asset_file.bytesio)},
+            data={
+                "max_width": int(max_width) if max_width else None,
+                "max_height": int(max_height) if max_height else None,
+            },
+        )
         converted_mime = response.headers["Content-Type"]
 
         return AssetFile(
