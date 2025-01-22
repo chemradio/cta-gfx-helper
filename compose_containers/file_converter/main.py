@@ -28,7 +28,7 @@ async def convert_file(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/reduce_image/")
+@app.post("/rescale_image/")
 async def reduce_image(
     original_image: UploadFile = File(None),
     max_width: int | None = Form(None),

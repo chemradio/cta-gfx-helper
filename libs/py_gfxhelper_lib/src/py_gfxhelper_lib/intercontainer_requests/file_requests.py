@@ -69,15 +69,21 @@ async def rescale_image(
     max_height: int | float | None = None,
     file_converter_url: str = "http://file_converter:9005",
 ) -> AssetFile:
+    if not max_width and not max_height:
+        raise ValueError("At least one of max_width or max_height must be provided")
+
+    dimensions = {}
+    if max_width:
+        dimensions["max_width"] = max_width
+    if max_height:
+        dimensions["max_height"] = max_height
+
     async with httpx.AsyncClient() as client:
 
         response = await client.post(
             f"{file_converter_url}/rescale_image/",
             files={"original_image": (asset_file.filename, asset_file.bytesio)},
-            data={
-                "max_width": int(max_width) if max_width else None,
-                "max_height": int(max_height) if max_height else None,
-            },
+            data=dimensions,
         )
         converted_mime = response.headers["Content-Type"]
 

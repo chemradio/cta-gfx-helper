@@ -1,7 +1,10 @@
 from io import BytesIO
 import httpx
 import asyncio
-from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
+from py_gfxhelper_lib.intercontainer_requests.file_requests import (
+    convert_file,
+    rescale_image,
+)
 from py_gfxhelper_lib.files.asset_file import AssetFile
 from pathlib import Path
 
@@ -37,10 +40,18 @@ async def test_image_rescale():
     with open(image_path, "rb") as f:
         file_bytes = f.read()
     orig_file = AssetFile(bytes_or_bytesio=file_bytes, extension="png")
-
+    result = await rescale_image(
+        orig_file,
+        # max_width=1920,
+        max_height=100,
+        file_converter_url="http://127.0.0.1:8000",
+    )
+    with open(Path.cwd() / result.filename, "wb") as f:
+        f.write(result.bytesio.getvalue())
+    return
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            "http://127.0.0.1:8000/reduce_image/",
+            "http://127.0.0.1:8000/rescale_image/",
             files={"original_image": (orig_file.filename, orig_file.bytesio)},
             data={"max_width": 1920},
         )
@@ -49,8 +60,6 @@ async def test_image_rescale():
             bytes_or_bytesio=BytesIO(response.content),
             mime_type=converted_mime,
         )
-    with open(Path.cwd() / result.filename, "wb") as f:
-        f.write(result.bytesio.getvalue())
 
 
 # async def submit_file_conversion(file_path: Path):
