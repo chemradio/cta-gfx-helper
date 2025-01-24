@@ -3,7 +3,6 @@ import json
 import os
 import shutil
 from pathlib import Path
-import anyio.to_thread
 from .animation_duration_calc import calculate_animation_duration
 from py_gfxhelper_lib.intercontainer_requests.file_requests import rescale_image_sync
 
