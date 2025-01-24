@@ -3,7 +3,6 @@ import json
 import os
 import shutil
 from pathlib import Path
-import anyio
 import anyio.to_thread
 from .animation_duration_calc import calculate_animation_duration
 from py_gfxhelper_lib.intercontainer_requests.file_requests import rescale_image
@@ -40,10 +39,9 @@ def prepare_html_template(
             continue
 
         if reduce_images:
-            order[filetype] = anyio.to_thread.run_sync(
-                rescale_image,
-                order[filetype],
-                os.environ.get("VERTICAL_RESOLUTION", 1080) / 9 * 16 * 1.1,
+            vertical_resolution = int(os.environ.get("VERTICAL_RESOLUTION", 1080))
+            order[filetype] = rescale_image(
+                order[filetype], vertical_resolution / 9 * 16 * 1.1
             )
 
         with open(html_assembly_path / order[filetype].filename, "wb") as f:

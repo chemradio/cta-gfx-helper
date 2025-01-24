@@ -20,4 +20,4 @@ COPY . .
 
 EXPOSE 9004
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9004", "--workers", "1"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9004", "--reload","--workers", "1"]

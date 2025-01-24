@@ -12,7 +12,7 @@ async def convert_file(
     file: UploadFile = File(...),
 ):
     try:
-        converted_file = convert_unsupported_file(
+        converted_file = await convert_unsupported_file(
             AssetFile(
                 bytes_or_bytesio=file.file.read(),
                 extension=file.filename.split(".")[-1],
