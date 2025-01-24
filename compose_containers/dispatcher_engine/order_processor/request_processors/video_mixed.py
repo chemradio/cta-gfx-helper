@@ -8,7 +8,9 @@ async def process_video_mixed(order: dict) -> list[AssetFile]:
     videogfx = await process_videogfx(
         quote_text=order["quote_text"],
         quote_author_text=order["quote_author_text"],
-        background_file=screenshots.background.content,
+        background_file=AssetFile(
+            bytes_or_bytesio=screenshots.background.content, extension="png"
+        ),
         foreground_file=order["foreground_file"],
         audio_file=order["audio_file"],
     )

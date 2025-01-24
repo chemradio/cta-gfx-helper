@@ -59,7 +59,7 @@ async def add_new_order(
             (
                 AssetFile(
                     bytes_or_bytesio=foreground_file.file.read(),
-                    extension=background_file.filename.split(".")[-1],
+                    extension=foreground_file.filename.split(".")[-1],
                 )
             )
             if foreground_file
