@@ -77,7 +77,6 @@ async def create_video_gfx(
         "videogfx_tail": videogfx_tail,
         "animation_duration": animation_duration,
     }
-    pprint(order)
     queue.append(order)
     queue.start_processing()
     return {"order_id": str(order_id)}

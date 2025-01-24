@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 import anyio.to_thread
 from .animation_duration_calc import calculate_animation_duration
-from py_gfxhelper_lib.intercontainer_requests.file_requests import rescale_image
+from py_gfxhelper_lib.intercontainer_requests.file_requests import rescale_image_sync
 
 
 def compose_videogfx(
@@ -40,8 +40,8 @@ def prepare_html_template(
 
         if reduce_images:
             vertical_resolution = int(os.environ.get("VERTICAL_RESOLUTION", 1080))
-            order[filetype] = rescale_image(
-                order[filetype], vertical_resolution / 9 * 16 * 1.1
+            order[filetype] = rescale_image_sync(
+                asset_file=order[filetype], max_width=vertical_resolution / 9 * 16 * 1.1
             )
 
         with open(html_assembly_path / order[filetype].filename, "wb") as f:
