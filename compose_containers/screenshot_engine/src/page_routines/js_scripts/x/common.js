@@ -55,6 +55,9 @@ const parsePost = async () => {
     if (pageType !== "post") return null;
     removePersonal();
 
+    // scroll to top of the page
+    window.scrollTo(0, 0);
+
     let post;
     const selectors = [
         "article[tabindex='-1']",
@@ -63,7 +66,10 @@ const parsePost = async () => {
     ];
     for (const selector of selectors) {
         post = document.querySelector(selector);
-        if (post) return post;
+        if (post) {
+            // post.scrollIntoView();
+            return post;
+        }
     }
 };
 
