@@ -6,6 +6,11 @@ from ..attachment_callbacks.attachment_handler import attachment_downloader
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
+from telegram_bot.exceptions.attachments import (
+    AttachmentTypeMismatch,
+    AttachmentSizeExceeded,
+    AttachmentNotFound,
+)
 
 
 async def audio_callback(
@@ -29,7 +34,25 @@ async def audio_callback(
             return await caller(update, context)
 
     if stage == "audio_file":
-        await Responder.common.wait_for_download(user_id)
-        downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"audio_file": await convert_file(downloaded_file), "stage": "audio_passed"})
-        return await caller(update, context)
+        try:
+            downloaded_file = await attachment_downloader(update, context)
+            user_data.update(
+                {
+                    "audio_file": await convert_file(downloaded_file),
+                    "stage": "audio_passed",
+                }
+            )
+            return await caller(update, context)
+        except AttachmentTypeMismatch:
+            return await Responder.errors.custom_error(
+                user_id,
+                "Не могу обработать аудио. Может не тот файл? Пришли аудио-файл",
+            )
+        except AttachmentSizeExceeded:
+            return await Responder.errors.custom_error(
+                user_id, "Размер файла превышает 100 МБ"
+            )
+        except AttachmentNotFound:
+            return await Responder.errors.custom_error(
+                user_id, "Не файл... Пришли аудио-файл"
+            )

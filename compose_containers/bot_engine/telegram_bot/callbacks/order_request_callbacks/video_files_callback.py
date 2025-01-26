@@ -8,7 +8,11 @@ from .shared_callbacks import results_callback, quote_callback, audio_callback
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
 from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
-
+from telegram_bot.exceptions.attachments import (
+    AttachmentTypeMismatch,
+    AttachmentSizeExceeded,
+    AttachmentNotFound,
+)
 
 
 async def video_files_callback(
@@ -26,11 +30,28 @@ async def video_files_callback(
     # handle main file
     # choose background file vs background screenshot
     if stage == "main_file":
-        await Responder.common.wait_for_download(user_id)
-        downloaded_file = await attachment_downloader(update, context)
-        user_data.update({"foreground_file": await convert_file(downloaded_file), "stage": "background_source"})
-        return await Responder.video_files.ask_background_source(user_id)
-
+        try:
+            downloaded_file = await attachment_downloader(update, context)
+            user_data.update(
+                {
+                    "foreground_file": await convert_file(downloaded_file),
+                    "stage": "background_source",
+                }
+            )
+            return await Responder.video_files.ask_background_source(user_id)
+        except AttachmentTypeMismatch:
+            return await Responder.errors.custom_error(
+                user_id,
+                "Не могу обработать файл. Может не тот файл? Пришли PNG,JPG, WORD или PDF ",
+            )
+        except AttachmentSizeExceeded:
+            return await Responder.errors.custom_error(
+                user_id, "Размер файла превышает 100 МБ"
+            )
+        except AttachmentNotFound:
+            return await Responder.errors.custom_error(
+                user_id, "Не файл... Пришли PNG,JPG, WORD или PDF"
+            )
 
     # handle background source choice
     if stage == "background_source":
@@ -55,7 +76,12 @@ async def video_files_callback(
                     user_data.update({"stage": "background_file"})
                     return await Responder.video_files.ask_background_file(user_id)
                 case "no_background":
-                    user_data.update({"background_file": user_data.pop("foreground_file"), "stage": "quote_enabled"})
+                    user_data.update(
+                        {
+                            "background_file": user_data.pop("foreground_file"),
+                            "stage": "quote_enabled",
+                        }
+                    )
                     return await Responder.quote.ask_quote_enabled(user_id)
 
         except:
@@ -70,9 +96,24 @@ async def video_files_callback(
             user_data.update({"screenshot_link": link_list[0]})
 
         elif stage == "background_file":
-            await Responder.common.wait_for_download(user_id)
-            downloaded_file = await attachment_downloader(update, context)
-            user_data.update({"background_file": await convert_file(downloaded_file)})
+            try:
+                downloaded_file = await attachment_downloader(update, context)
+                user_data.update(
+                    {"background_file": await convert_file(downloaded_file)}
+                )
+            except AttachmentTypeMismatch:
+                return await Responder.errors.custom_error(
+                    user_id,
+                    "Не могу обработать файл. Может не тот файл? Пришли PNG,JPG, WORD или PDF ",
+                )
+            except AttachmentSizeExceeded:
+                return await Responder.errors.custom_error(
+                    user_id, "Размер файла превышает 100 МБ"
+                )
+            except AttachmentNotFound:
+                return await Responder.errors.custom_error(
+                    user_id, "Не файл... Пришли PNG,JPG, WORD или PDF"
+                )
 
         user_data.update({"stage": "quote_enabled"})
         return await Responder.quote.ask_quote_enabled(user_id)
@@ -109,6 +150,3 @@ async def video_files_callback(
         await send_order_to_dispatcher(user_id, user_data)
         user_data.clear()
         return await Responder.results.results_correct(user_id)
-
-
-

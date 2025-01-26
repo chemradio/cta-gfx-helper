@@ -9,7 +9,7 @@ class VideoFilesResponder:
     async def ask_main_file(user_id):
         await bot.send_message(
             chat_id=user_id,
-            text="🎨 Пришли основной файл для графики (JPEG / PNG / PDF).",
+            text="🎨 Пришли основной файл для графики (JPEG / PNG / PDF / WORD).",
             reply_markup=ReplyKeyboardRemove(),
             parse_mode=config.GLOBAL_MESSAGE_PARSE_MODE,
         )
