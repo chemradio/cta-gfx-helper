@@ -188,8 +188,8 @@ const extractProfileURL = async () => {
     if (pageType === "profile") return window.location.href;
     if (pageType === "post") {
         const post = await parsePost();
-        const anchorTag = post.querySelector("a");
-        return anchorTag.href;
+        const anchorTags = post.querySelectorAll("a");
+        return anchorTags[1].href;
     }
     if (pageType === "story") {
         const story = await parsePost();
