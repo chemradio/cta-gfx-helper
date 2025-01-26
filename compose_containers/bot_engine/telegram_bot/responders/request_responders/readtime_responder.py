@@ -42,11 +42,8 @@ class ReadtimeResponder:
         )
 
     @staticmethod
-    async def readtime_results(user_id, context):
-        user_data = context.user_data
-        speed = user_data["readtime_speed"]
-        readtime = user_data["readtime_result"]
-        results_text = f"📝 На скорости {speed} слов в минуту хрон текста - {readtime}"
+    async def readtime_results(user_id: int, readtime: str, speed: int):
+        results_text = f"📝 Хрон текста: {readtime} \nСкорость {speed} слов в минуту"
 
         return await bot.send_message(
             chat_id=user_id,
