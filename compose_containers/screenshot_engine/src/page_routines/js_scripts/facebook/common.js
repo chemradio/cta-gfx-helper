@@ -178,6 +178,7 @@ const parseProfile = async () => {
 
     removeBanner();
     removeCommentAs();
+    document.body.style.zoom = "120%";
     return document.body;
 };
 
