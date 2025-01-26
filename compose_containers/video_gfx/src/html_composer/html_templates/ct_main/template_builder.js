@@ -33,10 +33,13 @@ function buildHTML(config) {
     bgImage.onload = function () {
         // get bg orientation
         let bgImageOrientation =
-            bgImage.width / bgImage.height > 16 / 9
+            bgImage.width / bgImage.height > 12 / 9
                 ? "horizontal-background"
                 : "vertical-background";
 
+        // console.log(bgImage.width, bgImage.height);
+        // console.log(bgImage.width / bgImage.height);
+        // console.log(bgImageOrientation);
         // set bg main animation class
         if (config.singleLayer) {
             config.backgroundClass = "bgOnly";
