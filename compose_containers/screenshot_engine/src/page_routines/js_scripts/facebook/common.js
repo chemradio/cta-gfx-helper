@@ -1,22 +1,21 @@
 const getPageType = () => {
+    const groupPostDetectors = [
+        'div[data-pagelet="GroupInlineComposer"]',
+        'div[data-pagelet="GroupFeed"]',
+    ];
+
     const postDetectors = [
         '[class="xb57i2i x1q594ok x5lxg6s x78zum5 xdt5ytf x6ikm8r x1ja2u2z x1pq812k x1rohswg xfk6m8 x1yqm8si xjx87ck xx8ngbg xwo3gff x1n2onr6 x1oyok0e x1odjw0f x1iyjqo2 xy5w88m"]',
         '[data-ad-preview="message"]',
         '[data-ad-comet-preview="message"]',
         '[data-ad-rendering-role="story_message"]',
         '[data-pagelet="WatchPermalinkVideo"]',
-        // '[role="dialog"]',
     ];
 
     const storyDetectors = [
-        // some containers
         'div[class="x1i10hfl xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k xh8yej3"]',
         '[data-pagelet="StoriesContentPane"]',
         '[data-pagelet="StoriesCardMedia"]',
-        // press to view story
-        // '[class="x1i10hfl xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x87ps6o x1lku1pv x1a2a7pz x6s0dn4 x78zum5 xdt5ytf x5yr21d xl56j7k xh8yej3"]',
-        // play button
-        // '[class="x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1o1ewxj x3x9cwd x1e5q0jg x13rtm0m x1n2onr6 x87ps6o x1lku1pv x1a2a7pz"]',
     ];
 
     const profileDetectors = [
@@ -37,6 +36,10 @@ const getPageType = () => {
         return false;
     };
 
+    if (isInCategory(groupPostDetectors)) {
+        console.log("Page type: GROUP POST");
+        return "groupPost";
+    }
     if (isInCategory(profileDetectors)) {
         console.log("Page type: PROFILE");
         return "profile";
@@ -70,7 +73,6 @@ const fallbackSingleLayerError = () => {
 
 const parsePost = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
-    const getGroupPost = () => {};
     const getDialogPost = () => {
         let dialogs = document.querySelectorAll('[role="dialog"]');
         if (dialogs.length < 1) {
@@ -128,9 +130,19 @@ const parsePost = async () => {
         return watchPerm.parentElement.parentElement;
     };
 
+    const getGroupPost = () => {
+        return document.querySelector('div[role="article"]');
+    };
+
     const pageType = getPageType();
     if (pageType === "profile" || pageType === "unknown") {
         return fallbackSingleLayerError();
+    }
+
+    if (pageType === "groupPost") {
+        removeCommentAs();
+        const post = getGroupPost();
+        return post;
     }
 
     if (pageType === "story") {
