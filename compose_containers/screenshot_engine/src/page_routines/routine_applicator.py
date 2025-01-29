@@ -15,6 +15,14 @@ def get_common_script(domain: str) -> str:
         return file.read()
 
 
+def get_misc_script(script_name: str) -> str:
+    script_path = JS_SCRIPTS_PATH / "misc" / f"{script_name}.js"
+    if not script_path.exists():
+        return ""
+    with open(script_path, "r") as file:
+        return file.read()
+
+
 def apply_post_routine(driver: webdriver.Remote, domain: str) -> WebElement:
     common_script = get_common_script(domain)
     if not common_script:
@@ -49,3 +57,14 @@ def extract_profile_url(driver: webdriver.Remote, domain: str) -> str:
         + """const callback = arguments[arguments.length - 1];
 extractProfileURL().then(callback);"""
     )
+
+
+def apply_misc_scripts(driver: webdriver.Remote, scripts: list[str]) -> None:
+    if not scripts:
+        return
+
+    for script in scripts:
+        misc_script = get_misc_script(script)
+        if not misc_script:
+            continue
+        driver.execute_script(misc_script)
