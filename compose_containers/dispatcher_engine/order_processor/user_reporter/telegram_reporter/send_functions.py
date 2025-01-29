@@ -3,9 +3,8 @@ from io import BytesIO
 import httpx
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-SEND_DOCUMENT_TELEGRAM_API_ENDPOINT = (
-    f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
-)
+TELEGRAM_SEND_DOCUMENT_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument"
+TELEGRAM_SEND_MESSAGE_API = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 
 async def send_file_telegram(
@@ -18,26 +17,24 @@ async def send_file_telegram(
 
     files = {"document": (filename, file_bytes)}
 
-    kwargs = {
+    params = {
         "chat_id": receiver_id,
         "caption": "✅ Твой заказ готов.",
         "disable_content_type_detection": True,
         "allow_sending_without_reply": True,
     }
     async with httpx.AsyncClient(timeout=20.0) as client:
-        r = await client.post(
-            SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs, files=files
-        )
+        r = await client.post(TELEGRAM_SEND_DOCUMENT_API, params=params, files=files)
     r.raise_for_status()
 
 
 async def send_text_telegram(text: str, receiver_id: int) -> dict:
-    kwargs = {
+    params = {
         "chat_id": receiver_id,
         "text": text,
     }
     async with httpx.AsyncClient(timeout=20.0) as client:
-        r = await client.post(SEND_DOCUMENT_TELEGRAM_API_ENDPOINT, params=kwargs)
+        r = await client.post(TELEGRAM_SEND_MESSAGE_API, params=params)
     r.raise_for_status()
 
 

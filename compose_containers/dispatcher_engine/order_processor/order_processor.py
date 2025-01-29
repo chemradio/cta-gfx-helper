@@ -13,7 +13,7 @@ from .signals.admin_termination import AdminTerminatedException
 from .user_reporter import (
     return_order_result_to_user,
     report_error_to_user,
-    report_error_to_admin,
+    report_error_to_admin_telegram,
 )
 
 
@@ -36,22 +36,21 @@ async def process_order(order: dict) -> None:
 
         await return_order_result_to_user(order, container_output)
 
-    except AdminTerminatedException as e:
-        error_message = str(e)
-        print(f"Admin terminated order: {str(e)}", flush=True)
-        await report_error_to_user(order, str(e))
-        await report_error_to_admin(order, str(e), config.BOT_ADMIN)
+    # except AdminTerminatedException as e:
+    #     error_message = str(e)
+    #     print(f"Admin terminated order: {str(e)}", flush=True)
 
     except Exception as e:
         error_message = str(e)
         print(f"Error while processing order: {str(e)}", flush=True)
         traceback.print_exc()
-        await report_error_to_user(order, str(e))
-        await report_error_to_admin(order, str(e), config.BOT_ADMIN)
 
     finally:
         if error_message:
+            await report_error_to_user(order, str(e))
+            await report_error_to_admin_telegram(order, str(e), config.BOT_ADMIN)
             log_db_order_error(order["order_id"], error_message)
+
         change_db_order_status(order["order_id"], OrderStatus.FINISHED)
         return None
 
