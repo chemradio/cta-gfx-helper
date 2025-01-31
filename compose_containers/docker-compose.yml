@@ -3,8 +3,8 @@ services:
     restart: unless-stopped
     hostname: db
     image: mongo:6.0
-    # volumes:
-    #   - ./mongodata:/data/db
+    volumes:
+      - ./mongodata:/data/db
   dispatcher:
     restart: unless-stopped
     build: ./dispatcher_engine
