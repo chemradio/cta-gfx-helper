@@ -78,6 +78,7 @@ const parsePost = async () => {
             'section[class="x5ur3kl x178xt8z x1roi4f4 x2lah0s xvs91rp xl56j7k x17ydfre x1n2onr6 x1qiirwl xh8yej3 x1ejq31n xd10rxx x1sy0etr x17r0tee x3hdcf8 x180j4jr x18dplov x1ub4b5r"]'
         );
         commentAs?.remove();
+        postElement.firstElementChild.style.border = "0px";
         return postElement;
     };
     async function getStory() {

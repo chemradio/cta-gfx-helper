@@ -150,7 +150,7 @@ const parsePost = async () => {
         return story;
     }
     if (pageType === "post") {
-        removeCommentAs();
+        // removeCommentAs();
         // try to get dialog post
         const dialogPost = getDialogPost();
         if (dialogPost) return dialogPost;

@@ -42,7 +42,7 @@ def parse_capture_screenshots(
             driver.execute_script(generate_adblock_js_script())
             time.sleep(1)  # wait for ads to be removed due to js glitches
 
-            apply_misc_scripts(driver, ["removeOverflow"])
+            # apply_misc_scripts(driver, ["removeOverflow"])
             target_element = apply_post_routine(driver, domain)
             foreground_screenshot = capture_crop_single_screenshot(
                 driver, target_element, ScreenshotRole.POST, dpi_multiplier
@@ -62,7 +62,7 @@ def parse_capture_screenshots(
     driver.execute_script(generate_adblock_js_script())
     time.sleep(1)
 
-    apply_misc_scripts(driver, ["removeOverflow"])
+    # apply_misc_scripts(driver, ["removeOverflow"])
     target_element = apply_profile_routine(driver, domain)
     if not target_element:
         target_element = driver.find_element(By.TAG_NAME, "body")
