@@ -22,8 +22,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       REGISTER_PASSPHRASE: ${REGISTER_PASSPHRASE}
     hostname: dispatcher
-    ports:
-      - "9000:9000"
+    # ports:
+    #   - "9000:9000"
   file_converter:
     restart: unless-stopped
     build: ./file_converter
@@ -35,8 +35,8 @@ services:
     depends_on:
     - dispatcher
     hostname: file_converter
-    ports:
-      - "9005:9005"
+    # ports:
+    #   - "9005:9005"
   bot-engine:
     restart: unless-stopped
     build: ./bot_engine
@@ -69,8 +69,8 @@ services:
     depends_on:
     - dispatcher
     hostname: screenshoter
-    ports:
-      - "9002:9002"
+    # ports:
+    #   - "9002:9002"
   video-gfx:
     restart: unless-stopped
     build: ./video_gfx
@@ -84,8 +84,8 @@ services:
     volumes:
       - ./video_gfx:/usr/src/app
     shm_size: 2g
-    ports:
-      - "9004:9004"
+    # ports:
+    #   - "9004:9004"
       
   video-gfx-selenium-1:
     restart: unless-stopped
