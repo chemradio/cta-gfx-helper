@@ -44,6 +44,10 @@ const parsePost = async () => {
     iframe = document.querySelector("iframe");
     iframe.style.padding = "0px";
 
+    avatar = iframe.contentWindow.document.querySelector(
+        ".tgme_widget_message_user"
+    );
+    if (avatar) avatar.remove();
     element = iframe.contentWindow.document.querySelector(
         ".tgme_widget_message_bubble"
     );
@@ -51,6 +55,9 @@ const parsePost = async () => {
     element.style.borderRadius = "0px";
     element.style.margin = "0px";
 
+    iframe.style.padding = "0px";
+    iframe.style.margin = "0px";
+    iframe.style.border = "0px";
     // remove the small tail leading to author profile picture
     bubbleTail = iframe.contentWindow.document.querySelector(
         ".tgme_widget_message_bubble_tail"
@@ -62,11 +69,23 @@ const parsePost = async () => {
         iframe.contentWindow.document.querySelector(".js-widget_message");
     messageWidget.style.padding = "0px";
 
+    const parent1 = iframe.parentElement;
+    const parent2 = parent1.parentElement;
+
+    [parent1, parent2].forEach((element) => {
+        if (element) {
+            element.style.padding = "0px";
+            element.style.margin = "0px";
+            element.style.border = "0px";
+        }
+    });
+
     return iframe;
 };
 
 const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
+    document.body.style.zoom = "130%";
     return document.body;
 };
 

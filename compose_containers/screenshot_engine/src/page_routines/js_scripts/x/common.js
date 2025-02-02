@@ -76,6 +76,7 @@ const parsePost = async () => {
 const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
     removePersonal();
+    document.body.style.zoom = "120%";
     return document.body;
 };
 

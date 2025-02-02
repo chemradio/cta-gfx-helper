@@ -66,8 +66,8 @@ class ResultsResponder:
         audio_enabled: bool = user_data.get("audio_enabled")
 
         if link:
-            results_message += f"🔗 Ссылка для графики: {link}\n"
-        
+            results_message += f"🔗 Ссылка: {link}\n"
+
         if quote_text:
             results_message += f"📜 Текст цитаты: {html.escape(quote_text)}\n"
 
