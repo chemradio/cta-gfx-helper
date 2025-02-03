@@ -4,9 +4,8 @@ body {
 }
 
 .main-container {
-    /* width: 1920px;
-    height: 1080px; */
-    /* overflow: hidden; */
+    width: 1920px;
+    height: 1080px;
 }
 
 .layer {
@@ -75,11 +74,9 @@ body {
 
 .quote-author-text {
     margin: 0;
-    /* width:inherit; */
     font-weight:bold;
     text-transform: uppercase;
-    font-size: 1px; /* will be overridden by js */
-
+    font-size: 1px;
 }
 
 
@@ -93,7 +90,6 @@ body {
     opacity: 0;
 }
 
-/* dynamic points */
 .bgScroll {
     align-self: flex-start;
     width: 100%;
@@ -132,20 +128,13 @@ body {
     height: auto;
 }
 
-/* fg */
 .fgScroll {
     align-self: flex-start;
     margin-top: 135px;
     width:52%;
 }
 
-.twitter, .document, .instagram, .photo {
-    /* max-width: 60%;
-    max-height: 70%; */
-    /* width:auto;
-    height:auto; */
-    /* object-fit: contain; */
-}
+
 
 .horizontal-foreground-zoom {
     width: 60%;
@@ -160,7 +149,6 @@ body {
 }
 
 
-/* round corners */
 .round-corners {
     border-radius: 25px;
 }

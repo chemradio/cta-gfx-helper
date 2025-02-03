@@ -3,57 +3,35 @@ fetch("./config.json")
     .then((json) => buildHTML(json));
 
 function buildHTML(config) {
-    // let mainContainer = document.getElementsByName('capture')[0];
-    let mainContainer = document.createElement("div");
-    mainContainer.setAttribute("class", "main-container");
-    let targetHeight = config.verticalResolution || 1080;
-    let targetWidth = (targetHeight / 9) * 16;
-    mainContainer.style.width = targetWidth + "px";
-    mainContainer.style.height = targetHeight + "px";
-    document.body.append(mainContainer);
-
-    // create midnight bg
-    let midnightBackground = document.createElement("div");
-    midnightBackground.setAttribute("class", "layer midnightBG");
-    mainContainer.append(midnightBackground);
-
     // create background image
-    let backgroundLayer = document.createElement("div");
-    backgroundLayer.setAttribute("class", "layer");
-
-    let backgroundContainer = document.createElement("div");
-    backgroundContainer.setAttribute("class", "background-container");
-
-    let backgroundImage = document.createElement("img");
-    //   backgroundImage.setAttribute("class", config.backgroundClass);
+    const backgroundContainer = document.querySelector(".background-container");
+    const backgroundImage = document.createElement("img");
     backgroundImage.setAttribute("src", config.backgroundPath);
 
-    let bgImage = new Image();
+    const bgImage = new Image();
     bgImage.src = config.backgroundPath;
     bgImage.onload = function () {
         // get bg orientation
-        let bgImageOrientation =
+        const bgImageOrientation =
             bgImage.width / bgImage.height > 12 / 9
                 ? "horizontal-background"
                 : "vertical-background";
 
-        // console.log(bgImage.width, bgImage.height);
-        // console.log(bgImage.width / bgImage.height);
-        // console.log(bgImageOrientation);
-        // set bg main animation class
+        let targetClass;
+
         if (config.singleLayer) {
-            config.backgroundClass = "bgOnly";
+            targetClass = "bgOnly";
         } else {
             if (bgImageOrientation == "horizontal-background") {
-                config.backgroundClass = "bgZoom";
+                targetClass = "bgZoom";
             } else if (bgImageOrientation == "vertical-background") {
-                config.backgroundClass = "bgScroll";
+                targetClass = "bgScroll";
             }
         }
-        backgroundImage.setAttribute("class", config.backgroundClass);
+        backgroundImage.setAttribute("class", targetClass);
 
         // resize background image
-        if (config.backgroundClass == "bgZoom") {
+        if (targetClass == "bgZoom") {
             backgroundImage.setAttribute(
                 "class",
                 backgroundImage.getAttribute("class") +
@@ -61,7 +39,7 @@ function buildHTML(config) {
                     bgImageOrientation +
                     "-zoom"
             );
-        } else if (config.backgroundClass == "bgOnly") {
+        } else if (targetClass == "bgOnly") {
             backgroundImage.setAttribute(
                 "class",
                 backgroundImage.getAttribute("class") +
@@ -71,35 +49,17 @@ function buildHTML(config) {
             );
         }
     };
-
-    backgroundLayer.append(backgroundContainer);
     backgroundContainer.append(backgroundImage);
-    mainContainer.append(backgroundLayer);
 
     // if not single layer
     if (!config.singleLayer) {
-        // create midnight foil
-        let foilLayer = document.createElement("div");
-        foilLayer.setAttribute("class", "layer");
-
-        let foilContainer = document.createElement("div");
-        foilContainer.setAttribute("class", "midnightFoil");
-
-        foilLayer.append(foilContainer);
-        mainContainer.append(foilLayer);
-
-        // create foreground
-        let foregroundLayer = document.createElement("div");
-        foregroundLayer.setAttribute("class", "layer");
-
-        let foregroundContainer = document.createElement("div");
-        foregroundContainer.setAttribute("class", "foreground-container");
-
-        let foregroundImage = document.createElement("img");
+        const foregroundContainer = document.querySelector(
+            ".foreground-container"
+        );
+        const foregroundImage = document.createElement("img");
         foregroundImage.setAttribute("src", config.foregroundPath);
 
-        //
-        let fgImage = new Image();
+        const fgImage = new Image();
         fgImage.src = config.foregroundPath;
         fgImage.onload = function () {
             let fgImageOrientationPrimary =
@@ -107,19 +67,20 @@ function buildHTML(config) {
                     ? "vertical-foreground"
                     : "horizontal-foreground";
 
+            let targetClass;
             // set fg main animation class
             if (fgImageOrientationPrimary == "horizontal-foreground") {
-                config.foregroundClass = "fgZoom";
+                targetClass = "fgZoom";
             } else if (fgImageOrientationPrimary == "vertical-foreground") {
-                config.foregroundClass = "fgScroll";
+                targetClass = "fgScroll";
             }
             foregroundImage.setAttribute(
                 "class",
-                config.foregroundClass + " round-corners"
+                targetClass + " round-corners"
             );
 
-            if (config.foregroundClass == "fgZoom") {
-                let fgImageOrientationZoom =
+            if (targetClass == "fgZoom") {
+                const fgImageOrientationZoom =
                     fgImage.width / fgImage.height > 4 / 3
                         ? "horizontal-foreground-zoom"
                         : "vertical-foreground-zoom";
@@ -131,51 +92,30 @@ function buildHTML(config) {
                 );
             }
         };
-
-        foregroundLayer.append(foregroundContainer);
         foregroundContainer.append(foregroundImage);
-        mainContainer.append(foregroundLayer);
     }
 
-    // create vignette overlay
-    let vignetteContainer = document.createElement("div");
-    vignetteContainer.setAttribute("class", "layer");
-
-    let vignetteImage = document.createElement("img");
-    vignetteImage.setAttribute("src", "./vignette-overlay.png");
-    vignetteImage.setAttribute("class", "vignette-image");
-
-    vignetteContainer.append(vignetteImage);
-    mainContainer.append(vignetteContainer);
-
     // create quote box
+    const quoteContainer = document.querySelector(".quote-container");
     if (config.quoteEnabled) {
-        let quoteTextLength = config.quoteTextText.length;
-        let quoteAuthorLength = config.quoteTextText.length;
+        window.quoteEnabled = true;
+        const quoteTextLength = config.quoteTextText.length;
+        const quoteAuthorLength = config.quoteTextText.length;
 
-        let targetLength =
+        const targetLength =
             quoteTextLength > quoteAuthorLength
                 ? quoteTextLength
                 : quoteAuthorLength;
-        let width;
 
-        let quoteLayer = document.createElement("div");
-        quoteLayer.setAttribute("class", "layer");
-
-        let quoteContainer = document.createElement("div");
-        quoteContainer.setAttribute("class", "quote-container");
-
-        let quoteBox = document.createElement("div");
+        const quoteBox = document.createElement("div");
         quoteBox.setAttribute("class", "quote-box");
 
-        let fontRatio = 0.037;
-        quoteBox.style.fontSize = targetHeight * fontRatio + "px";
+        const fontRatio = 0.037;
+        quoteBox.style.fontSize = config.verticalResolution * fontRatio + "px";
 
-        let paddingRatio = 0.0277;
-        quoteBox.style.padding = targetHeight * paddingRatio + "px";
-
-        console.log(config.quoteTextText);
-        console.log(config.quoteAuthorText);
+        const paddingRatio = 0.0277;
+        quoteBox.style.padding =
+            config.verticalResolution * paddingRatio + "px";
 
         const quoteTextText = insertUnbreakableSpaces(
             preprocessString(config.quoteTextText)
@@ -184,15 +124,15 @@ function buildHTML(config) {
             preprocessString(config.quoteAuthorText || "")
         );
 
-        let quoteTextEl = document.createElement("p");
+        const quoteTextEl = document.createElement("p");
         quoteTextEl.setAttribute("class", "quote-text-text");
         quoteTextEl.innerHTML = quoteTextText;
         quoteBox.append(quoteTextEl);
 
         if (config.quoteAuthorText) {
-            let quoteBreakEl = document.createElement("br");
+            const quoteBreakEl = document.createElement("br");
             quoteBox.append(quoteBreakEl);
-            let quoteAuthorEl = document.createElement("div");
+            const quoteAuthorEl = document.createElement("div");
             quoteAuthorEl.setAttribute("class", "quote-author-text");
             quoteAuthorEl.innerHTML = quoteAuthorText;
             quoteAuthorEl.style.fontSize = "40px";
@@ -200,8 +140,9 @@ function buildHTML(config) {
         }
 
         quoteContainer.append(quoteBox);
-        quoteLayer.append(quoteContainer);
-        mainContainer.append(quoteLayer);
+    } else {
+        window.quoteEnabled = false;
+        quoteContainer.remove();
     }
     window.quoteBoxReady = true;
     window.elementsReady = true;

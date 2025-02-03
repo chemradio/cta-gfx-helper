@@ -1,11 +1,12 @@
 const checkQuoteBoxReady = setInterval(() => {
     if (window.quoteBoxReady) {
-        clearInterval(checkElementsReady);
+        clearInterval(checkQuoteBoxReady);
         resizeQuoteBox();
     }
 }, 100);
 
 function resizeQuoteBox() {
+    if (!window.quoteEnabled) return;
     // constants
     const maxTextLength = 600;
     const minTextLength = 10;
