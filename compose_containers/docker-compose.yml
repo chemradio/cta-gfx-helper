@@ -103,12 +103,12 @@ services:
     shm_size: 3g
     # environment:
     #   - SE_START_VNC="false"
-  # video-gfx-selenium-3:
-  #   restart: unless-stopped
-  #   hostname: video_gfx_selenium_three
-  #   build: ./seleniarm_custom/video_gfx
-  #   privileged: true
-  #   shm_size: 3g
-  #   environment:
-  #     - SE_START_VNC="false"
+  video-gfx-selenium-3:
+    restart: unless-stopped
+    hostname: video_gfx_selenium_three
+    build: ./seleniarm_custom/video_gfx
+    privileged: true
+    shm_size: 3g
+    # environment:
+    #   - SE_START_VNC="false"
     

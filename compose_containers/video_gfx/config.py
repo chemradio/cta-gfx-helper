@@ -11,13 +11,13 @@ USER_PROCESSES = not USE_THREADS
 SELENIUM_CONTAINERS_LOCAL = (
     "http://video_gfx_selenium_one:4444/wd/hub",
     "http://video_gfx_selenium_two:4444/wd/hub",
-    # "http://video_gfx_selenium_three:4444/wd/hub",
+    "http://video_gfx_selenium_three:4444/wd/hub",
 )
 
 SELENIUM_CONTAINERS_TEST = (
     "http://127.0.0.1:4444/wd/hub",
     "http://127.0.0.1:4445/wd/hub",
-    # "http://127.0.0.1:4446/wd/hub",
+    "http://127.0.0.1:4446/wd/hub",
 )
 SELENIUM_CONTAINERS = (
     SELENIUM_CONTAINERS_LOCAL if IS_DOCKER else SELENIUM_CONTAINERS_TEST
