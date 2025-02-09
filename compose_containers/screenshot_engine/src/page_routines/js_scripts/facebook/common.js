@@ -1,3 +1,23 @@
+const isLoggedIn = () => {
+    const emailInput = document.querySelector('input[name="email"]');
+    const passwordInput = document.querySelector('input[name="pass"]');
+    // return false if email and password inputs are not null
+    return emailInput === null && passwordInput === null;
+};
+
+const removeSeeMoreFacebook = () => {
+    const selectors = [
+        '[class="x1ey2m1c xds687c x17qophe xixxii4 x13vifvy x1h0vfkc"]',
+        '[class="__fb-light-mode x1qjc9v5 x9f619 x78zum5 xdt5ytf xl56j7k x1c4vz4f xg6iff7"]',
+        '[class="x1cy8zhl x9f619 x78zum5 xl56j7k x2lwn1j xeuugli x47corl x1x97wu9 xbr3nou xurb0ha x1sxyh0 x3v4vwv x1dzdb2q"]',
+    ];
+    for (const selector of selectors) {
+        const seeMore = document.querySelector(selector);
+        if (seeMore) {
+            seeMore.remove();
+        }
+    }
+};
 const getPageType = () => {
     const groupPostDetectors = [
         'div[data-pagelet="GroupInlineComposer"]',
@@ -73,6 +93,20 @@ const fallbackSingleLayerError = () => {
 
 const parsePost = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
+
+    const getDialogPostUnlogged = () => {
+        const dialogPostDetectors = [
+            '[class="html-div xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd"]',
+            '[class="xb57i2i x1q594ok x5lxg6s x78zum5 xdt5ytf x6ikm8r x1ja2u2z x1pq812k x1rohswg xfk6m8 x1yqm8si xjx87ck xx8ngbg xwo3gff x1n2onr6 x1oyok0e x1odjw0f x1iyjqo2 xy5w88m"]',
+        ];
+        for (const selector of dialogPostDetectors) {
+            const dialogPost = document.querySelector(selector);
+            if (dialogPost) {
+                return dialogPost;
+            }
+        }
+    };
+
     const getDialogPost = () => {
         let dialogs = document.querySelectorAll('[role="dialog"]');
         if (dialogs.length < 1) {
@@ -152,18 +186,27 @@ const parsePost = async () => {
     if (pageType === "post") {
         // removeCommentAs();
         // try to get dialog post
-        const dialogPost = getDialogPost();
-        if (dialogPost) return dialogPost;
 
-        // try to get video post
-        const videoPost = getVideoPost();
-        if (videoPost) return videoPost;
+        if (isLoggedIn()) {
+            const dialogPost = getDialogPost();
+            if (dialogPost) return dialogPost;
 
-        // try to get group post
-        const groupPost = getGroupPost();
-        if (groupPost) return groupPost;
+            // try to get video post
+            const videoPost = getVideoPost();
+            if (videoPost) return videoPost;
 
-        return null;
+            // try to get group post
+            const groupPost = getGroupPost();
+            if (groupPost) return groupPost;
+            return null;
+        } else {
+            removeSeeMoreFacebook();
+
+            const dialogPost = getDialogPostUnlogged();
+            if (dialogPost) return dialogPost;
+
+            return null;
+        }
     }
 
     let profileNavTabs = document.querySelector('[data-pagelet="ProfileTabs"]');
@@ -175,8 +218,8 @@ const parsePost = async () => {
 };
 
 const parseProfile = async () => {
+    removeSeeMoreFacebook();
     document.body.style.fontFamily = "'Roboto', sans-serif";
-    if (getPageType() !== "profile") return null;
 
     const removeBanner = () => {
         let banner = document.querySelector('[role="banner"]');
@@ -190,6 +233,7 @@ const parseProfile = async () => {
 
     removeBanner();
     removeCommentAs();
+    removeSeeMoreFacebook();
     document.body.style.zoom = "120%";
     return document.body;
 };
@@ -213,3 +257,5 @@ const extractProfileURL = async () => {
         return aTag.href;
     }
 };
+
+await parseProfile();
