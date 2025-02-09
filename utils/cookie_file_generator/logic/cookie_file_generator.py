@@ -40,6 +40,8 @@ class CookieFileGenerator:
                 print(f"Could not load a website: {domain}")
 
             self.driver.get(website_link)
+            user_agent = self.driver.execute_script("return navigator.userAgent;")
+            print(f"\n\nUser agent:\n\n{user_agent}\n\n")
 
             # add pre-existing cookies
             try:

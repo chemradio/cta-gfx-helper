@@ -5,7 +5,7 @@ from .user_agent import UserAgent
 
 def _generate_chrome_options(
     dpi_multiplier: int | float,
-    user_agent: UserAgent = UserAgent.DESKTOP,
+    user_agent: UserAgent = UserAgent.DOCKER_SELENIUM,
     verical_emulation: bool = True,
     headless: bool = True,
 ) -> Options:
