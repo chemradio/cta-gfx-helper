@@ -257,5 +257,3 @@ const extractProfileURL = async () => {
         return aTag.href;
     }
 };
-
-await parseProfile();
