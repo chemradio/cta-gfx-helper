@@ -23,12 +23,12 @@ function create_animation(config) {
         // background scroll
         .to(
             ".bgScroll",
-            { duration: SCROLLDURATION, y: `${-1 * BG_SCROLLAMOUNT}px` },
+            { duration: SCROLLDURATION, y: `${-1 * (BG_SCROLLAMOUNT / 2)}px` },
             0
         )
-
         // background zoom
         .from(".bgZoom", { duration: SCROLLDURATION, scale: 1.2 }, 0)
+
         // background only
         .to(
             ".bgOnly",
