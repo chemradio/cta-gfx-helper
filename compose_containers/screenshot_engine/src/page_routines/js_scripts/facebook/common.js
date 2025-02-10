@@ -189,6 +189,7 @@ const parsePost = async () => {
 
         if (isLoggedIn()) {
             const dialogPost = getDialogPost();
+            removeSeeMoreFacebook();
             if (dialogPost) return dialogPost;
 
             // try to get video post
