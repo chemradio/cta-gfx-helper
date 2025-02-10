@@ -39,7 +39,7 @@ function create_animation(config) {
             ".bgOnly",
             {
                 duration: SCROLLDURATION - ONLYBGOVERLAP,
-                y: `${-1 * BG_SCROLLAMOUNT}px`,
+                y: `${-1 * BG_SCROLLAMOUNT * 0.6}px`,
                 ease: CustomEase.create("custom", "M0,0,C0.142,0,1,1,1,1"),
             },
             ZOOMDURATION_BGONLY - ONLYBGOVERLAP
