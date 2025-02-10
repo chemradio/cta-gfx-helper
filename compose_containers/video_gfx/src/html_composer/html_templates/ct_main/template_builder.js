@@ -93,6 +93,8 @@ function buildHTML(config) {
             }
         };
         foregroundContainer.append(foregroundImage);
+    } else {
+        document.querySelector(".midnightFoil").style.display = "none";
     }
 
     // create quote box
