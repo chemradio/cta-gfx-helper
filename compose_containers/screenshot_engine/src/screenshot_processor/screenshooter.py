@@ -39,7 +39,7 @@ def parse_capture_screenshots(
         driver.get(target_url)
         time.sleep(3)
         try:
-            driver.execute_script(generate_adblock_js_script())
+            # driver.execute_script(generate_adblock_js_script())
             time.sleep(1)  # wait for ads to be removed due to js glitches
 
             # apply_misc_scripts(driver, ["removeOverflow"])

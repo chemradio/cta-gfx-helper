@@ -2,7 +2,10 @@ const isLoggedIn = () => {
     const emailInput = document.querySelector('input[name="email"]');
     const passwordInput = document.querySelector('input[name="pass"]');
     // return false if email and password inputs are not null
-    return emailInput === null && passwordInput === null;
+    const isLogged =
+        emailInput === null && passwordInput === null ? true : false;
+    console.log("Is logged: ", isLogged);
+    return isLogged;
 };
 
 const removeSeeMoreFacebook = () => {
@@ -189,7 +192,7 @@ const parsePost = async () => {
 
         if (isLoggedIn()) {
             const dialogPost = getDialogPost();
-            removeSeeMoreFacebook();
+            // removeSeeMoreFacebook();
             if (dialogPost) return dialogPost;
 
             // try to get video post
