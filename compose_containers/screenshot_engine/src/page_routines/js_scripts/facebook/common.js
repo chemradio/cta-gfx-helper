@@ -95,6 +95,7 @@ const fallbackSingleLayerError = () => {
 };
 
 const parsePost = async () => {
+    return document.body;
     document.body.style.fontFamily = "'Roboto', sans-serif";
 
     const getDialogPostUnlogged = () => {
