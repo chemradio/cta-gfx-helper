@@ -60,4 +60,5 @@ def capture_crop_single_screenshot(
         element_coordinates=element_coordinates,
         cropped=False,
     )
-    return crop_screenshot(screenshot, dpi_multiplier)
+    return screenshot
+    # return crop_screenshot(screenshot, dpi_multiplier)
