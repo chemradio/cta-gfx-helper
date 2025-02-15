@@ -42,7 +42,10 @@ def parse_capture_screenshots(
         try:
             # driver.execute_script(generate_adblock_js_script())
             time.sleep(1)  # wait for ads to be removed due to js glitches
+
+            # remove "site wants to show notifications" popup
             ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+
             # apply_misc_scripts(driver, ["removeOverflow"])
             target_element = apply_post_routine(driver, domain)
             foreground_screenshot = capture_crop_single_screenshot(
@@ -59,6 +62,8 @@ def parse_capture_screenshots(
 
     driver.get(target_url)
     time.sleep(3)
+    # remove "site wants to show notifications" popup
+    ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
     driver.execute_script(generate_adblock_js_script())
     time.sleep(1)
