@@ -21,7 +21,6 @@ function create_animation(config) {
 
             timeline = gsap.timeline({ defaults: { duration: 1 } });
 
-            timeline.pause();
             timeline
                 // background scroll
                 .to(
@@ -93,6 +92,12 @@ function create_animation(config) {
 
             // tail
             // .to('tail-nonexistent', {duration: TAIL, y:'1100px'}, SCROLLDURATION);
+
+            setTimeout(() => {
+                console.log("second action");
+                timeline.pause();
+                timeline.progress(0);
+            }, 2000); // 2000ms = 2 seconds
         }
     });
     document.querySelector("body").addEventListener("click", () => {

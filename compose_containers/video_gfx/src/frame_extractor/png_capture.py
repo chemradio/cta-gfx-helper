@@ -22,7 +22,7 @@ def png_capture(
     driver.get(target_url)
     time.sleep(2)
     ActionChains(driver).send_keys(Keys.ENTER).perform()
-    time.sleep(1)
+    time.sleep(3)
     for frame in range(start_frame, end_frame + 1):
         progress_frame = linear_interpolation(interpolation_data, frame)
         driver.execute_script(f"timeline.progress({progress_frame})")
