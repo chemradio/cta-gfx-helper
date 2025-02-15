@@ -2,7 +2,8 @@ import time
 from dataclasses import astuple
 from pathlib import Path
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from py_gfxhelper_lib.custom_types import ScreenshotRole, ScreenshotResults
 from .screenshor_capture.capture_screenshot import capture_crop_single_screenshot
 from ..custom_driver import create_remote_driver
@@ -41,10 +42,9 @@ def parse_capture_screenshots(
         try:
             # driver.execute_script(generate_adblock_js_script())
             time.sleep(1)  # wait for ads to be removed due to js glitches
-            driver.refresh()
+            ActionChains(driver).send_keys(Keys.ESCAPE).perform()
             # apply_misc_scripts(driver, ["removeOverflow"])
-            # target_element = apply_post_routine(driver, domain)
-            target_element = driver.find_element(By.TAG_NAME, "body")
+            target_element = apply_post_routine(driver, domain)
             foreground_screenshot = capture_crop_single_screenshot(
                 driver, target_element, ScreenshotRole.POST, dpi_multiplier
             )
