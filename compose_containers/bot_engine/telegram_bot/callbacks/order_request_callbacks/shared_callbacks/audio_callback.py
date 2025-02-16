@@ -11,6 +11,10 @@ from telegram_bot.exceptions.attachments import (
     AttachmentSizeExceeded,
     AttachmentNotFound,
 )
+from ..attachment_callbacks.attachment_helpers import (
+    attachment_finder,
+    reply_to_message_parser,
+)
 
 
 async def audio_callback(
@@ -21,6 +25,16 @@ async def audio_callback(
     stage = user_data.get("stage")
 
     if stage == "audio_enabled":
+        # check if available attachments
+        try:
+            bald_message = await reply_to_message_parser(update)
+            available_attachments = await attachment_finder(bald_message)
+            if "audio" in available_attachments:
+                user_data.update({"stage": "audio_file"})
+                return await audio_callback(update, context, caller)
+        except:
+            ...
+
         if update.callback_query.data not in ["audio_enabled", "audio_disabled"]:
             raise Exception("Invalid callback data for audio_callback")
 
