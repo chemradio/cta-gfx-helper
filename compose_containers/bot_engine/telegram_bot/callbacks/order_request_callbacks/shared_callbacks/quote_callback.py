@@ -17,7 +17,6 @@ async def quote_callback(
     stage = user_data.get("stage")
 
     try:
-
         if stage == "quote_enabled":
             try:
                 if update.message.text:
