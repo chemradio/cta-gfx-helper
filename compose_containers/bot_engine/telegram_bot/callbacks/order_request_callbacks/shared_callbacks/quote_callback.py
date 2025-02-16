@@ -8,6 +8,7 @@ from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_use
 from telegram_bot.responders.main_responder import Responder
 from py_gfxhelper_lib.miscellaneous.string_cleaner import cleanup_string
 
+
 async def quote_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE, caller: Callable = None
 ) -> None:
@@ -16,7 +17,14 @@ async def quote_callback(
     stage = user_data.get("stage")
 
     try:
+
         if stage == "quote_enabled":
+            try:
+                if update.message.text:
+                    user_data.update({"stage": "quote_text"})
+                    return await quote_callback(update, context, caller)
+            except:
+                ...
             if update.callback_query.data not in ["quote_enabled", "quote_disabled"]:
                 raise Exception()
 
@@ -46,6 +54,13 @@ async def quote_callback(
                 return await Responder.errors.custom_error(user_id, str(e))
 
         if stage == "quote_author_enabled":
+            try:
+                if update.message.text:
+                    user_data.update({"stage": "quote_author_text"})
+                    return await quote_callback(update, context, caller)
+            except:
+                ...
+
             if update.callback_query.data not in [
                 "quote_author_enabled",
                 "quote_author_disabled",
@@ -58,14 +73,10 @@ async def quote_callback(
             # )
 
             if update.callback_query.data == "quote_author_enabled":
-                user_data.update(
-                    {"stage": "quote_author_text"}
-                )
+                user_data.update({"stage": "quote_author_text"})
                 return await Responder.quote.ask_quote_author_text(user_id)
             else:
-                user_data.update(
-                    { "stage": "quote_passed"}
-                )
+                user_data.update({"stage": "quote_passed"})
                 return await caller(update, context)
 
         if stage == "quote_author_text":
