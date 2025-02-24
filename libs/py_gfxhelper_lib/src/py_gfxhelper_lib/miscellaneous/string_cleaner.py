@@ -5,8 +5,8 @@ def cleanup_string(string: str) -> str:
         ("\n\t", "\n"),
         ("\t", "\n"),
         (" <...> <...> ", " <...> "),
-        ("Ë", "Е"),
-        ("ё", "е"),
+        # ("Ë", "Е"),
+        # ("ё", "е"),
         ("«", '"'),
         ("»", '"'),
         (" - ", " – "),
@@ -17,4 +17,3 @@ def cleanup_string(string: str) -> str:
         while sub[0] in string:
             string = string.replace(sub[0], sub[1])
     return string.strip()
-
