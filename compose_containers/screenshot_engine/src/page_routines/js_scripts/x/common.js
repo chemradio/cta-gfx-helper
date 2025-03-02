@@ -1,4 +1,4 @@
-const getPageType = () => {
+export const getPageType = () => {
     const profileDetectors = [
         // '[aria-label="Home timeline"]',
         '[data-testid="UserDescription"]',
@@ -32,7 +32,7 @@ const getPageType = () => {
     return "unknown";
 };
 
-const removePersonal = () => {
+export const removePersonal = () => {
     const selectors = [
         'a[href="/chemradio"]',
         '[aria-label="Trending"]',
@@ -50,7 +50,7 @@ const removePersonal = () => {
     }
 };
 
-const parsePost = async () => {
+export const parsePost = async () => {
     const pageType = getPageType();
     if (pageType !== "post") return null;
     removePersonal();
@@ -73,14 +73,14 @@ const parsePost = async () => {
     }
 };
 
-const parseProfile = async () => {
+export const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
     removePersonal();
     document.body.style.zoom = "120%";
     return document.body;
 };
 
-const extractProfileURL = async () => {
+export const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;

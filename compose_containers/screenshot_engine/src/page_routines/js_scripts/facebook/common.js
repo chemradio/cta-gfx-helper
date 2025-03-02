@@ -1,4 +1,4 @@
-const isLoggedIn = () => {
+export const isLoggedIn = () => {
     const emailInput = document.querySelector('input[name="email"]');
     const passwordInput = document.querySelector('input[name="pass"]');
     // return false if email and password inputs are not null
@@ -8,7 +8,7 @@ const isLoggedIn = () => {
     return isLogged;
 };
 
-const removeSeeMoreFacebook = () => {
+export const removeSeeMoreFacebook = () => {
     const selectors = [
         '[class="x1ey2m1c xds687c x17qophe xixxii4 x13vifvy x1h0vfkc"]',
         '[class="__fb-light-mode x1qjc9v5 x9f619 x78zum5 xdt5ytf xl56j7k x1c4vz4f xg6iff7"]',
@@ -21,7 +21,7 @@ const removeSeeMoreFacebook = () => {
         }
     }
 };
-const getPageType = () => {
+export const getPageType = () => {
     const groupPostDetectors = [
         'div[data-pagelet="GroupInlineComposer"]',
         'div[data-pagelet="GroupFeed"]',
@@ -80,7 +80,7 @@ const getPageType = () => {
 };
 
 // HELPERS
-const removeCommentAs = () => {
+export const removeCommentAs = () => {
     let myImages = document.querySelectorAll('[aria-label="Available Voices"]');
     if (myImages.length > 0) {
         myImages.forEach((image) => {
@@ -90,11 +90,11 @@ const removeCommentAs = () => {
 };
 
 // POST
-const fallbackSingleLayerError = () => {
+export const fallbackSingleLayerError = () => {
     throw new Error("Fallback to single layer");
 };
 
-const parsePost = async () => {
+export const parsePost = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
 
     const getDialogPostUnlogged = () => {
@@ -221,7 +221,7 @@ const parsePost = async () => {
     return fallbackSingleLayerError();
 };
 
-const parseProfile = async () => {
+export const parseProfile = async () => {
     removeSeeMoreFacebook();
     document.body.style.fontFamily = "'Roboto', sans-serif";
 
@@ -243,7 +243,7 @@ const parseProfile = async () => {
 };
 
 // EXTRACT PROFILE URL
-const extractProfileURL = async () => {
+export const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;

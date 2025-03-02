@@ -1,4 +1,4 @@
-const getPageType = () => {
+export const getPageType = () => {
     const postDetectors = ['[id="wk_summary"]', '[id="wk_content"]'];
     const profileDetectors = [
         '[class="ProfileInfo"]',
@@ -37,7 +37,7 @@ const getPageType = () => {
     return "unknown";
 };
 
-const removeBanners = () => {
+export const removeBanners = () => {
     const banners = [
         '[id="page_bottom_banners_root"]',
         '[class="PageBottomBanner__in"]',
@@ -50,7 +50,7 @@ const removeBanners = () => {
     }
 };
 
-const parsePost = async () => {
+export const parsePost = async () => {
     const pageType = getPageType();
     if (pageType !== "post") return null;
 
@@ -70,14 +70,14 @@ const parsePost = async () => {
     return post;
 };
 
-const parseProfile = async () => {
+export const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
     removeBanners();
     document.body.style.zoom = "120%";
     return document.body;
 };
 
-const extractProfileURL = async () => {
+export const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;

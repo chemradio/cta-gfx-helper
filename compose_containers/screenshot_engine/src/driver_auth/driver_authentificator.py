@@ -3,7 +3,11 @@ from pathlib import Path
 
 from selenium import webdriver
 
-from .cookie_management import add_cookies_driver, dump_domain_cookies
+from .cookie_management import (
+    add_cookies_driver,
+    dump_domain_cookies,
+    get_available_domains_with_cookies,
+)
 from .login_checks.login_check import check_domain_login
 
 LOGIN_REQUIRED_HOMEPAGES = {
@@ -14,12 +18,14 @@ LOGIN_REQUIRED_HOMEPAGES = {
 
 
 def authenticate_driver(
-    driver: webdriver.Remote, domain: str, cookie_file: Path
+    driver: webdriver.Remote, domain: str, cookie_file: Path, in_place: bool = False
 ) -> bool:
-    if domain not in LOGIN_REQUIRED_HOMEPAGES:
-        return True
-
-    driver.get(LOGIN_REQUIRED_HOMEPAGES[domain])
+    if not in_place:
+        if domain not in LOGIN_REQUIRED_HOMEPAGES:
+            return False
+        driver.get(LOGIN_REQUIRED_HOMEPAGES[domain])
+    else:
+        ...
 
     try:
         add_cookies_driver(cookie_file, domain, driver)

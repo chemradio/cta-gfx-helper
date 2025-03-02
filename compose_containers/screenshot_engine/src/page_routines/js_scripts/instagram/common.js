@@ -1,4 +1,4 @@
-const getPageType = () => {
+export const getPageType = () => {
     const postDetectors = [
         "article",
         ".x6s0dn4.x78zum5.xdt5ytf.xdj266r.xkrivgy.xat24cr.x1gryazu.x1n2onr6.xh8yej3",
@@ -44,7 +44,7 @@ const getPageType = () => {
     return "unknown";
 };
 
-const removeObscuringElements = () => {
+export const removeObscuringElements = () => {
     targetSelectors = ["[class='x1n2onr6 xzkaem6']"];
     for (const selector of targetSelectors) {
         const element = document.querySelector(selector);
@@ -53,7 +53,7 @@ const removeObscuringElements = () => {
         }
     }
 };
-const parsePost = async () => {
+export const parsePost = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     const getPost = () => {
         console.log("Extracting POST");
@@ -139,7 +139,7 @@ const parsePost = async () => {
     }
 };
 
-const parseProfile = async () => {
+export const parseProfile = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
     if (getPageType() !== "profile") return null;
 
@@ -163,7 +163,7 @@ const parseProfile = async () => {
     return document.body;
 };
 
-const extractProfileURL = async () => {
+export const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;

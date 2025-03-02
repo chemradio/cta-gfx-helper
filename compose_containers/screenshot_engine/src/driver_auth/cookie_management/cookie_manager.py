@@ -22,6 +22,11 @@ def get_stored_cookies(cookie_file: Path) -> dict[list[dict]]:
     return cookies
 
 
+def get_available_domains_with_cookies(cookie_file: Path) -> list[str]:
+    """Get all available domains with stored cookies."""
+    return list(get_stored_cookies(cookie_file).keys())
+
+
 def dump_domain_cookies(
     cookie_file: Path, domain: str, domain_cookies: list[dict]
 ) -> None:
