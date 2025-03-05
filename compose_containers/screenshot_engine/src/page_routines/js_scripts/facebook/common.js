@@ -1,4 +1,4 @@
-export const isLoggedIn = () => {
+const isLoggedIn = () => {
     const emailInput = document.querySelector('input[name="email"]');
     const passwordInput = document.querySelector('input[name="pass"]');
     // return false if email and password inputs are not null
@@ -8,7 +8,7 @@ export const isLoggedIn = () => {
     return isLogged;
 };
 
-export const removeSeeMoreFacebook = () => {
+const removeSeeMoreFacebook = () => {
     const selectors = [
         '[class="x1ey2m1c xds687c x17qophe xixxii4 x13vifvy x1h0vfkc"]',
         '[class="__fb-light-mode x1qjc9v5 x9f619 x78zum5 xdt5ytf xl56j7k x1c4vz4f xg6iff7"]',
@@ -21,7 +21,7 @@ export const removeSeeMoreFacebook = () => {
         }
     }
 };
-export const getPageType = () => {
+const getPageType = () => {
     const groupPostDetectors = [
         'div[data-pagelet="GroupInlineComposer"]',
         'div[data-pagelet="GroupFeed"]',
@@ -80,7 +80,7 @@ export const getPageType = () => {
 };
 
 // HELPERS
-export const removeCommentAs = () => {
+const removeCommentAs = () => {
     let myImages = document.querySelectorAll('[aria-label="Available Voices"]');
     if (myImages.length > 0) {
         myImages.forEach((image) => {
@@ -90,11 +90,11 @@ export const removeCommentAs = () => {
 };
 
 // POST
-export const fallbackSingleLayerError = () => {
+const fallbackSingleLayerError = () => {
     throw new Error("Fallback to single layer");
 };
 
-export const parsePost = async () => {
+const parsePost = async () => {
     document.body.style.fontFamily = "'Roboto', sans-serif";
 
     const getDialogPostUnlogged = () => {
@@ -221,7 +221,7 @@ export const parsePost = async () => {
     return fallbackSingleLayerError();
 };
 
-export const parseProfile = async () => {
+const parseProfile = async () => {
     removeSeeMoreFacebook();
     document.body.style.fontFamily = "'Roboto', sans-serif";
 
@@ -243,7 +243,7 @@ export const parseProfile = async () => {
 };
 
 // EXTRACT PROFILE URL
-export const extractProfileURL = async () => {
+const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;
