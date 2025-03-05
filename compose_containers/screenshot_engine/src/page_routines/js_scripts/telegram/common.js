@@ -1,4 +1,4 @@
-export const getPageType = () => {
+const getPageType = () => {
     const postDetectors = [
         "iframe",
         '[class="tgme_page_widget_actions_wrap"]',
@@ -36,7 +36,7 @@ export const getPageType = () => {
     return "unknown";
 };
 
-export const parsePost = async () => {
+const parsePost = async () => {
     const pageType = getPageType();
     if (pageType !== "post") return null;
 
@@ -83,13 +83,13 @@ export const parsePost = async () => {
     return iframe;
 };
 
-export const parseProfile = async () => {
+const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
     document.body.style.zoom = "130%";
     return document.body;
 };
 
-export const extractProfileURL = async () => {
+const extractProfileURL = async () => {
     console.log("extracting profile URL");
     const pageType = getPageType();
     if (pageType === "profile") return window.location.href;
