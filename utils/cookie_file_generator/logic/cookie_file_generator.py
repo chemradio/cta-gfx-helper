@@ -27,7 +27,17 @@ class CookieFileGenerator:
         self.chrome_options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
-        # self.chrome_options.binary_location="/Applications/Google Chrome.app"
+        self.chrome_options.add_experimental_option(
+            "mobileEmulation",
+            {
+                "deviceMetrics": {
+                    "width": 1280,
+                    "height": 720,
+                    "pixelRatio": 1,
+                },
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            },
+        )
 
     def login_to_social(self) -> bool:
         for domain in self.login_required:
