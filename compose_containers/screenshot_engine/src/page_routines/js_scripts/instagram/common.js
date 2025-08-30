@@ -169,7 +169,7 @@ const extractProfileURL = async () => {
     if (pageType === "profile") return window.location.href;
     if (pageType === "post") {
         const post = await parsePost();
-        const anchorTag = post.querySelector("a");
+        const anchorTag = post.querySelector(".x4h1yfo").querySelector("a");
         return anchorTag.href;
     }
     if (pageType === "story") {
