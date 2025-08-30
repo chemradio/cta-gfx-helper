@@ -2,7 +2,7 @@ const getPageType = () => {
     const postDetectors = [
         "article",
         ".x6s0dn4.x78zum5.xdt5ytf.xdj266r.xkrivgy.xat24cr.x1gryazu.x1n2onr6.xh8yej3",
-        ".x1yvgwvq .x1dqoszc .x1ixjvfu .xhk4uv .x13fuv20 .xu3j5b3 .x1q0q8m5 .x26u7qi .x178xt8z .xm81vs4 .xso031l .xy80clv .x78zum5 .x1q0g3np .xh8yej3",
+        ".x1yvgwvq.xjd31um.x1ixjvfu.xwt6s21.x13fuv20.x18b5jzi.x1q0q8m5.x1t7ytsu.x178xt8z.x1lun4ml.xso031l.xpilrb4.x78zum5.x1q0g3np.xh8yej3",
     ];
 
     const storyDetectors = [
@@ -60,7 +60,7 @@ const parsePost = async () => {
         const postDetectors = [
             "article",
             ".x6s0dn4.x78zum5.xdt5ytf.xdj266r.xkrivgy.xat24cr.x1gryazu.x1n2onr6.xh8yej3",
-            ".x1yvgwvq .x1dqoszc .x1ixjvfu .xhk4uv .x13fuv20 .xu3j5b3 .x1q0q8m5 .x26u7qi .x178xt8z .xm81vs4 .xso031l .xy80clv .x78zum5 .x1q0g3np .xh8yej3",
+            ".x1yvgwvq.xjd31um.x1ixjvfu.xwt6s21.x13fuv20.x18b5jzi.x1q0q8m5.x1t7ytsu.x178xt8z.x1lun4ml.xso031l.xpilrb4.x78zum5.x1q0g3np.xh8yej3",
         ];
         let postElement;
         for (const selector of postDetectors) {
