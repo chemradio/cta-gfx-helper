@@ -6,9 +6,9 @@ const getPageType = () => {
     ];
 
     const profileDetectors = [
-        "x1a8lsjc.xyamay9.x8tz501.x1rdv6da.xs4q6k7.xm3mpkm",
+        ".x1a8lsjc.xyamay9.x8tz501.x1rdv6da.xs4q6k7.xm3mpkm",
         ".x6s0dn4.x78zum5.x1c4vz4f.x1ws5yxj.x13fj5qh",
-        'svg[aria-label="Instagram"]',
+        // 'svg[aria-label="Instagram"]',
     ];
 
     const isInCategory = (category) => {
