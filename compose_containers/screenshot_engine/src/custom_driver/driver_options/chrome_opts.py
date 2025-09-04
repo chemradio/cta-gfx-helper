@@ -28,8 +28,11 @@ def _generate_chrome_options(
             },
         )
 
+    # ignore no GPU
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("-–disable-gpu")
+
+    chrome_options.add_argument("--ignore-certificate-errors")
 
     # to theoretically speed up the process
     if headless:
