@@ -67,9 +67,8 @@ const parsePost = async () => {
 
 const parseProfile = async () => {
     if (getPageType() !== "profile") return null;
-
-    // center the main content area
-    document.body.style.zoom = "210%";
+    // document.body.style.zoom = "210%";
+    document.body.style.zoom = "150%";
     return document.body;
 };
 
