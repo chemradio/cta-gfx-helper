@@ -44,7 +44,8 @@ def parse_capture_screenshots(
             time.sleep(1)  # wait for ads to be removed due to js glitches
 
             # remove "site wants to show notifications" popup
-            ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+            if domain not in ["facebook"]:
+                ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 
             # apply_misc_scripts(driver, ["removeOverflow"])
             target_element = apply_post_routine(driver, domain)

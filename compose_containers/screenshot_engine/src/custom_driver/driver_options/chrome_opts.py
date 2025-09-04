@@ -34,7 +34,7 @@ def _generate_chrome_options(
 
     chrome_options.add_argument("--ignore-certificate-errors")
 
-    # to theoretically speed up the process
+    # # to theoretically speed up the process
     if headless:
         chrome_options.add_argument("--headless=new")
 

@@ -123,7 +123,10 @@ const parsePost = async () => {
                 target = article;
             }
         });
+
         target.querySelector("div").scrollIntoView();
+        // scroll whole window to top
+
         return target;
     };
     const getStory = async () => {
