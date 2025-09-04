@@ -1,6 +1,6 @@
 fastapi==0.115.5
 ffmpeg-python==0.2.0
-pillow==10.4.0
+Pillow==11.3.0
 pydub==0.25.1
 python-multipart==0.0.9
 requests==2.32.3

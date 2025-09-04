@@ -11,9 +11,9 @@ from telegram_bot.callbacks.main_callback.main_dispatcher_callback import (
 from telegram import Update
 
 import logging
+
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
 
@@ -33,10 +33,10 @@ def create_volume_folders():
 
 
 def main():
+    application = Application.builder().token(BOT_TOKEN).build()
+    application.add_handler(AllHandler(dispatcher_callback))
     while True:
         try:
-            application = Application.builder().token(BOT_TOKEN).build()
-            application.add_handler(AllHandler(dispatcher_callback))
             application.run_polling(allowed_updates=Update.ALL_TYPES)
         except Exception as e:
             print(e, flush=True)
@@ -45,5 +45,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
