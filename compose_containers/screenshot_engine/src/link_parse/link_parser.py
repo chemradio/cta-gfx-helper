@@ -19,6 +19,8 @@ def _parse_netloc_to_domain(netloc: str) -> str:
         return "x"
     if netloc == "t.me":
         return "telegram"
+    if netloc == "www.threads.com"
+        return "threads"
     return parts[-2]
 
 
@@ -36,7 +38,7 @@ def parse_link_type(url: str) -> LinkParse:
     netloc = _cleanup_netloc(urlparse(url).netloc)
     domain = _parse_netloc_to_domain(up.netloc)
 
-    if domain in ["facebook", "instagram", "x", "telegram", "vk"]:
+    if domain in ["facebook", "instagram", "x", "telegram", "vk", "threads"]:
         two_layer = True
     else:
         two_layer = False
