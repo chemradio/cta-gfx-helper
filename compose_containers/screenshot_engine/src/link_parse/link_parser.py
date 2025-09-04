@@ -19,7 +19,7 @@ def _parse_netloc_to_domain(netloc: str) -> str:
         return "x"
     if netloc == "t.me":
         return "telegram"
-    if netloc == "www.threads.com"
+    if netloc == "www.threads.com":
         return "threads"
     return parts[-2]
 
