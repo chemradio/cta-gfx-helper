@@ -1,0 +1,75 @@
+
+/* Primary colors */
+:root {
+  --bs-primary: #2D1996;   /* Example for primary buttons, links */
+  --bs-body-bg: #FFFFFF;    /* Body background */
+  --bs-body-color: #102C44; /* Text color */
+
+  --bs-info: #0ECAE3;       /* Info / secondary elements */
+  --bs-secondary: #DEE5EC;  /* Secondary background / text */
+  --bs-danger: #FF0055;     /* Danger / error */
+}
+
+/* Optional: override button classes specifically */
+.btn-primary {
+  background-color: #2D1996;
+  border-color: #2D1996;
+}
+
+.btn-primary:hover {
+  background-color: #102C44;
+  border-color: #102C44;
+}
+
+.btn-info {
+  background-color: #0ECAE3;
+  border-color: #0ECAE3;
+}
+
+.btn-danger {
+  background-color: #FF0055;
+  border-color: #FF0055;
+}
+/* Styles from src/components/authForms/LoginForm.svelte */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+label {
+  font-weight: bold;
+}
+input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Styles from src/components/authForms/RegisterForm.svelte */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Styles from src/components/newOrderForms/VideoGFXForm.svelte */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Styles from src/components/previousOrders/PreviousOrder.svelte */
+.previous-order {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}

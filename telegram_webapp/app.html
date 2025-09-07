@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Новый заказ</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container py-3">
+            <h1>Новый заказ</h1>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="fw-bold mb-1">Видео-графика</h3>
+                    <small
+                        >Укажи ссылку или пришли файлы, получи MP4-видео</small
+                    >
+                </div>
+
+                <div class="card-body">
+                    <!-- выбор источника видео -->
+                    <div
+                        class="mb-3 d-flex justify-content-between align-items-center"
+                    >
+                        <input
+                            type="radio"
+                            name="request_type"
+                            id="request_video_auto"
+                            value="video_auto"
+                            class="btn-check"
+                        />
+                        <label
+                            for="request_video_auto"
+                            class="btn btn-outline-primary w-50 rounded-0"
+                        >
+                            <span>Из ссылки</span>
+                        </label>
+
+                        <div
+                            class="m-2"
+                            style="border-left: 1px solid #000; height: 20px"
+                        ></div>
+
+                        <input
+                            type="radio"
+                            name="request_type"
+                            id="request_video_files"
+                            value="video_files"
+                            class="btn-check"
+                        />
+                        <label
+                            for="request_video_files"
+                            class="btn btn-outline-primary w-50 rounded-0"
+                        >
+                            <span>Из файлов</span>
+                        </label>
+                    </div>
+
+                    <hr />
+
+                    <!-- placeholder for VideoAuto or VideoFiles -->
+                    <!-- <div id="video_auto"></div> -->
+                    <!-- <div id="video_files"></div> -->
+
+                    <!-- ссылка -->
+                    <div class="mb-3">
+                        <label for="linkInput" class="form-label">Ссылка</label>
+                        <input
+                            type="url"
+                            id="linkInput"
+                            name="link"
+                            class="form-control"
+                            placeholder="https://example.com"
+                        />
+                    </div>
+
+                    <!-- файлы -->
+                    <div class="mb-3">
+                        <label class="form-label w-100"
+                            >Основной документ
+                            <input
+                                type="file"
+                                name="foreground_file"
+                                class="form-control"
+                                accept="image/*,.pdf"
+                            />
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label w-100"
+                            >Задний план (необязательно)
+                            <input
+                                type="file"
+                                name="background_file"
+                                class="form-control"
+                                accept="image/*,.pdf"
+                            />
+                        </label>
+                    </div>
+
+                    <!-- аудио -->
+                     <input type="checkbox" class="btn-check" id="audio_enabled" autocomplete="off">
+<label class="btn btn-outline-primary w-100" for="audio_enabled">Аудио-файл</label>
+
+                    <div id="audio_section" class="mb-3" style="display: none">
+                        <label class="w-100"
+                            >Аудио-файл (mp3 или wav)
+                            <input
+                                type="file"
+                                name="audio_file"
+                                class="form-control"
+                                accept="audio/*"
+                            />
+                        </label>
+                    </div>
+                    <!-- цитата -->
+
+<input type="checkbox" class="btn-check" id="quote_enabled" autocomplete="off">
+<label class="btn btn-outline-primary w-100" for="quote_enabled">Цитата</label>
+                    </div>
+
+                    <div
+                        id="quote_section"
+                        class="mb-3 bg-secondary-subtle p-3"
+                        style="display: none"
+                    >
+                        <div class="mb-3">
+                            <label for="quote_text" class="form-label"
+                                >Текст цитаты</label
+                            >
+                            <textarea
+                                id="quote_text"
+                                name="quote_text"
+                                class="form-control"
+                                style="height: 150px"
+                            ></textarea>
+                        </div>
+                        <div>
+                            <label for="quote_author_text" class="form-label"
+                                >Автор цитаты</label
+                            >
+                            <input
+                                type="text"
+                                id="quote_author_text"
+                                name="quote_author_text"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- кнопка -->
+                    <div>
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 rounded-0"
+                        >
+                            Заказать
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="script.js"></script>
+
+        <!-- placeholder JS for showing/hiding sections
+        <script>
+            
+        </script> -->
+    </body>
+</html>
