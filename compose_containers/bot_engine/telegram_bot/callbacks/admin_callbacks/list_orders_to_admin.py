@@ -13,10 +13,11 @@ async def list_10_orders_to_admin() -> None:
 
     for order in all_orders[:10]:
         add_wait_time_to_order(order)
-        return await Responder.admin_panel.list_single_order(
+        await Responder.admin_panel.list_single_order(
             BOT_ADMIN,
             order,
         )
+    return
 
 
 async def list_active_orders_to_admin() -> None:
@@ -32,10 +33,11 @@ async def list_active_orders_to_admin() -> None:
 
     for order in active_orders:
         add_wait_time_to_order(order)
-        return await Responder.admin_panel.list_single_order(
+        await Responder.admin_panel.list_single_order(
             BOT_ADMIN,
             order,
         )
+    return
 
 
 def add_wait_time_to_order(order: dict) -> None:
