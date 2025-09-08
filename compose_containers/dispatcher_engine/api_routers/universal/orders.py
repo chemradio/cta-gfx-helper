@@ -3,7 +3,8 @@ import time
 from uuid import uuid4
 import pymongo
 from fastapi import APIRouter, File, Form, UploadFile
-from db_mongo import Orders
+from db_mongo import Orders, find_user, Users
+
 from py_gfxhelper_lib.order_enums import OrderRequestType, OrderStatus, OrderSource
 from order_processor.order_processor import process_order
 from py_gfxhelper_lib.files.asset_file import AssetFile
@@ -110,6 +111,16 @@ async def get_orders(
     orders = Orders.find(filtered_params)
     if not orders:
         return []
+
+    # populate orders with user data
+    for order in orders:
+        user = find_user(order=order)
+        if user:
+            order["first_name"] = user.get("first_name")
+            order["last_name"] = user.get("last_name")
+            order["telegram_id"] = user.get("telegram_id")
+            order["email"] = user.get("email")
+
     return [
         {k: v for k, v in order.items() if k != "_id"}
         for order in orders.sort("created", pymongo.DESCENDING)

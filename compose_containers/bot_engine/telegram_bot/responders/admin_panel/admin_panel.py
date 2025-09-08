@@ -73,6 +73,8 @@ class AdminPanelResponder:
 Статус: {status}
 
 Заказчик: {customer_name}
+Telegram ID: {telegram_id}
+Email: {email}
 Тип заказа: {request_type}
 Cтатус: {status}
 Время ожидания: {wait_time}
@@ -84,6 +86,7 @@ Cтатус: {status}
             order_id=order.get("order_id"),
             customer_name=order.get("first_name"),
             telegram_id=order.get("telegram_id"),
+            email=user.get("email"),
             customer_email=order.get("email"),
             request_type=order.get("request_type"),
             status=order.get("status"),
