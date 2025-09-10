@@ -1,7 +1,15 @@
 import re
 
 
-def check_is_url(string):
+def parse_url(url: str) -> str:
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    url = re.findall(regex, string)
-    return [x[0] for x in url]
+    found_patterns = re.findall(regex, url)
+    if not found_patterns:
+        raise ValueError("No URL found in the provided string.")
+
+    found_url = found_patterns[0][0]
+    if found_url.startswith(('http://', 'https://')):
+        return url
+    
+    return 'https://' + found_url
+

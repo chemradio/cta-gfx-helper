@@ -1,1 +1,1 @@
-from .check_url import check_is_url
+from .check_url import parse_url

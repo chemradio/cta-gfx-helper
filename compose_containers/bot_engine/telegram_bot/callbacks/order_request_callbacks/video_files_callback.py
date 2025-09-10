@@ -6,7 +6,7 @@ from .attachment_callbacks.attachment_handler import attachment_downloader
 from telegram_bot.callbacks.main_callback.main_callback_helpers import parse_user_id
 from .shared_callbacks import results_callback, quote_callback, audio_callback
 from telegram_bot.responders.main_responder import Responder
-from py_gfxhelper_lib.miscellaneous.check_url import check_is_url
+from py_gfxhelper_lib.miscellaneous.check_url import parse_url
 from py_gfxhelper_lib.intercontainer_requests.file_requests import convert_file
 from telegram_bot.exceptions.attachments import (
     AttachmentTypeMismatch,
@@ -90,11 +90,11 @@ async def video_files_callback(
     # handle background link
     if stage in ("background_link", "background_file"):
         if stage == "background_link":
-            link_list = check_is_url(update.message.text)
-            if not link_list:
+            try:
+                user_data.update({"screenshot_link": parse_url(update.message.text)})
+            except ValueError:
                 return await Responder.link.bad_link(user_id)
-            user_data.update({"screenshot_link": link_list[0]})
-
+                
         elif stage == "background_file":
             try:
                 downloaded_file = await attachment_downloader(update, context)
