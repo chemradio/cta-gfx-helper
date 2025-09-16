@@ -17,6 +17,7 @@ async def add_new_order(
     request_type: OrderRequestType = Form(),
     # feedback
     telegram_id: int | None = Form(None),
+    telegram_order_id: str | None = Form(None),
     email: str | None = Form(None),
     # order meta
     ordered_from: OrderSource = Form(),
@@ -37,6 +38,7 @@ async def add_new_order(
     order = {
         "order_id": str(uuid4()),
         "telegram_id": telegram_id,
+        "telegram_order_id": telegram_order_id,
         "email": email,
         "request_type": request_type.value,
         "ordered_from": ordered_from,
@@ -82,7 +84,7 @@ async def add_new_order(
 
     Orders.insert_one(
         {
-            k: "AssetFile placeholder" if isinstance(v, AssetFile) else v
+            k: v if not isinstance(v, AssetFile) else "AssetFile placeholder"-
             for k, v in order.items()
         }
     )

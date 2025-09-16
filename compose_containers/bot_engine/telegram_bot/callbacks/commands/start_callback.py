@@ -1,4 +1,5 @@
 import time
+import uuid
 from telegram import Update
 from telegram.ext import ContextTypes
 from telegram_bot.responders.main_responder import Responder
@@ -8,6 +9,10 @@ async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     user_id = update.message.from_user.id
     context.user_data.clear()
     context.user_data.update(
-        {"status": "init", "order_start_timestamp": int(time.time())}
+        {
+            "status": "init",
+            "order_start_timestamp": int(time.time()),
+            "telegram_order_id": str(uuid.uuid4()),
+        }
     )
     return await Responder.start.ask_order_type(user_id)
