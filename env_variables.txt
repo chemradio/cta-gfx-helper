@@ -7,6 +7,7 @@ JWT_SECRET
 VERTICAL_RESOLUTION int
 HORIZONTAL_RESOLUTION int
 FONT_SMOOTHING int 0 or 1
+QUOTE_EDITORS=user1,user2,user3,admin@example.com
 
 #
 JSON-design cookie file should be also provided for the bot to be able to authenticate to social networks.

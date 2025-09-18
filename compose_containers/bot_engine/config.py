@@ -5,6 +5,15 @@ from pathlib import Path
 from telegram.constants import ParseMode
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
+TELEGRAM_QUOTE_EDITORS = (
+    [
+        int(editor.strip())
+        for editor in os.getenv("QUOTE_EDITORS", "").split(",")
+        if editor.strip()
+    ]
+    if os.getenv("QUOTE_EDITORS")
+    else []
+)
 GLOBAL_MESSAGE_PARSE_MODE = ParseMode.HTML
 VOLUME_MOUNTPOINT = Path().cwd() / "volume"
 USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"
