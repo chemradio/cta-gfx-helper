@@ -5,15 +5,27 @@ from pathlib import Path
 from telegram.constants import ParseMode
 
 BOT_ADMIN = int(os.environ.get("BOT_ADMIN"))
-TELEGRAM_QUOTE_EDITORS = (
-    [
-        int(editor.strip())
-        for editor in os.getenv("QUOTE_EDITORS", "").split(",")
-        if editor.strip()
-    ]
-    if os.getenv("QUOTE_EDITORS")
-    else []
-)
+
+
+def parse_quote_editors():
+    editors_str = os.getenv("QUOTE_EDITORS", "").strip()
+    if not editors_str:
+        return []
+
+    editors = []
+    for editor in editors_str.split(","):
+        editor = editor.strip()
+        if editor:  # Skip empty strings
+            try:
+                editors.append(int(editor))
+            except ValueError:
+                print(
+                    f"Warning: Invalid editor ID '{editor}' in QUOTE_EDITORS, skipping"
+                )
+    return editors
+
+
+TELEGRAM_QUOTE_EDITORS = parse_quote_editors()
 GLOBAL_MESSAGE_PARSE_MODE = ParseMode.HTML
 VOLUME_MOUNTPOINT = Path().cwd() / "volume"
 USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"
