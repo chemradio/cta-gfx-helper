@@ -26,6 +26,7 @@ def parse_quote_editors():
 
 
 TELEGRAM_QUOTE_EDITORS = parse_quote_editors()
+TELEGRAM_APPROVE_QUOTE = True if TELEGRAM_QUOTE_EDITORS else False
 GLOBAL_MESSAGE_PARSE_MODE = ParseMode.HTML
 VOLUME_MOUNTPOINT = Path().cwd() / "volume"
 USER_FILES_FOLDER = VOLUME_MOUNTPOINT / "user_files"

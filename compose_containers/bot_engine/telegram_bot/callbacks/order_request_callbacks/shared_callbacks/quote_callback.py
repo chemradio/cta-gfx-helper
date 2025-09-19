@@ -1,6 +1,6 @@
 import json
 from typing import Callable
-
+from config import TELEGRAM_APPROVE_QUOTE
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -24,13 +24,19 @@ async def quote_callback(
                     return await quote_callback(update, context, caller)
             except:
                 ...
+
             if update.callback_query.data not in ["quote_enabled", "quote_disabled"]:
                 raise Exception()
 
             await update.callback_query.answer(cache_time=180)
 
             if update.callback_query.data == "quote_enabled":
-                user_data.update({"stage": "quote_text"})
+                user_data.update(
+                    {
+                        "stage": "quote_text",
+                        "quote_needs_approval": TELEGRAM_APPROVE_QUOTE,
+                    }
+                )
                 return await Responder.quote.ask_quote_text(user_id)
             else:
                 user_data.update({"stage": "quote_passed"})
