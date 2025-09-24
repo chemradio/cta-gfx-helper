@@ -13,7 +13,7 @@ def _generate_chrome_options(
     # chrome_options.add_argument("--incognito")
 
     chrome_options.add_argument("--window-size=1920,1080")  # just for viewing purposes
-
+    chrome_options.add_argument("--disable-notifications")
     # actual resolution setting
     if verical_emulation:
         chrome_options.add_experimental_option(

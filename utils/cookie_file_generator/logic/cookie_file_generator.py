@@ -27,6 +27,7 @@ class CookieFileGenerator:
         self.chrome_options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
+        self.chrome_options.add_argument("--disable-notifications")
         self.chrome_options.add_experimental_option(
             "mobileEmulation",
             {
@@ -63,12 +64,12 @@ class CookieFileGenerator:
 
             # check if user is successfully logged in using pre-existing cookies &
             # dump new cookies
-            if self.login_routines.login_checks[domain](self.driver):
-                print(f"Already logged into domain: {domain}")
-                domain_cookies = self.driver.get_cookies()
-                self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
-                self.driver.quit()
-                continue
+            # if self.login_routines.login_checks[domain](self.driver):
+            #     print(f"Already logged into domain: {domain}")
+            #     domain_cookies = self.driver.get_cookies()
+            #     self.cookie_manager.dump_domain_cookies(domain, domain_cookies)
+            #     self.driver.quit()
+            #     continue
 
             # Give user infinite time to log in to website/social network
             while True:
