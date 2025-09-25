@@ -1,3 +1,4 @@
+from email.mime import audio
 from pathlib import Path
 
 import ffmpeg
@@ -31,6 +32,12 @@ def stitch_images(
         "vf": "scale=out_color_matrix=bt709:out_range=limited",
         "bsf:v": "h264_metadata=video_full_range_flag=0",
     }
+    audio_settings = {
+        "acodec": "aac",  # Use AAC codec
+        "audio_bitrate": "192k",  # Set bitrate (or use "b:a": "128k")
+        "ar": 44100,  # Sample rate
+        "ac": 1,
+    }
 
     video_input = ffmpeg.input(
         f"{str(image_folder_path)}/*.png",
@@ -56,7 +63,10 @@ def stitch_images(
 
     if audio_input:
         output = ffmpeg.output(
-            video_input, audio_input, str(output_path), **encode_settings
+            video_input,
+            audio_input,
+            str(output_path),
+            **{**encode_settings, **audio_settings},
         )
     else:
         output = ffmpeg.output(video_input, str(output_path), **encode_settings)
