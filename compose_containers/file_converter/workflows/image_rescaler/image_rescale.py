@@ -2,6 +2,8 @@ from py_gfxhelper_lib.files.asset_file import AssetFile
 import PIL
 import io
 
+PIL.Image.MAX_IMAGE_PIXELS = None
+
 
 async def rescale_image(
     image_file: AssetFile,
