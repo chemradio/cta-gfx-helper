@@ -114,10 +114,7 @@ async def video_files_callback(
                 return await Responder.errors.custom_error(
                     user_id, "Не файл... Пришли PNG,JPG, WORD или PDF"
                 )
-            except Exception as e:
-                return await Responder.errors.custom_error(
-                    user_id, f"Не могу обработать файл...\n{str(e)}"
-                )
+
         user_data.update({"stage": "quote_enabled"})
         return await Responder.quote.ask_quote_enabled(user_id)
 
