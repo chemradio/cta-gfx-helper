@@ -57,9 +57,11 @@ async def dispatcher_callback(
         # route to appropriate order workflow
         try:
             return await request_router(update, context)
-        except:
+        except Exception as e:
+            print(str(e), flush=True)
             user_data.clear()
             await Responder.errors.no_active_session(user_id)
+            await Responder.errors.custom_error(user_id, f"Ошибка: {str(e)}")
             return
 
     except Exception as e:
