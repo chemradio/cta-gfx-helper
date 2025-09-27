@@ -6,6 +6,13 @@ from workflows.image_rescaler.image_rescale import rescale_image
 
 app = FastAPI()
 
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
 
 @app.post("/")
 async def convert_file(
@@ -24,7 +31,7 @@ async def convert_file(
             media_type=converted_file.mime_type,
         )
     except Exception as e:
-        print("Conversion error:", str(e))
+        logger.error("Conversion error:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -49,5 +56,5 @@ async def reduce_image(
             media_type=rescaled_image.mime_type,
         )
     except Exception as e:
-        print("Conversion error:", str(e))
+        logger.error("Image rescale error:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
