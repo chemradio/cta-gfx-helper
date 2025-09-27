@@ -14,6 +14,11 @@ from telegram_bot.exceptions.attachments import (
     AttachmentNotFound,
 )
 
+import logging
+
+# Get a logger for this specific module
+logger = logging.getLogger(__name__)
+
 
 async def video_files_callback(
     update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -38,6 +43,7 @@ async def video_files_callback(
                     "stage": "background_source",
                 }
             )
+            logger.info("Successfully converted file and proceeding")
             return await Responder.video_files.ask_background_source(user_id)
         except AttachmentTypeMismatch:
             return await Responder.errors.custom_error(
@@ -52,6 +58,8 @@ async def video_files_callback(
             return await Responder.errors.custom_error(
                 user_id, "Не файл... Пришли PNG,JPG, WORD или PDF"
             )
+        except Exception as e:
+            logger.error(f"Error: {str(e)}")
 
     # handle background source choice
     if stage == "background_source":
