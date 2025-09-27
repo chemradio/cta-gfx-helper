@@ -2,6 +2,10 @@ from io import BytesIO
 from ..files.asset_file import AssetFile
 import httpx
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 async def download_and_delete_order_files(
     base_container_url: str, order: dict
@@ -49,18 +53,23 @@ async def delete_container_file(container_url: str, filename: str) -> None:
 async def convert_file(
     asset_file: AssetFile, file_converter_url: str = "http://file_converter:9005"
 ) -> AssetFile:
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            file_converter_url,
-            files={"file": (asset_file.filename, asset_file.bytesio)},
-        )
+    try:
+        logger.info("Starting file conversion")
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                file_converter_url,
+                files={"file": (asset_file.filename, asset_file.bytesio)},
+            )
 
-        converted_mime = response.headers["Content-Type"]
+            converted_mime = response.headers["Content-Type"]
 
-        return AssetFile(
-            bytes_or_bytesio=BytesIO(response.content),
-            mime_type=converted_mime,
-        )
+            return AssetFile(
+                bytes_or_bytesio=BytesIO(response.content),
+                mime_type=converted_mime,
+            )
+    except Exception as e:
+        logger.error(f"File conversion failed: {str(e)}")
+        raise e
 
 
 async def rescale_image_async(
