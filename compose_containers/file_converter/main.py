@@ -19,6 +19,7 @@ async def convert_file(
     file: UploadFile = File(...),
 ):
     try:
+        logger.info("Starting file conversion")
         converted_file = await convert_unsupported_file(
             AssetFile(
                 bytes_or_bytesio=file.file.read(),
@@ -26,6 +27,7 @@ async def convert_file(
             )
         )
 
+        logger.info("File conversion successful, returning response")
         return Response(
             content=converted_file.bytesio.getvalue(),
             media_type=converted_file.mime_type,
