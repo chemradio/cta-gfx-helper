@@ -54,8 +54,6 @@ async def convert_file(
     asset_file: AssetFile, file_converter_url: str = "http://file_converter:9005"
 ) -> AssetFile:
     try:
-        logger.info("Starting file conversion")
-
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.post(
                 file_converter_url,
