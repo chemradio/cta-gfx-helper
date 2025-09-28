@@ -55,16 +55,28 @@ async def convert_file(
 ) -> AssetFile:
     try:
         logger.info("Starting file conversion")
-        async with httpx.AsyncClient() as client:
+
+        async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.post(
                 file_converter_url,
                 files={"file": (asset_file.filename, asset_file.bytesio)},
             )
+            response.raise_for_status()
 
             converted_mime = response.headers["Content-Type"]
 
+            # Handle large responses
+            if len(response.content) > 8 * 1024 * 1024:  # 8MB
+                # For very large files, consider streaming
+                content = BytesIO()
+                for chunk in response.iter_bytes():
+                    content.write(chunk)
+                content.seek(0)
+            else:
+                content = BytesIO(response.content)
+
             return AssetFile(
-                bytes_or_bytesio=BytesIO(response.content),
+                bytes_or_bytesio=content,
                 mime_type=converted_mime,
             )
     except Exception as e:
