@@ -3,3 +3,4 @@ from .driver_authentificator import (
     LOGIN_REQUIRED_HOMEPAGES,
     authenticate_driver,
 )
+from .playwright_authentificator import authenticate_page

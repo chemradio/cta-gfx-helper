@@ -1,7 +1,11 @@
 from pathlib import Path
 
+import config
 
-from .screenshot_processor import parse_capture_screenshots
+from .screenshot_processor import (
+    parse_capture_screenshots,
+    parse_capture_screenshots_playwright,
+)
 from py_gfxhelper_lib.files import AssetFile
 from py_gfxhelper_lib.custom_types import OperatorResults
 
@@ -23,12 +27,20 @@ def main_capture(
 
     for attempt in range(attempts):
         try:
-            capture_results = parse_capture_screenshots(
-                url,
-                remote_driver_url,
-                cookie_file_path,
-                dpi_multiplier,
-            )
+            if config.SCREENSHOT_BACKEND == "playwright":
+                # playwright runs Chromium in-container; no remote node needed
+                capture_results = parse_capture_screenshots_playwright(
+                    url,
+                    cookie_file_path,
+                    dpi_multiplier,
+                )
+            else:
+                capture_results = parse_capture_screenshots(
+                    url,
+                    remote_driver_url,
+                    cookie_file_path,
+                    dpi_multiplier,
+                )
             success = True
             break
 
