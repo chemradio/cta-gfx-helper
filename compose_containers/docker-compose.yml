@@ -50,18 +50,6 @@ services:
     depends_on:
     - dispatcher
     hostname: bot_engine
-  screenshot-selenium:
-    restart: unless-stopped
-    hostname: screenshot_selenium
-    build: ./seleniarm_custom/screenshot
-    privileged: true
-    shm_size: 2g
-    ports:
-      - "7900:7900"
-    # environment:
-    #   - SE_START_VNC="false"
-    #   - SE_START_NO_VNC="false"
-    #   - SE_START_XVFB="false"
   screenshoter:
     restart: unless-stopped
     build: ./screenshot_engine
@@ -73,6 +61,7 @@ services:
     depends_on:
     - dispatcher
     hostname: screenshoter
+    shm_size: 2g
     # ports:
     #   - "9002:9002"
   video-gfx:
@@ -90,36 +79,3 @@ services:
     shm_size: 2g
     # ports:
     #   - "9004:9004"
-      
-  video-gfx-selenium-1:
-    restart: unless-stopped
-    hostname: video_gfx_selenium_one
-    build: ./seleniarm_custom/video_gfx
-    privileged: true
-    shm_size: 2g
-    environment:
-      - SE_START_VNC="false"
-      - SE_START_NO_VNC="false"
-      - SE_START_XVFB="false"
-  video-gfx-selenium-2:
-    restart: unless-stopped
-    hostname: video_gfx_selenium_two
-    build: ./seleniarm_custom/video_gfx
-    privileged: true
-    shm_size: 2g
-    environment:
-      - SE_START_VNC="false"
-      - SE_START_NO_VNC="false"
-      - SE_START_XVFB="false"
-  video-gfx-selenium-3:
-    restart: unless-stopped
-    hostname: video_gfx_selenium_three
-    build: ./seleniarm_custom/video_gfx
-    privileged: true
-    shm_size: 2g
-    environment:
-      - SE_START_VNC="false"
-      - SE_START_NO_VNC="false"
-      - SE_START_XVFB="false"
-
-    
