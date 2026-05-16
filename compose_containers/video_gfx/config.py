@@ -8,6 +8,18 @@ STORAGE_PATH = Path.cwd() / "storage"
 REDUCE_IMAGES = True
 USE_THREADS = False
 USER_PROCESSES = not USE_THREADS
+
+# Frame-capture backend switch.
+#   "selenium"   - legacy: remote Selenium nodes -> PNG sequence on disk -> ffmpeg.
+#   "playwright" - headless Chromium in-container -> image2pipe -> parallel
+#                  segment encode -> ffmpeg concat. No PNG files touch disk.
+FRAME_CAPTURE_BACKEND = "playwright"
+# FRAME_CAPTURE_BACKEND = "selenium"
+
+# Number of parallel Playwright capture workers (one ffmpeg segment encoder
+# each). Half the cores go to browsers, half to the encoders; capped at 4
+# since the speedup flattens out past that. Only used by the playwright backend.
+SEGMENT_WORKERS = min((os.cpu_count() or 4) // 2, 4) or 1
 SELENIUM_CONTAINERS_LOCAL = (
     "http://video_gfx_selenium_one:4444/wd/hub",
     "http://video_gfx_selenium_two:4444/wd/hub",
